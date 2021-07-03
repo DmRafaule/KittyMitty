@@ -25,7 +25,8 @@
 #ifndef GAME_LAYER
 #define GAME_LAYER
 
-#include "cocos2d.h"
+#include <cocos2d.h>
+#include "gameUI.h"
 
 enum Layer{
     BACKGROUND,
@@ -36,15 +37,18 @@ enum Layer{
 class GameLayer : public cocos2d::Scene{
 public:
     static cocos2d::Scene* createScene();
+    CREATE_FUNC(GameLayer);
+    void menuCloseCallback(cocos2d::Ref* pSender);
 
+    
     virtual bool init();
     
-    // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
-    
-    // implement the "static create()" method manually
-    CREATE_FUNC(GameLayer);
 private:
+    void initUI();
+    void initListeners();
+    void update(float dt);
+private:
+    GameUI* control;
     cocos2d::SpriteBatchNode* mainGameAtlas;
 };
 

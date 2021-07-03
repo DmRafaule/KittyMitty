@@ -25,7 +25,7 @@
 
 cmake_minimum_required(VERSION 3.6)
 
-set(APP_NAME gamemaket)
+set(APP_NAME KittyMitty)
 
 project(${APP_NAME})
 
