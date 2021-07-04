@@ -8,6 +8,8 @@
 std::string LayerChild::player = "player";
 std::string LayerChild::ball = "ball";
 std::string LayerChild::ball_attacke = "ball_attacke";
+std::string LayerChild::ballBorder = "ball border";
+std::string LayerChild::ballBorder_attacke = "ball border attacke";
 
 cocos2d::Scene* GameLayer::createScene(){
     return GameLayer::create();
@@ -36,11 +38,9 @@ bool GameLayer::init(){
 void GameLayer::initUI(){
     if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
         control = new GameUI(TypeUI::CONTROL_BALL,this);
-        control = new GameUI(TypeUI::ATTACKE_BALL,this);
     }
     else if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX){
         control = new GameUI(TypeUI::CONTROL_BALL,this);
-        control = new GameUI(TypeUI::ATTACKE_BALL,this);
     }
 }
 void GameLayer::initListeners(){
@@ -55,32 +55,26 @@ void GameLayer::initListeners(){
     this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
 }
 void GameLayer::initVars(){
-    touchPosition.resize(2);
+    
+    
 }
 
 
 
 void GameLayer::update(float dt){
-    
+    control->update(dt,this);
     
 }
 
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    
+    control->updateTouchBegan(touch,event,this);
     return true;
 }
 void GameLayer::touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    this->getChildByName(LayerChild::ball)->setPosition(control->getDefaultPosition(TypeUI::CONTROL_BALL));
-    this->getChildByName(LayerChild::ball_attacke)->setPosition(control->getDefaultPosition(TypeUI::ATTACKE_BALL));
+    control->updateTouchEnded(touch,event,this);
 }
 void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    for (uint i = 0; i < touch.size(); ++i){
-        touchPosition[i] = touch[i]->getLocation();
-        if (this->getChildByName(LayerChild::ball)->getBoundingBox().containsPoint(touch[i]->getLocation()))
-            this->getChildByName(LayerChild::ball)->setPosition(touchPosition[i]);
-        if (this->getChildByName(LayerChild::ball_attacke)->getBoundingBox().containsPoint(touch[i]->getLocation()))
-            this->getChildByName(LayerChild::ball_attacke)->setPosition(touchPosition[i]);
-    }
+    control->updateTouchMoved(touch,event,this);
 }
 void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
 
