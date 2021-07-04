@@ -33,6 +33,11 @@ enum Layer{
     MIDLEGROUND,
     FOREGROUND,
 };
+struct LayerChild{
+    static std::string player;
+    static std::string ball;
+    static std::string ball_attacke;
+};
 
 class GameLayer : public cocos2d::Scene{
 public:
@@ -46,10 +51,18 @@ public:
 private:
     void initUI();
     void initListeners();
+    void initVars();
     void update(float dt);
+    
+    bool touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+    void touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+    void touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+    void touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
 private:
     GameUI* control;
+    std::vector<cocos2d::Vec2> touchPosition;
     cocos2d::SpriteBatchNode* mainGameAtlas;
+
 };
 
 #endif // GAME_LAYER
