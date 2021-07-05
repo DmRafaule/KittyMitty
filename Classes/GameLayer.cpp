@@ -7,9 +7,6 @@
 
 std::string LayerChild::player = "player";
 std::string LayerChild::ball = "ball";
-std::string LayerChild::ball_attacke = "ball_attacke";
-std::string LayerChild::ballBorder = "ball border";
-std::string LayerChild::ballBorder_attacke = "ball border attacke";
 
 cocos2d::Scene* GameLayer::createScene(){
     return GameLayer::create();
@@ -17,7 +14,7 @@ cocos2d::Scene* GameLayer::createScene(){
 void GameLayer::menuCloseCallback(cocos2d::Ref* pSender){
     //Close the cocos2d-x game scene and quit the application
     cocos2d::Director::getInstance()->end();
-    delete control;
+    delete control_ball;
 }
 
 bool GameLayer::init(){
@@ -37,10 +34,10 @@ bool GameLayer::init(){
 }
 void GameLayer::initUI(){
     if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-        control = new GameUI(TypeUI::CONTROL_BALL,this);
+        control_ball = new GameUI(TypeUI::CONTROL_BALL,this);
     }
     else if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX){
-        control = new GameUI(TypeUI::CONTROL_BALL,this);
+        control_ball = new GameUI(TypeUI::CONTROL_BALL,this);
     }
 }
 void GameLayer::initListeners(){
@@ -62,20 +59,20 @@ void GameLayer::initVars(){
 
 
 void GameLayer::update(float dt){
-    control->update(dt,this);
+    control_ball->update(dt,TypeUI::CONTROL_BALL,this);
     
 }
 
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    control->updateTouchBegan(touch,event,this);
+    control_ball->updateTouchBegan(touch,event,this);
     return true;
 }
 void GameLayer::touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    control->updateTouchEnded(touch,event,this);
+    control_ball->updateTouchEnded(touch,event,this);
 }
 void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    control->updateTouchMoved(touch,event,this);
+    control_ball->updateTouchMoved(touch,event,this);
 }
 void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-
+    control_ball->updateTouchCanceled(touch,event,this);
 }

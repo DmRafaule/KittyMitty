@@ -61,7 +61,7 @@ private:
     void touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
     void touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
 private:
-    GameUI* control;
+    GameUI* control_ball;
     
 };
 
