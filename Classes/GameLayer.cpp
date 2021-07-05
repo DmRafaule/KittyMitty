@@ -13,8 +13,9 @@ cocos2d::Scene* GameLayer::createScene(){
 }
 void GameLayer::menuCloseCallback(cocos2d::Ref* pSender){
     //Close the cocos2d-x game scene and quit the application
-    cocos2d::Director::getInstance()->end();
     delete control_ball;
+    delete player;
+    cocos2d::Director::getInstance()->end();
 }
 
 bool GameLayer::init(){
@@ -23,9 +24,9 @@ bool GameLayer::init(){
         return false;
 
     
-    Creature player("textures/player.png",BodyMap(1,2,3,4,1),cocos2d::Vec2(400,200),this,LayerChild::player);
+    player = new Creature("textures/player.png",BodyMap(1,2,3,4,1,30),cocos2d::Vec2(400,200),this,LayerChild::player);
 
-    initVars();
+    initVarsAndObj();
     initListeners();
     initUI();
 
@@ -51,7 +52,7 @@ void GameLayer::initListeners(){
     /*Start update this layer*/
     this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
 }
-void GameLayer::initVars(){
+void GameLayer::initVarsAndObj(){
     
     
 }
@@ -60,6 +61,7 @@ void GameLayer::initVars(){
 
 void GameLayer::update(float dt){
     control_ball->update(dt,TypeUI::CONTROL_BALL,this);
+    player->update(dt);
     
 }
 

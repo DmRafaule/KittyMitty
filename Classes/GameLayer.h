@@ -27,6 +27,7 @@
 
 #include <cocos2d.h>
 #include "gameUI.h"
+#include "Creature.h"
 
 enum Layer{
     BACKGROUND,
@@ -50,19 +51,40 @@ public:
 
     
     virtual bool init();
+    /**
+     * @return pointer on player Creature
+    */
+    inline Creature* getPlayer(){ return player;};
 private:
+    /**
+     * initialize user interface(for phones it will be controle ball, screen action and some buttons) for desktop it will be keyboard and mouse
+    */
     void initUI();
+    /**
+     * initialize all event listeners (for keyboard, touch screen, mouse,physics event )
+    */
     void initListeners();
-    void initVars();
+        /*
+         * 
+        */
+        bool touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+        void touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+        void touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+        void touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+    /* initialize variables and custom objects*/
+    void initVarsAndObj();
+    /**
+     * update all objects and var
+    */
     void update(float dt);
     
-    bool touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
-    void touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
-    void touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
-    void touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+
 private:
+    //Phone UI
     GameUI* control_ball;
-    
+    //Window UI
+    //Game obj
+    Creature* player;
 };
 
 #endif // GAME_LAYER
