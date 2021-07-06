@@ -53,7 +53,7 @@ void GameLayer::initListeners(){
     this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
 }
 void GameLayer::initVarsAndObj(){
-    
+    visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     
 }
 

@@ -7,9 +7,8 @@ std::vector<cocos2d::Vec2> GameUI::touchPosition2(2);
 
 GameUI::GameUI(TypeUI type,void* layer){
     touchPosition.resize(2);
-    isTouch.resize(2);
-    isTouch[0] = false;
-    isTouch[1] = false;
+    isControlBall = false;
+    isControlAttake = false;
     
     switch (type){
     case TypeUI::CONTROL_BALL:{
@@ -20,6 +19,9 @@ GameUI::GameUI(TypeUI type,void* layer){
         ball->setPosition(ballDefaultPosition);
         static_cast<GameLayer*>(layer)->addChild(ball,Layer::USER_INTERFACE,LayerChild::ball);
 
+        break;
+    }
+    case TypeUI::CONTROL_ATTACKE:{
         break;
     }
     
@@ -34,18 +36,31 @@ void GameUI::update(float dt,TypeUI type, void* Layer){
         case TypeUI::CONTROL_BALL:{
             break;
         }
+        case TypeUI::CONTROL_ATTACKE:{
+            break;
+        }
     }
 }
 void GameUI::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    
+    for (uint i = 0; i < touch.size(); ++i){
+        if ( touch[i]->getLocation().x > cocos2d::Director::getInstance()->getVisibleSize().width/2){
+            isControlAttake = true;
+            printf("Controle of attacke began\n");
+        }
+    }
 }
 void GameUI::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint i = 0; i < touch.size(); ++i){
-        if (isTouch[i]){
-            isTouch[i] = false;
+        if (isControlBall){
+            isControlBall = false;
             static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->setPosition(cocos2d::Director::getInstance()->getVisibleSize().width*0.15,
                                                                                           cocos2d::Director::getInstance()->getVisibleSize().height*0.15);
             Control_Ball::remove(Layer);
+        }
+        if (isControlAttake){
+            isControlAttake = false;
+            printf("Controle of attacke stoped\n");
+            static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::player)->setPosition(200,200);
         }
     }
 }
@@ -55,7 +70,7 @@ void GameUI::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event*
         if (static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->getBoundingBox().containsPoint(touch[i]->getLocation())){
             static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->setPosition(touchPosition[i]);
             Control_Ball::create(Layer);
-            isTouch[i] = true;
+            isControlBall = true;
         }
     }
 }

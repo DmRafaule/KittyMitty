@@ -83,6 +83,7 @@ private:
     //Phone UI
     GameUI* control_ball;
     //Window UI
+    cocos2d::Size visibleSize;
     //Game obj
     Creature* player;
 };

@@ -5,6 +5,7 @@
 
 enum TypeUI{
     CONTROL_BALL,
+    CONTROL_ATTACKE,
     CONTROL_KEYS,
 };
 
@@ -41,11 +42,27 @@ public:
     public:
         Control_Ball();
         ~Control_Ball();
-
+        /**
+         * Create line path effect
+         * @param node wich layer should render this eff
+        */
         static void create( void* node);
+        /**
+         * Create line path effect
+         * @param node wich layer should remove this eff
+        */
         static void remove( void* node);
+        /**
+         * @return angle bettween touch point and center of ball control
+        */
         static inline const float getAngle(){ return angleDirection; };
+        /**
+         * @return status of interaction with ball controller
+        */
         static inline const bool getMoving(){ return isMoving; };
+        /**
+         * @return direction of movement for to ball Sprite
+        */
         static inline const cocos2d::Vec2 getDirection(){ return directionPoint; };
     private:
            /** Set position of point related to pointNode like pointNode is a center of circle
@@ -53,20 +70,30 @@ public:
            @param point_center is a center of entity node which have to have some kind of position and angle 
            **/
         static void setPosPointOnCircle(cocos2d::Vec2& point_destination,cocos2d::Vec2 point_center);
+        /**
+         * transform radians to degrees
+        */
         static float setAngleToRadius(float angle_radian);
+        /**
+         * Calculated direction of movement relative
+         * @param endPoint center of circle controle
+         * @param startPoint touch location
+         * @return point on circle
+        */
         static cocos2d::Vec2 setDirectionPointRelative(cocos2d::Vec2 endPoint,cocos2d::Vec2 startPoint);
     private:
         static std::vector<cocos2d::DrawNode*> pathEffect;
-        static cocos2d::Vec2 directionPoint;
-        static float   part_radius;
-        static float   angleDirection;
-        static bool    isMoving;
+        static cocos2d::Vec2 directionPoint;//Position on circle of point in pathEffect
+        static float   part_radius;//Radius of each point contained in pathEffect
+        static float   angleDirection;//Angle of point in pathEffect
+        static bool    isMoving;//Is player interact with ball controle
     };
 private:
-    cocos2d::Sprite* ball;
+    cocos2d::Sprite* ball;//Design of always visible ball, for controle
     cocos2d::Vec2 ballDefaultPosition;
 
     std::vector<cocos2d::Vec2> touchPosition;
-    std::vector<bool>   isTouch;
-    static std::vector<cocos2d::Vec2> touchPosition2;
+    static std::vector<cocos2d::Vec2> touchPosition2;//It's a copy of touchPosition for static usage
+    bool   isControlBall;
+    bool   isControlAttake;
 };
