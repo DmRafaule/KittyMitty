@@ -39,8 +39,6 @@ struct LayerChild{
     static std::string player;
     static std::string ball;
     static std::string ball_attacke;
-    static std::string ballBorder;
-    static std::string ballBorder_attacke;
 };
 
 class GameLayer : public cocos2d::Scene{
@@ -81,7 +79,7 @@ private:
 
 private:
     //Phone UI
-    GameUI* control_ball;
+    GameUI* control;
     //Window UI
     cocos2d::Size visibleSize;
     //Game obj

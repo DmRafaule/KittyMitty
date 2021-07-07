@@ -4,9 +4,18 @@
 #include "Creature.h"
 
 enum TypeUI{
-    CONTROL_BALL,
-    CONTROL_ATTACKE,
+    CONTROL_IN_GAMESESSION,
     CONTROL_KEYS,
+};
+enum DirectionAttacke{
+    TOP_TO_DOWN,
+    DOWN_TO_TOP,
+    LEFT_TO_RIGHT,
+    RIGHT_TO_LEFT,
+    TOPLEFT_TO_BOTTOMRIGHT,
+    TOPRIGHT_TO_BOTTOMLEFT,
+    BOTTOMLEFT_TO_TOPRIGHT,
+    BOTTOMRIGHT_TO_TOPLEFT,
 };
 
 class GameUI{
@@ -33,25 +42,31 @@ public:
         void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer);
         // Will be called in touchCanceled function in any of Node(Layer)
         void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer);
-    /**
-     * @return touch location of touch/click
-    */
-    static inline cocos2d::Vec2 getTouchLocation(int i) {return touchPosition2[i];};
+
 public:
     class Control_Ball{
     public:
-        Control_Ball();
+        Control_Ball(void* layer);
         ~Control_Ball();
+        void update(float dt,void* Layer);
+            // Will be called in touchBegan function in any of Node(Layer)
+            void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator);
+            // Will be called in touchEnded function in any of Node(Layer)
+            void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator);
+            // Will be called in touchMoved function in any of Node(Layer)
+            void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator);
+            // Will be called in touchCanceled function in any of Node(Layer)
+            void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator);
         /**
          * Create line path effect
          * @param node wich layer should render this eff
         */
-        static void create( void* node);
+        static void createEffect( void* node);
         /**
          * Create line path effect
          * @param node wich layer should remove this eff
         */
-        static void remove( void* node);
+        static void removeEffect( void* node);
         /**
          * @return angle bettween touch point and center of ball control
         */
@@ -64,6 +79,7 @@ public:
          * @return direction of movement for to ball Sprite
         */
         static inline const cocos2d::Vec2 getDirection(){ return directionPoint; };
+        inline const cocos2d::Vec2 getBallDefaultPosition() { return ballDefaultPosition; };
     private:
            /** Set position of point related to pointNode like pointNode is a center of circle
            @param point_destination is a point will be changed to new position depends on pos of pointNOde and angle of texture of point node
@@ -84,16 +100,47 @@ public:
     private:
         static std::vector<cocos2d::DrawNode*> pathEffect;
         static cocos2d::Vec2 directionPoint;//Position on circle of point in pathEffect
+        static cocos2d::Vec2  touchPoint;
         static float   part_radius;//Radius of each point contained in pathEffect
         static float   angleDirection;//Angle of point in pathEffect
         static bool    isMoving;//Is player interact with ball controle
-    };
+        
+        cocos2d::Vec2  ballDefaultPosition;
+        bool           isControlBall;
+    } *cBall;
+    class Control_Attc{
+    public:
+        Control_Attc(void* layer);
+        ~Control_Attc();
+        void update(float dt, void* layer);
+            // Will be called in touchBegan function in any of Node(Layer)
+            void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator);
+            // Will be called in touchEnded function in any of Node(Layer)
+            void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator);
+            // Will be called in touchMoved function in any of Node(Layer)
+            void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator);
+            // Will be called in touchCanceled function in any of Node(Layer)
+            void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator);
+        /**
+         * Create line path effect
+         * @param node wich layer should render this eff
+        */
+        static void createEffect( void* node);
+        /**
+         * Create line path effect
+         * @param node wich layer should remove this eff
+        */
+        static void removeEffect( void* node);
+    private:
+        void setDirectionAttacke();
+        inline const DirectionAttacke getDirectionAttacke(){ return direction_of_attacke; };
+    private:
+        static cocos2d::Vec2  touchPoint;
+        cocos2d::Vec2 startPoint;
+        cocos2d::Vec2 endPoint;
+        DirectionAttacke direction_of_attacke;
+        bool   isControlAttake;
+    } *cAttc;
 private:
-    cocos2d::Sprite* ball;//Design of always visible ball, for controle
-    cocos2d::Vec2 ballDefaultPosition;
 
-    std::vector<cocos2d::Vec2> touchPosition;
-    static std::vector<cocos2d::Vec2> touchPosition2;//It's a copy of touchPosition for static usage
-    bool   isControlBall;
-    bool   isControlAttake;
 };

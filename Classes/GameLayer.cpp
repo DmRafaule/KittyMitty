@@ -7,13 +7,14 @@
 
 std::string LayerChild::player = "player";
 std::string LayerChild::ball = "ball";
+std::string LayerChild::ball_attacke = "ball_attacke";
 
 cocos2d::Scene* GameLayer::createScene(){
     return GameLayer::create();
 }
 void GameLayer::menuCloseCallback(cocos2d::Ref* pSender){
     //Close the cocos2d-x game scene and quit the application
-    delete control_ball;
+    delete control;
     delete player;
     cocos2d::Director::getInstance()->end();
 }
@@ -35,10 +36,10 @@ bool GameLayer::init(){
 }
 void GameLayer::initUI(){
     if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-        control_ball = new GameUI(TypeUI::CONTROL_BALL,this);
+        control = new GameUI(TypeUI::CONTROL_IN_GAMESESSION,this);
     }
     else if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX){
-        control_ball = new GameUI(TypeUI::CONTROL_BALL,this);
+        control = new GameUI(TypeUI::CONTROL_IN_GAMESESSION,this);
     }
 }
 void GameLayer::initListeners(){
@@ -60,21 +61,21 @@ void GameLayer::initVarsAndObj(){
 
 
 void GameLayer::update(float dt){
-    control_ball->update(dt,TypeUI::CONTROL_BALL,this);
+    control->update(dt,TypeUI::CONTROL_IN_GAMESESSION,this);
     player->update(dt);
     
 }
 
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    control_ball->updateTouchBegan(touch,event,this);
+    control->updateTouchBegan(touch,event,this);
     return true;
 }
 void GameLayer::touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    control_ball->updateTouchEnded(touch,event,this);
+    control->updateTouchEnded(touch,event,this);
 }
 void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    control_ball->updateTouchMoved(touch,event,this);
+    control->updateTouchMoved(touch,event,this);
 }
 void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    control_ball->updateTouchCanceled(touch,event,this);
+    control->updateTouchCanceled(touch,event,this);
 }
