@@ -29,6 +29,8 @@
 #include "gameUI.h"
 #include "Creature.h"
 
+#define P(str) printf(str)
+
 enum Layer{
     BACKGROUND,
     MIDLEGROUND,
@@ -37,6 +39,7 @@ enum Layer{
 };
 struct LayerChild{
     static std::string player;
+    static std::string enemy;
     static std::string ball;
     static std::string ball_attacke;
 };
@@ -84,6 +87,7 @@ private:
     cocos2d::Size visibleSize;
     //Game obj
     Creature* player;
+    Enemy* enemy;
 };
 
 #endif // GAME_LAYER

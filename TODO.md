@@ -1,5 +1,5 @@
 Implement(UI) ball controller for character                 [+]
 Implement(L) creature generator                             [-]
     Implement(UI) attace controlle for characteer           [+]
-    Implement(G)  effect for attake                         [-]
+    Implement(G)  effect for attake                         [-+]
     Implement(L) interaction with enemies(another creature) [-]

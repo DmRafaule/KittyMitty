@@ -16,10 +16,10 @@ class Creature{
 public:
     Creature(std::string texturePath,BodyMap bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
     ~Creature();
-    void update(float dt);
+    virtual void update(float dt) = 0;
     inline BodyMap* getBodyMap(){ return body_map;};
-private:
-private:
+    inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
+protected:
     /*This is part of body(like head or leg)*/
     class PartCreature{
         friend class Creature;
@@ -30,4 +30,18 @@ private:
     };
     BodyMap* body_map;
     cocos2d::Sprite* creature_sprite;
+};
+class Enemy : public Creature{
+public:
+    Enemy(std::string texturePath,BodyMap bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
+    virtual void update(float dt) override;
+private:
+    cocos2d::Node* playerNode;
+    int i = 0;
+};
+class Player : public Creature{
+public:
+    Player(std::string texturePath,BodyMap bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
+    virtual void update(float dt) override;
+private:
 };

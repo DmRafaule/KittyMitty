@@ -8,6 +8,7 @@
 std::string LayerChild::player = "player";
 std::string LayerChild::ball = "ball";
 std::string LayerChild::ball_attacke = "ball_attacke";
+std::string LayerChild::enemy = "enemy 1";
 
 cocos2d::Scene* GameLayer::createScene(){
     return GameLayer::create();
@@ -24,9 +25,9 @@ bool GameLayer::init(){
     if ( !cocos2d::Scene::init() )
         return false;
 
+    player = new Player("textures/player.png",BodyMap(1,2,3,4,1,30),cocos2d::Vec2(400,200),this,LayerChild::player);
+    enemy  = new Enemy ("textures/player.png",BodyMap(1,2,3,4,1,30),cocos2d::Vec2(600,200),this,LayerChild::enemy);
     
-    player = new Creature("textures/player.png",BodyMap(1,2,3,4,1,30),cocos2d::Vec2(400,200),this,LayerChild::player);
-
     initVarsAndObj();
     initListeners();
     initUI();
@@ -63,7 +64,7 @@ void GameLayer::initVarsAndObj(){
 void GameLayer::update(float dt){
     control->update(dt,TypeUI::CONTROL_IN_GAMESESSION,this);
     player->update(dt);
-    
+    enemy->update(dt);
 }
 
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){

@@ -135,9 +135,12 @@ public:
         void setDirectionAttacke();
         inline const DirectionAttacke getDirectionAttacke(){ return direction_of_attacke; };
     private:
+        static std::vector<cocos2d::DrawNode*> pathEffect;
         static cocos2d::Vec2  touchPoint;
-        cocos2d::Vec2 startPoint;
-        cocos2d::Vec2 endPoint;
+        static cocos2d::Vec2  trembling;
+        static cocos2d::Vec2  touchPointStart;
+        static cocos2d::Vec2  touchPointEnd;
+
         DirectionAttacke direction_of_attacke;
         bool   isControlAttake;
     } *cAttc;

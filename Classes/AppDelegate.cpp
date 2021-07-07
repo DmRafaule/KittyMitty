@@ -108,6 +108,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     register_all_packages();
+    cocos2d::Console a;
+    
+    a.log("kdfjldfjs\n");
 
     auto scene = GameLayer::createScene();
     director->runWithScene(scene);

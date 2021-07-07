@@ -116,8 +116,8 @@ void GameUI::Control_Ball::setPosPointOnCircle(cocos2d::Vec2& point_destination,
 float GameUI::Control_Ball::setAngleToRadius(float angle_radian){
     return angle_radian*(180/M_PI) - 180 < 0 ? angle_radian*(180/M_PI) + 180 : angle_radian*(180/M_PI) - 180; 
 }
-cocos2d::Vec2 GameUI::Control_Ball::setDirectionPointRelative(cocos2d::Vec2 endPoint,cocos2d::Vec2 startPoint){
-    return startPoint - endPoint;
+cocos2d::Vec2 GameUI::Control_Ball::setDirectionPointRelative(cocos2d::Vec2 touchPointEnd,cocos2d::Vec2 touchPointStart){
+    return touchPointStart - touchPointEnd;
 }
 void GameUI::Control_Ball::removeEffect(void* node){
     //Now character not moving
@@ -178,6 +178,10 @@ void GameUI::Control_Ball::createEffect(void* node){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/
 cocos2d::Vec2  GameUI::Control_Attc::touchPoint(0,0);
+cocos2d::Vec2 GameUI::Control_Attc::trembling(0,0);
+cocos2d::Vec2  GameUI::Control_Attc::touchPointStart(0,0);
+cocos2d::Vec2  GameUI::Control_Attc::touchPointEnd(0,0);
+std::vector<cocos2d::DrawNode*> GameUI::Control_Attc::pathEffect(15);
 
 GameUI::Control_Attc::Control_Attc(void* layer){
     isControlAttake = false;
@@ -198,7 +202,7 @@ void GameUI::Control_Attc::updateTouchBegan(std::vector<cocos2d::Touch*> touch,c
     if ( touch[iterator]->getLocation().x > cocos2d::Director::getInstance()->getVisibleSize().width/2){
         isControlAttake = true;
         //Find start position of touch
-        startPoint = touch[iterator]->getLocation();
+        touchPointStart = touch[iterator]->getLocation();
     }
     
 }
@@ -207,7 +211,7 @@ void GameUI::Control_Attc::updateTouchEnded(std::vector<cocos2d::Touch*> touch,c
     if (isControlAttake){
         isControlAttake = false;
         //Find end position of touch
-        endPoint = touchPoint;
+        touchPointEnd = touchPoint;
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setVisible(false);
         //Calulate attacke direction
         setDirectionAttacke();
@@ -225,41 +229,41 @@ void GameUI::Control_Attc::updateTouchCanceled(std::vector<cocos2d::Touch*> touc
 }
 void GameUI::Control_Attc::setDirectionAttacke(){
     /*Trembling it's a differance which not causes some if statements*/
-    cocos2d::Vec2 trembling = cocos2d::Vec2(startPoint.x - endPoint.x,startPoint.y - endPoint.y);
+    trembling = cocos2d::Vec2(touchPointStart.x - touchPointEnd.x,touchPointStart.y - touchPointEnd.y);
     trembling.x < 0 ? trembling.x *= -1 : trembling.x *= 1 ;
     trembling.y < 0 ? trembling.y *= -1 : trembling.y *= 1 ;
 
     /*Implement middle attacke left/right*/
     if (trembling.y < 50){
-        if (startPoint.x > endPoint.x){
+        if (touchPointStart.x > touchPointEnd.x){
             direction_of_attacke = DirectionAttacke::RIGHT_TO_LEFT;
             printf("right to left\n");
         }
-        else if (startPoint.x < endPoint.x){
+        else if (touchPointStart.x < touchPointEnd.x){
             direction_of_attacke = DirectionAttacke::LEFT_TO_RIGHT;
             printf("left to right\n");
         }
     }
     if (trembling.x < 50){
-        if (startPoint.y < endPoint.y){
+        if (touchPointStart.y < touchPointEnd.y){
             direction_of_attacke = DirectionAttacke::DOWN_TO_TOP;
             printf("down to top\n");
         }
-        else if (startPoint.y > endPoint.y){
+        else if (touchPointStart.y > touchPointEnd.y){
             direction_of_attacke = DirectionAttacke::TOP_TO_DOWN;
             printf("top to down\n");
         }
     }
     if (trembling.x >= 50 && trembling.y >= 50){
-         if (startPoint.x < endPoint.x && startPoint.y < endPoint.y){
+         if (touchPointStart.x < touchPointEnd.x && touchPointStart.y < touchPointEnd.y){
             direction_of_attacke = DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT;
             printf("bottomleft to topright\n");
         }
-        else if (startPoint.x > endPoint.x && startPoint.y > endPoint.y){
+        else if (touchPointStart.x > touchPointEnd.x && touchPointStart.y > touchPointEnd.y){
             direction_of_attacke = DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT;
             printf("topright to bottomleft\n");
         }
-        else if (startPoint.x < endPoint.x && startPoint.y > endPoint.y){
+        else if (touchPointStart.x < touchPointEnd.x && touchPointStart.y > touchPointEnd.y){
             direction_of_attacke = DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT;
             printf("topleft to bottomright\n");
         }
@@ -272,8 +276,22 @@ void GameUI::Control_Attc::setDirectionAttacke(){
 
 
 void GameUI::Control_Attc::createEffect( void* node){
-
+    //float lenght_path = std::sqrt(pow(trembling.x,2)+pow(trembling.y,2));
+    //float step_path = lenght_path / pathEffect.size();
+    //for (uint i = 0; i < pathEffect.size(); ++i){
+    //    cocos2d::Vec2 particlePos = cocos2d::Vec2(touchPointStart.x + step_path * i,touchPointStart.y + step_path * i);
+    //    /*Clear effect before draw a new one*/
+    //    if (pathEffect[i] != nullptr){
+    //        static_cast<cocos2d::Node*>(node)->removeChild(pathEffect[i]);   
+    //    }
+//
+    //    pathEffect[i] = cocos2d::DrawNode::create();
+    //    pathEffect[i]->drawLine(touchPointStart,touchPointEnd,cocos2d::Color4F::BLUE);
+    //    static_cast<cocos2d::Node*>(node)->addChild(pathEffect[i],10+i);
+    //}
 }
 void GameUI::Control_Attc::removeEffect( void* node){
-
+    for (auto &particle : pathEffect){
+        static_cast<cocos2d::Node*>(node)->removeChild(particle);
+    }
 }
