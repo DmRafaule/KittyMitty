@@ -28,8 +28,7 @@
 #include <cocos2d.h>
 #include "gameUI.h"
 #include "Creature.h"
-
-#define P(str) printf(str)
+#include "engMacros.hpp"
 
 enum Layer{
     BACKGROUND,
@@ -55,7 +54,8 @@ public:
     /**
      * @return pointer on player Creature
     */
-    inline Creature* getPlayer(){ return player;};
+    inline Player* getPlayer(){ return player;};
+    inline std::vector<Enemy*> getEnemy(){ return enemy;};
 private:
     /**
      * initialize user interface(for phones it will be controle ball, screen action and some buttons) for desktop it will be keyboard and mouse
@@ -82,12 +82,13 @@ private:
 
 private:
     //Phone UI
-    GameUI* control;
+    ControlBall* cball;
+    ControlAttc* cattc;
     //Window UI
     cocos2d::Size visibleSize;
     //Game obj
-    Creature* player;
-    Enemy* enemy;
+    Player* player;
+    std::vector<Enemy*> enemy;
 };
 
 #endif // GAME_LAYER

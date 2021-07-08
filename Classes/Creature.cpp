@@ -25,25 +25,78 @@ Creature::~Creature(){
 Enemy::Enemy(std::string texturePath,BodyMap bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
     Creature(texturePath,bMap,pos,gameLayer,id){
     creature_sprite->setColor(cocos2d::Color3B::RED);
-    playerNode = static_cast<GameLayer*>(gameLayer)->getChildByName(LayerChild::player);
+    isAlive = true;
 }
 void Enemy::update(float dt){
-    cocos2d::Rect rect;
-    /*here setup normal position*/
-    rect.setRect(playerNode->getPosition().x,playerNode->getPosition().y,playerNode->getBoundingBox().size.width*2,playerNode->getBoundingBox().size.height*2);
-    if (creature_sprite->getBoundingBox().intersectsRect(rect)){
-        printf("collision\t%d\n",i);
-        i++;   
-    }
+    
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
 Player::Player(std::string texturePath,BodyMap bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
     Creature(texturePath,bMap,pos,gameLayer,id){
-
+    enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
+    layer = gameLayer;
+    currentInteractedEnemy = -1;
 }
 void Player::update(float dt){
-    if (GameUI::Control_Ball::getMoving()){
-        creature_sprite->runAction(cocos2d::MoveBy::create(1.f,GameUI::Control_Ball::getDirection()));
+    //For moves
+    if (ControlBall::getMoving()){
+        creature_sprite->runAction(cocos2d::MoveBy::create(1.f,ControlBall::getDirection()));
     }
+    //For attacke
+    if (ControlAttc::getAttacke()){
+        //Which enemy will attacke
+        interaction_radius.setRect(creature_sprite->getPosition().x - creature_sprite->getBoundingBox().size.width*1.5,creature_sprite->getPosition().y - creature_sprite->getBoundingBox().size.height*1.5,
+                     creature_sprite->getBoundingBox().size.width*3,creature_sprite->getBoundingBox().size.height*3);
+        for (int i=0; i < enemyNode.size(); ++i){
+            if (enemyNode[i]->getCreatureSprite()->getBoundingBox().intersectsRect(interaction_radius)){
+                currentInteractedEnemy = i;
+            }
+        }
+        /*Type of dammage/attacke for selected enemy*/
+        switch(ControlAttc::getDirectionAttacke()){
+        case DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT:{
+            OUT("bottomleft to topright\n");
+            break;
+        }
+        case DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT:{
+            OUT("bottomright to topleft\n");
+            break;
+        }
+        case DirectionAttacke::DOWN_TO_TOP:{
+            OUT("down to top\n");
+            break;
+        }
+        case DirectionAttacke::LEFT_TO_RIGHT:{
+            OUT("left to right\n");
+            break;
+        }
+        case DirectionAttacke::RIGHT_TO_LEFT:{
+            OUT("right to left\n");
+            break;
+        }
+        case DirectionAttacke::TOP_TO_DOWN:{
+            OUT("top to down\n");
+            break;
+        }
+        case DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT:{
+            OUT("topleft to bottomright\n");
+            break;
+        }
+        case DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT:{
+            OUT("topright to bottomleft\n");
+            break;
+        }
+        }
+        ControlAttc::setAttacke(false);
+        /*Which will die*/
+        if (currentInteractedEnemy >= 0){
+            /*First clean our OpenGL calls*/
+            static_cast<GameLayer*>(layer)->removeChildByName(enemyNode[currentInteractedEnemy]->getCreatureSprite()->getName());
+            /*Second clean our Data holder*/
+            enemyNode.erase(enemyNode.begin()+currentInteractedEnemy);
+            currentInteractedEnemy = -1;
+        }
+    }
+    
 }

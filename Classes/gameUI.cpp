@@ -4,66 +4,24 @@
 ////////////////////////////////*GameUI class*/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //Here make some bitfield choise using | or &
-GameUI::GameUI(TypeUI type,void* layer){
-    
-    switch (type){
-    case TypeUI::CONTROL_IN_GAMESESSION:{
-        cBall = new Control_Ball(layer);
-        cAttc = new Control_Attc(layer);
-        break;
-    }
-    
-    }
+GameUI::GameUI(){
+
 }
 GameUI::~GameUI(){
 
 }
 
-void GameUI::update(float dt,TypeUI type, void* Layer){
-    switch(type){
-        case TypeUI::CONTROL_IN_GAMESESSION:{
-            cBall->update(dt,Layer);
-            cAttc->update(dt,Layer);
-            break;
-        }
-    }
-}
-void GameUI::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint i = 0; i < touch.size(); ++i){
-        cBall->updateTouchBegan(touch,event,Layer,i);
-        cAttc->updateTouchBegan(touch,event,Layer,i);
-    }
-}
-void GameUI::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint i = 0; i < touch.size(); ++i){
-        cBall->updateTouchEnded(touch,event,Layer,i);
-        cAttc->updateTouchEnded(touch,event,Layer,i);
-    }
-}
-void GameUI::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint i = 0; i < touch.size(); ++i){
-        cBall->updateTouchMoved(touch,event,Layer,i);
-        cAttc->updateTouchMoved(touch,event,Layer,i);
-    }
-}
-void GameUI::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint i = 0; i < touch.size(); ++i){
-        cBall->updateTouchMoved(touch,event,Layer,i);
-        cAttc->updateTouchMoved(touch,event,Layer,i);
-    }
-}
 
 ////////////////////////////////*Controle_Ball class*/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/
-std::vector<cocos2d::DrawNode*> GameUI::Control_Ball::pathEffect(5);
-cocos2d::Vec2 GameUI::Control_Ball::directionPoint(0,0);
-cocos2d::Vec2  GameUI::Control_Ball::touchPoint(0,0);
-float GameUI::Control_Ball::part_radius = 0;
-float GameUI::Control_Ball::angleDirection = 0;
-bool  GameUI::Control_Ball::isMoving = false;
+cocos2d::Vec2 ControlBall::directionPoint(0,0);
+float ControlBall::part_radius = 0;
+float ControlBall::angleDirection = 0;
+bool  ControlBall::isMoving = false;
 
-GameUI::Control_Ball::Control_Ball(void* layer){
+ControlBall::ControlBall(void* layer){
+    pathEffect.resize(5);
     isControlBall = false;
     ballDefaultPosition = cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width*0.15,
                                         cocos2d::Director::getInstance()->getVisibleSize().height*0.15);
@@ -72,38 +30,42 @@ GameUI::Control_Ball::Control_Ball(void* layer){
     ball->setPosition(ballDefaultPosition);
     static_cast<GameLayer*>(layer)->addChild(ball,Layer::USER_INTERFACE,LayerChild::ball);
 }
-GameUI::Control_Ball::~Control_Ball(){
+ControlBall::~ControlBall(){
 
 }
-void GameUI::Control_Ball::update(float dt,void* Layer){
+void ControlBall::update(float dt,void* Layer){
 
 }
-void GameUI::Control_Ball::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator){
-    
+void ControlBall::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){}
 }
-void GameUI::Control_Ball::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator){
+void ControlBall::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){
     /*Ended touch for control ball*/
     if (isControlBall &&
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
         isControlBall = false;
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->setPosition(getBallDefaultPosition());
-        Control_Ball::removeEffect(Layer);
+        removeEffect(Layer);
+    }
     }
 }
-void GameUI::Control_Ball::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator){
+void ControlBall::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){
     touchPoint = touch[iterator]->getLocation();
     if (static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->setPosition(touch[iterator]->getLocation());
-        Control_Ball::createEffect(Layer);
+        createEffect(Layer);
         isControlBall = true;
     }
+    }
 }
-void GameUI::Control_Ball::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator){
-    
+void ControlBall::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){}
 }
 
 
-void GameUI::Control_Ball::setPosPointOnCircle(cocos2d::Vec2& point_destination,cocos2d::Vec2 point_center){
+void ControlBall::setPosPointOnCircle(cocos2d::Vec2& point_destination,cocos2d::Vec2 point_center){
    float cat1 = point_center.x - point_destination.x;
    float cat2 = point_center.y - point_destination.y;
    float angle  = atan2(cat1,cat2) + M_PI;
@@ -113,20 +75,20 @@ void GameUI::Control_Ball::setPosPointOnCircle(cocos2d::Vec2& point_destination,
    point_destination.y -= (part_radius * (cos(angle)));
    point_destination.x -= (part_radius * (sin(angle))); 
 }
-float GameUI::Control_Ball::setAngleToRadius(float angle_radian){
+float ControlBall::setAngleToRadius(float angle_radian){
     return angle_radian*(180/M_PI) - 180 < 0 ? angle_radian*(180/M_PI) + 180 : angle_radian*(180/M_PI) - 180; 
 }
-cocos2d::Vec2 GameUI::Control_Ball::setDirectionPointRelative(cocos2d::Vec2 touchPointEnd,cocos2d::Vec2 touchPointStart){
+cocos2d::Vec2 ControlBall::setDirectionPointRelative(cocos2d::Vec2 touchPointEnd,cocos2d::Vec2 touchPointStart){
     return touchPointStart - touchPointEnd;
 }
-void GameUI::Control_Ball::removeEffect(void* node){
+void ControlBall::removeEffect(void* node){
     //Now character not moving
     isMoving = false;
     for (auto &particle : pathEffect){
         static_cast<cocos2d::Node*>(node)->removeChild(particle);
     }
 }
-void GameUI::Control_Ball::createEffect(void* node){
+void ControlBall::createEffect(void* node){
     srand(time(0));
     //Now character moving
     isMoving = true;
@@ -177,57 +139,64 @@ void GameUI::Control_Ball::createEffect(void* node){
 ///////////////////////////////////////////////////////////////*Control_Attc class*////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/
-cocos2d::Vec2  GameUI::Control_Attc::touchPoint(0,0);
-cocos2d::Vec2 GameUI::Control_Attc::trembling(0,0);
-cocos2d::Vec2  GameUI::Control_Attc::touchPointStart(0,0);
-cocos2d::Vec2  GameUI::Control_Attc::touchPointEnd(0,0);
-std::vector<cocos2d::DrawNode*> GameUI::Control_Attc::pathEffect(15);
+cocos2d::Vec2 ControlAttc::trembling(0,0);
+cocos2d::Vec2  ControlAttc::touchPointStart(0,0);
+cocos2d::Vec2  ControlAttc::touchPointEnd(0,0);
+DirectionAttacke ControlAttc::direction_of_attacke = DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT;
+bool  ControlAttc::isAttacke(false);
 
-GameUI::Control_Attc::Control_Attc(void* layer){
-    isControlAttake = false;
+ControlAttc::ControlAttc(void* layer){
+    pathEffect.resize(5);
+    isRightPlaceForControle = false;
+
     auto thSpr = cocos2d::Sprite::create("textures/player.png");
     thSpr->setVisible(false);
     thSpr->setScale(1.3f);
     thSpr->setColor(cocos2d::Color3B::ORANGE);
     static_cast<GameLayer*>(layer)->addChild(thSpr,Layer::USER_INTERFACE,LayerChild::ball_attacke);
 }
-GameUI::Control_Attc::~Control_Attc(){
+ControlAttc::~ControlAttc(){
 
 }
-void GameUI::Control_Attc::update(float dt, void* layer){
+void ControlAttc::update(float dt, void* layer){
     
 }
-void GameUI::Control_Attc::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator){
+void ControlAttc::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){
     /*On right part of screen*/
     if ( touch[iterator]->getLocation().x > cocos2d::Director::getInstance()->getVisibleSize().width/2){
-        isControlAttake = true;
+        isRightPlaceForControle = true;
         //Find start position of touch
         touchPointStart = touch[iterator]->getLocation();
     }
-    
+    }
 }
-void GameUI::Control_Attc::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator){
+void ControlAttc::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){
     //If we realy was on right half of screen
-    if (isControlAttake){
-        isControlAttake = false;
+    if (isRightPlaceForControle){
+        isRightPlaceForControle = false;
         //Find end position of touch
         touchPointEnd = touchPoint;
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setVisible(false);
         //Calulate attacke direction
         setDirectionAttacke();
     }
+    }
 }
-void GameUI::Control_Attc::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator){
-    if (isControlAttake){
+void ControlAttc::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){
+    if (isRightPlaceForControle){
         touchPoint = touch[iterator]->getLocation();
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setPosition(touchPoint);
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setVisible(true);
     }
+    }
 }
-void GameUI::Control_Attc::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer, uint iterator){
-
+void ControlAttc::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){}
 }
-void GameUI::Control_Attc::setDirectionAttacke(){
+void ControlAttc::setDirectionAttacke(){
     /*Trembling it's a differance which not causes some if statements*/
     trembling = cocos2d::Vec2(touchPointStart.x - touchPointEnd.x,touchPointStart.y - touchPointEnd.y);
     trembling.x < 0 ? trembling.x *= -1 : trembling.x *= 1 ;
@@ -235,47 +204,32 @@ void GameUI::Control_Attc::setDirectionAttacke(){
 
     /*Implement middle attacke left/right*/
     if (trembling.y < 50){
-        if (touchPointStart.x > touchPointEnd.x){
+        if (touchPointStart.x > touchPointEnd.x)
             direction_of_attacke = DirectionAttacke::RIGHT_TO_LEFT;
-            printf("right to left\n");
-        }
-        else if (touchPointStart.x < touchPointEnd.x){
+        else if (touchPointStart.x < touchPointEnd.x)
             direction_of_attacke = DirectionAttacke::LEFT_TO_RIGHT;
-            printf("left to right\n");
-        }
     }
     if (trembling.x < 50){
-        if (touchPointStart.y < touchPointEnd.y){
+        if (touchPointStart.y < touchPointEnd.y)
             direction_of_attacke = DirectionAttacke::DOWN_TO_TOP;
-            printf("down to top\n");
-        }
-        else if (touchPointStart.y > touchPointEnd.y){
+        else if (touchPointStart.y > touchPointEnd.y)
             direction_of_attacke = DirectionAttacke::TOP_TO_DOWN;
-            printf("top to down\n");
-        }
     }
     if (trembling.x >= 50 && trembling.y >= 50){
-         if (touchPointStart.x < touchPointEnd.x && touchPointStart.y < touchPointEnd.y){
+         if (touchPointStart.x < touchPointEnd.x && touchPointStart.y < touchPointEnd.y)
             direction_of_attacke = DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT;
-            printf("bottomleft to topright\n");
-        }
-        else if (touchPointStart.x > touchPointEnd.x && touchPointStart.y > touchPointEnd.y){
+        else if (touchPointStart.x > touchPointEnd.x && touchPointStart.y > touchPointEnd.y)
             direction_of_attacke = DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT;
-            printf("topright to bottomleft\n");
-        }
-        else if (touchPointStart.x < touchPointEnd.x && touchPointStart.y > touchPointEnd.y){
+        else if (touchPointStart.x < touchPointEnd.x && touchPointStart.y > touchPointEnd.y)
             direction_of_attacke = DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT;
-            printf("topleft to bottomright\n");
-        }
-        else {
+        else 
             direction_of_attacke = DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT;
-            printf("buttomright to topleft\n");
-        }
     }
+    isAttacke = true;
 }
 
 
-void GameUI::Control_Attc::createEffect( void* node){
+void ControlAttc::createEffect( void* node){
     //float lenght_path = std::sqrt(pow(trembling.x,2)+pow(trembling.y,2));
     //float step_path = lenght_path / pathEffect.size();
     //for (uint i = 0; i < pathEffect.size(); ++i){
@@ -290,7 +244,7 @@ void GameUI::Control_Attc::createEffect( void* node){
     //    static_cast<cocos2d::Node*>(node)->addChild(pathEffect[i],10+i);
     //}
 }
-void GameUI::Control_Attc::removeEffect( void* node){
+void ControlAttc::removeEffect( void* node){
     for (auto &particle : pathEffect){
         static_cast<cocos2d::Node*>(node)->removeChild(particle);
     }

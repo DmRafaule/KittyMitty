@@ -15,7 +15,7 @@ struct BodyMap{
 class Creature{
 public:
     Creature(std::string texturePath,BodyMap bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
-    ~Creature();
+    virtual ~Creature();
     virtual void update(float dt) = 0;
     inline BodyMap* getBodyMap(){ return body_map;};
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
@@ -35,13 +35,19 @@ class Enemy : public Creature{
 public:
     Enemy(std::string texturePath,BodyMap bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
     virtual void update(float dt) override;
+    bool isAlive;
 private:
-    cocos2d::Node* playerNode;
-    int i = 0;
 };
 class Player : public Creature{
 public:
     Player(std::string texturePath,BodyMap bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
     virtual void update(float dt) override;
 private:
+    //All enemies which player can interact
+    std::vector<Enemy*> enemyNode;
+    //For interact with entity
+    cocos2d::Rect interaction_radius;
+    //Current plaing scene;
+    int  currentInteractedEnemy;
+    void* layer;
 };
