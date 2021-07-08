@@ -28,11 +28,11 @@ bool GameLayer::init(){
 
     for (int i = 0; i < 4; ++i){
         LayerChild::enemy = "enemy" + std::to_string(i);
-        Enemy* e = new Enemy("textures/player.png",BodyMap(1,2,3,4,1,30),cocos2d::Vec2(500+50*i,100+75*i),this,LayerChild::enemy);
+        Enemy* e = new Enemy("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(500+50*i,100+75*i),this,LayerChild::enemy);
         LayerChild::enemy = "";
         enemy.push_back(e);
     }
-    player = new Player("textures/player.png",BodyMap(1,2,3,4,1,30),cocos2d::Vec2(400,200),this,LayerChild::player);
+    player = new Player("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(400,200),this,LayerChild::player);
 
     initVarsAndObj();
     initListeners();

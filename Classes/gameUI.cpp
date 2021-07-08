@@ -101,7 +101,7 @@ void ControlBall::createEffect(void* node){
        and startPos it's center of circle
     */
     /*Set up speed limit*/
-    int speedLimit = static_cast<GameLayer*>(node)->getPlayer()->getBodyMap()->speedLimit;
+    int speedLimit = static_cast<GameLayer*>(node)->getPlayer()->getCreatureSpeed();
     
     float cat1 = endPos.x - startPos.x;
     float cat2 = endPos.y - startPos.y;
