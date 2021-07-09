@@ -1,18 +1,21 @@
 #include "Creature.h"
 #include "GameLayer.h"
 
-Creature::Creature(std::string texturePath,CreatureType type,cocos2d::Vec2 pos,void* gameLayer,std::string id){
-    this->type = type;
-    switch(type){
+///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
+Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,void* gameLayer,std::string id){
+    this->creature_type = creature_type;
+    switch(creature_type){
         case CreatureType::HUMANOID:{
-            parts.push_back(PartCreature(PartCreatureType::HEAD));
-            parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            parts.push_back(PartCreature(PartCreatureType::HAND));
-            parts.push_back(PartCreature(PartCreatureType::HAND));
-            parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            parts.push_back(PartCreature(PartCreatureType::LEG));
-            parts.push_back(PartCreature(PartCreatureType::LEG));
+            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
+            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND));
+            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG));
             creature_speed  = 30;
+            creature_stamina = 100;
+            creature_blood   = 20;
             break;
         }
         case CreatureType::ANIMAL:{
@@ -24,13 +27,64 @@ Creature::Creature(std::string texturePath,CreatureType type,cocos2d::Vec2 pos,v
     static_cast<GameLayer*>(gameLayer)->addChild(creature_sprite,0,id);
 }
 Creature::~Creature(){
-    parts.clear();
+    creature_parts.clear();
+}
+void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density, uint part_penetration){
+    for (auto& part: creature_parts){
+        if (part.part_type == part_type){
+            part.part_status  = part_status;
+            part.part_density = part_density;
+            part.part_penetration = part_penetration;
+        }
+    }
+}
+uint Creature::getPart(PartCreatureType part_type, PartCreatureField part_field){
+    for (auto& part : creature_parts){
+        if (part.part_type == part_type){
+            if (PartCreatureField::STATUS == part_field) return part.part_status;
+            else if (PartCreatureField::DENSITY == part_field) return part.part_density;
+            else if (PartCreatureField::PENETRATION == part_field) return part.part_penetration;
+        }
+    }
 }
 
+void Creature::setCreatureSpeed(uint creature_speed){
+    this->creature_speed = creature_speed;
+}
+void Creature::setCreatureBlood(uint creature_blood){
+    this->creature_blood = creature_blood;
+}
+void Creature::setCreatureStamina(uint creature_stamina){
+    this->creature_stamina =creature_stamina;
+}
 
-Creature::PartCreature::PartCreature(PartCreatureType type){
-    this->status    = PartCreatureStatus::NORMAL;
-    this->type      = type;
+///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
+Creature::PartCreature::PartCreature(PartCreatureType part_type){
+    this->part_status      = PartCreatureStatus::NORMAL;
+    this->part_type        = part_type;
+    this->part_penetration = 1;
+    switch (part_type){
+    case PartCreatureType::HEAD:{
+        this->part_density = 10;
+        break;
+    }
+    case PartCreatureType::UPPER_TORSE:{
+        this->part_density = 30;     
+        break;
+    }
+    case PartCreatureType::HAND:{
+        this->part_density = 10;
+        break;
+    }
+    case PartCreatureType::BUTTOM_TORSE:{
+        this->part_density = 20;
+        break;
+    }
+    case PartCreatureType::LEG:{
+        this->part_density = 15;
+        break;
+    }
+    }
 }
 
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
@@ -92,7 +146,12 @@ void Player::update(float dt){
             }
             case DirectionAttacke::TOP_TO_DOWN:{
                 OUT("top to down\n");
-                getStatusOfPartsEnemy(enemyNode[currentInteractedEnemy]->getPartsOfCreature());
+                
+                enemyNode[currentInteractedEnemy]->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,20,2);
+                enemyNode[currentInteractedEnemy]->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::CUTTED,0,0);
+                enemyNode[currentInteractedEnemy]->setPart(PartCreatureType::LEG,PartCreatureStatus::CUTTED,0,0);
+                
+                
                 break;
             }
             case DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT:{
@@ -105,24 +164,13 @@ void Player::update(float dt){
             }
             }
             /*Which will die*/
+
             /*First clean our OpenGL calls*/
-            static_cast<GameLayer*>(currentlayer)->removeChildByName(enemyNode[currentInteractedEnemy]->getCreatureSprite()->getName());
-            /*Second clean our Data holder*/
-            enemyNode.erase(enemyNode.begin()+currentInteractedEnemy);
+            //static_cast<GameLayer*>(currentlayer)->removeChildByName(enemyNode[currentInteractedEnemy]->getCreatureSprite()->getName());
+            ///*Second clean our Data holder*/
+            //enemyNode.erase(enemyNode.begin()+currentInteractedEnemy);
             currentInteractedEnemy = -1;
         }
     }
     
-}
-void Player::getStatusOfPartsEnemy(std::vector<PartCreature> target){
-    for (auto &i : target)
-        OUT("%s => %s\n",i.getType() == PartCreatureType::HEAD ? "head" : 
-                         i.getType() == PartCreatureType::BUTTOM_TORSE ? "buttom torse" : 
-                         i.getType() == PartCreatureType::UPPER_TORSE ? "upper torse" : 
-                         i.getType() == PartCreatureType::HAND ? "hand" : 
-                         i.getType() == PartCreatureType::LEG ? "leg" : 
-                         "undefind",
-                         i.getStatus() == PartCreatureStatus::NORMAL ? "normal" :
-                         i.getStatus() == PartCreatureStatus::CUTTED ? "cutted" :
-                         "wonded");
 }

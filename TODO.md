@@ -9,8 +9,10 @@ Implement(CORE) free up memory from entity                  [+]
     Implement(L) those states like: {
         power of attacke    [-]
         power of deffence   [-]
-        плотность плоти     [-]
-        blood               [-]
+        пробиваемость       [+]
+        плотность плоти     [+]
+        blood               [+]
+        stamina             [+]
         immune system       [-]
         connected           [-]
     }
