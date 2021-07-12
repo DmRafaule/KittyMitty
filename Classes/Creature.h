@@ -53,6 +53,7 @@ public:
     void setCreatureSpeed(uint creature_speed);
     void setCreatureBlood(uint creature_blood);
     void setCreatureStamina(uint creature_stamina);
+    void setStatistics();//Init information about creature node 
 protected:
     /*This is part of body(*/
     class PartCreature{

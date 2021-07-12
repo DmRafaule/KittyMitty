@@ -58,8 +58,8 @@ float ControlBall::angleDirection = 0;
 bool  ControlBall::isMoving = false;
 
 ControlBall::ControlBall(void* layer){
-    pathEffect.resize(5);
     isControlBall = false;
+    pathEffect.resize(5);
     ballDefaultPosition = cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width*0.15,
                                         cocos2d::Director::getInstance()->getVisibleSize().height*0.15);
     auto ball = cocos2d::Sprite::create("textures/player.png");
@@ -74,7 +74,7 @@ void ControlBall::update(float dt,void* Layer){
 
 }
 void ControlBall::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint iterator = 0; iterator < touch.size(); ++iterator){}
+    
 }
 void ControlBall::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
@@ -98,7 +98,7 @@ void ControlBall::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::E
     }
 }
 void ControlBall::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint iterator = 0; iterator < touch.size(); ++iterator){}
+    
 }
 
 
@@ -122,7 +122,7 @@ void ControlBall::removeEffect(void* node){
     //Now character not moving
     isMoving = false;
     for (auto &particle : pathEffect){
-        static_cast<cocos2d::Node*>(node)->removeChild(particle);
+        static_cast<GameLayer*>(node)->removeChild(particle);
     }
 }
 void ControlBall::createEffect(void* node){
@@ -147,10 +147,10 @@ void ControlBall::createEffect(void* node){
     /*Steps bettween points on radius*/
     float stepBetPoint = radius / pathEffect.size();
     for (int i = 0; i < pathEffect.size(); ++i){
-       /*Clear effect before draw a new one*/
-        if (pathEffect[i] != nullptr){
-            static_cast<cocos2d::Node*>(node)->removeChild(pathEffect[i]);   
-        }
+        /*Clear effect before draw a new one*/
+        if (isControlBall)
+            pathEffect[i]->clear();
+        //static_cast<GameLayer*>(node)->removeChild(pathEffect[i]);   
         /*Stop increase our effect if raduis more than 120*/
         if (radius <= 120)
             part_radius = stepBetPoint + i;
@@ -167,7 +167,7 @@ void ControlBall::createEffect(void* node){
         pathEffect[i]->drawPoint(startPos,10+i*4.f,cocos2d::Color4F(196.f/255.f,59.f/255.f,121.f/255.f,0.2f + 0.2f*i));
         if (i == 4)
             pathEffect[i]->drawPoint(startPos,40.f,cocos2d::Color4F(255.f/255.f,255.f/255.f,255.f/255.f,1.f));
-        static_cast<cocos2d::Node*>(node)->addChild(pathEffect[i],10+i);
+        static_cast<GameLayer*>(node)->addChild(pathEffect[i],10+i);
     
     }
 }

@@ -60,11 +60,7 @@ uint Creature::getPart(PartCreatureType part_type, PartCreatureField part_field)
 void Creature::getStatistics(){
     if (!isStatisticsShowing){
         isStatisticsShowing = true;
-        creature_statistics = cocos2d::Label::createWithTTF("ttt","fonts/arial.ttf",18,cocos2d::Size::ZERO);
-        std::string bodyInfo;
-        bodyInfo = "Status:\n" 
-                   "s";
-        creature_statistics->setString(bodyInfo);
+        creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
         creature_statistics->setPosition(creature_sprite->getPosition());
         static_cast<GameLayer*>(currentlayer)->addChild(creature_statistics);
     }
@@ -82,6 +78,42 @@ void Creature::setCreatureBlood(uint creature_blood){
 }
 void Creature::setCreatureStamina(uint creature_stamina){
     this->creature_stamina =creature_stamina;
+}
+void Creature::setStatistics(){
+    std::string partStatus;
+
+    /*Set strings about part of body*/
+    partStatus.append("Status:\n");
+    for (PartCreature &part : creature_parts){
+        switch(part.part_type){
+            case PartCreatureType::HEAD:{
+                partStatus.append("\thead:");
+                break;
+            }
+            case PartCreatureType::UPPER_TORSE:{
+                partStatus.append("\tupTorse:");
+                break;
+            }
+            case PartCreatureType::HAND:{
+                partStatus.append("\thand:");
+                break;
+            }
+            case PartCreatureType::BUTTOM_TORSE:{
+                partStatus.append("\tbotTorse:");
+                break;
+            }
+            case PartCreatureType::LEG:{
+                partStatus.append("\tleg:");
+                break;
+            }
+        }
+        partStatus.append(part.part_status == PartCreatureStatus::NORMAL ? "norm-" : part.part_status == PartCreatureStatus::WONDED ? "wonded-" : "cutted-");
+        partStatus.append(std::to_string(part.part_density) + "-" + std::to_string(part.part_penetration) + "\n");
+    }
+    /*Set strings about body*/
+    partStatus.append("blood:" + std::to_string(creature_blood) + "l\n");    
+    partStatus.append("stamina:" + std::to_string(creature_stamina) + "\n");
+    creature_statistics->setString(partStatus);
 }
 
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
@@ -121,6 +153,7 @@ Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* g
 }
 void Enemy::update(float dt){
     if (isStatisticsShowing){
+        setStatistics();
         creature_statistics->runAction(cocos2d::MoveTo::create(0.2,creature_sprite->getPosition()));
     }
 }
@@ -137,6 +170,7 @@ Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void*
 void Player::update(float dt){
     /*For statistics*/
     if (isStatisticsShowing){
+        setStatistics();
         creature_statistics->runAction(cocos2d::MoveTo::create(0.2,creature_sprite->getPosition()));
     }
     //For moves
@@ -180,7 +214,6 @@ void Player::update(float dt){
             }
             case DirectionAttacke::TOP_TO_DOWN:{
                 OUT("top to down\n");
-                
                 enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,20,2);
                 enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::CUTTED,0,0);
                 enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::LEG,PartCreatureStatus::CUTTED,0,0);
