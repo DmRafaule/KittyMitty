@@ -56,6 +56,22 @@ protected:
     std::vector<cocos2d::DrawNode*> pathEffect;
     cocos2d::Vec2  touchPoint;
 };
+
+class ShowStats   : public GameUI{
+public:
+    ShowStats(void* layer);
+    virtual ~ShowStats();
+    virtual void update(float dt,void* Layer) override;
+        virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+    virtual void createEffect( void* node) override;
+    virtual void removeEffect( void* node) override;
+private:
+    bool forPlayer;
+    bool forEnemy;
+};
 class ControlBall : public GameUI{
 public:
     ControlBall(void* layer);

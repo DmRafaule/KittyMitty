@@ -3,7 +3,9 @@
 
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
 Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,void* gameLayer,std::string id){
+    isStatisticsShowing = false;
     this->creature_type = creature_type;
+    currentlayer = gameLayer;
     switch(creature_type){
         case CreatureType::HUMANOID:{
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
@@ -24,10 +26,18 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     }
     creature_sprite = cocos2d::Sprite::create(texturePath);
     creature_sprite->setPosition(pos);
-    static_cast<GameLayer*>(gameLayer)->addChild(creature_sprite,0,id);
+    static_cast<GameLayer*>(currentlayer)->addChild(creature_sprite,Layer::MIDLEGROUND,id);
 }
 Creature::~Creature(){
     creature_parts.clear();
+}
+void Creature::removeSprite(){
+    static_cast<GameLayer*>(currentlayer)->removeChildByName(creature_sprite->getName());
+}
+void Creature::removeStatistics(){
+    if (isStatisticsShowing)
+        static_cast<GameLayer*>(currentlayer)->removeChild(creature_statistics);
+    isStatisticsShowing = false;
 }
 void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density, uint part_penetration){
     for (auto& part: creature_parts){
@@ -45,6 +55,22 @@ uint Creature::getPart(PartCreatureType part_type, PartCreatureField part_field)
             else if (PartCreatureField::DENSITY == part_field) return part.part_density;
             else if (PartCreatureField::PENETRATION == part_field) return part.part_penetration;
         }
+    }
+}
+void Creature::getStatistics(){
+    if (!isStatisticsShowing){
+        isStatisticsShowing = true;
+        creature_statistics = cocos2d::Label::createWithTTF("ttt","fonts/arial.ttf",18,cocos2d::Size::ZERO);
+        std::string bodyInfo;
+        bodyInfo = "Status:\n" 
+                   "s";
+        creature_statistics->setString(bodyInfo);
+        creature_statistics->setPosition(creature_sprite->getPosition());
+        static_cast<GameLayer*>(currentlayer)->addChild(creature_statistics);
+    }
+    else{
+        isStatisticsShowing = false;
+        static_cast<GameLayer*>(currentlayer)->removeChild(creature_statistics);
     }
 }
 
@@ -94,17 +120,25 @@ Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* g
     
 }
 void Enemy::update(float dt){
-    
+    if (isStatisticsShowing){
+        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,creature_sprite->getPosition()));
+    }
+}
+void Enemy::attachWeapon(std::string wMap ){
+
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
 Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
     Creature(texturePath,bMap,pos,gameLayer,id){
     enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
-    currentlayer = gameLayer;
     currentInteractedEnemy = -1;
 }
 void Player::update(float dt){
+    /*For statistics*/
+    if (isStatisticsShowing){
+        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,creature_sprite->getPosition()));
+    }
     //For moves
     if (ControlBall::getMoving()){
         creature_sprite->runAction(cocos2d::MoveBy::create(1.f,ControlBall::getDirection()));
@@ -116,8 +150,8 @@ void Player::update(float dt){
         //Which enemy will attacke
         interaction_radius.setRect(creature_sprite->getPosition().x - creature_sprite->getBoundingBox().size.width*1.5,creature_sprite->getPosition().y - creature_sprite->getBoundingBox().size.height*1.5,
                      creature_sprite->getBoundingBox().size.width*3,creature_sprite->getBoundingBox().size.height*3);
-        for (int i=0; i < enemyNode.size(); ++i){
-            if (enemyNode[i]->getCreatureSprite()->getBoundingBox().intersectsRect(interaction_radius)){
+        for (int i=0; i < enemyNode->size(); ++i){
+            if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(interaction_radius)){
                 currentInteractedEnemy = i;
             }
         }
@@ -147,11 +181,19 @@ void Player::update(float dt){
             case DirectionAttacke::TOP_TO_DOWN:{
                 OUT("top to down\n");
                 
-                enemyNode[currentInteractedEnemy]->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,20,2);
-                enemyNode[currentInteractedEnemy]->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::CUTTED,0,0);
-                enemyNode[currentInteractedEnemy]->setPart(PartCreatureType::LEG,PartCreatureStatus::CUTTED,0,0);
+                enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,20,2);
+                enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::CUTTED,0,0);
+                enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::LEG,PartCreatureStatus::CUTTED,0,0);
                 
-                
+                /*Which will die*/
+
+                /*First clean engine's calls*/
+                enemyNode->at(currentInteractedEnemy)->removeSprite();
+                enemyNode->at(currentInteractedEnemy)->removeStatistics();
+                /*Second clean game's  calls*/
+                enemyNode->erase(enemyNode->begin()+currentInteractedEnemy);
+                currentInteractedEnemy = -1;
+
                 break;
             }
             case DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT:{
@@ -163,14 +205,11 @@ void Player::update(float dt){
                 break;
             }
             }
-            /*Which will die*/
-
-            /*First clean our OpenGL calls*/
-            //static_cast<GameLayer*>(currentlayer)->removeChildByName(enemyNode[currentInteractedEnemy]->getCreatureSprite()->getName());
-            ///*Second clean our Data holder*/
-            //enemyNode.erase(enemyNode.begin()+currentInteractedEnemy);
-            currentInteractedEnemy = -1;
+            
         }
     }
     
+}
+void Player::attachWeapon(std::string wMap ){
+
 }

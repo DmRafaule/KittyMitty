@@ -9,6 +9,7 @@ std::string LayerChild::player = "player";
 std::string LayerChild::ball = "ball";
 std::string LayerChild::ball_attacke = "ball_attacke";
 std::string LayerChild::enemy = "enemy";
+std::string LayerChild::text = "text";
 
 cocos2d::Scene* GameLayer::createScene(){
     return GameLayer::create();
@@ -44,12 +45,12 @@ bool GameLayer::init(){
 }
 void GameLayer::initUI(){
     if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-        
+        shows = new ShowStats(this);
         cball = new ControlBall(this);
         cattc = new ControlAttc(this);
     }
     else if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX){
-        
+        shows = new ShowStats(this);
         cball = new ControlBall(this);
         cattc = new ControlAttc(this);
     }
@@ -73,6 +74,7 @@ void GameLayer::initVarsAndObj(){
 
 
 void GameLayer::update(float dt){
+    shows->update(dt,this);
     cball->update(dt,this);
     cattc->update(dt,this);
     player->update(dt);
@@ -81,6 +83,7 @@ void GameLayer::update(float dt){
 }
 
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
+    shows->updateTouchBegan(touch,event,this);
     cball->updateTouchBegan(touch,event,this);
     cattc->updateTouchBegan(touch,event,this);
     return true;

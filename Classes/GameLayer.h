@@ -41,6 +41,7 @@ struct LayerChild{
     static std::string enemy;
     static std::string ball;
     static std::string ball_attacke;
+    static std::string text;
 };
 
 class GameLayer : public cocos2d::Scene{
@@ -55,7 +56,7 @@ public:
      * @return pointer on player Creature
     */
     inline Player* getPlayer(){ return player;};
-    inline std::vector<Enemy*> getEnemy(){ return enemy;};
+    inline std::vector<Enemy*>* getEnemy(){ return &enemy;};
 private:
     /**
      * initialize user interface(for phones it will be controle ball, screen action and some buttons) for desktop it will be keyboard and mouse
@@ -82,6 +83,7 @@ private:
 
 private:
     //Phone UI
+    ShowStats* shows;
     ControlBall* cball;
     ControlAttc* cattc;
     //Window UI

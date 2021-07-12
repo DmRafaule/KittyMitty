@@ -1,5 +1,6 @@
 #include "gameUI.h"
 #include "GameLayer.h"
+#include <cocos/ui/CocosGUI.h>
 
 ////////////////////////////////*GameUI class*/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,6 +13,42 @@ GameUI::~GameUI(){
 }
 
 
+ShowStats::ShowStats(void* layer){
+    forPlayer   = false;
+    forEnemy    = false;
+}
+ShowStats::~ShowStats(){
+    
+}
+void ShowStats::update(float dt,void* Layer){
+    
+}
+void ShowStats::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+    
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){
+        if (static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::player)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
+            static_cast<GameLayer*>(Layer)->getPlayer()->getStatistics();
+        }
+        for (Enemy*& enemy : *(static_cast<GameLayer*>(Layer)->getEnemy()))
+            if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(touch[iterator]->getLocation()))
+                enemy->getStatistics();
+    }
+}
+void ShowStats::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+
+}
+void ShowStats::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+
+}
+void ShowStats::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
+
+}
+void ShowStats::createEffect( void* node){
+
+}
+void ShowStats::removeEffect( void* node){
+
+}
 ////////////////////////////////*Controle_Ball class*/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/
@@ -148,7 +185,7 @@ bool  ControlAttc::isAttacke(false);
 ControlAttc::ControlAttc(void* layer){
     pathEffect.resize(5);
     isRightPlaceForControle = false;
-
+    
     auto thSpr = cocos2d::Sprite::create("textures/player.png");
     thSpr->setVisible(false);
     thSpr->setScale(1.3f);
