@@ -61,7 +61,8 @@ void Creature::getStatistics(){
     if (!isStatisticsShowing){
         isStatisticsShowing = true;
         creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
-        creature_statistics->setPosition(creature_sprite->getPosition());
+        creature_statistics->setPosition(cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
+                                                       creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2));
         static_cast<GameLayer*>(currentlayer)->addChild(creature_statistics);
     }
     else{
@@ -115,6 +116,11 @@ void Creature::setStatistics(){
     partStatus.append("stamina:" + std::to_string(creature_stamina) + "\n");
     creature_statistics->setString(partStatus);
 }
+void Creature::setWeapon(WeaponType wMap ){
+    weapon1 = new Weapon(wMap);
+    weapon1->getSprite()->setPosition(creature_sprite->getPosition());
+    static_cast<GameLayer*>(currentlayer)->addChild(weapon1->getSprite(),Layer::MIDLEGROUND);
+}
 
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
 Creature::PartCreature::PartCreature(PartCreatureType part_type){
@@ -154,11 +160,9 @@ Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* g
 void Enemy::update(float dt){
     if (isStatisticsShowing){
         setStatistics();
-        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,creature_sprite->getPosition()));
+        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
+                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
     }
-}
-void Enemy::attachWeapon(std::string wMap ){
-
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
@@ -171,21 +175,24 @@ void Player::update(float dt){
     /*For statistics*/
     if (isStatisticsShowing){
         setStatistics();
-        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,creature_sprite->getPosition()));
+        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
+                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
     }
-    //For moves
+    //For moves of all body
     if (ControlBall::getMoving()){
         creature_sprite->runAction(cocos2d::MoveBy::create(1.f,ControlBall::getDirection()));
     }
+
     //For attacke
     if (ControlAttc::getAttacke()){
+        weapon1->attacke(WeaponType::SWORD,WeaponAttacks::TOP_DOWN,creature_sprite);
         //Set to default state
         ControlAttc::setAttacke(false);
         //Which enemy will attacke
         interaction_radius.setRect(creature_sprite->getPosition().x - creature_sprite->getBoundingBox().size.width*1.5,creature_sprite->getPosition().y - creature_sprite->getBoundingBox().size.height*1.5,
                      creature_sprite->getBoundingBox().size.width*3,creature_sprite->getBoundingBox().size.height*3);
         for (int i=0; i < enemyNode->size(); ++i){
-            if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(interaction_radius)){
+            if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(interaction_radius)){//Here has to be some range of weapon
                 currentInteractedEnemy = i;
             }
         }
@@ -221,10 +228,10 @@ void Player::update(float dt){
                 /*Which will die*/
 
                 /*First clean engine's calls*/
-                enemyNode->at(currentInteractedEnemy)->removeSprite();
-                enemyNode->at(currentInteractedEnemy)->removeStatistics();
-                /*Second clean game's  calls*/
-                enemyNode->erase(enemyNode->begin()+currentInteractedEnemy);
+                //enemyNode->at(currentInteractedEnemy)->removeSprite();
+                //enemyNode->at(currentInteractedEnemy)->removeStatistics();
+                ///*Second clean game's  calls*/
+                //enemyNode->erase(enemyNode->begin()+currentInteractedEnemy);
                 currentInteractedEnemy = -1;
 
                 break;
@@ -242,7 +249,4 @@ void Player::update(float dt){
         }
     }
     
-}
-void Player::attachWeapon(std::string wMap ){
-
 }

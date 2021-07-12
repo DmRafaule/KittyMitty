@@ -27,14 +27,34 @@ bool GameLayer::init(){
     if ( !cocos2d::Scene::init() )
         return false;
 
-    for (int i = 0; i < 4; ++i){
-        LayerChild::enemy = "enemy" + std::to_string(i);
-        Enemy* e = new Enemy("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(500+50*i,100+75*i),this,LayerChild::enemy);
-        LayerChild::enemy = "";
-        enemy.push_back(e);
-    }
-    player = new Player("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(400,200),this,LayerChild::player);
+    Enemy* e;
+    LayerChild::enemy = "enemy0";
+    e = new Enemy("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(500,100),this,LayerChild::enemy);
+    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,0)),
+                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,0)),
+                                                                nullptr)));
+    enemy.push_back(e);
 
+    LayerChild::enemy = "enemy1";
+    e = new Enemy("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(100,100),this,LayerChild::enemy);
+    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(0,200)),
+                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(0,-200)),
+                                                                nullptr)));
+    enemy.push_back(e);
+
+    LayerChild::enemy = "enemy2";
+    e = new Enemy("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(550,300),this,LayerChild::enemy);
+    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,-100)),
+                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,100)),
+                                                                nullptr)));
+    enemy.push_back(e);
+
+    LayerChild::enemy = "enemy3";
+    e = new Enemy("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(300,300),this,LayerChild::enemy);
+    enemy.push_back(e);
+
+    player = new Player("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(400,200),this,LayerChild::player);
+    player->setWeapon(WeaponType::SWORD);
     initVarsAndObj();
     initListeners();
     initUI();

@@ -42,6 +42,7 @@ struct LayerChild{
     static std::string ball;
     static std::string ball_attacke;
     static std::string text;
+    static std::string player_weapon;
 };
 
 class GameLayer : public cocos2d::Scene{
