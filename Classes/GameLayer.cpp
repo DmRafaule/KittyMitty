@@ -33,6 +33,7 @@ bool GameLayer::init(){
     e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,0)),
                                                                 cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,0)),
                                                                 nullptr)));
+    e->setWeapon(WeaponType::SWORD);
     enemy.push_back(e);
 
     LayerChild::enemy = "enemy1";
@@ -40,6 +41,7 @@ bool GameLayer::init(){
     e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(0,200)),
                                                                 cocos2d::MoveBy::create(5.f,cocos2d::Vec2(0,-200)),
                                                                 nullptr)));
+    e->setWeapon(WeaponType::AXE);
     enemy.push_back(e);
 
     LayerChild::enemy = "enemy2";
@@ -47,6 +49,7 @@ bool GameLayer::init(){
     e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,-100)),
                                                                 cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,100)),
                                                                 nullptr)));
+    e->setWeapon(WeaponType::SPEAR);
     enemy.push_back(e);
 
     LayerChild::enemy = "enemy3";

@@ -4,7 +4,7 @@
 
 enum WeaponType : uint{
    SWORD,
-   SPEER,
+   SPEAR,
    AXE,
 };
 enum WeaponAttacks : uint{
@@ -58,6 +58,20 @@ protected:
 class Sword : public Weapon{
 public:
    Sword(std::string weapon_sprite);
+   virtual void attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite) override;
+private:
+private:
+};
+class Axe : public Weapon{
+public:
+   Axe(std::string weapon_sprite);
+   virtual void attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite) override;
+private:
+private:
+};
+class Spear : public Weapon{
+public:
+   Spear(std::string weapon_sprite);
    virtual void attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite) override;
 private:
 private:
