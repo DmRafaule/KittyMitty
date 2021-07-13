@@ -51,6 +51,7 @@ bool GameLayer::init(){
 
     LayerChild::enemy = "enemy3";
     e = new Enemy("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(300,300),this,LayerChild::enemy);
+    e->setWeapon(WeaponType::SWORD);
     enemy.push_back(e);
 
     player = new Player("textures/player.png",CreatureType::HUMANOID,cocos2d::Vec2(400,200),this,LayerChild::player);

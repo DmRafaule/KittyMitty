@@ -10,7 +10,6 @@ enum CreatureType : uint{
     TREE,
     FISH,
 };
-
 enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,
@@ -77,7 +76,7 @@ protected:
     std::vector<PartCreature> creature_parts;//Container for holding info about creature_parts of creature 
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
-    Weapon*                   weapon1;
+    Sword*                    sword;
     CreatureType              creature_type;//Type of creature
     uint                      creature_speed;//Creature speed
     uint                      creature_blood;//How many blood liquid in creature
