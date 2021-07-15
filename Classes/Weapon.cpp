@@ -23,7 +23,7 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    weapon_caracteristics.weapon_solidity = 30;
    /*Set up sprite for weapon(how it will looks)*/
    
-   weapon_sprite = cocos2d::Sprite::create(weapon_sprite_path);
+   weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
    //weapon_sprite->setColor(cocos2d::Color3B::GREEN);//remove
    weapon_sprite->setVisible(true);//Rem
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
@@ -131,37 +131,45 @@ void Sword::interact(void* target_creature){
    /*Instead of this you have to put here attack commbo, not just direction of attack*/
    switch (ControlAttc::getDirectionAttacke()){
       case DirectionAttacke::TOP_TO_DOWN:{
-         //Hit head
-         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::PENETRATION)){
-            int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
-            if (newDensity < 0) newDensity = 0;
-            target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
-            target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
+         switch (ControlTargeting::getTarget()){
+         case PartCreatureType::HEAD:{
+               //Hit head
+            if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::PENETRATION)){
+               int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+               if (newDensity < 0) newDensity = 0;
+               target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
+               target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
+            }
+            else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)){
+               int newCrushing   =  target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
+               if (newCrushing < 0) newCrushing = 0;
+               target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING));
+               target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
+            }
+            else{
+               //Some miss debuffs
+            }
+            break;
          }
-         else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)){
-            int newCrushing   =  target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
-            if (newCrushing < 0) newCrushing = 0;
-            target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING));
-            target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
+         case PartCreatureType::UPPER_TORSE:{
+            //Hit upper torse
+            if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::PENETRATION)){
+               int newDensity     = target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+               if (newDensity < 0) newDensity = 0;
+               target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,newDensity);
+            }
+            else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)){
+               int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
+               if (newCrushing < 0) newCrushing = 0;
+               target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
+               target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
+               target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
+            }
+            else{
+               //Some miss debuffs
+            }
+            break;
          }
-         else{
-            //Some miss debuffs
-         }
-         //Hit upper torse
-         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::PENETRATION)){
-            int newDensity     = target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
-            if (newDensity < 0) newDensity = 0;
-            target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,newDensity);
-         }
-         else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)){
-            int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
-            if (newCrushing < 0) newCrushing = 0;
-            target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
-            target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
-            target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
-         }
-         else{
-            //Some miss debuffs
          }
          break;
       }
@@ -215,7 +223,7 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    weapon_caracteristics.weapon_solidity = 10;
    /*Set up sprite for weapon(how it will looks)*/
    
-   weapon_sprite = cocos2d::Sprite::create(weapon_sprite_path);
+   weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
    //weapon_sprite->setColor(cocos2d::Color3B::GREEN);//Rem
    weapon_sprite->setVisible(true);//Rem
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
@@ -356,7 +364,7 @@ Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    weapon_caracteristics.weapon_solidity = 12;
    /*Set up sprite for weapon(how it will looks)*/
    
-   weapon_sprite = cocos2d::Sprite::create(weapon_sprite_path);
+   weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
    //weapon_sprite->setColor(cocos2d::Color3B::GREEN);//Rem
    weapon_sprite->setVisible(true);//Rem
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);

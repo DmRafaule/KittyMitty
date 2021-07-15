@@ -75,6 +75,7 @@ private:
     ControlAttc* cattc;
     //Window UI
     cocos2d::Size visibleSize;
+    cocos2d::SpriteBatchNode* spriteSheet;
     //Game obj
     Player* player;
     std::vector<Enemy*> enemy;

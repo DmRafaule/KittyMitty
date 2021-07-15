@@ -24,7 +24,7 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
             break;
         }
     }
-    creature_sprite = cocos2d::Sprite::create(texturePath);
+    creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
     creature_sprite->setPosition(pos);
     creature_sprite->setScale(10);
     /*This is prevent of bluring my textures*/
@@ -83,7 +83,7 @@ void Creature::getStatistics(){
         creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
         creature_statistics->setPosition(cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
                                                        creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2));
-        static_cast<GameLayer*>(currentlayer)->addChild(creature_statistics);
+        static_cast<GameLayer*>(currentlayer)->addChild(creature_statistics,Layer::USER_INTERFACE);
     }
     else{
         isStatisticsShowing = false;
@@ -160,15 +160,15 @@ void Creature::setStatistics(){
 void Creature::setWeapon(WeaponType wMap ){
     switch (wMap){
     case WeaponType::SWORD:{
-        creature_weapon = new Sword("textures/swordStock.png",creature_sprite);
+        creature_weapon = new Sword("swordStock.png",creature_sprite);
         break;
     }
     case WeaponType::AXE:{
-        creature_weapon = new Axe("textures/axeStock.png",creature_sprite);
+        creature_weapon = new Axe("axeStock.png",creature_sprite);
         break;
     }
     case WeaponType::SPEAR:{
-        creature_weapon = new Spear("textures/spearStock.png",creature_sprite);
+        creature_weapon = new Spear("spearStock.png",creature_sprite);
         break;
     }
     }
@@ -272,7 +272,7 @@ void Player::update(float dt){
                 currentInteractedEnemy = i;
         /*If we hit the enemy*/
         if (currentInteractedEnemy >= 0){
-            ControlTargeting::setTarget(currentlayer);
+            ControlTargeting::setTarget(ControlAttc::getDirectionAttacke(),currentlayer);
             creature_weapon->interact(enemyNode->at(currentInteractedEnemy));
         }
             

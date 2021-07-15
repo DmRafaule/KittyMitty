@@ -295,12 +295,54 @@ void ControlAttc::removeEffect( void* node){
 PartCreatureType ControlTargeting::target = PartCreatureType::HEAD;
 
 
-ControlTargeting::ControlTargeting(void* layer){
-
-}
+ControlTargeting::ControlTargeting(void* layer){}
 ControlTargeting::~ControlTargeting(){}
-void ControlTargeting::setTarget(void* currentLayer){
-    std::vector<cocos2d::ui::Button*> cTargeting;
-    cTargeting.resize(PartCreatureType::SIZE);
-    //Here add some buttons
+
+void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer){
+    cocos2d::ui::Button* targetChoser;
+    cocos2d::Texture2D::TexParams tpar = {
+        cocos2d::backend::SamplerFilter::NEAREST,
+        cocos2d::backend::SamplerFilter::NEAREST,
+        cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE,
+        cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
+    };
+    /*For head*/
+    if (direction == DirectionAttacke::TOP_TO_DOWN            || 
+        direction == DirectionAttacke::LEFT_TO_RIGHT          ||
+        direction == DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT ||
+        direction == DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT){
+        targetChoser = cocos2d::ui::Button::create("textures/targetingHead.png");
+        targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
+        targetChoser->setPosition(cocos2d::Vec2(250,250));
+        targetChoser->setScale(5);
+        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser);
+    }//HERE 
+    ///*For upper torse*/
+    //if (){
+//
+    //}
+    ///*For buttom torse*/
+    //if (){
+    //    
+    //}
+    ///*For leg left*/
+    //if (){
+    //    
+    //}
+    ///*For leg right*/
+    //if (){
+    //    
+    //}
+    ///*For hand left*/
+    //if (){
+    //    
+    //}
+    ///*For hand right*/
+    //if (){
+    //    
+    //}
+    
+}
+void ControlTargeting::unsetTarget(DirectionAttacke direction, void* currentLayer){
+
 }

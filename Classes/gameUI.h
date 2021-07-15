@@ -63,7 +63,8 @@ public:
     virtual ~ControlTargeting();
 
     static inline PartCreatureType getTarget(){ return target; };
-    static void setTarget(void* currentLayer);
+    static void setTarget(DirectionAttacke direction, void* currentLayer);
+    static void unsetTarget(DirectionAttacke direction, void* currentLayer);
 private:
 private:
     static PartCreatureType target;
