@@ -29,21 +29,7 @@
 #include "gameUI.h"
 #include "Creature.h"
 #include "engMacros.hpp"
-
-enum Layer{
-    BACKGROUND,
-    MIDLEGROUND,
-    FOREGROUND,
-    USER_INTERFACE,
-};
-struct LayerChild{
-    static std::string player;
-    static std::string enemy;
-    static std::string ball;
-    static std::string ball_attacke;
-    static std::string text;
-    static std::string player_weapon;
-};
+#include "engEnums.hpp"
 
 class GameLayer : public cocos2d::Scene{
 public:

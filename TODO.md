@@ -20,7 +20,7 @@ Implement(UI) ability visualize status of creatures         [+]
     Implement(UI) some border   [-]
     Implement(UI) smart moving(if creature too close to left window border move lable to right from creature) [-]
     Implement(UI) toggle pages for stats [-]
-Implement(L) weapon class [+]
+Implement(L) weapon class [+]{
     Implement(G) some animation for attacke [+]
     Implement(L) interaction with enemy(and his part) [+]
         Implement(L) method attacke [+]
@@ -34,8 +34,13 @@ Implement(L) weapon class [+]
         Additional  [-]
     Implement spetial attacks [-]
     }
+}
 Implement(L) armor class[-]
 
 Implement(L) item class [-]
-Implement(L) damage logic [-] <1>
+Implement(L) damage logic [-] <1>{
+    Implement(L) damage status to part of body [-]
+    Implement(L) damage status to organs       [-]
+    Implement(L) fichure with time stoped and choose where to strike    [-]
+}
 Implement(L) AI for enemies [-] <2>

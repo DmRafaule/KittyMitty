@@ -2,19 +2,8 @@
 
 #include <cocos2d.h>
 #include "gameUI.h"
+#include "engEnums.hpp"
 
-enum WeaponType : uint{
-   SWORD,
-   SPEAR,
-   AXE,
-};
-
-struct WeaponCaracteristics{
-   uint weapon_cuttinPower;
-   uint weapon_penetratingPower;
-   uint weapon_crushingPower;
-   uint weapon_solidity;
-};
 
 class Weapon{
 public:   

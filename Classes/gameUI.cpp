@@ -287,3 +287,20 @@ void ControlAttc::removeEffect( void* node){
         static_cast<cocos2d::Node*>(node)->removeChild(particle);
     }
 }
+
+
+///////////////////////////////////////////////////////////////*Class ControlTargeting*////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*Init static members*/
+PartCreatureType ControlTargeting::target = PartCreatureType::HEAD;
+
+
+ControlTargeting::ControlTargeting(void* layer){
+
+}
+ControlTargeting::~ControlTargeting(){}
+void ControlTargeting::setTarget(void* currentLayer){
+    std::vector<cocos2d::ui::Button*> cTargeting;
+    cTargeting.resize(PartCreatureType::SIZE);
+    //Here add some buttons
+}

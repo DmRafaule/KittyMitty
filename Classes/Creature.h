@@ -2,48 +2,7 @@
 
 #include <cocos2d.h>
 #include "Weapon.h"
-
-enum CreatureType : uint{
-    HUMANOID,
-    INSECT,
-    ANIMAL,
-    TREE,
-    FISH,
-};
-
-enum PartCreatureType : uint{
-    HEAD,
-    UPPER_TORSE,
-    BUTTOM_TORSE,
-    HAND_LEFT,
-    HAND_RIGHT,
-    LEG_LEFT,
-    LEG_RIGHT
-};
-enum PartCreatureStatus : uint{
-    NORMAL,
-    CUTTED,
-    WONDED,
-    KILLED,
-};
-enum PartCreatureField : uint{
-    STATUS,
-    DENSITY,
-    PENETRATION,
-};
-
-enum PartOrganType : uint{
-    NONE,
-    BRAIN,
-    LUNGS,
-    HEART,
-    GUT,
-};
-struct PartOrgan {
-    PartOrgan(PartOrganType type);
-    PartOrganType type;
-    PartCreatureStatus status;
-};
+#include "engEnums.hpp"
 
 
 class Creature{
@@ -65,7 +24,7 @@ public:
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 
     /*Setters*/
-    void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density);
+    void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
     void setCreatureSpeed(uint creature_speed);
     void setCreatureBlood(uint creature_blood);
@@ -82,15 +41,17 @@ protected:
         inline PartCreatureStatus getStatus(){ return part_status; };
         inline PartCreatureType getType(){ return part_type; };
         inline std::vector<PartOrgan> getPartOrgan(){ return part_organs;}
-        inline uint getDensity(){ return part_density; };
-        inline uint getPenetration(){ return part_penetration; };
+        inline uint getDensity(){ return part_densityDef; };
+        inline uint getPenetration(){ return part_penetrationDef; };
+        inline uint getCrushing(){ return part_crushingDef; };
     private:
         /*Property related to part of creature*/
         std::vector<PartOrgan>          part_organs;
         PartCreatureStatus              part_status;
         PartCreatureType                part_type;
-        uint                            part_density;//Can be concatenated (for exm armor,shild etc.)
-        uint                            part_penetration;
+        uint                            part_densityDef;//Can be concatenated (for exm armor,shild etc.)
+        uint                            part_penetrationDef;
+        uint                            part_crushingDef;
     };
 protected:
     /*Properties related to whole creature*/
@@ -115,7 +76,6 @@ class Enemy : public Creature{
 public:
     Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
     virtual void update(float dt) override;
-    //virtual void attachWeapon(std::string wMap ) override;
     /**
      * @return pointer to data of creature_parts of enemy object
     */
@@ -126,11 +86,11 @@ class Player : public Creature{
 public:
     Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
     virtual void update(float dt) override;
-    //virtual void attachWeapon(std::string wMap ) override;
     /**
      * @return pointer to data of creature_parts of player object
     */
     inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
+    inline int* getCurrentInteractedEnemy(){ return &currentInteractedEnemy; };
 private:
     std::vector<Enemy*>* enemyNode;//All enemies which player can interact
     int  currentInteractedEnemy;//current available enemy for interact

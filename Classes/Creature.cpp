@@ -26,6 +26,15 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     }
     creature_sprite = cocos2d::Sprite::create(texturePath);
     creature_sprite->setPosition(pos);
+    creature_sprite->setScale(10);
+    /*This is prevent of bluring my textures*/
+    cocos2d::Texture2D::TexParams tpar = {
+        cocos2d::backend::SamplerFilter::NEAREST,
+        cocos2d::backend::SamplerFilter::NEAREST,
+        cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE,
+        cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
+    };
+    creature_sprite->getTexture()->setTexParameters(tpar);
     static_cast<GameLayer*>(currentlayer)->addChild(creature_sprite,Layer::MIDLEGROUND,id);
 }
 Creature::~Creature(){
@@ -39,11 +48,11 @@ void Creature::removeStatistics(){
         static_cast<GameLayer*>(currentlayer)->removeChild(creature_statistics);
     isStatisticsShowing = false;
 }
-void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density){
+void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef){
     for (auto& part: creature_parts){
         if (part.part_type == part_type){
             part.part_status  = part_status;
-            part.part_density = part_density;
+            part.part_densityDef = part_densityDef;
         }
     }
 }
@@ -51,8 +60,10 @@ uint Creature::getPart(PartCreatureType part_type, PartCreatureField part_field)
     for (auto& part : creature_parts){
         if (part.part_type == part_type){
             if (PartCreatureField::STATUS == part_field) return part.part_status;
-            else if (PartCreatureField::DENSITY == part_field) return part.part_density;
-            else if (PartCreatureField::PENETRATION == part_field) return part.part_penetration;
+            else if (PartCreatureField::DENSITY == part_field) return part.part_densityDef;
+            else if (PartCreatureField::PENETRATION == part_field) return part.part_penetrationDef;
+            else if (PartCreatureField::CRUSHING == part_field) return part.part_crushingDef;
+
         }
     }
 }
@@ -139,7 +150,7 @@ void Creature::setStatistics(){
                           part.part_status == PartCreatureStatus::WONDED ? "wonded-" :
                           part.part_status == PartCreatureStatus::CUTTED ? "cutted-" :
                           "killed");
-        partStatus.append(std::to_string(part.part_density) + "-" + std::to_string(part.part_penetration) + "\n");
+        partStatus.append(std::to_string(part.part_densityDef) + "-" + std::to_string(part.part_penetrationDef) + "-" + std::to_string(part.part_crushingDef) + "\n");
     }
     /*Set strings about body*/
     partStatus.append("blood:" + std::to_string(creature_blood) + "l\n");    
@@ -149,15 +160,15 @@ void Creature::setStatistics(){
 void Creature::setWeapon(WeaponType wMap ){
     switch (wMap){
     case WeaponType::SWORD:{
-        creature_weapon = new Sword("textures/player.png",creature_sprite);
+        creature_weapon = new Sword("textures/swordStock.png",creature_sprite);
         break;
     }
     case WeaponType::AXE:{
-        creature_weapon = new Axe("textures/player.png",creature_sprite);
+        creature_weapon = new Axe("textures/axeStock.png",creature_sprite);
         break;
     }
     case WeaponType::SPEAR:{
-        creature_weapon = new Spear("textures/player.png",creature_sprite);
+        creature_weapon = new Spear("textures/spearStock.png",creature_sprite);
         break;
     }
     }
@@ -175,41 +186,42 @@ PartOrgan::PartOrgan(PartOrganType type){
 Creature::PartCreature::PartCreature(PartCreatureType part_type){
     this->part_status      = PartCreatureStatus::NORMAL;
     this->part_type        = part_type;
-    this->part_penetration = 1;
+    this->part_penetrationDef = 1;
+    this->part_crushingDef    = 5;
     switch (part_type){
     case PartCreatureType::HEAD:{
-        this->part_density = 10;
+        this->part_densityDef = 10;
         this->part_organs.push_back(PartOrgan(PartOrganType::BRAIN));
         break;
     }
     case PartCreatureType::UPPER_TORSE:{
-        this->part_density = 30;
+        this->part_densityDef = 30;
         this->part_organs.push_back(PartOrgan(PartOrganType::LUNGS));
         this->part_organs.push_back(PartOrgan(PartOrganType::HEART));     
         break;
     }
     case PartCreatureType::HAND_LEFT:{
-        this->part_density = 10;
+        this->part_densityDef = 10;
         this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::HAND_RIGHT:{
-        this->part_density = 10;
+        this->part_densityDef = 10;
         this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::BUTTOM_TORSE:{
-        this->part_density = 20;
+        this->part_densityDef = 20;
         this->part_organs.push_back(PartOrgan(PartOrganType::GUT));
         break;
     }
     case PartCreatureType::LEG_LEFT:{
-        this->part_density = 15;
+        this->part_densityDef = 15;
         this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::LEG_RIGHT:{
-        this->part_density = 15;
+        this->part_densityDef = 15;
         this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
@@ -219,8 +231,7 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
     Creature(texturePath,bMap,pos,gameLayer,id){
-    creature_sprite->setColor(cocos2d::Color3B::RED);
-    
+    //creature_sprite->setColor(cocos2d::Color3B::RED);
     
 }
 void Enemy::update(float dt){
@@ -260,8 +271,12 @@ void Player::update(float dt){
             if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(creature_weapon->getDammageSprite()->getBoundingBox()))
                 currentInteractedEnemy = i;
         /*If we hit the enemy*/
-        if (currentInteractedEnemy >= 0)
+        if (currentInteractedEnemy >= 0){
+            ControlTargeting::setTarget(currentlayer);
             creature_weapon->interact(enemyNode->at(currentInteractedEnemy));
+        }
+            
+        currentInteractedEnemy = -1;
     }
     
 }
@@ -273,5 +288,4 @@ void Player::update(float dt){
  *enemyNode->at(currentInteractedEnemy)->removeStatistics();
  **Second clean game's  call
  *enemyNode->erase(enemyNode->begin()+currentInteractedEnemy);
- *currentInteractedEnemy = -1;
 */

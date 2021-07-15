@@ -1,21 +1,7 @@
 #pragma once
 
 #include <cocos2d.h>
-
-enum TypeUI{
-    CONTROL_IN_GAMESESSION,
-    CONTROL_KEYS,
-};
-enum DirectionAttacke{
-    TOP_TO_DOWN,
-    DOWN_TO_TOP,
-    LEFT_TO_RIGHT,
-    RIGHT_TO_LEFT,
-    TOPLEFT_TO_BOTTOMRIGHT,
-    TOPRIGHT_TO_BOTTOMLEFT,
-    BOTTOMLEFT_TO_TOPRIGHT,
-    BOTTOMRIGHT_TO_TOPLEFT,
-};
+#include "engEnums.hpp"
 
 class GameUI{
 public:
@@ -70,6 +56,17 @@ public:
 private:
     bool forPlayer;
     bool forEnemy;
+};
+class ControlTargeting : public GameUI{
+public:
+    ControlTargeting(void* layer);
+    virtual ~ControlTargeting();
+
+    static inline PartCreatureType getTarget(){ return target; };
+    static void setTarget(void* currentLayer);
+private:
+private:
+    static PartCreatureType target;
 };
 class ControlBall : public GameUI{
 public:
