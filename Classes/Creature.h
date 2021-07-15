@@ -14,8 +14,10 @@ enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,
     BUTTOM_TORSE,
-    HAND,
-    LEG,
+    HAND1,
+    HAND2,
+    LEG1,
+    LEG2
 };
 enum PartCreatureStatus : uint{
     NORMAL,

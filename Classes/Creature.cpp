@@ -10,11 +10,11 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
         case CreatureType::HUMANOID:{
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
             creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND1));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND2));
             creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG1));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG2));
             creature_speed  = 30;
             creature_stamina = 100;
             creature_blood   = 20;
@@ -95,16 +95,24 @@ void Creature::setStatistics(){
                 partStatus.append("\tupTorse:");
                 break;
             }
-            case PartCreatureType::HAND:{
-                partStatus.append("\thand:");
+            case PartCreatureType::HAND1:{
+                partStatus.append("\thand left:");
+                break;
+            }
+            case PartCreatureType::HAND2:{
+                partStatus.append("\thand right:");
                 break;
             }
             case PartCreatureType::BUTTOM_TORSE:{
                 partStatus.append("\tbotTorse:");
                 break;
             }
-            case PartCreatureType::LEG:{
-                partStatus.append("\tleg:");
+            case PartCreatureType::LEG1:{
+                partStatus.append("\tleg left:");
+                break;
+            }
+            case PartCreatureType::LEG2:{
+                partStatus.append("\tleg right:");
                 break;
             }
         }
@@ -119,15 +127,15 @@ void Creature::setStatistics(){
 void Creature::setWeapon(WeaponType wMap ){
     switch (wMap){
     case WeaponType::SWORD:{
-        creature_weapon = new Sword("textures/player.png");
+        creature_weapon = new Sword("textures/player.png",creature_sprite);
         break;
     }
     case WeaponType::AXE:{
-        creature_weapon = new Axe("textures/player.png");
+        creature_weapon = new Axe("textures/player.png",creature_sprite);
         break;
     }
     case WeaponType::SPEAR:{
-        creature_weapon = new Spear("textures/player.png");
+        creature_weapon = new Spear("textures/player.png",creature_sprite);
         break;
     }
     }
@@ -151,7 +159,11 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
         this->part_density = 30;     
         break;
     }
-    case PartCreatureType::HAND:{
+    case PartCreatureType::HAND1:{
+        this->part_density = 10;
+        break;
+    }
+    case PartCreatureType::HAND2:{
         this->part_density = 10;
         break;
     }
@@ -159,7 +171,11 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
         this->part_density = 20;
         break;
     }
-    case PartCreatureType::LEG:{
+    case PartCreatureType::LEG1:{
+        this->part_density = 15;
+        break;
+    }
+    case PartCreatureType::LEG2:{
         this->part_density = 15;
         break;
     }
@@ -204,12 +220,23 @@ void Player::update(float dt){
     if (ControlAttc::getAttacke()){
         //Set to default state
         ControlAttc::setAttacke(false);
-        creature_weapon->attacke(ControlAttc::getDirectionAttacke(),creature_sprite);
-        for (int i=0; i < enemyNode->size(); ++i){
-            if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(creature_weapon->getDammageSprite()->getBoundingBox())){
+        creature_weapon->attacke();
+        for (int i=0; i < enemyNode->size(); ++i)
+            if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(creature_weapon->getDammageSprite()->getBoundingBox()))
                 currentInteractedEnemy = i;
-            }
-        }
+        /*If we hit the enemy*/
+        if (currentInteractedEnemy >= 0)
+            creature_weapon->interact(enemyNode->at(currentInteractedEnemy));
     }
     
 }
+
+
+/**Some code for future
+ **First clean engine's calls
+ *enemyNode->at(currentInteractedEnemy)->removeSprite();
+ *enemyNode->at(currentInteractedEnemy)->removeStatistics();
+ **Second clean game's  call
+ *enemyNode->erase(enemyNode->begin()+currentInteractedEnemy);
+ *currentInteractedEnemy = -1;
+*/

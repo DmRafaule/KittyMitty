@@ -29,7 +29,12 @@ public:
     * @param direction_attack which of attack weapon just made
     * @param creature_sprite who make this attacke
    */
-   virtual void attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite) = 0;
+   /**
+    * What kind of attacke run
+    * Depends on direction ...
+   */
+   virtual void attacke() = 0;
+   virtual void interact(void* target_creature) = 0;
    /*Getters*/
    inline cocos2d::Sprite* getSprite(){ return weapon_sprite; };
    inline cocos2d::Sprite* getDammageSprite(){ return weapon_damage_hitbox; };
@@ -47,27 +52,31 @@ protected:
 protected:
    cocos2d::Sprite* weapon_sprite;
    cocos2d::Sprite* weapon_damage_hitbox;
+   cocos2d::Sprite* weapon_owner;
    WeaponCaracteristics weapon_caracteristics;
 };
 
 class Sword : public Weapon{
 public:
-   Sword(std::string weapon_sprite);
-   virtual void attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite) override;
+   Sword(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
+   virtual void attacke() override;
+   virtual void interact(void* target_creature) override;
 private:
 private:
 };
 class Axe : public Weapon{
 public:
-   Axe(std::string weapon_sprite);
-   virtual void attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite) override;
+   Axe(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
+   virtual void attacke() override;
+   virtual void interact(void* target_creature) override;
 private:
 private:
 };
 class Spear : public Weapon{
 public:
-   Spear(std::string weapon_sprite);
-   virtual void attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite) override;
+   Spear(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
+   virtual void attacke() override;
+   virtual void interact(void* target_creature) override;
 private:
 private:
 };

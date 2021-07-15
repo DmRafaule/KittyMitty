@@ -32,6 +32,7 @@ Implement(L) weapon class [+]
         Strike power [+]
         Solidity    [+]
         Additional  [-]
+    Implement spetial attacks [-]
     }
 Implement(L) armor class[-]
 
