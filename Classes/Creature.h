@@ -52,7 +52,7 @@ public:
     void setCreatureBlood(uint creature_blood);
     void setCreatureStamina(uint creature_stamina);
     void setStatistics();//Init information about creature node 
-    void setWeapon(WeaponType wMap );//Set weapon to creature and current layer
+    void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
     /*This is part of body(*/
     class PartCreature{
@@ -76,7 +76,7 @@ protected:
     std::vector<PartCreature> creature_parts;//Container for holding info about creature_parts of creature 
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
-    Weapon* weapon;
+    Weapon*                   creature_weapon;
     CreatureType              creature_type;//Type of creature
     uint                      creature_speed;//Creature speed
     uint                      creature_blood;//How many blood liquid in creature
@@ -112,6 +112,5 @@ public:
     inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
 private:
     std::vector<Enemy*>* enemyNode;//All enemies which player can interact
-    cocos2d::Rect interaction_radius;//How far interacion could happend
     int  currentInteractedEnemy;//current available enemy for interact
 };

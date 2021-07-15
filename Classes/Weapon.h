@@ -1,17 +1,12 @@
 #pragma once 
 
 #include <cocos2d.h>
+#include "gameUI.h"
 
 enum WeaponType : uint{
    SWORD,
    SPEAR,
    AXE,
-};
-enum WeaponAttacks : uint{
-   TOP_DOWN,
-   DOWN_TOP,
-   LEFT_RIGHT,
-   RIGHT_LEFT,
 };
 
 struct WeaponCaracteristics{
@@ -31,10 +26,10 @@ public:
    /**
     * Define behavior of weapon
     * @param weapon_type which of weapon will be use
-    * @param weapon_attack which of attack weapon just made
+    * @param direction_attack which of attack weapon just made
     * @param creature_sprite who make this attacke
    */
-   virtual void attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite) = 0;
+   virtual void attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite) = 0;
    /*Getters*/
    inline cocos2d::Sprite* getSprite(){ return weapon_sprite; };
    inline cocos2d::Sprite* getDammageSprite(){ return weapon_damage_hitbox; };
@@ -58,21 +53,21 @@ protected:
 class Sword : public Weapon{
 public:
    Sword(std::string weapon_sprite);
-   virtual void attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite) override;
+   virtual void attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite) override;
 private:
 private:
 };
 class Axe : public Weapon{
 public:
    Axe(std::string weapon_sprite);
-   virtual void attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite) override;
+   virtual void attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite) override;
 private:
 private:
 };
 class Spear : public Weapon{
 public:
    Spear(std::string weapon_sprite);
-   virtual void attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite) override;
+   virtual void attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite) override;
 private:
 private:
 };

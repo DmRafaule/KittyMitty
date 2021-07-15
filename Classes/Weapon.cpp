@@ -35,7 +35,7 @@ Sword::Sword(std::string weapon_sprite_path){
    weapon_damage_hitbox->setScale(MAX(weapon_sprite->getBoundingBox().size.width/weapon_damage_hitbox->getBoundingBox().size.width,
                                       weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
 }
-void Sword::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite){
+void Sword::attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite){
    float angleOfMoveDirection = ControlBall::getAngle();
    float angleOfAttacke;
 
@@ -43,7 +43,7 @@ void Sword::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprit
    weapon_sprite->setVisible(true);
    weapon_sprite->setPosition(creature_sprite->getPosition());
    
-   if (weapon_attack == WeaponAttacks::TOP_DOWN){
+   if (direction_attack == DirectionAttacke::TOP_TO_DOWN){
          weapon_sprite->setRotation(0);
          if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
             weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
@@ -59,7 +59,7 @@ void Sword::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprit
                                                             cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::FadeOut::create(0.1),nullptr),
                                                             nullptr));
       }
-   else if (weapon_attack == WeaponAttacks::DOWN_TOP){
+   else if (direction_attack == DirectionAttacke::DOWN_TO_TOP){
       weapon_sprite->setRotation(180);
       if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
          weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
@@ -75,7 +75,7 @@ void Sword::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprit
                                                          cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::FadeOut::create(0.1),nullptr),
                                                          nullptr));
    }
-   else if (weapon_attack == WeaponAttacks::LEFT_RIGHT){
+   else if (direction_attack == DirectionAttacke::LEFT_TO_RIGHT){
       float forMoveBack;
       float forMoveForward;
       weapon_sprite->setRotation(90);
@@ -87,7 +87,7 @@ void Sword::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprit
                                                          cocos2d::Spawn::create(cocos2d::MoveTo::create(0,creature_sprite->getPosition()),cocos2d::FadeOut::create(0.1),nullptr),
                                                          nullptr));
    }
-   else if (weapon_attack == WeaponAttacks::RIGHT_LEFT){
+   else if (direction_attack == DirectionAttacke::RIGHT_TO_LEFT){
       float forMoveBack;
       float forMoveForward;
       weapon_sprite->setRotation(270);
@@ -120,7 +120,7 @@ Axe::Axe(std::string weapon_sprite_path){
    weapon_damage_hitbox->setScale(MAX(weapon_sprite->getBoundingBox().size.width/weapon_damage_hitbox->getBoundingBox().size.width,
                                       weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
 }
-void Axe::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite){
+void Axe::attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite){
    float angleOfMoveDirection = ControlBall::getAngle();
    float angleOfAttacke;
 
@@ -128,7 +128,7 @@ void Axe::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite)
    weapon_sprite->setVisible(true);
    weapon_sprite->setPosition(creature_sprite->getPosition());
    
-   if (weapon_attack == WeaponAttacks::TOP_DOWN){
+   if (direction_attack == DirectionAttacke::TOP_TO_DOWN){
          weapon_sprite->setRotation(0);
          if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
             weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
@@ -144,7 +144,7 @@ void Axe::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite)
                                                             cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::FadeOut::create(0.1),nullptr),
                                                             nullptr));
       }
-   else if (weapon_attack == WeaponAttacks::DOWN_TOP){
+   else if (direction_attack == DirectionAttacke::DOWN_TO_TOP){
       weapon_sprite->setRotation(180);
       if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
          weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
@@ -160,7 +160,7 @@ void Axe::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite)
                                                          cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::FadeOut::create(0.1),nullptr),
                                                          nullptr));
    }
-   else if (weapon_attack == WeaponAttacks::LEFT_RIGHT){
+   else if (direction_attack == DirectionAttacke::LEFT_TO_RIGHT){
       float forMoveBack;
       float forMoveForward;
       weapon_sprite->setRotation(90);
@@ -172,7 +172,7 @@ void Axe::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite)
                                                          cocos2d::Spawn::create(cocos2d::MoveTo::create(0,creature_sprite->getPosition()),cocos2d::FadeOut::create(0.1),nullptr),
                                                          nullptr));
    }
-   else if (weapon_attack == WeaponAttacks::RIGHT_LEFT){
+   else if (direction_attack == DirectionAttacke::RIGHT_TO_LEFT){
       float forMoveBack;
       float forMoveForward;
       weapon_sprite->setRotation(270);
@@ -205,7 +205,7 @@ Spear::Spear(std::string weapon_sprite_path){
    weapon_damage_hitbox->setScale(MAX(weapon_sprite->getBoundingBox().size.width/weapon_damage_hitbox->getBoundingBox().size.width,
                                       weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
 }
-void Spear::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprite){
+void Spear::attacke(DirectionAttacke direction_attack, cocos2d::Sprite* creature_sprite){
    float angleOfMoveDirection = ControlBall::getAngle();
    float angleOfAttacke;
 
@@ -213,7 +213,7 @@ void Spear::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprit
    weapon_sprite->setVisible(true);
    weapon_sprite->setPosition(creature_sprite->getPosition());
    
-   if (weapon_attack == WeaponAttacks::TOP_DOWN){
+   if (direction_attack == DirectionAttacke::TOP_TO_DOWN){
          weapon_sprite->setRotation(0);
          if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
             weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
@@ -229,7 +229,7 @@ void Spear::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprit
                                                             cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::FadeOut::create(0.1),nullptr),
                                                             nullptr));
       }
-   else if (weapon_attack == WeaponAttacks::DOWN_TOP){
+   else if (direction_attack == DirectionAttacke::DOWN_TO_TOP){
       weapon_sprite->setRotation(180);
       if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
          weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
@@ -245,7 +245,7 @@ void Spear::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprit
                                                          cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::FadeOut::create(0.1),nullptr),
                                                          nullptr));
    }
-   else if (weapon_attack == WeaponAttacks::LEFT_RIGHT){
+   else if (direction_attack == DirectionAttacke::LEFT_TO_RIGHT){
       float forMoveBack;
       float forMoveForward;
       weapon_sprite->setRotation(90);
@@ -257,7 +257,7 @@ void Spear::attacke(WeaponAttacks weapon_attack, cocos2d::Sprite* creature_sprit
                                                          cocos2d::Spawn::create(cocos2d::MoveTo::create(0,creature_sprite->getPosition()),cocos2d::FadeOut::create(0.1),nullptr),
                                                          nullptr));
    }
-   else if (weapon_attack == WeaponAttacks::RIGHT_LEFT){
+   else if (direction_attack == DirectionAttacke::RIGHT_TO_LEFT){
       float forMoveBack;
       float forMoveForward;
       weapon_sprite->setRotation(270);

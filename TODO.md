@@ -20,9 +20,12 @@ Implement(UI) ability visualize status of creatures         [+]
     Implement(UI) some border   [-]
     Implement(UI) smart moving(if creature too close to left window border move lable to right from creature) [-]
     Implement(UI) toggle pages for stats [-]
-Implement(L) weapon [-]
-    Implement(G) some animation for attacke [-]
-    Implement(L) interaction with enemy(and his part) [-]
+Implement(L) weapon class [+]
+    Implement(G) some animation for attacke [+]
+    Implement(L) interaction with enemy(and his part) [+]
+        Implement(L) method attacke [+]
+        Implement(L) method defence [-]
+        Implement(L) method parry   [-]
     Implement(L) stats for weapon  [+]{
         Penetration power [+]
         Cutting power [+]
@@ -30,3 +33,8 @@ Implement(L) weapon [-]
         Solidity    [+]
         Additional  [-]
     }
+Implement(L) armor class[-]
+
+Implement(L) item class [-]
+Implement(L) damage logic [-] <1>
+Implement(L) AI for enemies [-] <2>

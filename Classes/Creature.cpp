@@ -119,22 +119,22 @@ void Creature::setStatistics(){
 void Creature::setWeapon(WeaponType wMap ){
     switch (wMap){
     case WeaponType::SWORD:{
-        weapon = new Sword("textures/player.png");
+        creature_weapon = new Sword("textures/player.png");
         break;
     }
     case WeaponType::AXE:{
-        weapon = new Axe("textures/player.png");
+        creature_weapon = new Axe("textures/player.png");
         break;
     }
     case WeaponType::SPEAR:{
-        weapon = new Spear("textures/player.png");
+        creature_weapon = new Spear("textures/player.png");
         break;
     }
     }
-    weapon->getSprite()->setPosition(creature_sprite->getPosition());
-    weapon->getDammageSprite()->setPosition(weapon->getSprite()->getPosition());
-    static_cast<GameLayer*>(currentlayer)->addChild(weapon->getSprite(),Layer::MIDLEGROUND);
-    static_cast<GameLayer*>(currentlayer)->addChild(weapon->getDammageSprite(),Layer::MIDLEGROUND);
+    creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
+    creature_weapon->getDammageSprite()->setPosition(creature_weapon->getSprite()->getPosition());
+    static_cast<GameLayer*>(currentlayer)->addChild(creature_weapon->getSprite(),Layer::MIDLEGROUND);
+    static_cast<GameLayer*>(currentlayer)->addChild(creature_weapon->getDammageSprite(),Layer::MIDLEGROUND);
 }
 
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
@@ -198,59 +198,17 @@ void Player::update(float dt){
     //For moves of all body
     if (ControlBall::getMoving()){
         creature_sprite->runAction(cocos2d::MoveBy::create(1.f,ControlBall::getDirection()));
-        weapon->getSprite()->runAction(cocos2d::MoveBy::create(1.f,ControlBall::getDirection()));
+        creature_weapon->getSprite()->runAction(cocos2d::MoveBy::create(1.f,ControlBall::getDirection()));
     }
-
     //For attacke
     if (ControlAttc::getAttacke()){
         //Set to default state
         ControlAttc::setAttacke(false);
-        switch(ControlAttc::getDirectionAttacke()){
-        case DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT:{
-            break;
-        }
-        case DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT:{
-            break;
-        }
-        case DirectionAttacke::DOWN_TO_TOP:{
-            weapon->attacke(WeaponAttacks::DOWN_TOP,creature_sprite);
-            break;
-        }
-        case DirectionAttacke::LEFT_TO_RIGHT:{
-            weapon->attacke(WeaponAttacks::LEFT_RIGHT,creature_sprite);
-            break;
-        }
-        case DirectionAttacke::RIGHT_TO_LEFT:{
-            weapon->attacke(WeaponAttacks::RIGHT_LEFT,creature_sprite);
-            break;
-        }
-        case DirectionAttacke::TOP_TO_DOWN:{
-            weapon->attacke(WeaponAttacks::TOP_DOWN,creature_sprite);
-            //enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,20,2);
-            //enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::CUTTED,0,0);
-            //enemyNode->at(currentInteractedEnemy)->setPart(PartCreatureType::LEG,PartCreatureStatus::CUTTED,0,0);
-            
-            /*Which will die*/
-            /*First clean engine's calls*/
-            //enemyNode->at(currentInteractedEnemy)->removeSprite();
-            //enemyNode->at(currentInteractedEnemy)->removeStatistics();
-            ///*Second clean game's  calls*/
-            //enemyNode->erase(enemyNode->begin()+currentInteractedEnemy);
-            //currentInteractedEnemy = -1;
-            break;
-        }
-        case DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT:{
-            break;
-        }
-        case DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT:{
-            break;
-        }
-        }
+        creature_weapon->attacke(ControlAttc::getDirectionAttacke(),creature_sprite);
         for (int i=0; i < enemyNode->size(); ++i){
-        if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(weapon->getDammageSprite()->getBoundingBox())){
-            currentInteractedEnemy = i;
-            OUT("touch\n");
-        }
+            if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(creature_weapon->getDammageSprite()->getBoundingBox())){
+                currentInteractedEnemy = i;
+            }
         }
     }
     

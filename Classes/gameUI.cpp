@@ -1,4 +1,5 @@
 #include "gameUI.h"
+#include "Creature.h"
 #include "GameLayer.h"
 #include <cocos/ui/CocosGUI.h>
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cocos2d.h>
-#include "Creature.h"
 
 enum TypeUI{
     CONTROL_IN_GAMESESSION,
