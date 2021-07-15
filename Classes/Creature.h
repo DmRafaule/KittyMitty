@@ -14,11 +14,12 @@ enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,
     BUTTOM_TORSE,
-    HAND1,
-    HAND2,
-    LEG1,
-    LEG2
+    HAND_LEFT,
+    HAND_RIGHT,
+    LEG_LEFT,
+    LEG_RIGHT
 };
+
 enum PartCreatureStatus : uint{
     NORMAL,
     CUTTED,
@@ -49,7 +50,7 @@ public:
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     void getStatistics();//Display information about creature node 
     /*Setters*/
-    void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density, uint part_penetration);
+    void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density);
     void setCreatureSpeed(uint creature_speed);
     void setCreatureBlood(uint creature_blood);
     void setCreatureStamina(uint creature_stamina);

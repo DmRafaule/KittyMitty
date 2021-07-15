@@ -10,11 +10,11 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
         case CreatureType::HUMANOID:{
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
             creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND1));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND2));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
             creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG1));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG2));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
             creature_speed  = 30;
             creature_stamina = 100;
             creature_blood   = 20;
@@ -39,12 +39,11 @@ void Creature::removeStatistics(){
         static_cast<GameLayer*>(currentlayer)->removeChild(creature_statistics);
     isStatisticsShowing = false;
 }
-void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density, uint part_penetration){
+void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density){
     for (auto& part: creature_parts){
         if (part.part_type == part_type){
             part.part_status  = part_status;
             part.part_density = part_density;
-            part.part_penetration = part_penetration;
         }
     }
 }
@@ -95,11 +94,11 @@ void Creature::setStatistics(){
                 partStatus.append("\tupTorse:");
                 break;
             }
-            case PartCreatureType::HAND1:{
+            case PartCreatureType::HAND_LEFT:{
                 partStatus.append("\thand left:");
                 break;
             }
-            case PartCreatureType::HAND2:{
+            case PartCreatureType::HAND_RIGHT:{
                 partStatus.append("\thand right:");
                 break;
             }
@@ -107,11 +106,11 @@ void Creature::setStatistics(){
                 partStatus.append("\tbotTorse:");
                 break;
             }
-            case PartCreatureType::LEG1:{
+            case PartCreatureType::LEG_LEFT:{
                 partStatus.append("\tleg left:");
                 break;
             }
-            case PartCreatureType::LEG2:{
+            case PartCreatureType::LEG_RIGHT:{
                 partStatus.append("\tleg right:");
                 break;
             }
@@ -159,11 +158,11 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
         this->part_density = 30;     
         break;
     }
-    case PartCreatureType::HAND1:{
+    case PartCreatureType::HAND_LEFT:{
         this->part_density = 10;
         break;
     }
-    case PartCreatureType::HAND2:{
+    case PartCreatureType::HAND_RIGHT:{
         this->part_density = 10;
         break;
     }
@@ -171,11 +170,11 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
         this->part_density = 20;
         break;
     }
-    case PartCreatureType::LEG1:{
+    case PartCreatureType::LEG_LEFT:{
         this->part_density = 15;
         break;
     }
-    case PartCreatureType::LEG2:{
+    case PartCreatureType::LEG_RIGHT:{
         this->part_density = 15;
         break;
     }
@@ -196,6 +195,7 @@ void Enemy::update(float dt){
         creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
                                                                                  creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
     }
+    creature_weapon->getSprite()->runAction(cocos2d::MoveTo::create(0.1f,creature_sprite->getPosition()));
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////

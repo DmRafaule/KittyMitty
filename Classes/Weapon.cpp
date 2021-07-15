@@ -120,13 +120,43 @@ void Sword::attacke(){
    }
 }
 void Sword::interact(void* target_creature){
-   Creature* tmp_ptr = static_cast<Creature*>(target_creature);
+   Creature* target = static_cast<Creature*>(target_creature);
    /*Instead of this you have to put here attack commbo, not just direction of attack*/
    switch (ControlAttc::getDirectionAttacke()){
       case DirectionAttacke::TOP_TO_DOWN:{
+         //Hit head
+         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::PENETRATION)){
+            int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+            if (newDensity < 0) newDensity = 0;
+            target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
+         }
+         //Hit upper torse
+         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::PENETRATION)){
+            int newDensity     = target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+            if (newDensity < 0) newDensity = 0;
+            target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,newDensity);
+         }
          break;
       }
       case DirectionAttacke::DOWN_TO_TOP:{
+         //Hit leg left
+         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::LEG_LEFT,PartCreatureField::PENETRATION)){
+            int newDensity     = target->getPart(PartCreatureType::LEG_LEFT,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+            if (newDensity < 0) newDensity = 0;
+            target->setPart(PartCreatureType::LEG_LEFT,PartCreatureStatus::WONDED,newDensity);
+         }
+         //Hit leg right
+         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::LEG_RIGHT,PartCreatureField::PENETRATION)){
+            int newDensity     = target->getPart(PartCreatureType::LEG_RIGHT,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+            if (newDensity < 0) newDensity = 0;
+            target->setPart(PartCreatureType::LEG_RIGHT,PartCreatureStatus::WONDED,newDensity);
+         }
+         //Hit bottom torse
+         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::PENETRATION)){
+            int newDensity     = target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+            if (newDensity < 0) newDensity = 0;
+            target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,newDensity);
+         }
          break;
       }
       case DirectionAttacke::LEFT_TO_RIGHT:{
