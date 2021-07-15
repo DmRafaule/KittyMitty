@@ -56,6 +56,16 @@ uint Creature::getPart(PartCreatureType part_type, PartCreatureField part_field)
         }
     }
 }
+PartOrgan& Creature::getOrgan(PartCreatureType part_type,PartOrganType part_organ_type){
+    for (auto& part : creature_parts){
+        if (part.part_type == part_type){
+            for (auto& organ : part.part_organs){
+                if (organ.type == part_organ_type)
+                    return organ;
+            }
+        }
+    }
+}
 void Creature::getStatistics(){
     if (!isStatisticsShowing){
         isStatisticsShowing = true;
@@ -70,6 +80,16 @@ void Creature::getStatistics(){
     }
 }
 
+void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_type,PartCreatureStatus status){
+    for (auto& part : creature_parts){
+        if (part.part_type == part_type){
+            for (auto& organ : part.part_organs){
+                if (organ.type == part_organ_type)
+                    organ.status = status;
+            }
+        }
+    }
+}
 void Creature::setCreatureSpeed(uint creature_speed){
     this->creature_speed = creature_speed;
 }
@@ -115,7 +135,10 @@ void Creature::setStatistics(){
                 break;
             }
         }
-        partStatus.append(part.part_status == PartCreatureStatus::NORMAL ? "norm-" : part.part_status == PartCreatureStatus::WONDED ? "wonded-" : "cutted-");
+        partStatus.append(part.part_status == PartCreatureStatus::NORMAL ? "norm-" :
+                          part.part_status == PartCreatureStatus::WONDED ? "wonded-" :
+                          part.part_status == PartCreatureStatus::CUTTED ? "cutted-" :
+                          "killed");
         partStatus.append(std::to_string(part.part_density) + "-" + std::to_string(part.part_penetration) + "\n");
     }
     /*Set strings about body*/
@@ -145,6 +168,10 @@ void Creature::setWeapon(WeaponType wMap ){
 }
 
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
+PartOrgan::PartOrgan(PartOrganType type){
+    this->type = type;
+    this->status = PartCreatureStatus::NORMAL;
+}
 Creature::PartCreature::PartCreature(PartCreatureType part_type){
     this->part_status      = PartCreatureStatus::NORMAL;
     this->part_type        = part_type;
@@ -152,30 +179,38 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
     switch (part_type){
     case PartCreatureType::HEAD:{
         this->part_density = 10;
+        this->part_organs.push_back(PartOrgan(PartOrganType::BRAIN));
         break;
     }
     case PartCreatureType::UPPER_TORSE:{
-        this->part_density = 30;     
+        this->part_density = 30;
+        this->part_organs.push_back(PartOrgan(PartOrganType::LUNGS));
+        this->part_organs.push_back(PartOrgan(PartOrganType::HEART));     
         break;
     }
     case PartCreatureType::HAND_LEFT:{
         this->part_density = 10;
+        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::HAND_RIGHT:{
         this->part_density = 10;
+        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::BUTTOM_TORSE:{
         this->part_density = 20;
+        this->part_organs.push_back(PartOrgan(PartOrganType::GUT));
         break;
     }
     case PartCreatureType::LEG_LEFT:{
         this->part_density = 15;
+        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::LEG_RIGHT:{
         this->part_density = 15;
+        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     }

@@ -10,6 +10,7 @@ enum CreatureType : uint{
     TREE,
     FISH,
 };
+
 enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,
@@ -19,16 +20,29 @@ enum PartCreatureType : uint{
     LEG_LEFT,
     LEG_RIGHT
 };
-
 enum PartCreatureStatus : uint{
     NORMAL,
     CUTTED,
     WONDED,
+    KILLED,
 };
 enum PartCreatureField : uint{
     STATUS,
     DENSITY,
     PENETRATION,
+};
+
+enum PartOrganType : uint{
+    NONE,
+    BRAIN,
+    LUNGS,
+    HEART,
+    GUT,
+};
+struct PartOrgan {
+    PartOrgan(PartOrganType type);
+    PartOrganType type;
+    PartCreatureStatus status;
 };
 
 
@@ -48,9 +62,11 @@ public:
     inline uint getCreatureBlood() {return creature_blood; };
     inline uint getCreatureStamina() {return creature_stamina; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
+    PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 
     /*Setters*/
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_density);
+    void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
     void setCreatureSpeed(uint creature_speed);
     void setCreatureBlood(uint creature_blood);
     void setCreatureStamina(uint creature_stamina);
@@ -65,14 +81,16 @@ protected:
         /*Getters*/
         inline PartCreatureStatus getStatus(){ return part_status; };
         inline PartCreatureType getType(){ return part_type; };
+        inline std::vector<PartOrgan> getPartOrgan(){ return part_organs;}
         inline uint getDensity(){ return part_density; };
         inline uint getPenetration(){ return part_penetration; };
     private:
         /*Property related to part of creature*/
-        PartCreatureStatus part_status;
-        PartCreatureType   part_type;
-        uint               part_density;//Can be concatenated (for exm armor,shild etc.)
-        uint               part_penetration;
+        std::vector<PartOrgan>          part_organs;
+        PartCreatureStatus              part_status;
+        PartCreatureType                part_type;
+        uint                            part_density;//Can be concatenated (for exm armor,shild etc.)
+        uint                            part_penetration;
     };
 protected:
     /*Properties related to whole creature*/

@@ -129,6 +129,7 @@ void Sword::interact(void* target_creature){
             int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
             if (newDensity < 0) newDensity = 0;
             target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
+            target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
          }
          //Hit upper torse
          if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::PENETRATION)){
