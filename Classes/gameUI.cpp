@@ -316,10 +316,14 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
         targetChoser->setPosition(cocos2d::Vec2(vs.width*0.15,vs.height -  targetChoser->getBoundingBox().size.height));
         targetChoser->setScale(5);
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHead");
-        targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
-            ControlTargeting::target = PartCreatureType::HEAD;
+        targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+            if (type == cocos2d::ui::Widget::TouchEventType::BEGAN){
+                ControlTargeting::target = PartCreatureType::HEAD;
+                unsetTarget(ControlAttc::getDirectionAttacke(),currentLayer);
+            }
         });
+
+        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHead");
     }
     /*For upper torse*/
     if (direction == DirectionAttacke::TOP_TO_DOWN            || 
@@ -331,10 +335,11 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
         targetChoser->setPosition(cocos2d::Vec2(vs.width*0.25,vs.height -  targetChoser->getBoundingBox().size.height));
         targetChoser->setScale(5);
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tUpperT");
-        targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+        targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
             ControlTargeting::target = PartCreatureType::UPPER_TORSE;
+            unsetTarget(ControlAttc::getDirectionAttacke(),currentLayer);
         });
+        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tUpperT");
     }
     /*For buttom torse*/
     if (direction == DirectionAttacke::LEFT_TO_RIGHT          ||
@@ -345,10 +350,11 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
         targetChoser->setPosition(cocos2d::Vec2(vs.width*0.35,vs.height -  targetChoser->getBoundingBox().size.height));
         targetChoser->setScale(5);
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tBottomT");
-        targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+        targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
             ControlTargeting::target = PartCreatureType::BUTTOM_TORSE;
+            unsetTarget(ControlAttc::getDirectionAttacke(),currentLayer);
         });
+        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tBottomT");
     }
     /*For leg left*/
     if (direction == DirectionAttacke::DOWN_TO_TOP            ||
@@ -357,10 +363,11 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
         targetChoser->setPosition(cocos2d::Vec2(vs.width*0.45,vs.height -  targetChoser->getBoundingBox().size.height));
         targetChoser->setScale(5);
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tLegL");
-        targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+        targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
             ControlTargeting::target = PartCreatureType::LEG_LEFT;
+            unsetTarget(ControlAttc::getDirectionAttacke(),currentLayer);
         });
+        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tLegL");
     }
     /*For leg right*/
     if (direction == DirectionAttacke::DOWN_TO_TOP          ||
@@ -369,10 +376,11 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
         targetChoser->setPosition(cocos2d::Vec2(vs.width*0.55,vs.height -  targetChoser->getBoundingBox().size.height));
         targetChoser->setScale(5);
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tLegR");
-        targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+        targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
             ControlTargeting::target = PartCreatureType::LEG_RIGHT;
+            unsetTarget(ControlAttc::getDirectionAttacke(),currentLayer);
         });
+        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tLegR");
     }
     /*For hand left*/
     if (direction == DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT){
@@ -380,10 +388,11 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
         targetChoser->setPosition(cocos2d::Vec2(vs.width*0.65,vs.height -  targetChoser->getBoundingBox().size.height));
         targetChoser->setScale(5);
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHandL");
-        targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+        targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
             ControlTargeting::target = PartCreatureType::HAND_LEFT;
+            unsetTarget(ControlAttc::getDirectionAttacke(),currentLayer);
         });
+        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHandL");
     }
     /*For hand right*/
     if (direction == DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT){
@@ -391,13 +400,61 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
         targetChoser->setPosition(cocos2d::Vec2(vs.width*0.75,vs.height -  targetChoser->getBoundingBox().size.height));
         targetChoser->setScale(5);
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHandR");
-        targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+        targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
             ControlTargeting::target = PartCreatureType::HAND_RIGHT;
+            unsetTarget(ControlAttc::getDirectionAttacke(),currentLayer);
         });
+        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHandR");
     }
     
 }
 void ControlTargeting::unsetTarget(DirectionAttacke direction, void* currentLayer){
+    switch (direction){
+        case DirectionAttacke::TOP_TO_DOWN:{
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tHead");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tUpperT");
+            break;
+        }
+        case DirectionAttacke::DOWN_TO_TOP:{
+            OUT("dt\n");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tLegL");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tLegR");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tBottomT");
+            break;
+        }
+        case DirectionAttacke::LEFT_TO_RIGHT:{
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tHead");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tUpperT");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tBottomT");
+            break;
+        }
+        case DirectionAttacke::RIGHT_TO_LEFT:{
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tUpperT");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tBottomT");
+            break;
+        }
+        case DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT:{
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tHead");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tUpperT");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tHandL");
+            break;
+        }
+        case DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT:{
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tHead");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tUpperT");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tHandR");
+            break;
+        }
+        case DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT:{
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tBottomT");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tLegL");
+            break;
+        }
+        case DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT:{
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tBottomT");
+            static_cast<GameLayer*>(currentLayer)->removeChildByName("tLegR");
+            break;
+        }
 
+    }
 }
