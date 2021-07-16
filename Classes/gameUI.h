@@ -43,6 +43,10 @@ protected:
     cocos2d::Vec2  touchPoint;
 };
 
+/**
+ * @brief
+ * For display statistics about entities(only logic true of false(do something))
+*/
 class ShowStats   : public GameUI{
 public:
     ShowStats(void* layer);
@@ -58,19 +62,36 @@ private:
     bool forPlayer;
     bool forEnemy;
 };
+/**
+ * @brief
+ * For make a decition of which part of body player can attack
+*/
 class ControlTargeting : public GameUI{
 public:
     ControlTargeting(void* layer);
     virtual ~ControlTargeting();
 
+    /**
+     * @return chosen target by player
+    */
     static inline PartCreatureType getTarget(){ return target; };
+    /**
+     * @brief set some ui(one buttom for each part of body) for choosing target
+    */
     static void setTarget(DirectionAttacke direction, void* currentLayer);
-    static void unsetTarget(DirectionAttacke direction, void* currentLayer);
 
 private:
+    /**
+     * @brief unset all created buttons (created by setTarget)
+    */
+    static void unsetTarget(void* currentLayer);
 private:
-    static PartCreatureType target;
+    static PartCreatureType target;//Which target(part of body) will be attacked
 };
+/**
+ * @brief
+ * Give player control on kittymitty(for android)
+*/
 class ControlBall : public GameUI{
 public:
     ControlBall(void* layer);
@@ -92,9 +113,12 @@ public:
     */
     static inline const bool getMoving(){ return isMoving; };
     /**
-     * @return direction of movement for to ball Sprite
+     * @return direction of movement for ball Sprite
     */
     static inline const cocos2d::Vec2 getDirection(){ return directionPoint; };
+    /**
+     * @return ball default position
+    */
     inline const cocos2d::Vec2 getBallDefaultPosition() { return ballDefaultPosition; };
 private:
    /** Set position of point related to pointNode like pointNode is a center of circle
@@ -121,10 +145,15 @@ private:
     static bool    isMoving;//Is player interact with ball controle
     
     cocos2d::Vec2  ballDefaultPosition;
-    bool           isControlBall;
+    bool           isControlBall;//Is player using control ball. If so clear and render some gui effect
 };
+/**
+ * @brief
+ * To enable for player attack using different movements(for android)
+*/
 class ControlAttc : public GameUI{
-public:/*Inherite func*/    
+public:
+    /*Inherite func*/    
     ControlAttc(void* layer);
     virtual ~ControlAttc();
     virtual void update(float dt, void* layer) override;
@@ -136,17 +165,26 @@ public:/*Inherite func*/
     virtual void createEffect( void* node) override;
     virtual void removeEffect( void* node) override;
 public:
+    /**
+     * @return status of attack
+    */
     inline static const bool getAttacke() { return isAttacke; };
+    /**
+     * set up status of attack
+    */
     inline static void setAttacke(bool statusAttacke) { isAttacke = statusAttacke; };
+    /**
+     * @return direction of attack
+    */
     inline static const DirectionAttacke getDirectionAttacke(){ return direction_of_attacke; };
 private:
     void setDirectionAttacke();
 private:
 
-    static cocos2d::Vec2  trembling;//This is a  diffrance bettween touchPointStart and toucPointEnd
-    static cocos2d::Vec2  touchPointStart;
-    static cocos2d::Vec2  touchPointEnd;
-    static DirectionAttacke direction_of_attacke;//Which direction of attacke player made
-    static bool  isAttacke;//Is this UI object activated
-    bool   isRightPlaceForControle;
+    static cocos2d::Vec2  trembling;                    //This is a  diffrance bettween touchPointStart and toucPointEnd
+    static cocos2d::Vec2  touchPointStart;              //Where player start touch on screen
+    static cocos2d::Vec2  touchPointEnd;                //Where player stop touch screen
+    static DirectionAttacke direction_of_attacke;       //Which direction of attacke player made
+    static bool  isAttacke;                             //Is this UI object activated
+    bool   isRightPlaceForControle;                     //Detect is player finger on right half of screen
 };

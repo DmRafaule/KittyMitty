@@ -39,8 +39,14 @@ Implement(L) armor class[-]
 
 Implement(L) item class [-]
 Implement(L) damage logic [-] <1>{
-    Implement(L) damage status to part of body [-]
-    Implement(L) damage status to organs       [-]
-    Implement(L) fichure with time stoped and choose where to strike    [-]
+    Implement(L) damage status to part of body [+]
+    Implement(L) damage status to organs       [+]
+    Implement(L) choise, where to strike       [+]
+    Implement(C) slow down animation for entire layer [-]
 }
 Implement(L) AI for enemies [-] <2>
+Implement(UI) Camera for hero [-]
+Implement(UI) Test Level [-]{
+    Implement(Ph) collisions [-]
+    Implement(Ph) gravity [-]
+} 

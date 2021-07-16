@@ -26,7 +26,7 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     }
     creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
     creature_sprite->setPosition(pos);
-    creature_sprite->setScale(10);
+    creature_sprite->setScale(5);
     /*This is prevent of bluring my textures*/
     cocos2d::Texture2D::TexParams tpar = {
         cocos2d::backend::SamplerFilter::NEAREST,
@@ -247,6 +247,7 @@ void Enemy::update(float dt){
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
 Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
     Creature(texturePath,bMap,pos,gameLayer,id){
+    static_cast<GameLayer*>(gameLayer)->runAction(cocos2d::Follow::createWithOffset(creature_sprite,-200,-80));
     enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
     currentInteractedEnemy = -1;
 }

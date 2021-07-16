@@ -53,9 +53,6 @@ private:
      * initialize all event listeners (for keyboard, touch screen, mouse,physics event )
     */
     void initListeners();
-        /*
-         * 
-        */
         bool touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
         void touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
         void touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
@@ -70,13 +67,14 @@ private:
 
 private:
     //Phone UI
-    ShowStats* shows;
-    ControlBall* cball;
-    ControlAttc* cattc;
+    ShowStats*      shows;
+    ControlBall*    cball;
+    ControlAttc*    cattc;
     //Window UI
     cocos2d::Size visibleSize;
     cocos2d::SpriteBatchNode* spriteSheet;
     //Game obj
+    cocos2d::TMXTiledMap* level;
     Player* player;
     std::vector<Enemy*> enemy;
 };

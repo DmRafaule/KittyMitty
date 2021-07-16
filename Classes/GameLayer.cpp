@@ -26,6 +26,44 @@ bool GameLayer::init(){
 
     if ( !cocos2d::Scene::init() )
         return false;
+    
+    level = cocos2d::TMXTiledMap::create("world/area0/level0.tmx");
+    level->setScale(2);
+    this->addChild(level);
+    
+
+    initVarsAndObj();
+    initListeners();
+    initUI();
+
+    return true;
+}
+void GameLayer::initUI(){
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+        shows = new ShowStats(this);
+        cball = new ControlBall(this);
+        cattc = new ControlAttc(this);
+    }
+    else if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX){
+        shows = new ShowStats(this);
+        cball = new ControlBall(this);
+        cattc = new ControlAttc(this);
+    }
+}
+void GameLayer::initListeners(){
+    /*Init listeners*/
+    auto listener = cocos2d::EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = CC_CALLBACK_2(GameLayer::touchBegan,this);
+    listener->onTouchesEnded = CC_CALLBACK_2(GameLayer::touchEnded,this);
+    listener->onTouchesMoved = CC_CALLBACK_2(GameLayer::touchMoved,this);
+    listener->onTouchesCancelled = CC_CALLBACK_2(GameLayer::touchCanceled,this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener,this);
+    /*Start update this layer*/
+    this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
+}
+void GameLayer::initVarsAndObj(){
+    visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+    
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
     spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
     this->addChild(spriteSheet);
@@ -60,42 +98,9 @@ bool GameLayer::init(){
     e->setWeapon(WeaponType::SWORD);
     enemy.push_back(e);
 
+
     player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,100),this,LayerChild::player);
-    player->setWeapon(WeaponType::SWORD);
-    initVarsAndObj();
-    initListeners();
-    initUI();
-
-  
-
-    return true;
-}
-void GameLayer::initUI(){
-    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-        shows = new ShowStats(this);
-        cball = new ControlBall(this);
-        cattc = new ControlAttc(this);
-    }
-    else if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX){
-        shows = new ShowStats(this);
-        cball = new ControlBall(this);
-        cattc = new ControlAttc(this);
-    }
-}
-void GameLayer::initListeners(){
-    /*Init listeners*/
-    auto listener = cocos2d::EventListenerTouchAllAtOnce::create();
-    listener->onTouchesBegan = CC_CALLBACK_2(GameLayer::touchBegan,this);
-    listener->onTouchesEnded = CC_CALLBACK_2(GameLayer::touchEnded,this);
-    listener->onTouchesMoved = CC_CALLBACK_2(GameLayer::touchMoved,this);
-    listener->onTouchesCancelled = CC_CALLBACK_2(GameLayer::touchCanceled,this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener,this);
-    /*Start update this layer*/
-    this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
-}
-void GameLayer::initVarsAndObj(){
-    visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
-    
+    player->setWeapon(WeaponType::SWORD);   
 }
 
 

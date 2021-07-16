@@ -27,14 +27,14 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    //weapon_sprite->setColor(cocos2d::Color3B::GREEN);//remove
    weapon_sprite->setVisible(true);//Rem
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
-   weapon_sprite->setScale(10);
+   weapon_sprite->setScale(5);
    cocos2d::Texture2D::TexParams tpar = {
         cocos2d::backend::SamplerFilter::NEAREST,
         cocos2d::backend::SamplerFilter::NEAREST,
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE,
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
     };
-    weapon_sprite->getTexture()->setTexParameters(tpar);
+   weapon_sprite->getTexture()->setTexParameters(tpar);
    /*Set up "hit box" for this weapon(for detect a collision with creatures and others thin*/
    weapon_damage_hitbox = cocos2d::Sprite::create();
    weapon_damage_hitbox->setTexture("textures/player.png");
@@ -464,7 +464,7 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    //weapon_sprite->setColor(cocos2d::Color3B::GREEN);//Rem
    weapon_sprite->setVisible(true);//Rem
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
-   weapon_sprite->setScale(10);
+   weapon_sprite->setScale(5);
    cocos2d::Texture2D::TexParams tpar = {
         cocos2d::backend::SamplerFilter::NEAREST,
         cocos2d::backend::SamplerFilter::NEAREST,
@@ -605,7 +605,7 @@ Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    //weapon_sprite->setColor(cocos2d::Color3B::GREEN);//Rem
    weapon_sprite->setVisible(true);//Rem
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
-   weapon_sprite->setScale(10);
+   weapon_sprite->setScale(5);
    cocos2d::Texture2D::TexParams tpar = {
         cocos2d::backend::SamplerFilter::NEAREST,
         cocos2d::backend::SamplerFilter::NEAREST,
