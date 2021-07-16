@@ -55,11 +55,13 @@ void Sword::attacke(){
       case DirectionAttacke::TOP_TO_DOWN:{
          weapon_sprite->setRotation(0);
          if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
+            weapon_sprite->setFlippedX(false);
             weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
                                               weapon_sprite->getPosition().y);
             angleOfAttacke = 180;
          }
          else if (angleOfMoveDirection >= 180 && angleOfMoveDirection <= 360){
+            weapon_sprite->setFlippedX(true);
             weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
                                               weapon_sprite->getPosition().y);
             angleOfAttacke = -180;
@@ -72,11 +74,13 @@ void Sword::attacke(){
       case DirectionAttacke::DOWN_TO_TOP:{
          weapon_sprite->setRotation(180);
          if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
+            weapon_sprite->setFlippedX(false);
             weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
                                               weapon_sprite->getPosition().y);
             angleOfAttacke = 0;
          }
          else if (angleOfMoveDirection >= 180 && angleOfMoveDirection <= 360){
+            weapon_sprite->setFlippedX(true);
             weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
                                               weapon_sprite->getPosition().y);
             angleOfAttacke = 360;
@@ -87,6 +91,7 @@ void Sword::attacke(){
          break;
       }
       case DirectionAttacke::LEFT_TO_RIGHT:{
+         weapon_sprite->setFlippedX(false);
          float forMoveBack;
          float forMoveForward;
          weapon_sprite->setRotation(90);
@@ -102,6 +107,7 @@ void Sword::attacke(){
       case DirectionAttacke::RIGHT_TO_LEFT:{
          float forMoveBack;
          float forMoveForward;
+         weapon_sprite->setFlippedX(true);
          weapon_sprite->setRotation(270);
          weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - weapon_sprite->getBoundingBox().size.width/2 - 40,
                                            weapon_sprite->getPosition().y);
@@ -113,15 +119,91 @@ void Sword::attacke(){
          break;
       }
       case DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT:{
+         weapon_sprite->setRotation(180);
+         float sckewF;
+         if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
+            weapon_sprite->setFlippedX(false);
+            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
+                                              weapon_sprite->getPosition().y);
+            angleOfAttacke = 90;
+            sckewF = 40;
+         }
+         else if (angleOfMoveDirection >= 180 && angleOfMoveDirection <= 360){
+            weapon_sprite->setFlippedX(true);
+            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
+                                              weapon_sprite->getPosition().y);
+            angleOfAttacke = 330;
+            sckewF = -40;
+         }
+         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Spawn::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),cocos2d::SkewBy::create(0.2,sckewF,0),nullptr),
+                                                            cocos2d::Spawn::create(cocos2d::RotateTo::create(0.5,360),cocos2d::SkewBy::create(0.2,sckewF*-1,0),nullptr),
+                                                            nullptr));
          break;
       }
       case DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT:{
+         weapon_sprite->setRotation(180);
+         float sckewF;
+         if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
+            weapon_sprite->setFlippedX(false);
+            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
+                                              weapon_sprite->getPosition().y);
+            angleOfAttacke = 90;
+            sckewF = 40;
+         }
+         else if (angleOfMoveDirection >= 180 && angleOfMoveDirection <= 360){
+            weapon_sprite->setFlippedX(true);
+            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
+                                              weapon_sprite->getPosition().y);
+            angleOfAttacke = 330;
+            sckewF = -40;
+         }
+         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Spawn::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),cocos2d::SkewBy::create(0.2,sckewF,0),nullptr),
+                                                            cocos2d::Spawn::create(cocos2d::RotateTo::create(0.5,360),cocos2d::SkewBy::create(0.2,sckewF*-1,0),nullptr),
+                                                            nullptr));
          break;
       }
       case DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT:{
+         weapon_sprite->setRotation(0);
+         float sckewF;
+         if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
+            weapon_sprite->setFlippedX(false);
+            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
+                                              weapon_sprite->getPosition().y);
+            angleOfAttacke = 90;
+            sckewF = 40;
+         }
+         else if (angleOfMoveDirection >= 180 && angleOfMoveDirection <= 360){
+            weapon_sprite->setFlippedX(true);
+            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
+                                              weapon_sprite->getPosition().y);
+            angleOfAttacke = -90;
+            sckewF = -40;
+         }
+         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Spawn::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),cocos2d::SkewBy::create(0.2,sckewF,0),nullptr),
+                                                            cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::SkewBy::create(0.2,sckewF*-1,0),nullptr),
+                                                            nullptr));
          break;
       }
       case DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT:{
+         weapon_sprite->setRotation(0);
+         float sckewF;
+         if (angleOfMoveDirection >= 0 && angleOfMoveDirection < 180){
+            weapon_sprite->setFlippedX(false);
+            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
+                                              weapon_sprite->getPosition().y);
+            angleOfAttacke = 90;
+            sckewF = 40;
+         }
+         else if (angleOfMoveDirection >= 180 && angleOfMoveDirection <= 360){
+            weapon_sprite->setFlippedX(true);
+            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
+                                              weapon_sprite->getPosition().y);
+            angleOfAttacke = -90;
+            sckewF = -40;
+         }
+         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Spawn::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),cocos2d::SkewBy::create(0.2,sckewF,0),nullptr),
+                                                            cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::SkewBy::create(0.2,sckewF*-1,0),nullptr),
+                                                            nullptr));
          break;
       }
    }
@@ -174,42 +256,197 @@ void Sword::interact(void* target_creature){
          break;
       }
       case DirectionAttacke::DOWN_TO_TOP:{
-         //Hit leg left
-         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::LEG_LEFT,PartCreatureField::PENETRATION)){
-            int newDensity     = target->getPart(PartCreatureType::LEG_LEFT,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
-            if (newDensity < 0) newDensity = 0;
-            target->setPart(PartCreatureType::LEG_LEFT,PartCreatureStatus::WONDED,newDensity);
+         switch(ControlTargeting::getTarget()){
+         case PartCreatureType::LEG_LEFT:{
+            //Hit leg left
+            if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::LEG_LEFT,PartCreatureField::PENETRATION)){
+               int newDensity     = target->getPart(PartCreatureType::LEG_LEFT,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+               if (newDensity < 0) newDensity = 0;
+               target->setPart(PartCreatureType::LEG_LEFT,PartCreatureStatus::WONDED,newDensity);
+            }
+            break;
          }
-         //Hit leg right
-         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::LEG_RIGHT,PartCreatureField::PENETRATION)){
-            int newDensity     = target->getPart(PartCreatureType::LEG_RIGHT,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
-            if (newDensity < 0) newDensity = 0;
-            target->setPart(PartCreatureType::LEG_RIGHT,PartCreatureStatus::WONDED,newDensity);
+         case PartCreatureType::LEG_RIGHT:{
+            //Hit leg right
+            if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::LEG_RIGHT,PartCreatureField::PENETRATION)){
+               int newDensity     = target->getPart(PartCreatureType::LEG_RIGHT,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+               if (newDensity < 0) newDensity = 0;
+               target->setPart(PartCreatureType::LEG_RIGHT,PartCreatureStatus::WONDED,newDensity);
+            }
+            break;
          }
-         //Hit bottom torse
-         if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::PENETRATION)){
-            int newDensity     = target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
-            if (newDensity < 0) newDensity = 0;
-            target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,newDensity);
+         case PartCreatureType::BUTTOM_TORSE:{
+               //Hit bottom torse
+               if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::PENETRATION)){
+                  int newDensity     = target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+                  if (newDensity < 0) newDensity = 0;
+                  target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,newDensity);
+               }
+               else if (weapon_caracteristics.weapon_crushingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)){
+                  int newCrushing   =  target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
+                  if (newCrushing < 0) newCrushing = 0;
+                  target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING));
+                  target->setOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT,PartCreatureStatus::WONDED);
+               }
+               else{
+                  //Some miss debuffs
+               }
+               break;
+            }
          }
          break;
       }
       case DirectionAttacke::LEFT_TO_RIGHT:{
+         switch(ControlTargeting::getTarget()){
+            case PartCreatureType::HEAD:{
+                 //Hit head
+               if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::PENETRATION)){
+                  int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+                  if (newDensity < 0) newDensity = 0;
+                  target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
+                  target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
+               }
+               else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)){
+                  int newCrushing   =  target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
+                  if (newCrushing < 0) newCrushing = 0;
+                  target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING));
+                  target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
+               }
+               else{
+                  //Some miss debuffs
+               }
+               break;
+            }
+            case PartCreatureType::UPPER_TORSE:{
+               //Hit upper torse
+               if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::PENETRATION)){
+                  int newDensity     = target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+                  if (newDensity < 0) newDensity = 0;
+                  target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,newDensity);
+               }
+               else if (weapon_caracteristics.weapon_crushingPower > target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)){
+                  int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
+                  if (newCrushing < 0) newCrushing = 0;
+                  target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
+                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
+                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
+               }
+               else{
+                  //Some miss debuffs
+               }
+               break;
+            }
+            case PartCreatureType::BUTTOM_TORSE:{
+               //Hit bottom torse
+               if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::PENETRATION)){
+                  int newDensity     = target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+                  if (newDensity < 0) newDensity = 0;
+                  target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,newDensity);
+               }
+               else if (weapon_caracteristics.weapon_crushingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)){
+                  int newCrushing   =  target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
+                  if (newCrushing < 0) newCrushing = 0;
+                  target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING));
+                  target->setOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT,PartCreatureStatus::WONDED);
+               }
+               else{
+                  //Some miss debuffs
+               }
+               break;
+            }
+         }
          break;
       }
       case DirectionAttacke::RIGHT_TO_LEFT:{
+         switch(ControlTargeting::getTarget()){
+            case PartCreatureType::UPPER_TORSE:{
+               //Hit upper torse
+               if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::PENETRATION)){
+                  int newDensity     = target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+                  if (newDensity < 0) newDensity = 0;
+                  target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,newDensity);
+               }
+               else if (weapon_caracteristics.weapon_crushingPower > target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)){
+                  int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
+                  if (newCrushing < 0) newCrushing = 0;
+                  target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
+                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
+                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
+               }
+               else{
+                  //Some miss debuffs
+               }
+               break;
+            }
+            case PartCreatureType::BUTTOM_TORSE:{
+               //Hit bottom torse
+               if (weapon_caracteristics.weapon_penetratingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::PENETRATION)){
+                  int newDensity     = target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
+                  if (newDensity < 0) newDensity = 0;
+                  target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,newDensity);
+               }
+               else if (weapon_caracteristics.weapon_crushingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)){
+                  int newCrushing   =  target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
+                  if (newCrushing < 0) newCrushing = 0;
+                  target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING));
+                  target->setOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT,PartCreatureStatus::WONDED);
+               }
+               else{
+                  //Some miss debuffs
+               }
+               break;
+            }
+         }
          break;
       }
       case DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT:{
+         switch(ControlTargeting::getTarget()){
+            case PartCreatureType::LEG_LEFT:{
+               break;
+            }
+            case PartCreatureType::BUTTOM_TORSE:{
+               break;
+            }
+         }
          break;
       }
       case DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT:{
+         switch(ControlTargeting::getTarget()){
+            case PartCreatureType::LEG_RIGHT:{
+               break;
+            }
+            case PartCreatureType::BUTTOM_TORSE:{
+               break;
+            }
+         }
          break;
       }
       case DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT:{
+         switch(ControlTargeting::getTarget()){
+            case PartCreatureType::HEAD:{
+               break;
+            }
+            case PartCreatureType::UPPER_TORSE:{
+               break;
+            }
+            case PartCreatureType::HAND_LEFT:{
+               break;
+            }
+         }
          break;
       }
       case DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT:{
+         switch(ControlTargeting::getTarget()){
+            case PartCreatureType::HEAD:{
+               break;
+            }
+            case PartCreatureType::UPPER_TORSE:{
+               break;
+            }
+            case PartCreatureType::HAND_RIGHT:{
+               break;
+            }
+         }
          break;
       }
    }
