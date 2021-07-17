@@ -274,7 +274,8 @@ void ControlAttc::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::E
     if ( touch[iterator]->getLocation().x > cocos2d::Director::getInstance()->getVisibleSize().width/2){
         isRightPlaceForControle = true;
         //Find start position of touch
-        touchPointStart = touch[iterator]->getLocation();
+        cocos2d::Vec2 convertedPos = static_cast<GameLayer*>(Layer)->convertToNodeSpace(touch[iterator]->getLocation());
+        touchPointStart = convertedPos;
     }
     }
 }
@@ -294,7 +295,9 @@ void ControlAttc::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::E
 void ControlAttc::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
     if (isRightPlaceForControle){
-        touchPoint = touch[iterator]->getLocation();
+        cocos2d::Vec2 convertedPos = static_cast<GameLayer*>(Layer)->convertToNodeSpace(touch[iterator]->getLocation());
+        OUT("x=%f,y=%f\n",convertedPos.x,convertedPos.y);
+        touchPoint = convertedPos;
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setPosition(touchPoint);
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setVisible(true);
     }
