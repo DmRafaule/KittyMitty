@@ -91,6 +91,7 @@ private:
 /**
  * @brief
  * Give player control on kittymitty(for android)
+ * IN DEVELOPMENT
 */
 class ControlBall : public GameUI{
 public:
@@ -146,6 +147,41 @@ private:
     
     cocos2d::Vec2  ballDefaultPosition;
     bool           isControlBall;//Is player using control ball. If so clear and render some gui effect
+};
+/**
+ * @brief for controling player by some graphycs buttons
+ * jumps moves run here(for android)
+*/
+class ControlKeys : public GameUI{
+public:
+    ControlKeys(cocos2d::Vec2 offset, void* layer);
+    virtual ~ControlKeys();
+    virtual void update(float dt,void* Layer) override;
+        virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+    virtual void createEffect( void* node) override;
+    virtual void removeEffect( void* node) override;
+    /**
+     * @return angle bettween touch point and center of ball control
+    */
+    static inline const float getAngle(){ return angleDirection; };
+    /**
+     * @return status of interaction with ball controller
+    */
+    static inline const bool getMoving(){ return isMoving; };
+    /**
+     * @return direction of movement for ball Sprite
+    */
+    static inline const cocos2d::Vec2 getDirection(){ return directionPoint; };
+private:
+    cocos2d::Sprite* button_left;
+    cocos2d::Sprite* button_right;
+    cocos2d::Vec2 offset;
+    static cocos2d::Vec2 directionPoint;
+    static bool isMoving;
+    static float angleDirection;
 };
 /**
  * @brief

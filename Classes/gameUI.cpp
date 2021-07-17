@@ -25,11 +25,13 @@ void ShowStats::update(float dt,void* Layer){
 }
 void ShowStats::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
-        if (static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::player)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
+        /*This is converting coordinates (expand them to global)*/
+        cocos2d::Vec2 pos = static_cast<GameLayer*>(Layer)->convertToNodeSpace(touch[iterator]->getLocation());
+        if (static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::player)->getBoundingBox().containsPoint(pos)){
             static_cast<GameLayer*>(Layer)->getPlayer()->getStatistics();
         }
         for (Enemy*& enemy : *(static_cast<GameLayer*>(Layer)->getEnemy()))
-            if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(touch[iterator]->getLocation()))
+            if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos))
                 enemy->getStatistics();
     }
 }
@@ -59,8 +61,8 @@ bool  ControlBall::isMoving = false;
 ControlBall::ControlBall(void* layer){
     isControlBall = false;
     pathEffect.resize(5);
-    ballDefaultPosition = cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width*0.15,
-                                        cocos2d::Director::getInstance()->getVisibleSize().height*0.15);
+    ballDefaultPosition = cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width*0.25,
+                                        cocos2d::Director::getInstance()->getVisibleSize().height*0.25);
     auto ball = cocos2d::Sprite::create("textures/player.png");
     ball->setScale(1.3f);
     ball->setPosition(ballDefaultPosition);
@@ -89,6 +91,7 @@ void ControlBall::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::E
 void ControlBall::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
     touchPoint = touch[iterator]->getLocation();
+    cocos2d::Vec2 pos = static_cast<GameLayer*>(Layer)->convertToNodeSpace(touch[iterator]->getLocation());
     if (static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
         static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->setPosition(touch[iterator]->getLocation());
         createEffect(Layer);
@@ -129,8 +132,8 @@ void ControlBall::createEffect(void* node){
     //Now character moving
     isMoving = true;
     /*Start position of line effect*/
-    cocos2d::Vec2 startPos = cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width*0.15,
-                                         cocos2d::Director::getInstance()->getVisibleSize().height*0.15);
+    cocos2d::Vec2 startPos = cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width * 0.25,
+                                         cocos2d::Director::getInstance()->getVisibleSize().height  * 0.25);
     /*End position of line effect*/
     cocos2d::Vec2 endPos = touchPoint;
     /*Cathetes of triangle where endPos it's point on circle
@@ -171,6 +174,74 @@ void ControlBall::createEffect(void* node){
     }
 }
 
+///////////////////////////////////////////////////////////////*ControlKey class*////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+cocos2d::Vec2 ControlKeys::directionPoint(0,0);
+float ControlKeys::angleDirection = 0;
+bool  ControlKeys::isMoving = false;
+
+ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
+    this->offset = offset;
+    button_left = cocos2d::Sprite::create("textures/controlB.png");
+    cocos2d::Texture2D::TexParams tpar = {
+        cocos2d::backend::SamplerFilter::NEAREST,
+        cocos2d::backend::SamplerFilter::NEAREST,
+        cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE,
+        cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
+    };
+    button_left->getTexture()->setTexParameters(tpar);
+    button_left->setScale(2);
+    button_left->setPosition(cocos2d::Vec2(100,30));
+    
+    static_cast<GameLayer*>(layer)->addChild(button_left);
+
+    button_right = cocos2d::Sprite::create("textures/controlB.png");
+    button_right->getTexture()->setTexParameters(tpar);
+    button_right->setScale(2);
+    button_right->setFlippedX(true);
+    button_right->setPosition(cocos2d::Vec2(button_left->getPosition().x + button_right->getBoundingBox().size.width*2,button_left->getPosition().y));
+    
+    
+    static_cast<GameLayer*>(layer)->addChild(button_right);
+}
+ControlKeys::~ControlKeys(){}
+void ControlKeys::update(float dt,void* layer){
+    
+    //Get posision of camera on edges
+    cocos2d::Vec2 pos = static_cast<GameLayer*>(layer)->getPosition();
+    cocos2d::Size size = cocos2d::Director::getInstance()->getVisibleSize();
+    pos.x = (pos.x*-1) + size.width;
+    pos.y = (pos.y*-1) + size.height;
+
+    button_left->runAction(cocos2d::MoveTo::create(0.1,cocos2d::Vec2(pos.x - size.width * offset.x, pos.y - size.height * offset.y)));
+    button_right->runAction(cocos2d::MoveTo::create(0.1,cocos2d::Vec2(pos.x - size.width * (offset.x - 0.1), pos.y - size.height * offset.y)));
+}
+void ControlKeys::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) {
+    for (uint iterator = 0; iterator < touch.size(); ++iterator){
+        /*This is converting coordinates (expand them to global)*/
+        cocos2d::Vec2 pos = static_cast<GameLayer*>(Layer)->convertToNodeSpace(touch[iterator]->getLocation());
+        if (button_left->getBoundingBox().containsPoint(pos)){
+            isMoving = true;
+            angleDirection = -270;
+            directionPoint = cocos2d::Vec2(-10,0);
+        }
+        else if (button_right->getBoundingBox().containsPoint(pos)){
+            isMoving = true;
+            angleDirection = 90;
+            directionPoint = cocos2d::Vec2(10,0);
+        }
+    }
+    
+}
+void ControlKeys::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) {
+    isMoving = false;
+    button_left->runAction(cocos2d::MoveBy::create(0.1,cocos2d::Vec2(10,0)));
+    button_right->runAction(cocos2d::MoveBy::create(0.1,cocos2d::Vec2(10,0)));
+}
+void ControlKeys::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) {}
+void ControlKeys::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) {}
+void ControlKeys::createEffect( void* node) {}
+void ControlKeys::removeEffect( void* node) {}
 
 ///////////////////////////////////////////////////////////////*Control_Attc class*////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

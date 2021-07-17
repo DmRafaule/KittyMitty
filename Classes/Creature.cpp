@@ -247,7 +247,6 @@ void Enemy::update(float dt){
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
 Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
     Creature(texturePath,bMap,pos,gameLayer,id){
-    static_cast<GameLayer*>(gameLayer)->runAction(cocos2d::Follow::createWithOffset(creature_sprite,-200,-80));
     enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
     currentInteractedEnemy = -1;
 }
@@ -259,9 +258,9 @@ void Player::update(float dt){
                                                                                  creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
     }
     //For moves of all body
-    if (ControlBall::getMoving()){
-        creature_sprite->runAction(cocos2d::MoveBy::create(1.f,ControlBall::getDirection()));
-        creature_weapon->getSprite()->runAction(cocos2d::MoveBy::create(1.f,ControlBall::getDirection()));
+    if (ControlKeys::getMoving()){
+        creature_sprite->runAction(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection()));
+        creature_weapon->getSprite()->runAction(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection()));
     }
     //For attacke
     if (ControlAttc::getAttacke()){

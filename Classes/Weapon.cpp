@@ -44,7 +44,7 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
                                       weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
 }
 void Sword::attacke(){
-   float angleOfMoveDirection = ControlBall::getAngle();
+   float angleOfMoveDirection = ControlKeys::getAngle();
    float angleOfAttacke;
    weapon_sprite->setPosition(weapon_owner->getPosition());
 
@@ -480,7 +480,7 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
                                       weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
 }
 void Axe::attacke(){
-   float angleOfMoveDirection = ControlBall::getAngle();
+   float angleOfMoveDirection = ControlKeys::getAngle();
    float angleOfAttacke;
 
    /*//After all debug shit remove this lines*/
@@ -621,7 +621,7 @@ Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
                                        weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
    }
    void Spear::attacke(){
-      float angleOfMoveDirection = ControlBall::getAngle();
+      float angleOfMoveDirection = ControlKeys::getAngle();
       float angleOfAttacke;
 
       /*//After all debug shit remove this lines*/

@@ -68,7 +68,7 @@ private:
 private:
     //Phone UI
     ShowStats*      shows;
-    ControlBall*    cball;
+    ControlKeys*    ckeys;
     ControlAttc*    cattc;
     //Window UI
     cocos2d::Size visibleSize;
