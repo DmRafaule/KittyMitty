@@ -159,7 +159,7 @@ public:
     /**
      * @return angle bettween touch point and center of ball control
     */
-    static inline const float getAngle(){ return angleDirection; };
+    static inline const DirectionMove getDirectionMove(){ return directionMove; };
     /**
      * @return status of interaction with ball controller
     */
@@ -174,7 +174,7 @@ private:
     cocos2d::Vec2 offset;
     static cocos2d::Vec2 directionPoint;
     static bool isMoving;
-    static float angleDirection;
+    static DirectionMove directionMove;
 };
 /**
  * @brief

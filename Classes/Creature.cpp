@@ -41,7 +41,7 @@ Creature::~Creature(){
     creature_parts.clear();
 }
 void Creature::removeSprite(){
-    static_cast<GameLayer*>(currentlayer)->removeChildByName(creature_sprite->getName());
+    static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->removeChildByName(creature_sprite->getName());
 }
 void Creature::removeStatistics(){
     if (isStatisticsShowing)
@@ -230,9 +230,7 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
 
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
-    Creature(texturePath,bMap,pos,gameLayer,id){
-    //creature_sprite->setColor(cocos2d::Color3B::RED);
-    
+    Creature(texturePath,bMap,pos,gameLayer,id){    
 }
 void Enemy::update(float dt){
     /*For statistics*/

@@ -72,6 +72,14 @@ enum DirectionAttacke{
     BOTTOMLEFT_TO_TOPRIGHT,
     BOTTOMRIGHT_TO_TOPLEFT,
 };
+enum DirectionMove{
+    LEFT,
+    RIGHT,
+    TOP,
+    DOWN,
+    IN,
+    OUT,
+};
 struct WorldTiming{
     static const unsigned int SLOW;
     static const unsigned int NORM;

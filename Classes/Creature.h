@@ -23,6 +23,7 @@ public:
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 
+    inline Weapon* getWeapon() { return creature_weapon;}
     /*Setters*/
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);

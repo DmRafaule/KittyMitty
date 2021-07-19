@@ -156,7 +156,7 @@ void ControlBall::createEffect(void* node){
 ///////////////////////////////////////////////////////////////*ControlKey class*////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 cocos2d::Vec2 ControlKeys::directionPoint(0,0);
-float ControlKeys::angleDirection = 0;
+DirectionMove ControlKeys::directionMove = DirectionMove::LEFT;
 bool  ControlKeys::isMoving = false;
 
 ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
@@ -175,8 +175,9 @@ ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
     button_left->addTouchEventListener([&,layer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType event){
         if (event == cocos2d::ui::Widget::TouchEventType::BEGAN){
             isMoving = true;
-            angleDirection = -270;
+            directionMove = DirectionMove::LEFT;
             directionPoint = cocos2d::Vec2(-10,0);
+            static_cast<GameLayer*>(layer)->getPlayer()->getWeapon()->getSprite()->setFlippedX(true);
         }
         else if (event == cocos2d::ui::Widget::TouchEventType::ENDED){
             isMoving = false;
@@ -193,8 +194,9 @@ ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
     button_right->addTouchEventListener([&,layer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType event){
         if (event == cocos2d::ui::Widget::TouchEventType::BEGAN){
             isMoving = true;
-            angleDirection = 90;
+            directionMove = DirectionMove::RIGHT;
             directionPoint = cocos2d::Vec2(10,0);
+            static_cast<GameLayer*>(layer)->getPlayer()->getWeapon()->getSprite()->setFlippedX(false);
         }
         else if (event == cocos2d::ui::Widget::TouchEventType::ENDED){
             isMoving = false;
