@@ -17,7 +17,7 @@ public:
     /*Getters*/
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline CreatureType getCreatureType() {return creature_type; };
-    inline uint getCreatureSpeed() { return creature_speed; };
+    inline uint getCreatureSpeed() { return creature_speed_current; };
     inline uint getCreatureBlood() {return creature_blood; };
     inline uint getCreatureStamina() {return creature_stamina; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
@@ -27,7 +27,7 @@ public:
     /*Setters*/
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
-    void setCreatureSpeed(uint creature_speed);
+    void setCreatureSpeed(uint creature_speed_current);
     void setCreatureBlood(uint creature_blood);
     void setCreatureStamina(uint creature_stamina);
     void setStatistics();//Init information about creature node 
@@ -57,15 +57,19 @@ protected:
 protected:
     /*Properties related to whole creature*/
     std::vector<PartCreature> creature_parts;//Container for holding info about creature_parts of creature 
+    cocos2d::PhysicsBody*     creature_physic_body;
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
     Weapon*                   creature_weapon;
     CreatureType              creature_type;//Type of creature
-    uint                      creature_speed;//Creature speed
     uint                      creature_blood;//How many blood liquid in creature
+    float                     crearure_mass;
+    float                     creature_speed_current;//Creature speed
+    float                     creature_speed_max;//Max speed for this creature
     uint                      creature_stamina;//How long creature can fight efficient
-    void*                     currentlayer;//Current plaing scene;
+    float                     creature_stamina_regeneration_counter;//Timer for regenaration stamina
     bool                      isStatisticsShowing;
+    void*                     currentlayer;//Current plaing scene;
 };
 
 

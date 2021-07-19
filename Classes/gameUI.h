@@ -59,11 +59,12 @@ public:
     virtual void createEffect( void* node) override;
     virtual void removeEffect( void* node) override;
 private:
+    float doubleDelay;
+    int doubleCount;
+    bool isdouble;
     bool forPlayer;
     bool forEnemy;
-    float doubleDelay = 0;
-    int doubleCount = 0;
-    bool isdouble = false;
+
 };
 /**
  * @brief

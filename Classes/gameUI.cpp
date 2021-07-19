@@ -14,6 +14,9 @@ GameUI::~GameUI(){}
 ShowStats::ShowStats(void* layer){
     forPlayer   = false;
     forEnemy    = false;
+    doubleDelay = 0;
+    doubleCount = 0;
+    isdouble = false;
 }
 ShowStats::~ShowStats(){}
 void ShowStats::update(float dt,void* Layer){
@@ -198,7 +201,8 @@ ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
         if (event == cocos2d::ui::Widget::TouchEventType::BEGAN){
             isMoving = true;
             directionMove = DirectionMove::LEFT;
-            directionPoint = cocos2d::Vec2(-10,0);
+            float sp = static_cast<GameLayer*>(layer)->getPlayer()->getCreatureSpeed();
+            directionPoint = cocos2d::Vec2(sp * -1,0);
             static_cast<GameLayer*>(layer)->getPlayer()->getWeapon()->getSprite()->setFlippedX(true);
         }
         else if (event == cocos2d::ui::Widget::TouchEventType::ENDED){
@@ -221,7 +225,7 @@ ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
         if (event == cocos2d::ui::Widget::TouchEventType::BEGAN){
             isMoving = true;
             directionMove = DirectionMove::RIGHT;
-            directionPoint = cocos2d::Vec2(10,0);
+            directionPoint = cocos2d::Vec2(static_cast<GameLayer*>(layer)->getPlayer()->getCreatureSpeed(),0);
             static_cast<GameLayer*>(layer)->getPlayer()->getWeapon()->getSprite()->setFlippedX(false);
         }
         else if (event == cocos2d::ui::Widget::TouchEventType::ENDED){

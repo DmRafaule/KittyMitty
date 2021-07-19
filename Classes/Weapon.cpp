@@ -10,16 +10,24 @@ void Weapon::setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol)
    this->weapon_caracteristics.weapon_penetratingPower = w_penP;
    this->weapon_caracteristics.weapon_solidity = w_sol;
 }
+void Weapon::takeEffect(void* owner){
+   static_cast<Creature*>(owner)->setCreatureStamina(static_cast<Creature*>(owner)->getCreatureStamina()-10);//Here make some effects
+}
 
 Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    this->weapon_owner = weapon_owner;
+   weapon_mass = 10;
    weapon_caracteristics.weapon_cuttinPower = 10;
    weapon_caracteristics.weapon_penetratingPower = 5;
    weapon_caracteristics.weapon_crushingPower =  1;
    weapon_caracteristics.weapon_solidity = 30;
-   /*Set up sprite for weapon(how it will looks)*/
    
    weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
+   weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size);
+   weapon_physic_body->setMass(weapon_mass);
+   weapon_physic_body->setDynamic(true);
+   weapon_physic_body->setGravityEnable(true);
+   weapon_sprite->setPhysicsBody(weapon_physic_body);
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
    weapon_sprite->setScale(5);
    cocos2d::Texture2D::TexParams tpar = {
@@ -38,6 +46,7 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
                                       weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
 }
 void Sword::attacke(){
+   
    /*Get weapon owner's direction of movement */
    DirectionMove dirctionMove = ControlKeys::getDirectionMove();
    /*For running action*/
@@ -587,6 +596,7 @@ void Sword::interact(void* target_creature){
 
 Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    this->weapon_owner = weapon_owner;
+   weapon_mass = 10;
    weapon_caracteristics.weapon_cuttinPower = 10;
    weapon_caracteristics.weapon_penetratingPower = 10;
    weapon_caracteristics.weapon_crushingPower =  15;
@@ -594,6 +604,11 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    /*Set up sprite for weapon(how it will looks)*/
    
    weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
+   weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size);
+   weapon_physic_body->setMass(weapon_mass);
+   weapon_physic_body->setDynamic(true);
+   weapon_physic_body->setGravityEnable(true);
+   weapon_sprite->setPhysicsBody(weapon_physic_body);
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
    weapon_sprite->setScale(5);
    cocos2d::Texture2D::TexParams tpar = {
@@ -726,6 +741,7 @@ void Axe::interact(void* target_creature){
 
 Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    this->weapon_owner = weapon_owner;
+   weapon_mass = 10;
    weapon_caracteristics.weapon_cuttinPower = 5;
    weapon_caracteristics.weapon_penetratingPower = 20;
    weapon_caracteristics.weapon_crushingPower =  10;
@@ -733,6 +749,11 @@ Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    /*Set up sprite for weapon(how it will looks)*/
    
    weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
+   weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size);
+   weapon_physic_body->setMass(weapon_mass);
+   weapon_physic_body->setDynamic(true);
+   weapon_physic_body->setGravityEnable(true);
+   weapon_sprite->setPhysicsBody(weapon_physic_body);
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
    weapon_sprite->setScale(5);
    cocos2d::Texture2D::TexParams tpar = {

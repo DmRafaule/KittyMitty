@@ -35,11 +35,10 @@ Implement(L) weapon class [+]{
     Implement spetial attacks [-]
     }
 }
-Implement(L) damage logic [-] <1>{
+Implement(L) damage logic [+] <1>{
     Implement(L) damage status to part of body [+]
     Implement(L) damage status to organs       [+]
     Implement(L) choise, where to strike       [+]
-    Implement(C) slow down animation for entire layer [-]
 }
 Implement(UI) Camera for hero [+]
 Implement(UI) Test Level [-]{

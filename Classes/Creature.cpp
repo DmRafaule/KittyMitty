@@ -15,9 +15,11 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
             creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
             creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
             creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
-            creature_speed  = 30;
+            creature_speed_current  = 0;
+            creature_speed_max = 90;
             creature_stamina = 100;
             creature_blood   = 20;
+            crearure_mass   = 10;
             break;
         }
         case CreatureType::ANIMAL:{
@@ -25,6 +27,11 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
         }
     }
     creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
+    creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(creature_sprite->getBoundingBox().size);
+    creature_physic_body->setMass(crearure_mass);
+    creature_physic_body->setDynamic(true);
+    creature_physic_body->setGravityEnable(true);
+    creature_sprite->setPhysicsBody(creature_physic_body);
     creature_sprite->setPosition(pos);
     creature_sprite->setScale(5);
     /*This is prevent of bluring my textures*/
@@ -101,8 +108,8 @@ void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_typ
         }
     }
 }
-void Creature::setCreatureSpeed(uint creature_speed){
-    this->creature_speed = creature_speed;
+void Creature::setCreatureSpeed(uint creature_speed_current){
+    this->creature_speed_current = creature_speed_current;
 }
 void Creature::setCreatureBlood(uint creature_blood){
     this->creature_blood = creature_blood;
@@ -151,7 +158,28 @@ void Creature::setStatistics(){
                           part.part_status == PartCreatureStatus::CUTTED ? "cutted-" :
                           "killed");
         partStatus.append(std::to_string(part.part_densityDef) + "-" + std::to_string(part.part_penetrationDef) + "-" + std::to_string(part.part_crushingDef) + "\n");
+    
     }
+    partStatus.append("brain:");
+    partStatus.append(getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::NORMAL ? "norm\n" :
+                      getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::WONDED ? "wonded\n" :
+                      getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::CUTTED ? "cutted\n" :
+                      "killed\n");
+    partStatus.append("lungs:");
+    partStatus.append(getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::NORMAL ? "norm\n" :
+                      getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::WONDED ? "wonded\n" :
+                      getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::CUTTED ? "cutted\n" :
+                      "killed\n");
+    partStatus.append("heart:");
+    partStatus.append(getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::NORMAL ? "norm\n" :
+                      getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::WONDED ? "wonded\n" :
+                      getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::CUTTED ? "cutted\n" :
+                      "killed\n");
+    partStatus.append("gut:");
+    partStatus.append(getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::NORMAL ? "norm\n" :
+                      getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::WONDED ? "wonded\n" :
+                      getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::CUTTED ? "cutted\n" :
+                      "killed\n");
     /*Set strings about body*/
     partStatus.append("blood:" + std::to_string(creature_blood) + "l\n");    
     partStatus.append("stamina:" + std::to_string(creature_stamina) + "\n");
@@ -230,7 +258,7 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
 
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
-    Creature(texturePath,bMap,pos,gameLayer,id){    
+    Creature(texturePath,bMap,pos,gameLayer,id){
 }
 void Enemy::update(float dt){
     /*For statistics*/
@@ -247,6 +275,7 @@ Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void*
     Creature(texturePath,bMap,pos,gameLayer,id){
     enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
     currentInteractedEnemy = -1;
+    creature_stamina_regeneration_counter = 0;
 }
 void Player::update(float dt){
     /*For statistics*/
@@ -257,14 +286,25 @@ void Player::update(float dt){
     }
     //For moves of all body
     if (ControlKeys::getMoving()){
-        creature_sprite->runAction(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection()));
-        creature_weapon->getSprite()->runAction(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection()));
+        //Controle the speed of player
+        //Speed limit for creature
+        if (creature_speed_current < creature_speed_max)
+            creature_speed_current+=3;
+        //Breathtaken limit
+        if (creature_speed_current >= 70)
+            creature_stamina--;
+        creature_sprite->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection())));
+        //Weapon follow by body
+        creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection())));
     }
+    else 
+        creature_speed_current = 30;
     //For attacke
-    if (ControlAttc::getAttacke()){
+    if (ControlAttc::getAttacke() && creature_stamina >= 20){
         //Set to default state
         ControlAttc::setAttacke(false);
         creature_weapon->attacke();
+        creature_weapon->takeEffect(this);
         for (int i=0; i < enemyNode->size(); ++i)
             if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(creature_weapon->getDammageSprite()->getBoundingBox()))
                 currentInteractedEnemy = i;
@@ -274,6 +314,12 @@ void Player::update(float dt){
         }
             
         currentInteractedEnemy = -1;
+    }
+    //For regeneration of stamina
+    creature_stamina_regeneration_counter += dt;
+    if (creature_stamina < 100 && creature_stamina_regeneration_counter >= 1){
+        creature_stamina++;
+        creature_stamina_regeneration_counter = 0;
     }
     
 }
