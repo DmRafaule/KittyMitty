@@ -70,6 +70,7 @@ private:
     ShowStats*      shows;
     ControlKeys*    ckeys;
     ControlAttc*    cattc;
+    ControlTargeting* ctarg;
     //Window UI
     cocos2d::Size visibleSize;
     cocos2d::SpriteBatchNode* spriteSheet;

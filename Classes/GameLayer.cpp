@@ -27,6 +27,7 @@ void GameLayer::menuCloseCallback(cocos2d::Ref* pSender){
     
     delete ckeys;
     delete cattc;
+    delete ctarg;
     delete player;
     cocos2d::Director::getInstance()->end();
 }
@@ -53,11 +54,13 @@ bool GameLayer::init(){
 void GameLayer::initUI(){
     if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
         shows = new ShowStats(this);
+        ctarg = new ControlTargeting(this);
         ckeys = new ControlKeys(cocos2d::Vec2(0.15,0.1),this);
         cattc = new ControlAttc(this);
     }
     else if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX){
         shows = new ShowStats(this);
+        ctarg = new ControlTargeting(this);
         ckeys = new ControlKeys(cocos2d::Vec2(0.15,0.1),this);
         cattc = new ControlAttc(this);
     }

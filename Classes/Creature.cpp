@@ -270,7 +270,6 @@ void Player::update(float dt){
                 currentInteractedEnemy = i;
         /*If we hit the enemy*/
         if (currentInteractedEnemy >= 0){
-            ControlTargeting::setTarget(ControlAttc::getDirectionAttacke(),currentlayer);
             creature_weapon->interact(enemyNode->at(currentInteractedEnemy));
         }
             

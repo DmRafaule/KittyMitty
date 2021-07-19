@@ -61,6 +61,9 @@ public:
 private:
     bool forPlayer;
     bool forEnemy;
+    float doubleDelay = 0;
+    int doubleCount = 0;
+    bool isdouble = false;
 };
 /**
  * @brief
@@ -87,6 +90,7 @@ private:
 private:
     static PartCreatureType target;//Which target(part of body) will be attacked
     static cocos2d::Vec2 offset;
+    bool clickForOpen;
 };
 /**
  * @brief
