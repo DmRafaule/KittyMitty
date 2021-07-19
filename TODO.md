@@ -53,4 +53,14 @@ Implement(UI) Test Level [-]{
 
 NOW Fix actions for sword moves 
 NOW Fix targeting system or reinvent them
+Refactors:
+    class ControlKeys           [+]
+    class ControlTargeting      [+]
+    class ControlAttack         [+]
+    class ShowStatistics        [+]
+
+    class Creature              [-]
+        class Enemy             [-]
+        class Player            [-]
+    class Weapon                [-]
 

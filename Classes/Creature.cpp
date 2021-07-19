@@ -83,11 +83,11 @@ void Creature::getStatistics(){
         creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
         creature_statistics->setPosition(cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
                                                        creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2));
-        static_cast<GameLayer*>(currentlayer)->addChild(creature_statistics,Layer::USER_INTERFACE);
+        static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->addChild(creature_statistics,Layer::USER_INTERFACE);
     }
     else{
         isStatisticsShowing = false;
-        static_cast<GameLayer*>(currentlayer)->removeChild(creature_statistics);
+        static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->removeChild(creature_statistics);
     }
 }
 
