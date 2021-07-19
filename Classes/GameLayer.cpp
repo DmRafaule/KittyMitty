@@ -11,8 +11,17 @@ std::string LayerChild::ball_attacke = "ball_attacke";
 std::string LayerChild::enemy = "enemy";
 std::string LayerChild::text = "text";
 
+const unsigned int WorldTiming::SLOW = 10;
+const unsigned int WorldTiming::NORM = 1;
+const float WorldTiming::FAST = 0.1;
+const float WorldTiming::RSLOW = -10;
+const float WorldTiming::RNORM = -1;
+const float WorldTiming::RFAST = -0.1;
+
 cocos2d::Scene* GameLayer::createScene(){
-    return GameLayer::create();
+    cocos2d::Scene* scene = GameLayer::create();
+    
+    return scene;
 }
 void GameLayer::menuCloseCallback(cocos2d::Ref* pSender){
     
@@ -26,11 +35,14 @@ bool GameLayer::init(){
 
     if ( !cocos2d::Scene::init() )
         return false;
+    cocos2d::Layer* gameSessionLayer = cocos2d::Layer::create();
+    cocos2d::Layer* UILayer = cocos2d::Layer::create();
+    this->addChild(gameSessionLayer,Layer::MIDLEGROUND,"gamesession");
+    this->addChild(UILayer,Layer::USER_INTERFACE,"ui");
     
     level = cocos2d::TMXTiledMap::create("world/area0/level0.tmx");
     level->setScale(2);
-    this->addChild(level);
-    
+    this->getChildByName("gamesession")->addChild(level,1);
 
     initVarsAndObj();
     initListeners();
@@ -66,7 +78,7 @@ void GameLayer::initVarsAndObj(){
     
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
     spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
-    this->addChild(spriteSheet);
+    this->getChildByName("gamesession")->addChild(spriteSheet);
 
     Enemy* e;
     LayerChild::enemy = "enemy0";
@@ -108,6 +120,7 @@ void GameLayer::initVarsAndObj(){
 
 
 void GameLayer::update(float dt){
+    ControlTargeting::updateTargeting(this);
     shows->update(dt,this);
     ckeys->update(dt,this);
     cattc->update(dt,this);

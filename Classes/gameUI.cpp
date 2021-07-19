@@ -5,29 +5,21 @@
 ////////////////////////////////*GameUI class*/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //Here make some bitfield choise using | or &
-GameUI::GameUI(){
-
-}
-GameUI::~GameUI(){
-
-}
+GameUI::GameUI(){}
+GameUI::~GameUI(){}
 
 
 ShowStats::ShowStats(void* layer){
     forPlayer   = false;
     forEnemy    = false;
 }
-ShowStats::~ShowStats(){
-    
-}
-void ShowStats::update(float dt,void* Layer){
-    
-}
+ShowStats::~ShowStats(){}
+void ShowStats::update(float dt,void* Layer){}
 void ShowStats::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
         /*This is converting coordinates (expand them to global)*/
         cocos2d::Vec2 pos = static_cast<GameLayer*>(Layer)->convertToNodeSpace(touch[iterator]->getLocation());
-        if (static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::player)->getBoundingBox().containsPoint(pos)){
+        if (static_cast<GameLayer*>(Layer)->getChildByName("gamesession")->getChildByName(LayerChild::player)->getBoundingBox().containsPoint(pos)){
             static_cast<GameLayer*>(Layer)->getPlayer()->getStatistics();
         }
         for (Enemy*& enemy : *(static_cast<GameLayer*>(Layer)->getEnemy()))
@@ -35,21 +27,11 @@ void ShowStats::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Eve
                 enemy->getStatistics();
     }
 }
-void ShowStats::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-
-}
-void ShowStats::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-
-}
-void ShowStats::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-
-}
-void ShowStats::createEffect( void* node){
-
-}
-void ShowStats::removeEffect( void* node){
-
-}
+void ShowStats::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
+void ShowStats::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
+void ShowStats::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
+void ShowStats::createEffect( void* node){}
+void ShowStats::removeEffect( void* node){}
 ////////////////////////////////*Controle_Ball class*/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/
@@ -68,15 +50,9 @@ ControlBall::ControlBall(void* layer){
     ball->setPosition(ballDefaultPosition);
     static_cast<GameLayer*>(layer)->addChild(ball,Layer::USER_INTERFACE,LayerChild::ball);
 }
-ControlBall::~ControlBall(){
-
-}
-void ControlBall::update(float dt,void* Layer){
-
-}
-void ControlBall::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    
-}
+ControlBall::~ControlBall(){}
+void ControlBall::update(float dt,void* Layer){}
+void ControlBall::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
 void ControlBall::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
     /*Ended touch for control ball*/
@@ -193,7 +169,7 @@ ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
     button_left->setScale(2);
     button_left->setPosition(cocos2d::Vec2(100,30));
     
-    static_cast<GameLayer*>(layer)->addChild(button_left);
+    static_cast<GameLayer*>(layer)->getChildByName("ui")->addChild(button_left);
 
     button_right = cocos2d::Sprite::create("textures/controlB.png");
     button_right->getTexture()->setTexParameters(tpar);
@@ -202,7 +178,7 @@ ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
     button_right->setPosition(cocos2d::Vec2(button_left->getPosition().x + button_right->getBoundingBox().size.width*2,button_left->getPosition().y));
     
     
-    static_cast<GameLayer*>(layer)->addChild(button_right);
+    static_cast<GameLayer*>(layer)->getChildByName("ui")->addChild(button_right);
 }
 ControlKeys::~ControlKeys(){}
 void ControlKeys::update(float dt,void* layer){
@@ -260,14 +236,10 @@ ControlAttc::ControlAttc(void* layer){
     thSpr->setVisible(false);
     thSpr->setScale(1.3f);
     thSpr->setColor(cocos2d::Color3B::ORANGE);
-    static_cast<GameLayer*>(layer)->addChild(thSpr,Layer::USER_INTERFACE,LayerChild::ball_attacke);
+    static_cast<GameLayer*>(layer)->getChildByName("ui")->addChild(thSpr,Layer::USER_INTERFACE,LayerChild::ball_attacke);
 }
-ControlAttc::~ControlAttc(){
-
-}
-void ControlAttc::update(float dt, void* layer){
-    
-}
+ControlAttc::~ControlAttc(){}
+void ControlAttc::update(float dt, void* layer){}
 void ControlAttc::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
     /*On right part of screen*/
@@ -286,7 +258,7 @@ void ControlAttc::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::E
         isRightPlaceForControle = false;
         //Find end position of touch
         touchPointEnd = touchPoint;
-        static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setVisible(false);
+        static_cast<GameLayer*>(Layer)->getChildByName("ui")->getChildByName(LayerChild::ball_attacke)->setVisible(false);
         //Calulate attacke direction
         setDirectionAttacke();
     }
@@ -296,10 +268,9 @@ void ControlAttc::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::E
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
     if (isRightPlaceForControle){
         cocos2d::Vec2 convertedPos = static_cast<GameLayer*>(Layer)->convertToNodeSpace(touch[iterator]->getLocation());
-        OUT("x=%f,y=%f\n",convertedPos.x,convertedPos.y);
         touchPoint = convertedPos;
-        static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setPosition(touchPoint);
-        static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball_attacke)->setVisible(true);
+        static_cast<GameLayer*>(Layer)->getChildByName("ui")->getChildByName(LayerChild::ball_attacke)->setPosition(touchPoint);
+        static_cast<GameLayer*>(Layer)->getChildByName("ui")->getChildByName(LayerChild::ball_attacke)->setVisible(true);
     }
     }
 }
@@ -365,11 +336,15 @@ void ControlAttc::removeEffect( void* node){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/
 PartCreatureType ControlTargeting::target = PartCreatureType::HEAD;
-
+cocos2d::Vec2 ControlTargeting::offset = cocos2d::Vec2(0.9,0.8);
+bool ControlTargeting::isHead = false;
 
 ControlTargeting::ControlTargeting(void* layer){}
 ControlTargeting::~ControlTargeting(){}
 
+void ControlTargeting::updateTargeting(void* currentLayer){
+
+}
 void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer){
     /*Remove our buttons before drew new one*/
     unsetTarget(currentLayer);
@@ -388,6 +363,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         direction == DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT ||
         direction == DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT ||
         direction == DirectionAttacke::RIGHT_TO_LEFT){
+        isHead = true;
         targetChoser = cocos2d::ui::Button::create("textures/targetingHead.png");
         targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
         targetChoser->setPosition(cocos2d::Vec2(static_cast<GameLayer*>(currentLayer)->getPlayer()->getCreatureSprite()->getPosition().x - 100,
@@ -400,7 +376,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
             }
         });
 
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHead");
+        static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tHead");
     }
     /*This attacks will trigged ability attacke a upper torse*/
     if (direction == DirectionAttacke::TOP_TO_DOWN            || 
@@ -417,7 +393,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
             ControlTargeting::target = PartCreatureType::UPPER_TORSE;
             unsetTarget(currentLayer);
         });
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tUpperT");
+        static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tUpperT");
     }
     /*This attacks will trigged ability attacke a bottom torse*/
     if (direction == DirectionAttacke::LEFT_TO_RIGHT          ||
@@ -434,7 +410,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
             ControlTargeting::target = PartCreatureType::BUTTOM_TORSE;
             unsetTarget(currentLayer);
         });
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tBottomT");
+        static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tBottomT");
     }
     /*This attacks will trigged ability attacke a left leg*/
     if (direction == DirectionAttacke::DOWN_TO_TOP            ||
@@ -448,7 +424,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
             ControlTargeting::target = PartCreatureType::LEG_LEFT;
             unsetTarget(currentLayer);
         });
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tLegL");
+        static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tLegL");
     }
     /*This attacks will trigged ability attacke a right leg*/
     if (direction == DirectionAttacke::DOWN_TO_TOP          ||
@@ -462,7 +438,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
             ControlTargeting::target = PartCreatureType::LEG_RIGHT;
             unsetTarget(currentLayer);
         });
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tLegR");
+        static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tLegR");
     }
     /*This attacks will trigged ability attacke a left hand*/
     if (direction == DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT){
@@ -475,7 +451,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
             ControlTargeting::target = PartCreatureType::HAND_LEFT;
             unsetTarget(currentLayer);
         });
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHandL");
+        static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tHandL");
     }
     /*This attacks will trigged ability attacke a right hand*/
     if (direction == DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT){
@@ -488,16 +464,17 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
             ControlTargeting::target = PartCreatureType::HAND_RIGHT;
             unsetTarget(currentLayer);
         });
-        static_cast<GameLayer*>(currentLayer)->addChild(targetChoser,Layer::USER_INTERFACE,"tHandR");
+        static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tHandR");
     }
     
 }
 void ControlTargeting::unsetTarget(void* currentLayer){
-    static_cast<GameLayer*>(currentLayer)->removeChildByName("tHead");
-    static_cast<GameLayer*>(currentLayer)->removeChildByName("tUpperT");
-    static_cast<GameLayer*>(currentLayer)->removeChildByName("tHandL");
-    static_cast<GameLayer*>(currentLayer)->removeChildByName("tHandR");
-    static_cast<GameLayer*>(currentLayer)->removeChildByName("tBottomT");
-    static_cast<GameLayer*>(currentLayer)->removeChildByName("tLegR");
-    static_cast<GameLayer*>(currentLayer)->removeChildByName("tLegL");
+    isHead = false;
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->removeChildByName("tHead");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->removeChildByName("tUpperT");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->removeChildByName("tHandL");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->removeChildByName("tHandR");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->removeChildByName("tBottomT");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->removeChildByName("tLegR");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->removeChildByName("tLegL");
 }

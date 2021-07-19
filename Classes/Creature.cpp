@@ -35,7 +35,7 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
     };
     creature_sprite->getTexture()->setTexParameters(tpar);
-    static_cast<GameLayer*>(currentlayer)->addChild(creature_sprite,Layer::MIDLEGROUND,id);
+    static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->addChild(creature_sprite,Layer::MIDLEGROUND,id);
 }
 Creature::~Creature(){
     creature_parts.clear();
@@ -174,8 +174,8 @@ void Creature::setWeapon(WeaponType wMap ){
     }
     creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
     creature_weapon->getDammageSprite()->setPosition(creature_weapon->getSprite()->getPosition());
-    static_cast<GameLayer*>(currentlayer)->addChild(creature_weapon->getSprite(),Layer::MIDLEGROUND);
-    static_cast<GameLayer*>(currentlayer)->addChild(creature_weapon->getDammageSprite(),Layer::MIDLEGROUND);
+    static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->addChild(creature_weapon->getSprite(),Layer::MIDLEGROUND);
+    static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->addChild(creature_weapon->getDammageSprite(),Layer::MIDLEGROUND);
 }
 
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////

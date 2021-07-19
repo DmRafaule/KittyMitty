@@ -79,6 +79,7 @@ public:
      * @brief set some ui(one buttom for each part of body) for choosing target
     */
     static void setTarget(DirectionAttacke direction, void* currentLayer);
+    static void updateTargeting(void* currentLayer);
 
 private:
     /**
@@ -87,6 +88,8 @@ private:
     static void unsetTarget(void* currentLayer);
 private:
     static PartCreatureType target;//Which target(part of body) will be attacked
+    static cocos2d::Vec2 offset;
+    static bool isHead;
 };
 /**
  * @brief

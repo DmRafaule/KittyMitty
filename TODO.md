@@ -50,3 +50,7 @@ Implement(UI) Test Level [-]{
     Implement(Ph) collisions [-]
     Implement(Ph) gravity [-]
 } 
+
+NOW Fix actions for sword moves 
+NOW Fix targeting system or reinvent them
+

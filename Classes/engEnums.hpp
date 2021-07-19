@@ -72,13 +72,20 @@ enum DirectionAttacke{
     BOTTOMLEFT_TO_TOPRIGHT,
     BOTTOMRIGHT_TO_TOPLEFT,
 };
+struct WorldTiming{
+    static const unsigned int SLOW;
+    static const unsigned int NORM;
+    static const float FAST;
+    static const float RSLOW;
+    static const float RNORM;
+    static const float RFAST;
+};
 
 enum WeaponType : uint{
    SWORD,
    SPEAR,
    AXE,
 };
-
 struct WeaponCaracteristics{
    uint weapon_cuttinPower;
    uint weapon_penetratingPower;
