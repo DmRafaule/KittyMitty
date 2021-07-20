@@ -29,8 +29,10 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
     creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(creature_sprite->getBoundingBox().size);
     creature_physic_body->setMass(crearure_mass);
-    creature_physic_body->setDynamic(false);
+    creature_physic_body->setDynamic(true);
     creature_physic_body->setGravityEnable(true);
+    creature_physic_body->setCategoryBitmask(0x02);
+    creature_physic_body->setCollisionBitmask(0x01);
     creature_sprite->setPhysicsBody(creature_physic_body);
     creature_sprite->setPosition(pos);
     creature_sprite->setScale(5);
@@ -297,8 +299,11 @@ void Player::update(float dt){
         //Weapon follow by body
         creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection())));
     }
-    else 
+    else{ 
+        creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(0.1f,cocos2d::Vec2(creature_sprite->getPosition().x - creature_weapon->getSprite()->getPosition().x,
+                                                                                                                                    creature_sprite->getPosition().y - creature_weapon->getSprite()->getPosition().y))));
         creature_speed_current = 30;
+    }
     //For attacke
     if (ControlAttc::getAttacke() && creature_stamina >= 20){
         //Set to default state

@@ -70,7 +70,7 @@ void GameLayer::intCreatures(){
 
     Enemy* e;
     LayerChild::enemy = "enemy0";
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,100),this,LayerChild::enemy);
+    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this,LayerChild::enemy);
     e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,0)),
                                                                 cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,0)),
                                                                 nullptr)));
@@ -78,28 +78,21 @@ void GameLayer::intCreatures(){
     enemy.push_back(e);
 
     LayerChild::enemy = "enemy1";
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(100,100),this,LayerChild::enemy);
-    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(0,200)),
-                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(0,-200)),
+    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(100,340),this,LayerChild::enemy);
+    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(200,0)),
+                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-200,0)),
                                                                 nullptr)));
     e->setWeapon(WeaponType::AXE);
     enemy.push_back(e);
 
-    LayerChild::enemy = "enemy2";
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(550,300),this,LayerChild::enemy);
-    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,-100)),
-                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,100)),
-                                                                nullptr)));
+
+    LayerChild::enemy = "enemy3";
+    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(700,160),this,LayerChild::enemy);
     e->setWeapon(WeaponType::SPEAR);
     enemy.push_back(e);
 
-    LayerChild::enemy = "enemy3";
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(300,300),this,LayerChild::enemy);
-    e->setWeapon(WeaponType::SWORD);
-    enemy.push_back(e);
 
-
-    player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,150),this,LayerChild::player);
+    player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this,LayerChild::player);
     player->setWeapon(WeaponType::SWORD); 
     /*Init camera. And set on player*/
     
@@ -121,12 +114,17 @@ void GameLayer::initUI(){
 }
 void GameLayer::initListeners(){
     /*Init listeners*/
+    /*Init listeners for graphycs*/
     auto listener = cocos2d::EventListenerTouchAllAtOnce::create();
     listener->onTouchesBegan = CC_CALLBACK_2(GameLayer::touchBegan,this);
     listener->onTouchesEnded = CC_CALLBACK_2(GameLayer::touchEnded,this);
     listener->onTouchesMoved = CC_CALLBACK_2(GameLayer::touchMoved,this);
     listener->onTouchesCancelled = CC_CALLBACK_2(GameLayer::touchCanceled,this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener,this);
+    /*Init listeners for physics*/
+    auto ph_listener = cocos2d::EventListenerPhysicsContact::create();
+    ph_listener->onContactBegin = CC_CALLBACK_1(GameLayer::contactBegan,this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(ph_listener,this);
     /*Start update this layer*/
     this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
 }
@@ -154,4 +152,16 @@ void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* ev
 }
 void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
     cattc->updateTouchCanceled(touch,event,this);
+}
+bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
+    cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
+    cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
+    //Check if body was collided
+    if (a->getCategoryBitmask() & b->getCollisionBitmask() == 0 ||
+        b->getCategoryBitmask() & a->getCollisionBitmask() == 0){
+        
+        return false;
+    }
+    
+    return true;
 }

@@ -64,6 +64,7 @@ private:
         void touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
         void touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
         void touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
+        bool contactBegan(cocos2d::PhysicsContact &contact);
     /* initialize variables and custom objects*/
     void intCreatures();
     /**

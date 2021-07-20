@@ -5,11 +5,11 @@
 Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    weapon_mass = 10;
    weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
-   weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size);
-   weapon_physic_body->setMass(weapon_mass);
-   weapon_physic_body->setDynamic(false);
-   weapon_physic_body->setGravityEnable(true);
-   weapon_sprite->setPhysicsBody(weapon_physic_body);
+   //weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size);
+   //weapon_physic_body->setMass(weapon_mass);
+   //weapon_physic_body->setDynamic(false);
+   //weapon_physic_body->setGravityEnable(true);
+   //weapon_sprite->setPhysicsBody(weapon_physic_body);
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
    weapon_sprite->setScale(5);
    cocos2d::Texture2D::TexParams tpar = {
@@ -594,7 +594,7 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner):
    weapon_caracteristics.weapon_crushingPower =  1;
    weapon_caracteristics.weapon_solidity = 30;
    weapon_caracteristics.weapon_mass = 20;
-   weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
+   //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
 Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner):
@@ -605,7 +605,7 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner):
    weapon_caracteristics.weapon_crushingPower =  15;
    weapon_caracteristics.weapon_solidity = 10;
    weapon_caracteristics.weapon_mass = 20;
-   weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
+   //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
 Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner) :
@@ -617,5 +617,5 @@ Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner) :
    weapon_caracteristics.weapon_crushingPower =  10;
    weapon_caracteristics.weapon_solidity = 12;
    weapon_caracteristics.weapon_mass = 20;
-   weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
+   //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
