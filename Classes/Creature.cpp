@@ -29,7 +29,7 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
     creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(creature_sprite->getBoundingBox().size);
     creature_physic_body->setMass(crearure_mass);
-    creature_physic_body->setDynamic(true);
+    creature_physic_body->setDynamic(false);
     creature_physic_body->setGravityEnable(true);
     creature_sprite->setPhysicsBody(creature_physic_body);
     creature_sprite->setPosition(pos);
@@ -323,7 +323,6 @@ void Player::update(float dt){
     }
     
 }
-
 
 /**Some code for future
  **First clean engine's calls

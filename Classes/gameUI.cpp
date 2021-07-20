@@ -272,9 +272,10 @@ void ControlAttc::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::E
         //Find end position of touch
         touchPointEnd = touchPoint;
         //Calulate attacke direction Only if lenght of touch line more than ...
-        if (std::abs(touchPointEnd.x - touchPointStart.x) > cocos2d::Director::getInstance()->getVisibleSize().width/4 ||
-            std::abs(touchPointEnd.y - touchPointStart.y) > cocos2d::Director::getInstance()->getVisibleSize().height/4)
+        if (std::abs(touchPointEnd.x - touchPointStart.x) > cocos2d::Director::getInstance()->getVisibleSize().width/6 ||
+            std::abs(touchPointEnd.y - touchPointStart.y) > cocos2d::Director::getInstance()->getVisibleSize().height/4){
             setDirectionAttacke();
+        }
     }
     }
 }

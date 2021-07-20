@@ -12,17 +12,17 @@ public:
    /**
     * @param type set up weapon characteristics and sprite and sprite_hitbox
    */
-   Weapon();
+   Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner);
    virtual ~Weapon();
    /**
     * @brief What kind of attacke run(just for animation and properly movements for each attack)
     * Depends on direction attack ..
    */
-   virtual void attacke() = 0;
+   virtual void attacke();
    /**
     * @brief How some kind of attack will make some change on target
    */
-   virtual void interact(void* target_creature) = 0;
+   virtual void interact(void* target_creature);
    /**
     * @brief How some kind of attack will make some change on owner
    */
@@ -48,7 +48,7 @@ public:
     * @param w_crushP crushing power
     * @param w_sol   solidity of weapon
    */
-   void setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol);
+   void setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol,uint w_mass);
 protected:
    cocos2d::Sprite* weapon_sprite;              //What player can see
    cocos2d::Sprite* weapon_damage_hitbox;       //What detect collision between weapon and enemies
@@ -64,8 +64,6 @@ protected:
 class Sword : public Weapon{
 public:
    Sword(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
-   virtual void attacke() override;
-   virtual void interact(void* target_creature) override;
 };
 /**
  * @brief Implement stock axe
@@ -73,8 +71,6 @@ public:
 class Axe : public Weapon{
 public:
    Axe(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
-   virtual void attacke() override;
-   virtual void interact(void* target_creature) override;
 };
 /**
  * @brief Implement stock spear
@@ -82,6 +78,4 @@ public:
 class Spear : public Weapon{
 public:
    Spear(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
-   virtual void attacke() override;
-   virtual void interact(void* target_creature) override;
 };

@@ -27,9 +27,11 @@
 
 #include <cocos2d.h>
 #include "gameUI.h"
+#include "World.h"
 #include "Creature.h"
 #include "engMacros.hpp"
 #include "engEnums.hpp"
+
 
 class GameLayer : public cocos2d::Scene{
 public:
@@ -44,7 +46,12 @@ public:
     */
     inline Player* getPlayer(){ return player;};
     inline std::vector<Enemy*>* getEnemy(){ return &enemy;};
+    inline cocos2d::TMXTiledMap* getMap(){ return level;};
 private:
+    /**
+     * initialize level using tmx file
+    */
+    void initLevel(std::string level_path);
     /**
      * initialize user interface(for phones it will be controle ball, screen action and some buttons) for desktop it will be keyboard and mouse
     */
@@ -58,10 +65,11 @@ private:
         void touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
         void touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
     /* initialize variables and custom objects*/
-    void initVarsAndObj();
+    void intCreatures();
     /**
      * update all objects and var
     */
+    void initLayers();
     void update(float dt);
     
 
@@ -76,6 +84,8 @@ private:
     cocos2d::SpriteBatchNode* spriteSheet;
     //Game obj
     cocos2d::TMXTiledMap* level;
+    cocos2d::TMXLayer* level_layer_midleground;
+    World*  world;
     Player* player;
     std::vector<Enemy*> enemy;
 };

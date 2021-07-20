@@ -1,0 +1,10 @@
+cocos2d::Point p = cocos2d::Point(20,96);
+    int tileGID = level_layer_midleground->getTileGIDAt(p);
+    //If tile exist on the grid
+    if (tileGID){
+        //Get properties of tile
+        cocos2d::Value property = level->getPropertiesForGID(tileGID);
+        //Get specific value of property
+        bool isHere = property.asValueMap()["tis"].asInt();
+        float dest = property.asValueMap()["dest"].asFloat();
+    }

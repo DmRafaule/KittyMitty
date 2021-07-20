@@ -99,4 +99,5 @@ struct WeaponCaracteristics{
    uint weapon_penetratingPower;
    uint weapon_crushingPower;
    uint weapon_solidity;
+   uint weapon_mass;
 };
