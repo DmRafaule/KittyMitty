@@ -5,18 +5,14 @@
 #include "Creature.h"
 
 
-std::string LayerChild::player = "player";
-std::string LayerChild::ball = "ball";
-std::string LayerChild::ball_attacke = "ball_attacke";
-std::string LayerChild::enemy = "enemy";
-std::string LayerChild::text = "text";
+std::string SceneEntities::player = "player";
+std::string SceneEntities::ball = "ball";
+std::string SceneEntities::ball_attacke = "ball_attacke";
+std::vector<std::string> SceneEntities::enemy(0);
+std::string SceneEntities::text = "text";
+std::string SceneEntities::ui = "ui";
+std::string SceneEntities::gamesession = "gamesession";
 
-const unsigned int WorldTiming::SLOW = 10;
-const unsigned int WorldTiming::NORM = 1;
-const float WorldTiming::FAST = 0.1;
-const float WorldTiming::RSLOW = -10;
-const float WorldTiming::RNORM = -1;
-const float WorldTiming::RFAST = -0.1;
 
 cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Scene* scene = GameLayer::createWithPhysics();
@@ -54,9 +50,9 @@ bool GameLayer::init(){
 void GameLayer::initLayers(){
     
     cocos2d::Layer* gameSessionLayer = cocos2d::Layer::create();
-    this->addChild(gameSessionLayer,Layer::MIDLEGROUND,"gamesession");
+    this->addChild(gameSessionLayer,ZLevel::MIDLEGROUND,SceneEntities::gamesession);
     cocos2d::Layer* UILayer = cocos2d::Layer::create();
-    this->addChild(UILayer,Layer::USER_INTERFACE,"ui");
+    this->addChild(UILayer,ZLevel::USER_INTERFACE,SceneEntities::ui);
 }
 void GameLayer::initLevel(std::string level_path){
     world = new World(level_path,this);
@@ -66,19 +62,19 @@ void GameLayer::intCreatures(){
     
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
     spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
-    this->getChildByName("gamesession")->addChild(spriteSheet);
+    this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
 
     Enemy* e;
-    LayerChild::enemy = "enemy0";
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this,LayerChild::enemy);
+    SceneEntities::enemy.push_back("enemy0");
+    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
     e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,0)),
                                                                 cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,0)),
                                                                 nullptr)));
     e->setWeapon(WeaponType::SWORD);
     enemy.push_back(e);
 
-    LayerChild::enemy = "enemy1";
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(100,340),this,LayerChild::enemy);
+    SceneEntities::enemy.push_back("enemy1");
+    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(100,340),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
     e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(200,0)),
                                                                 cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-200,0)),
                                                                 nullptr)));
@@ -86,17 +82,17 @@ void GameLayer::intCreatures(){
     enemy.push_back(e);
 
 
-    LayerChild::enemy = "enemy3";
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(700,160),this,LayerChild::enemy);
+    SceneEntities::enemy.push_back("enemy2");
+    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(700,160),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
     e->setWeapon(WeaponType::SPEAR);
     enemy.push_back(e);
 
 
-    player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this,LayerChild::player);
+    player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this,SceneEntities::player);
     player->setWeapon(WeaponType::SWORD); 
     /*Init camera. And set on player*/
     
-    this->getChildByName("gamesession")->runAction(cocos2d::Follow::createWithOffset(player->getCreatureSprite(),-100,-100,cocos2d::Rect(0,0,2500,3200)));
+    this->getChildByName(SceneEntities::gamesession)->runAction(cocos2d::Follow::createWithOffset(player->getCreatureSprite(),-100,-100,cocos2d::Rect(0,0,2500,3200)));
 }
 void GameLayer::initUI(){
     if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){

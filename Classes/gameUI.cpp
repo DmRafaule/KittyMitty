@@ -32,9 +32,9 @@ void ShowStats::update(float dt,void* Layer){
 void ShowStats::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
         /*This is converting coordinates (expand them to global)*/
-        cocos2d::Vec2 pos = static_cast<GameLayer*>(Layer)->getChildByName("gamesession")->convertTouchToNodeSpace(touch[iterator]);
+        cocos2d::Vec2 pos = static_cast<GameLayer*>(Layer)->getChildByName(SceneEntities::gamesession)->convertTouchToNodeSpace(touch[iterator]);
         /*Double tap for player*/
-        if (static_cast<GameLayer*>(Layer)->getChildByName("gamesession")->getChildByName(LayerChild::player)->getBoundingBox().containsPoint(pos) && doubleDelay <= 0.5){
+        if (static_cast<GameLayer*>(Layer)->getChildByName(SceneEntities::gamesession)->getChildByName(SceneEntities::player)->getBoundingBox().containsPoint(pos) && doubleDelay <= 0.5){
             doubleCount++;
             isdouble = true;
             if (doubleCount == 2){
@@ -76,7 +76,7 @@ ControlBall::ControlBall(void* layer){
     auto ball = cocos2d::Sprite::create("textures/player.png");
     ball->setScale(1.3f);
     ball->setPosition(ballDefaultPosition);
-    static_cast<GameLayer*>(layer)->addChild(ball,Layer::USER_INTERFACE,LayerChild::ball);
+    static_cast<GameLayer*>(layer)->addChild(ball,ZLevel::USER_INTERFACE,SceneEntities::ball);
 }
 ControlBall::~ControlBall(){}
 void ControlBall::update(float dt,void* Layer){}
@@ -85,9 +85,9 @@ void ControlBall::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::E
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
     /*Ended touch for control ball*/
     if (isControlBall &&
-        static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
+        static_cast<GameLayer*>(Layer)->getChildByName(SceneEntities::ball)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
         isControlBall = false;
-        static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->setPosition(getBallDefaultPosition());
+        static_cast<GameLayer*>(Layer)->getChildByName(SceneEntities::ball)->setPosition(getBallDefaultPosition());
         removeEffect(Layer);
     }
     }
@@ -96,8 +96,8 @@ void ControlBall::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::E
     for (uint iterator = 0; iterator < touch.size(); ++iterator){
     touchPoint = touch[iterator]->getLocation();
     cocos2d::Vec2 pos = static_cast<GameLayer*>(Layer)->convertToNodeSpace(touch[iterator]->getLocation());
-    if (static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
-        static_cast<GameLayer*>(Layer)->getChildByName(LayerChild::ball)->setPosition(touch[iterator]->getLocation());
+    if (static_cast<GameLayer*>(Layer)->getChildByName(SceneEntities::ball)->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
+        static_cast<GameLayer*>(Layer)->getChildByName(SceneEntities::ball)->setPosition(touch[iterator]->getLocation());
         createEffect(Layer);
         isControlBall = true;
     }
@@ -387,7 +387,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
             unsetTarget(currentLayer);
         }
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tHead");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHead");
 
     /*This attacks will trigged ability attacke a upper torse*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingUpperTorse.png");
@@ -398,7 +398,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         ControlTargeting::target = PartCreatureType::UPPER_TORSE;
         unsetTarget(currentLayer);
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tUpperT");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,ZLevel::USER_INTERFACE,"tUpperT");
     /*This attacks will trigged ability attacke a bottom torse*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingBottomTorse.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -408,7 +408,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         ControlTargeting::target = PartCreatureType::BUTTOM_TORSE;
         unsetTarget(currentLayer);
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tBottomT");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,ZLevel::USER_INTERFACE,"tBottomT");
     /*This attacks will trigged ability attacke a left leg*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingLeg.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -418,7 +418,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         ControlTargeting::target = PartCreatureType::LEG_LEFT;
         unsetTarget(currentLayer);
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tLegL");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,ZLevel::USER_INTERFACE,"tLegL");
     /*This attacks will trigged ability attacke a right leg*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingLeg.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -428,7 +428,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         ControlTargeting::target = PartCreatureType::LEG_RIGHT;
         unsetTarget(currentLayer);
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tLegR");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,ZLevel::USER_INTERFACE,"tLegR");
     /*This attacks will trigged ability attacke a left hand*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingHand.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -439,7 +439,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         ControlTargeting::target = PartCreatureType::HAND_LEFT;
         unsetTarget(currentLayer);
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tHandL");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHandL");
     /*This attacks will trigged ability attacke a right hand*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingHand.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -450,7 +450,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
         ControlTargeting::target = PartCreatureType::HAND_RIGHT;
         unsetTarget(currentLayer);
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,Layer::USER_INTERFACE,"tHandR");
+    static_cast<GameLayer*>(currentLayer)->getChildByName("ui")->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHandR");
     
 }
 void ControlTargeting::unsetTarget(void* currentLayer){

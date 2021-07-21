@@ -43,19 +43,22 @@ struct PartOrgan {
     PartOrganType type;
     PartCreatureStatus status;
 };
-enum Layer{
+
+enum ZLevel{
     BACKGROUND,
     MIDLEGROUND,
     FOREGROUND,
     USER_INTERFACE,
 };
-struct LayerChild{
+struct SceneEntities{
+    static std::vector<std::string> enemy;
     static std::string player;
-    static std::string enemy;
     static std::string ball;
     static std::string ball_attacke;
     static std::string text;
     static std::string player_weapon;
+    static std::string ui;
+    static std::string gamesession;
 };
 
 enum TypeUI{
@@ -80,14 +83,7 @@ enum DirectionMove{
     IN,
     OUT,
 };
-struct WorldTiming{
-    static const unsigned int SLOW;
-    static const unsigned int NORM;
-    static const float FAST;
-    static const float RSLOW;
-    static const float RNORM;
-    static const float RFAST;
-};
+
 
 enum WeaponType : uint{
    SWORD,

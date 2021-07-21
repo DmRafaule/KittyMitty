@@ -41,12 +41,10 @@ public:
 
     
     virtual bool init();
-    /**
-     * @return pointer on player Creature
-    */
+
     inline Player* getPlayer(){ return player;};
     inline std::vector<Enemy*>* getEnemy(){ return &enemy;};
-    inline cocos2d::TMXTiledMap* getMap(){ return level;};
+    inline World* getWorld(){ return world;};
 private:
     /**
      * initialize level using tmx file
@@ -65,12 +63,11 @@ private:
         void touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
         void touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event);
         bool contactBegan(cocos2d::PhysicsContact &contact);
-    /* initialize variables and custom objects*/
+    /* initialize creatures and main herojects*/
     void intCreatures();
-    /**
-     * update all objects and var
-    */
+    /* Init scenes layers gamesession and ui*/
     void initLayers();
+    /* Update all entyties*/
     void update(float dt);
     
 
@@ -83,9 +80,7 @@ private:
     //Window UI
     cocos2d::Size visibleSize;
     cocos2d::SpriteBatchNode* spriteSheet;
-    //Game obj
-    cocos2d::TMXTiledMap* level;
-    cocos2d::TMXLayer* level_layer_midleground;
+    /*Game entyties*/
     World*  world;
     Player* player;
     std::vector<Enemy*> enemy;

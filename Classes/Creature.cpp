@@ -44,13 +44,13 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
     };
     creature_sprite->getTexture()->setTexParameters(tpar);
-    static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->addChild(creature_sprite,Layer::MIDLEGROUND,id);
+    static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_sprite,ZLevel::MIDLEGROUND,id);
 }
 Creature::~Creature(){
     creature_parts.clear();
 }
 void Creature::removeSprite(){
-    static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->removeChildByName(creature_sprite->getName());
+    static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->removeChildByName(creature_sprite->getName());
 }
 void Creature::removeStatistics(){
     if (isStatisticsShowing)
@@ -92,11 +92,11 @@ void Creature::getStatistics(){
         creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
         creature_statistics->setPosition(cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
                                                        creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2));
-        static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->addChild(creature_statistics,Layer::USER_INTERFACE);
+        static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_statistics,ZLevel::USER_INTERFACE);
     }
     else{
         isStatisticsShowing = false;
-        static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->removeChild(creature_statistics);
+        static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->removeChild(creature_statistics);
     }
 }
 
@@ -204,8 +204,8 @@ void Creature::setWeapon(WeaponType wMap ){
     }
     creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
     creature_weapon->getDammageSprite()->setPosition(creature_weapon->getSprite()->getPosition());
-    static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->addChild(creature_weapon->getSprite(),Layer::MIDLEGROUND);
-    static_cast<GameLayer*>(currentlayer)->getChildByName("gamesession")->addChild(creature_weapon->getDammageSprite(),Layer::MIDLEGROUND);
+    static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_weapon->getSprite(),ZLevel::MIDLEGROUND);
+    static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_weapon->getDammageSprite(),ZLevel::MIDLEGROUND);
 }
 
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////

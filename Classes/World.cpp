@@ -5,7 +5,7 @@ World::World(std::string world_file_path,void* currentLayer){
    level->setScale(2);
    level_layer_midleground = level->getLayer("midleground");
    this->currentLayer = currentLayer;
-   static_cast<GameLayer*>(currentLayer)->getChildByName("gamesession")->addChild(level,1);
+   static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::gamesession)->addChild(level,1);
 
    auto group = level->getObjectGroup("obj1");
    auto& objects = group->getObjects();
@@ -25,7 +25,7 @@ World::World(std::string world_file_path,void* currentLayer){
       ground_body->setCollisionBitmask(0x02);
       ground->setPosition(x,y);
       ground->setPhysicsBody(ground_body);
-      static_cast<GameLayer*>(currentLayer)->getChildByName("gamesession")->addChild(ground);
+      static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::gamesession)->addChild(ground);
    }
 }
 World::~World(){}
