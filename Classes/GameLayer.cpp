@@ -62,29 +62,6 @@ void GameLayer::intCreatures(){
     spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
     this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
 
-    Enemy* e;
-    SceneEntities::enemy.push_back("enemy0");
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
-    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,0)),
-                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,0)),
-                                                                nullptr)));
-    e->setWeapon(WeaponType::SWORD);
-    enemy.push_back(e);
-
-    SceneEntities::enemy.push_back("enemy1");
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(100,340),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
-    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(200,0)),
-                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-200,0)),
-                                                                nullptr)));
-    e->setWeapon(WeaponType::AXE);
-    enemy.push_back(e);
-
-
-    SceneEntities::enemy.push_back("enemy2");
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(700,160),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
-    e->setWeapon(WeaponType::SPEAR);
-    enemy.push_back(e);
-
 
     player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this,SceneEntities::player);
     player->setWeapon(WeaponType::SWORD); 
