@@ -17,7 +17,7 @@ public:
     /*Getters*/
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline CreatureType getCreatureType() {return creature_type; };
-    inline uint getCreatureSpeed() { return creature_speed_current; };
+    inline uint getCreatureSpeed() { return creature_speed; };
     inline uint getCreatureBlood() {return creature_blood; };
     inline uint getCreatureStamina() {return creature_stamina; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
@@ -27,7 +27,7 @@ public:
     /*Setters*/
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
-    void setCreatureSpeed(uint creature_speed_current);
+    void setCreatureSpeed(uint creature_speed);
     void setCreatureBlood(uint creature_blood);
     void setCreatureStamina(uint creature_stamina);
     void setStatistics();//Init information about creature node 
@@ -64,8 +64,8 @@ protected:
     CreatureType              creature_type;//Type of creature
     uint                      creature_blood;//How many blood liquid in creature
     float                     crearure_mass;
-    float                     creature_speed_current;//Creature speed
-    float                     creature_speed_max;//Max speed for this creature
+    cocos2d::Vec2             creature_velocity;
+    float                     creature_speed;//Creature speed
     uint                      creature_stamina;//How long creature can fight efficient
     float                     creature_stamina_regeneration_counter;//Timer for regenaration stamina
     bool                      isStatisticsShowing;
@@ -97,6 +97,6 @@ public:
     inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
     inline int* getCurrentInteractedEnemy(){ return &currentInteractedEnemy; };
 private:
-    std::vector<Enemy*>* enemyNode;//All enemies which player can interact
-    int  currentInteractedEnemy;//current available enemy for interact
+    std::vector<Enemy*>* enemyNode;//All enemies which player can giveEffect
+    int  currentInteractedEnemy;//current available enemy for giveEffect
 };

@@ -19,14 +19,16 @@ public:
     * Depends on direction attack ..
    */
    virtual void attacke();
+   virtual void defend();
+   virtual void parry();
    /**
     * @brief How some kind of attack will make some change on target
    */
-   virtual void interact(void* target_creature);
+   virtual void giveEffect(void* target_creature);
    /**
     * @brief How some kind of attack will make some change on owner
    */
-   void takeEffect(void* owner);
+   virtual void takeEffect(void* owner);
    /*Getters*/
    /**
     * @return weapon sprite
@@ -54,8 +56,8 @@ protected:
    cocos2d::Sprite* weapon_damage_hitbox;       //What detect collision between weapon and enemies
    cocos2d::Sprite* weapon_owner;               //Who have this weapon(used methos setWeapon)
    cocos2d::PhysicsBody* weapon_physic_body;
-   float weapon_mass;
    WeaponCaracteristics weapon_caracteristics;  //Weapon characteristics, look at structure
+   float weapon_mass;
 };
 
 /**

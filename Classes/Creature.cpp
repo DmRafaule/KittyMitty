@@ -5,6 +5,7 @@
 Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,void* gameLayer,std::string id){
     isStatisticsShowing = false;
     this->creature_type = creature_type;
+    creature_velocity = cocos2d::Vec2(0,0);
     currentlayer = gameLayer;
     switch(creature_type){
         case CreatureType::HUMANOID:{
@@ -15,8 +16,7 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
             creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
             creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
             creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
-            creature_speed_current  = 0;
-            creature_speed_max = 90;
+            creature_speed  = 30;
             creature_stamina = 100;
             creature_blood   = 20;
             crearure_mass   = 10;
@@ -110,8 +110,8 @@ void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_typ
         }
     }
 }
-void Creature::setCreatureSpeed(uint creature_speed_current){
-    this->creature_speed_current = creature_speed_current;
+void Creature::setCreatureSpeed(uint creature_speed){
+    this->creature_speed = creature_speed;
 }
 void Creature::setCreatureBlood(uint creature_blood){
     this->creature_blood = creature_blood;
@@ -288,21 +288,22 @@ void Player::update(float dt){
     }
     //For moves of all body
     if (ControlKeys::getMoving()){
-        //Controle the speed of player
-        //Speed limit for creature
-        if (creature_speed_current < creature_speed_max)
-            creature_speed_current+=3;
         //Breathtaken limit
-        if (creature_speed_current >= 70)
+        if (creature_physic_body->getVelocity().x >= 90)
             creature_stamina--;
-        creature_sprite->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection())));
+        if (creature_velocity.x < 150 && creature_velocity.x > -150 )
+            creature_velocity = cocos2d::Vec2(creature_physic_body->getVelocity().x + ControlKeys::getDirection().x,
+                                              creature_physic_body->getVelocity().y + ControlKeys::getDirection().y);
+        OUT("vel x = %f\n",creature_velocity.x);
+        creature_physic_body->setVelocity(creature_velocity);
+        //creature_sprite->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection())));
         //Weapon follow by body
-        creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection())));
+        creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x - creature_weapon->getSprite()->getPosition().x,
+                                                                                                                                    creature_sprite->getPosition().y - creature_weapon->getSprite()->getPosition().y))));
     }
     else{ 
-        creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(0.1f,cocos2d::Vec2(creature_sprite->getPosition().x - creature_weapon->getSprite()->getPosition().x,
+        creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(0.1,cocos2d::Vec2(creature_sprite->getPosition().x - creature_weapon->getSprite()->getPosition().x,
                                                                                                                                     creature_sprite->getPosition().y - creature_weapon->getSprite()->getPosition().y))));
-        creature_speed_current = 30;
     }
     //For attacke
     if (ControlAttc::getAttacke() && creature_stamina >= 20){
@@ -315,7 +316,7 @@ void Player::update(float dt){
                 currentInteractedEnemy = i;
         /*If we hit the enemy*/
         if (currentInteractedEnemy >= 0){
-            creature_weapon->interact(enemyNode->at(currentInteractedEnemy));
+            creature_weapon->giveEffect(enemyNode->at(currentInteractedEnemy));
         }
             
         currentInteractedEnemy = -1;

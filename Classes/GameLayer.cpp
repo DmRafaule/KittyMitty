@@ -25,10 +25,9 @@ cocos2d::Scene* GameLayer::createScene(){
     return scene;
 }
 void GameLayer::menuCloseCallback(cocos2d::Ref* pSender){
-    
+    delete ctarg;
     delete ckeys;
     delete cattc;
-    delete ctarg;
     delete player;
     delete world;
     cocos2d::Director::getInstance()->end();
@@ -48,7 +47,6 @@ bool GameLayer::init(){
     return true;
 }
 void GameLayer::initLayers(){
-    
     cocos2d::Layer* gameSessionLayer = cocos2d::Layer::create();
     this->addChild(gameSessionLayer,ZLevel::MIDLEGROUND,SceneEntities::gamesession);
     cocos2d::Layer* UILayer = cocos2d::Layer::create();
@@ -95,18 +93,10 @@ void GameLayer::intCreatures(){
     this->getChildByName(SceneEntities::gamesession)->runAction(cocos2d::Follow::createWithOffset(player->getCreatureSprite(),-100,-100,cocos2d::Rect(0,0,2500,3200)));
 }
 void GameLayer::initUI(){
-    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-        shows = new ShowStats(this);
-        ctarg = new ControlTargeting(this);
-        ckeys = new ControlKeys(cocos2d::Vec2(0.15,0.1),this);
-        cattc = new ControlAttc(this);
-    }
-    else if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX){
-        shows = new ShowStats(this);
-        ctarg = new ControlTargeting(this);
-        ckeys = new ControlKeys(cocos2d::Vec2(0.15,0.1),this);
-        cattc = new ControlAttc(this);
-    }
+    ctarg = new ControlTargeting(this);
+    ckeys = new ControlKeys(cocos2d::Vec2(0.15,0.1),this);
+    cattc = new ControlAttc(this);
+    shows = new ShowStats(this);
 }
 void GameLayer::initListeners(){
     /*Init listeners*/
@@ -117,6 +107,7 @@ void GameLayer::initListeners(){
     listener->onTouchesMoved = CC_CALLBACK_2(GameLayer::touchMoved,this);
     listener->onTouchesCancelled = CC_CALLBACK_2(GameLayer::touchCanceled,this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener,this);
+
     /*Init listeners for physics*/
     auto ph_listener = cocos2d::EventListenerPhysicsContact::create();
     ph_listener->onContactBegin = CC_CALLBACK_1(GameLayer::contactBegan,this);
@@ -124,10 +115,11 @@ void GameLayer::initListeners(){
     /*Start update this layer*/
     this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
 }
-
 void GameLayer::update(float dt){
     shows->update(dt,this);
+    ctarg->update(dt,this);
     cattc->update(dt,this);
+    ckeys->update(dt,this);
     player->update(dt);
     for (auto &i : enemy){
         i->update(dt);
@@ -135,19 +127,31 @@ void GameLayer::update(float dt){
     world->update(dt);
 }
 
+
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
     shows->updateTouchBegan(touch,event,this);
+    ctarg->updateTouchBegan(touch,event,this);
     cattc->updateTouchBegan(touch,event,this);
+    ckeys->updateTouchBegan(touch,event,this);
     return true;
 }
 void GameLayer::touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
+    shows->updateTouchEnded(touch,event,this);
+    ctarg->updateTouchEnded(touch,event,this);
     cattc->updateTouchEnded(touch,event,this);
+    ckeys->updateTouchEnded(touch,event,this);
 }
 void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
+    shows->updateTouchMoved(touch,event,this);
+    ctarg->updateTouchMoved(touch,event,this);
     cattc->updateTouchMoved(touch,event,this);
+    ckeys->updateTouchMoved(touch,event,this);
 }
 void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
+    shows->updateTouchCanceled(touch,event,this);
+    ctarg->updateTouchCanceled(touch,event,this);
     cattc->updateTouchCanceled(touch,event,this);
+    ckeys->updateTouchCanceled(touch,event,this);
 }
 bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();

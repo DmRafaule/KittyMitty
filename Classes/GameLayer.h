@@ -72,12 +72,11 @@ private:
     
 
 private:
-    //Phone UI
-    ShowStats*      shows;
-    ControlKeys*    ckeys;
-    ControlAttc*    cattc;
+    //UI
+    ShowStats*        shows;
     ControlTargeting* ctarg;
-    //Window UI
+    ControlKeys*      ckeys;
+    ControlAttc*      cattc;
     cocos2d::Size visibleSize;
     cocos2d::SpriteBatchNode* spriteSheet;
     /*Game entyties*/

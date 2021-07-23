@@ -193,7 +193,14 @@ void Weapon::attacke(){
       }
    }
 }
-void Weapon::interact(void* target_creature){
+void Weapon::defend(){
+
+}
+void Weapon::parry(){
+
+}
+
+void Weapon::giveEffect(void* target_creature){
    Creature* target = static_cast<Creature*>(target_creature);
    /*Instead of this you have to put here attack commbo, not just direction of attack*/
    switch (ControlAttc::getDirectionAttacke()){
@@ -574,6 +581,9 @@ void Weapon::interact(void* target_creature){
       }
    }
 }
+void Weapon::takeEffect(void* owner){
+   static_cast<Creature*>(owner)->setCreatureStamina(static_cast<Creature*>(owner)->getCreatureStamina()-10);//Here make some effects
+}
 void Weapon::setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol,uint w_mass = 10){
    this->weapon_caracteristics.weapon_crushingPower = w_crushP;
    this->weapon_caracteristics.weapon_cuttinPower = w_cutP;
@@ -581,9 +591,7 @@ void Weapon::setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol,
    this->weapon_caracteristics.weapon_solidity = w_sol;
    this->weapon_caracteristics.weapon_mass = w_mass;
 }
-void Weapon::takeEffect(void* owner){
-   static_cast<Creature*>(owner)->setCreatureStamina(static_cast<Creature*>(owner)->getCreatureStamina()-10);//Here make some effects
-}
+
 
 Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner):
    Weapon(weapon_sprite_path,weapon_owner){

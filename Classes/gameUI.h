@@ -4,15 +4,15 @@
 #include <cocos/ui/CocosGUI.h>
 #include "engEnums.hpp"
 
-class GameUI{
+class GameUIPhone{
 public:
     /**
      * @param type which GUI will be created
      * @param layer To which layer(scene) this GUI will be attached
      * In common just create GUI
     */
-    GameUI();
-    virtual ~GameUI();
+    GameUIPhone();
+    virtual ~GameUIPhone();
     /**
      * Update GUI by the time 
      * @param dt -> elapsed time
@@ -47,7 +47,7 @@ protected:
  * @brief
  * For display statistics about entities(only logic true of false(do something))
 */
-class ShowStats   : public GameUI{
+class ShowStats   : public GameUIPhone{
 public:
     ShowStats(void* layer);
     virtual ~ShowStats();
@@ -70,10 +70,17 @@ private:
  * @brief
  * For make a decition of which part of body player can attack
 */
-class ControlTargeting{
+class ControlTargeting : public GameUIPhone{
 public:
     ControlTargeting(void* layer);
     virtual ~ControlTargeting();
+    virtual void update(float dt,void* Layer) override;
+        virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+        virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
+    virtual void createEffect( void* node) override;
+    virtual void removeEffect( void* node) override;
 
     /**
      * @return chosen target by player
@@ -91,18 +98,17 @@ private:
 private:
     static PartCreatureType target;//Which target(part of body) will be attacked
     static cocos2d::Vec2 offset;
+    cocos2d::Sprite* targetingB;
     bool clickForOpen;
 };
 /**
- * @brief
- * Give player control on kittymitty(for android)
- * IN DEVELOPMENT
+ * @brief for controling player by some graphycs buttons
+ * jumps moves run here(for android)
 */
-class ControlBall : public GameUI{
+class ControlKeys : public GameUIPhone{
 public:
-    ControlBall(void* layer);
-    virtual ~ControlBall();
-
+    ControlKeys(cocos2d::Vec2 offset, void* layer);
+    virtual ~ControlKeys();
     virtual void update(float dt,void* Layer) override;
         virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
         virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
@@ -110,57 +116,6 @@ public:
         virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
     virtual void createEffect( void* node) override;
     virtual void removeEffect( void* node) override;
-    /**
-     * @return angle bettween touch point and center of ball control
-    */
-    static inline const float getAngle(){ return angleDirection; };
-    /**
-     * @return status of interaction with ball controller
-    */
-    static inline const bool getMoving(){ return isMoving; };
-    /**
-     * @return direction of movement for ball Sprite
-    */
-    static inline const cocos2d::Vec2 getDirection(){ return directionPoint; };
-    /**
-     * @return ball default position
-    */
-    inline const cocos2d::Vec2 getBallDefaultPosition() { return ballDefaultPosition; };
-private:
-   /** Set position of point related to pointNode like pointNode is a center of circle
-       @param point_destination is a point will be changed to new position depends on pos of pointNOde and angle of texture of point node
-       @param point_center is a center of entity node which have to have some kind of position and angle 
-       **/
-    static void setPosPointOnCircle(cocos2d::Vec2& point_destination,cocos2d::Vec2 point_center);
-    /**
-     * transform radians to degrees
-    */
-    static float setAngleToRadius(float angle_radian);
-    /**
-     * Calculated direction of movement relative
-     * @param endPoint center of circle controle
-     * @param startPoint touch location
-     * @return point on circle
-    */
-    static cocos2d::Vec2 setDirectionPointRelative(cocos2d::Vec2 endPoint,cocos2d::Vec2 startPoint);
-private:
-    
-    static cocos2d::Vec2 directionPoint;//Position on circle of point in pathEffect
-    static float   part_radius;//Radius of each point contained in pathEffect
-    static float   angleDirection;//Angle of point in pathEffect
-    static bool    isMoving;//Is player interact with ball controle
-    
-    cocos2d::Vec2  ballDefaultPosition;
-    bool           isControlBall;//Is player using control ball. If so clear and render some gui effect
-};
-/**
- * @brief for controling player by some graphycs buttons
- * jumps moves run here(for android)
-*/
-class ControlKeys{
-public:
-    ControlKeys(cocos2d::Vec2 offset, void* layer);
-    virtual ~ControlKeys();
     /**
      * @return angle bettween touch point and center of ball control
     */
@@ -174,8 +129,9 @@ public:
     */
     static inline const cocos2d::Vec2 getDirection(){ return directionPoint; };
 private:
-    cocos2d::ui::Button* button_left;
-    cocos2d::ui::Button* button_right;
+    cocos2d::Sprite* button_left;
+    cocos2d::Sprite* button_right;
+    cocos2d::Sprite* button_jump;
     cocos2d::Vec2 offset;
     static cocos2d::Vec2 directionPoint;
     static bool isMoving;
@@ -185,7 +141,7 @@ private:
  * @brief
  * To enable for player attack using different movements(for android)
 */
-class ControlAttc : public GameUI{
+class ControlAttc : public GameUIPhone{
 public:
     /*Inherite func*/    
     ControlAttc(void* layer);
