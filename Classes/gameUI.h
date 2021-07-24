@@ -109,6 +109,7 @@ public:
         virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
     virtual void createEffect() override;
     virtual void removeEffect() override;
+    bool updateContactBegan(cocos2d::PhysicsContact& contact);
     /**
      * @return angle bettween touch point and center of ball control
     */
@@ -116,7 +117,7 @@ public:
     /**
      * @return status of interaction with ball controller
     */
-    static inline const bool getMoving(){ return isMoving; };
+    static inline const bool getRunning(){ return isRunning; };
     /**
      * @return direction of movement for ball Sprite
     */
@@ -128,7 +129,7 @@ private:
     cocos2d::Vec2 offset;
     static cocos2d::Vec2 directionPoint;
     static DirectionMove directionMove;
-    static bool isMoving;
+    static bool isRunning;
     bool isJump;
 };
 /**

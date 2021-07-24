@@ -5,7 +5,6 @@
 Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,void* gameLayer,std::string id){
     isStatisticsShowing = false;
     this->creature_type = creature_type;
-    creature_velocity = cocos2d::Vec2(0,0);
     currentlayer = gameLayer;
     switch(creature_type){
         case CreatureType::HUMANOID:{
@@ -16,10 +15,12 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
             creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
             creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
             creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
-            creature_velocity_limit  = 200;
-            creature_stamina = 100;
-            creature_blood   = 20;
-            crearure_mass   = 10;
+            creature_characteristics.velocity_limit  = 200;
+            creature_characteristics.jump_power = 120;
+            creature_characteristics.acceleration_power = 45;
+            creature_characteristics.stamina = 100;
+            creature_characteristics.blood   = 20;
+            creature_characteristics.mass = 10;
             break;
         }
         case CreatureType::ANIMAL:{
@@ -28,11 +29,11 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     }
     creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
     creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(creature_sprite->getBoundingBox().size,cocos2d::PhysicsMaterial(0,0,1.5));
-    creature_physic_body->setMass(crearure_mass);
+    creature_physic_body->setMass(creature_characteristics.mass);
     creature_physic_body->setDynamic(true);
-    creature_physic_body->setVelocityLimit(creature_velocity_limit);
+    creature_physic_body->setVelocityLimit(creature_characteristics.velocity_limit);
     creature_physic_body->setGravityEnable(true);
-    creature_physic_body->setCategoryBitmask(0x02);
+    creature_physic_body->setContactTestBitmask(0x02);
     creature_physic_body->setCollisionBitmask(0x01);
     creature_sprite->setPhysicsBody(creature_physic_body);
     creature_sprite->setPosition(pos);
@@ -111,12 +112,7 @@ void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_typ
     }
 }
 
-void Creature::setCreatureBlood(uint creature_blood){
-    this->creature_blood = creature_blood;
-}
-void Creature::setCreatureStamina(uint creature_stamina){
-    this->creature_stamina =creature_stamina;
-}
+
 void Creature::setStatistics(DebugStatistics mode){
     std::string partStatus;
 
@@ -182,8 +178,8 @@ void Creature::setStatistics(DebugStatistics mode){
                           getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::CUTTED ? "cutted\n" :
                           "killed\n");
         /*Set strings about body*/
-        partStatus.append("blood:" + std::to_string(creature_blood) + "l\n");    
-        partStatus.append("stamina:" + std::to_string(creature_stamina) + "\n");
+        partStatus.append("blood:" + std::to_string(creature_characteristics.blood) + "l\n");    
+        partStatus.append("stamina:" + std::to_string(creature_characteristics.stamina) + "\n");
     }
     else if (mode == DebugStatistics::PHYSICS){
         partStatus.append("Position x = ");
@@ -217,7 +213,7 @@ void Creature::setWeapon(WeaponType wMap ){
 void Creature::showStatistics(){
     /*For statistics*/
     if (isStatisticsShowing){
-        setStatistics(DebugStatistics::GAME_STATS);
+        setStatistics(DebugStatistics::PHYSICS);
         creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
                                                                                  creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
     }
@@ -286,7 +282,7 @@ Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void*
     Creature(texturePath,bMap,pos,gameLayer,id){
     enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
     currentInteractedEnemy = -1;
-    creature_stamina_regeneration_counter = 0;
+    creature_characteristics.stamina_regeneration_counter = 0;
 }
 void Player::update(float dt){
     showStatistics();

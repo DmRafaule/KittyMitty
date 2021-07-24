@@ -145,14 +145,9 @@ void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event*
     }
 }
 bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
-    cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
-    cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
-    //Check if body was collided
-    if (a->getCategoryBitmask() & b->getCollisionBitmask() == 0 ||
-        b->getCategoryBitmask() & a->getCollisionBitmask() == 0){
-        
-        return false;
-    }
+    bool res;
+
+    res = ckeys->updateContactBegan(contact);
     
-    return true;
+    return res;
 }

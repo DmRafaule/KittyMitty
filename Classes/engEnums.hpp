@@ -7,6 +7,16 @@ enum CreatureType : uint{
     TREE,
     FISH,
 };
+struct CreatureCharacteristics{
+    uint                      blood;//How many blood liquid in creature
+    float                     mass;
+    float                     velocity_limit;//How fast player can run
+    float                     jump_power;//How hard(heighst) creature can jump
+    float                     acceleration_power;//How fast creature will be accelerating to velocity limit
+    uint                      stamina;//How long creature can fight efficient
+    float                     stamina_regeneration_counter;//Timer for regenaration stamina
+
+};
 enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,

@@ -50,7 +50,7 @@ void ShowStats::removeEffect(){}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 cocos2d::Vec2 ControlKeys::directionPoint(0,0);
 DirectionMove ControlKeys::directionMove = DirectionMove::LEFT;
-bool  ControlKeys::isMoving = false;
+bool  ControlKeys::isRunning = false;
 
 ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* layer){
     this->offset = offset;
@@ -89,55 +89,71 @@ ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* 
 ControlKeys::~ControlKeys(){}
 
 void ControlKeys::update(float dt){
-    if (isMoving){
+    //Player can increase speed only not in air
+    if (isRunning && !isJump){
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x + directionPoint.x,
-                                                                                   creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y + directionPoint.y));
+                                                                                   creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
     }
 }
 void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
      
         if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-            isMoving = true;//Rem
+            isRunning = true;
             directionMove = DirectionMove::LEFT;
-            float sp = 45;
-            directionPoint = cocos2d::Vec2(sp*-1,0);
+            directionPoint = cocos2d::Vec2(creature->getCreatureCharacteristic()->acceleration_power*-1,0);
             creature->getWeapon()->getSprite()->setFlippedX(true);
         }
         if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-            isMoving = true;
+            isRunning = true;
             directionMove = DirectionMove::RIGHT;
-            float sp = 45;
-            directionPoint = cocos2d::Vec2(sp,0);
+            directionPoint = cocos2d::Vec2(creature->getCreatureCharacteristic()->acceleration_power,0);
             creature->getWeapon()->getSprite()->setFlippedX(false);
         }
         if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
-            isMoving = true;
+            isJump = true;
             directionMove = DirectionMove::TOP;
-            float sp = 45;
-            directionPoint = cocos2d::Vec2(0,sp);
+            directionPoint = cocos2d::Vec2(0,creature->getCreatureCharacteristic()->jump_power);
+            /*Set vertical velocity once for the body*/
+            creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x,
+                                                                                       directionPoint.y));
         }
     
 }
 void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
      
         if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-            isMoving = false;
-            //static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
+            isRunning = false;
         }
         if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-            //static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
-            isMoving = false;
+            isRunning = false;
         }
         if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
-            isMoving = false;
+            
         }
 }
 void ControlKeys::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
 void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){
-    isMoving = false;
+    isRunning = false;
 }
 void ControlKeys::createEffect(){}
 void ControlKeys::removeEffect(){}
+bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
+    cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
+    cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
+    //Check if body was collided with 'not world'
+    if ((a->getContactTestBitmask() & b->getCollisionBitmask()) == 0 ||
+        (b->getContactTestBitmask() & a->getCollisionBitmask()) == 0){
+        
+        return false;
+    }
+    //When Player has landed he lose all horisontal speed
+    //But he can run, again
+    else{
+        isJump = false;
+        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,0));
+        return true;
+    }
+}
 ///////////////////////////////////////////////////////////////*ControlAttc class*////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/

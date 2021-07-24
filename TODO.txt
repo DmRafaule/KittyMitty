@@ -26,7 +26,7 @@ Implement(Main) ITEMS      {c}
 
 
 
-Implement(Main) HERO           
+Implement(Main) HERO             {c}
     Implement(L) creature generator                             {cm:2021-07-22}
     Implement(UI) attace controlle for characteer             {cm:2021-07-22}
     Implement(UI) properly attcking interaction wt enemy      {cm:2021-07-22}
@@ -49,9 +49,9 @@ Implement(Main) HERO
         Implement(L) choise, where to strike         {cm:2021-07-22}
     
     Implement(UI) Camera for hero   {cm:2021-07-22}
-    Implement jump
+    Implement jump {cm:2021-07-24}
     Implement double jump  
-    Implement run
+    Implement run {cm:2021-07-24}
     Implement walk
     Implement attack button
 
@@ -74,14 +74,15 @@ Implement(Main) ENEMIES     {c}
 Implement(Main) HISTORY   
 
 
-Implement(Main) UI      {c}
+Implement(Main) UI       {c}
     Implement(UI) ball controller for character   {cm:2021-07-22}
-    Implement(UI) ability visualize status of creatures       
+    Implement(UI) ability visualize status of creatures        {cm:2021-07-24}
       
         Implement(UI) some border     
         Implement(UI) smart moving(if creature too close to left window border move lable to right from creature)   
         Implement(UI) toggle pages for stats
-    Implement arrow controller   
+    Implement arrow controller  {cm:2021-07-24}
+    Fix bug when player suddenly stopes in the air   {cm:2021-07-24}
 
  
 Implement(Main) CODE STUFF      {c}

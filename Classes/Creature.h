@@ -17,8 +17,7 @@ public:
     /*Getters*/
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline CreatureType getCreatureType() {return creature_type; };
-    inline uint getCreatureBlood() {return creature_blood; };
-    inline uint getCreatureStamina() {return creature_stamina; };
+    inline const CreatureCharacteristics* getCreatureCharacteristic() {return &creature_characteristics; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 
@@ -26,8 +25,7 @@ public:
     /*Setters*/
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
-    void setCreatureBlood(uint creature_blood);
-    void setCreatureStamina(uint creature_stamina);
+    inline CreatureCharacteristics* setCreatureCharacteristic() {return &creature_characteristics; };
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
@@ -61,12 +59,7 @@ protected:
     cocos2d::Label*           creature_statistics;
     Weapon*                   creature_weapon;
     CreatureType              creature_type;//Type of creature
-    uint                      creature_blood;//How many blood liquid in creature
-    float                     crearure_mass;
-    cocos2d::Vec2             creature_velocity;
-    float                     creature_velocity_limit;
-    uint                      creature_stamina;//How long creature can fight efficient
-    float                     creature_stamina_regeneration_counter;//Timer for regenaration stamina
+    CreatureCharacteristics   creature_characteristics;
     bool                      isStatisticsShowing;
     void*                     currentlayer;//Current playing scene;
 };
