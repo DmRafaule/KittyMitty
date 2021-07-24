@@ -13,7 +13,8 @@ struct CreatureCharacteristics{
     float                     velocity_limit;//How fast player can run
     float                     jump_power;//How hard(heighst) creature can jump
     float                     acceleration_power;//How fast creature will be accelerating to velocity limit
-    uint                      stamina;//How long creature can fight efficient
+    int                       stamina;//How long creature can fight efficient
+    int                       stamina_limit;
     float                     stamina_regeneration_counter;//Timer for regenaration stamina
 
 };

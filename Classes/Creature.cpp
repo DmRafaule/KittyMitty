@@ -19,6 +19,7 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
             creature_characteristics.jump_power = 120;
             creature_characteristics.acceleration_power = 45;
             creature_characteristics.stamina = 100;
+            creature_characteristics.stamina_limit = 100;
             creature_characteristics.blood   = 20;
             creature_characteristics.mass = 10;
             break;
@@ -210,14 +211,32 @@ void Creature::setWeapon(WeaponType wMap ){
     static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_weapon->getSprite(),ZLevel::MIDLEGROUND);
     static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_weapon->getDammageSprite(),ZLevel::MIDLEGROUND);
 }
-void Creature::showStatistics(){
+void Creature::showStatistics(DebugStatistics type){
     /*For statistics*/
     if (isStatisticsShowing){
-        setStatistics(DebugStatistics::PHYSICS);
+        setStatistics(type);
         creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
                                                                                  creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
     }
     creature_weapon->getSprite()->runAction(cocos2d::MoveTo::create(0.1f,creature_sprite->getPosition()));
+}
+void Creature::losingStamina(){
+    if ((creature_physic_body->getVelocity().x > 100 || creature_physic_body->getVelocity().x < -100) &&
+        creature_physic_body->getVelocity().y == 0){
+        creature_characteristics.stamina--;
+    }
+}
+void Creature::regeneratingStamina(float dt){
+    //For regeneration of stamina
+    creature_characteristics.stamina_regeneration_counter += dt;
+    //How fast regeneration will be applied
+    if (creature_characteristics.stamina < creature_characteristics.stamina_limit && creature_characteristics.stamina_regeneration_counter >= 1){
+        creature_characteristics.stamina++;
+        creature_characteristics.stamina_regeneration_counter = 0;
+    }
+    //Just be sure if stamina will below 0 will not negative
+    if (creature_characteristics.stamina <= 0)
+        creature_characteristics.stamina = 0;
 }
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
 PartOrgan::PartOrgan(PartOrganType type){
@@ -274,7 +293,7 @@ Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* g
     Creature(texturePath,bMap,pos,gameLayer,id){
 }
 void Enemy::update(float dt){
-    showStatistics();
+    showStatistics(DebugStatistics::GAME_STATS);
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
@@ -285,7 +304,9 @@ Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void*
     creature_characteristics.stamina_regeneration_counter = 0;
 }
 void Player::update(float dt){
-    showStatistics();
+    showStatistics(DebugStatistics::GAME_STATS);
+    losingStamina();
+    regeneratingStamina(dt);
 }
 
 /**Some code for future

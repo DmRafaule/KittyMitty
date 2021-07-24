@@ -29,7 +29,9 @@ public:
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
-    void showStatistics();
+    void showStatistics(DebugStatistics type);
+    void losingStamina();
+    void regeneratingStamina(float dt);
     /*This is part of body(*/
     class PartCreature{
     friend class Creature;

@@ -93,6 +93,8 @@ void ControlKeys::update(float dt){
     if (isRunning && !isJump){
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x + directionPoint.x,
                                                                                    creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
+        if (creature->getCreatureCharacteristic()->stamina <= creature->getCreatureCharacteristic()->stamina_limit * 0.25)
+            isRunning = false;
     }
 }
 void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
@@ -109,8 +111,12 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
             directionPoint = cocos2d::Vec2(creature->getCreatureCharacteristic()->acceleration_power,0);
             creature->getWeapon()->getSprite()->setFlippedX(false);
         }
-        if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
+        //Make jump if player have stamina and he is not in air
+        if (button_jump->getBoundingBox().containsPoint(touch->getLocation()) &&
+            creature->getCreatureCharacteristic()->stamina >= 15 && !isJump){
             isJump = true;
+            //Lose some stamina
+            creature->setCreatureCharacteristic()->stamina = creature->getCreatureCharacteristic()->stamina - 15;
             directionMove = DirectionMove::TOP;
             directionPoint = cocos2d::Vec2(0,creature->getCreatureCharacteristic()->jump_power);
             /*Set vertical velocity once for the body*/
