@@ -1,6 +1,7 @@
 #include "Weapon.h"
 #include "Creature.h"
 #include "engMacros.hpp"
+#include "gameUI.h"
 
 Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    weapon_mass = 10;
@@ -22,7 +23,7 @@ Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
    /*Set up "hit box" for this weapon(for detect a collision with creatures and others thin*/
    weapon_damage_hitbox = cocos2d::Sprite::create();
    weapon_damage_hitbox->setTexture("textures/player.png");
-   weapon_damage_hitbox->setVisible(true);//After all debug shit set false
+   weapon_damage_hitbox->setVisible(false);//After all debug shit set false
    weapon_damage_hitbox->setScale(MAX(weapon_sprite->getBoundingBox().size.width/weapon_damage_hitbox->getBoundingBox().size.width,
                                       weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
 }

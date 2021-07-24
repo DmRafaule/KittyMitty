@@ -11,55 +11,40 @@ GameUIPhone::~GameUIPhone(){}
 
 ////////////////////////////////*ShowStats class*/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-ShowStats::ShowStats(void* layer){
-    forPlayer   = false;
-    forEnemy    = false;
-    doubleDelay = 0;
-    doubleCount = 0;
-    isdouble = false;
+ShowStats::ShowStats(Creature* target,std::vector<Enemy*>* targetE, cocos2d::Node* layer){
+    this->creature  = target;
+    this->creatureE = targetE;
+    this->currentLayer = layer;
+    this->clickForOpen = false;
 }
 ShowStats::~ShowStats(){}
-void ShowStats::update(float dt,void* Layer){
-    if (isdouble){
-        doubleDelay+=dt;
-        if (doubleDelay > 0.5){
-            doubleDelay = 0;
-            doubleCount = 0;
-            isdouble = false;
-        }
-    }
-}
-void ShowStats::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint iterator = 0; iterator < touch.size(); ++iterator){
+void ShowStats::update(float dt){}
+void ShowStats::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
+     
         /*This is converting coordinates (expand them to global)*/
-        cocos2d::Vec2 pos = static_cast<GameLayer*>(Layer)->getChildByName(SceneEntities::gamesession)->convertTouchToNodeSpace(touch[iterator]);
-        /*Double tap for player*/
-        if (static_cast<GameLayer*>(Layer)->getChildByName(SceneEntities::gamesession)->getChildByName(SceneEntities::player)->getBoundingBox().containsPoint(pos) && doubleDelay <= 0.5){
-            doubleCount++;
-            isdouble = true;
-            if (doubleCount == 2){
-                doubleCount = 0;
-                static_cast<GameLayer*>(Layer)->getPlayer()->getStatistics();
+        if (!clickForOpen){
+            clickForOpen = true;
+            cocos2d::Vec2 pos = currentLayer->convertTouchToNodeSpace(touch);
+            /*Double tap for player*/
+            if (creature->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
+                    creature->getStatistics();
             }
-        }
-        for (Enemy*& enemy : *(static_cast<GameLayer*>(Layer)->getEnemy())){
-            /*Double tap for enemies*/
-            if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos) && doubleDelay <= 0.5){
-                doubleCount++;
-                isdouble = true;
-                if (doubleCount == 2){
-                    doubleCount = 0;
+            for (Enemy*& enemy : *(creatureE)){
+                /*Double tap for enemies*/
+                if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
                     enemy->getStatistics();
                 }
             }
         }
-    }
+        else{
+            clickForOpen = false;
+        }
 }
-void ShowStats::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
-void ShowStats::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
-void ShowStats::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
-void ShowStats::createEffect( void* node){}
-void ShowStats::removeEffect( void* node){}
+void ShowStats::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ShowStats::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ShowStats::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ShowStats::createEffect(){}
+void ShowStats::removeEffect(){}
 
 ///////////////////////////////////////////////////////////////*ControlKey class*////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,8 +52,12 @@ cocos2d::Vec2 ControlKeys::directionPoint(0,0);
 DirectionMove ControlKeys::directionMove = DirectionMove::LEFT;
 bool  ControlKeys::isMoving = false;
 
-ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
+ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* layer){
     this->offset = offset;
+    this->creature = target;
+    this->currentLayer = layer;
+    isJump = false;
+
     button_left = cocos2d::Sprite::createWithSpriteFrameName("controlB.png");
     cocos2d::Texture2D::TexParams tpar = {
         cocos2d::backend::SamplerFilter::NEAREST,
@@ -81,62 +70,74 @@ ControlKeys::ControlKeys(cocos2d::Vec2 offset, void* layer){
     button_left->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width*offset.x,
                                            cocos2d::Director::getInstance()->getVisibleSize().height*offset.y));
     
-    static_cast<GameLayer*>(layer)->getChildByName(SceneEntities::ui)->addChild(button_left);
+    currentLayer->addChild(button_left);
 
     button_right = cocos2d::Sprite::createWithSpriteFrameName("controlB.png");
     button_right->getTexture()->setTexParameters(tpar);
     button_right->setScale(3);
     button_right->setFlippedX(true);
     button_right->setPosition(cocos2d::Vec2(button_left->getPosition().x + button_right->getBoundingBox().size.width*2,button_left->getPosition().y));
-    static_cast<GameLayer*>(layer)->getChildByName(SceneEntities::ui)->addChild(button_right);
+    currentLayer->addChild(button_right);
 
     button_jump = cocos2d::Sprite::createWithSpriteFrameName("controlBJump.png");
     button_jump->getTexture()->setTexParameters(tpar);
     button_jump->setScale(3);
     button_jump->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_jump->getBoundingBox().size.width*2,
                                            cocos2d::Director::getInstance()->getVisibleSize().height*offset.y));
-    static_cast<GameLayer*>(layer)->getChildByName(SceneEntities::ui)->addChild(button_jump);
+    currentLayer->addChild(button_jump);
 }
 ControlKeys::~ControlKeys(){}
 
-void ControlKeys::update(float dt,void* Layer){}
-void ControlKeys::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint iterator = 0; iterator < touch.size(); ++iterator){
-        if (button_left->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
-            isMoving = true;
-            directionMove = DirectionMove::LEFT;
-            float sp = static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSpeed();
-            directionPoint = cocos2d::Vec2(sp*-1,0);
-            static_cast<GameLayer*>(Layer)->getPlayer()->getWeapon()->getSprite()->setFlippedX(true);
-        }
-        if (button_right->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
-            isMoving = true;
-            directionMove = DirectionMove::RIGHT;
-            float sp = static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSpeed();
-            directionPoint = cocos2d::Vec2(sp,0);
-            static_cast<GameLayer*>(Layer)->getPlayer()->getWeapon()->getSprite()->setFlippedX(false);
-        }
-        if (button_jump->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
-            isMoving = true;
-            directionMove = DirectionMove::TOP;
-            float sp = static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSpeed();
-            
-            directionPoint = cocos2d::Vec2(0,150);
-        }
+void ControlKeys::update(float dt){
+    if (isMoving){
+        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x + directionPoint.x,
+                                                                                   creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y + directionPoint.y));
     }
 }
-void ControlKeys::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    //HERE MAKE SOME INERTION IN AIR
-    //if (directionMove == DirectionMove::LEFT || directionMove == DirectionMove::RIGHT)
-        //static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
+void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
+     
+        if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
+            isMoving = true;//Rem
+            directionMove = DirectionMove::LEFT;
+            float sp = 45;
+            directionPoint = cocos2d::Vec2(sp*-1,0);
+            creature->getWeapon()->getSprite()->setFlippedX(true);
+        }
+        if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
+            isMoving = true;
+            directionMove = DirectionMove::RIGHT;
+            float sp = 45;
+            directionPoint = cocos2d::Vec2(sp,0);
+            creature->getWeapon()->getSprite()->setFlippedX(false);
+        }
+        if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
+            isMoving = true;
+            directionMove = DirectionMove::TOP;
+            float sp = 45;
+            directionPoint = cocos2d::Vec2(0,sp);
+        }
+    
+}
+void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
+     
+        if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
+            isMoving = false;
+            //static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
+        }
+        if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
+            //static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,static_cast<GameLayer*>(Layer)->getPlayer()->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
+            isMoving = false;
+        }
+        if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
+            isMoving = false;
+        }
+}
+void ControlKeys::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){
     isMoving = false;
 }
-void ControlKeys::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
-void ControlKeys::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    isMoving = false;
-}
-void ControlKeys::createEffect( void* node){}
-void ControlKeys::removeEffect( void* node){}
+void ControlKeys::createEffect(){}
+void ControlKeys::removeEffect(){}
 ///////////////////////////////////////////////////////////////*ControlAttc class*////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/
@@ -146,23 +147,24 @@ cocos2d::Vec2  ControlAttc::touchPointEnd(0,0);
 DirectionAttacke ControlAttc::direction_of_attacke = DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT;
 bool  ControlAttc::isAttacke(false);
 
-ControlAttc::ControlAttc(void* layer){
-    isRightPlaceForControle = false;
+ControlAttc::ControlAttc(Creature* target, cocos2d::Node* layer){
+    this->creature = target;
+    this->currentLayer = layer;
+    this->isRightPlaceForControle = false;
 }
 ControlAttc::~ControlAttc(){}
-void ControlAttc::update(float dt, void* layer){}
-void ControlAttc::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint iterator = 0; iterator < touch.size(); ++iterator){
+void ControlAttc::update(float dt){}
+void ControlAttc::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
+     
     /*On right part of screen*/
-    if ( touch[iterator]->getLocation().x > cocos2d::Director::getInstance()->getVisibleSize().width/2){
+    if ( touch->getLocation().x > cocos2d::Director::getInstance()->getVisibleSize().width/2){
         isRightPlaceForControle = true;
         //Find start position of touch
-        touchPointStart = touch[iterator]->getLocation();
-    }
+        touchPointStart = touch->getLocation();
     }
 }
-void ControlAttc::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint iterator = 0; iterator < touch.size(); ++iterator){
+void ControlAttc::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
+     
     //If we realy was on right half of screen
     if (isRightPlaceForControle){
         isRightPlaceForControle = false;
@@ -174,16 +176,15 @@ void ControlAttc::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::E
             setDirectionAttacke();
         }
     }
-    }
+
 }
-void ControlAttc::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint iterator = 0; iterator < touch.size(); ++iterator){
+void ControlAttc::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){
+     
     if (isRightPlaceForControle){
-        touchPoint = touch[iterator]->getLocation();
-    }
+        touchPoint = touch->getLocation();
     }
 }
-void ControlAttc::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
+void ControlAttc::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
 void ControlAttc::setDirectionAttacke(){
     /*Trembling it's a differance which not causes some if statements*/
     trembling = cocos2d::Vec2(touchPointStart.x - touchPointEnd.x,touchPointStart.y - touchPointEnd.y);
@@ -217,8 +218,8 @@ void ControlAttc::setDirectionAttacke(){
 }
 
 
-void ControlAttc::createEffect( void* node){}
-void ControlAttc::removeEffect( void* node){}
+void ControlAttc::createEffect(){}
+void ControlAttc::removeEffect(){}
 
 
 ///////////////////////////////////////////////////////////////*Class ControlTargeting*////////////////////////////////////////////////////////////////
@@ -227,7 +228,9 @@ void ControlAttc::removeEffect( void* node){}
 PartCreatureType ControlTargeting::target = PartCreatureType::HEAD;
 cocos2d::Vec2 ControlTargeting::offset = cocos2d::Vec2(0.1,0.9);
 
-ControlTargeting::ControlTargeting(void* layer){
+ControlTargeting::ControlTargeting(Creature* target, cocos2d::Node* layer){
+    this->creature = target;
+    this->currentLayer = layer;
     clickForOpen = true;
     targetingB = cocos2d::Sprite::createWithSpriteFrameName("targeting.png");
     cocos2d::Size vs = cocos2d::Director::getInstance()->getVisibleSize();
@@ -241,35 +244,33 @@ ControlTargeting::ControlTargeting(void* layer){
     };
     targetingB->getTexture()->setTexParameters(tpar);
     targetingB->setScale(3);                                        
-    static_cast<GameLayer*>(layer)->getChildByName(SceneEntities::ui)->addChild(targetingB);
+    currentLayer->addChild(targetingB);
 }
 ControlTargeting::~ControlTargeting(){}
-void ControlTargeting::update(float dt,void* Layer){}
-void ControlTargeting::updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){
-    for (uint iterator = 0; iterator < touch.size(); ++iterator){
-        if (targetingB->getBoundingBox().containsPoint(touch[iterator]->getLocation())){
+void ControlTargeting::update(float dt){}
+void ControlTargeting::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
+        if (targetingB->getBoundingBox().containsPoint(touch->getLocation())){
             if (clickForOpen){
-                setTarget(DirectionAttacke::TOP_TO_DOWN,Layer);
+                setTarget(DirectionAttacke::TOP_TO_DOWN);
                 clickForOpen = false;
             }
             else{
-                unsetTarget(Layer);
+                unsetTarget();
                 clickForOpen = true;
             }
             //This was done because loop iterate twice on the same location of touch so no targeting
-            touch[iterator]->setTouchInfo(touch[iterator]->getID(),-1000,-1000);
+            touch->setTouchInfo(touch->getID(),-1000,-1000);
         }
-    }
 }
-void ControlTargeting::updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
-void ControlTargeting::updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
-void ControlTargeting::updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer){}
-void ControlTargeting::createEffect( void* node){}
-void ControlTargeting::removeEffect( void* node){}
+void ControlTargeting::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ControlTargeting::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ControlTargeting::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ControlTargeting::createEffect(){}
+void ControlTargeting::removeEffect(){}
 
-void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer){
+void ControlTargeting::setTarget(DirectionAttacke direction){
     /*Remove our buttons before drew new one*/
-    unsetTarget(currentLayer);
+    unsetTarget();
     cocos2d::Size vs = cocos2d::Director::getInstance()->getVisibleSize();
     cocos2d::Vec2 posOfTargeting = cocos2d::Vec2(vs.width*offset.x,vs.height*offset.y);
     cocos2d::ui::Button* targetChoser;
@@ -285,84 +286,84 @@ void ControlTargeting::setTarget(DirectionAttacke direction, void* currentLayer)
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
     targetChoser->setPosition(posOfTargeting);
     targetChoser->setScale(5);
-    targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+    targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
         if (type == cocos2d::ui::Widget::TouchEventType::BEGAN){
             ControlTargeting::target = PartCreatureType::HEAD;
-            unsetTarget(currentLayer);
+            unsetTarget();
         }
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHead");
+    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHead");
 
     /*This attacks will trigged ability attacke a upper torse*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingUpperTorse.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
     targetChoser->setPosition(cocos2d::Vec2(posOfTargeting.x, posOfTargeting.y - 64));
     targetChoser->setScale(5);
-    targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+    targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
         ControlTargeting::target = PartCreatureType::UPPER_TORSE;
-        unsetTarget(currentLayer);
+        unsetTarget();
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->addChild(targetChoser,ZLevel::USER_INTERFACE,"tUpperT");
+    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tUpperT");
     /*This attacks will trigged ability attacke a bottom torse*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingBottomTorse.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
     targetChoser->setPosition(cocos2d::Vec2(posOfTargeting.x,posOfTargeting.y - 128));
     targetChoser->setScale(5);
-    targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+    targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
         ControlTargeting::target = PartCreatureType::BUTTOM_TORSE;
-        unsetTarget(currentLayer);
+        unsetTarget();
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->addChild(targetChoser,ZLevel::USER_INTERFACE,"tBottomT");
+    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tBottomT");
     /*This attacks will trigged ability attacke a left leg*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingLeg.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
     targetChoser->setPosition(cocos2d::Vec2(posOfTargeting.x - 32,posOfTargeting.y - 192));
     targetChoser->setScale(5);
-    targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+    targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
         ControlTargeting::target = PartCreatureType::LEG_LEFT;
-        unsetTarget(currentLayer);
+        unsetTarget();
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->addChild(targetChoser,ZLevel::USER_INTERFACE,"tLegL");
+    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tLegL");
     /*This attacks will trigged ability attacke a right leg*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingLeg.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
     targetChoser->setPosition(cocos2d::Vec2(posOfTargeting.x + 32,posOfTargeting.y - 192));
     targetChoser->setScale(5);
-    targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+    targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
         ControlTargeting::target = PartCreatureType::LEG_RIGHT;
-        unsetTarget(currentLayer);
+        unsetTarget();
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->addChild(targetChoser,ZLevel::USER_INTERFACE,"tLegR");
+    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tLegR");
     /*This attacks will trigged ability attacke a left hand*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingHand.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
     targetChoser->setPosition(cocos2d::Vec2(posOfTargeting.x - 64,
                                             posOfTargeting.y - 64));
     targetChoser->setScale(5);
-    targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+    targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
         ControlTargeting::target = PartCreatureType::HAND_LEFT;
-        unsetTarget(currentLayer);
+        unsetTarget();
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHandL");
+    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHandL");
     /*This attacks will trigged ability attacke a right hand*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingHand.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
     targetChoser->setPosition(cocos2d::Vec2(posOfTargeting.x + 64,
                                             posOfTargeting.y - 64));
     targetChoser->setScale(5);
-    targetChoser->addTouchEventListener([&,currentLayer](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+    targetChoser->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
         ControlTargeting::target = PartCreatureType::HAND_RIGHT;
-        unsetTarget(currentLayer);
+        unsetTarget();
     });
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHandR");
+    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHandR");
     
 }
-void ControlTargeting::unsetTarget(void* currentLayer){
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->removeChildByName("tHead");
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->removeChildByName("tUpperT");
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->removeChildByName("tHandL");
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->removeChildByName("tHandR");
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->removeChildByName("tBottomT");
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->removeChildByName("tLegR");
-    static_cast<GameLayer*>(currentLayer)->getChildByName(SceneEntities::ui)->removeChildByName("tLegL");
+void ControlTargeting::unsetTarget(){
+    currentLayer->removeChildByName("tHead");
+    currentLayer->removeChildByName("tUpperT");
+    currentLayer->removeChildByName("tHandL");
+    currentLayer->removeChildByName("tHandR");
+    currentLayer->removeChildByName("tBottomT");
+    currentLayer->removeChildByName("tLegR");
+    currentLayer->removeChildByName("tLegL");
 }

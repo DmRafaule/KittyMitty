@@ -16,7 +16,7 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
             creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
             creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
             creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
-            creature_speed  = 30;
+            creature_velocity_limit  = 200;
             creature_stamina = 100;
             creature_blood   = 20;
             crearure_mass   = 10;
@@ -27,9 +27,10 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
         }
     }
     creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
-    creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(creature_sprite->getBoundingBox().size);
+    creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(creature_sprite->getBoundingBox().size,cocos2d::PhysicsMaterial(0,0,1.5));
     creature_physic_body->setMass(crearure_mass);
     creature_physic_body->setDynamic(true);
+    creature_physic_body->setVelocityLimit(creature_velocity_limit);
     creature_physic_body->setGravityEnable(true);
     creature_physic_body->setCategoryBitmask(0x02);
     creature_physic_body->setCollisionBitmask(0x01);
@@ -90,8 +91,7 @@ void Creature::getStatistics(){
     if (!isStatisticsShowing){
         isStatisticsShowing = true;
         creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
-        creature_statistics->setPosition(cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
-                                                       creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2));
+        creature_statistics->setPosition(creature_sprite->getPosition());
         static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_statistics,ZLevel::USER_INTERFACE);
     }
     else{
@@ -110,81 +110,88 @@ void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_typ
         }
     }
 }
-void Creature::setCreatureSpeed(uint creature_speed){
-    this->creature_speed = creature_speed;
-}
+
 void Creature::setCreatureBlood(uint creature_blood){
     this->creature_blood = creature_blood;
 }
 void Creature::setCreatureStamina(uint creature_stamina){
     this->creature_stamina =creature_stamina;
 }
-void Creature::setStatistics(){
+void Creature::setStatistics(DebugStatistics mode){
     std::string partStatus;
 
     /*Set strings about part of body*/
     partStatus.append("Status:\n");
-    for (PartCreature &part : creature_parts){
-        switch(part.part_type){
-            case PartCreatureType::HEAD:{
-                partStatus.append("\thead:");
-                break;
+    if (mode == DebugStatistics::GAME_STATS){
+        for (PartCreature &part : creature_parts){
+            switch(part.part_type){
+                case PartCreatureType::HEAD:{
+                    partStatus.append("\thead:");
+                    break;
+                }
+                case PartCreatureType::UPPER_TORSE:{
+                    partStatus.append("\tupTorse:");
+                    break;
+                }
+                case PartCreatureType::HAND_LEFT:{
+                    partStatus.append("\thand left:");
+                    break;
+                }
+                case PartCreatureType::HAND_RIGHT:{
+                    partStatus.append("\thand right:");
+                    break;
+                }
+                case PartCreatureType::BUTTOM_TORSE:{
+                    partStatus.append("\tbotTorse:");
+                    break;
+                }
+                case PartCreatureType::LEG_LEFT:{
+                    partStatus.append("\tleg left:");
+                    break;
+                }
+                case PartCreatureType::LEG_RIGHT:{
+                    partStatus.append("\tleg right:");
+                    break;
+                }
             }
-            case PartCreatureType::UPPER_TORSE:{
-                partStatus.append("\tupTorse:");
-                break;
-            }
-            case PartCreatureType::HAND_LEFT:{
-                partStatus.append("\thand left:");
-                break;
-            }
-            case PartCreatureType::HAND_RIGHT:{
-                partStatus.append("\thand right:");
-                break;
-            }
-            case PartCreatureType::BUTTOM_TORSE:{
-                partStatus.append("\tbotTorse:");
-                break;
-            }
-            case PartCreatureType::LEG_LEFT:{
-                partStatus.append("\tleg left:");
-                break;
-            }
-            case PartCreatureType::LEG_RIGHT:{
-                partStatus.append("\tleg right:");
-                break;
-            }
+            partStatus.append(part.part_status == PartCreatureStatus::NORMAL ? "norm-" :
+                              part.part_status == PartCreatureStatus::WONDED ? "wonded-" :
+                              part.part_status == PartCreatureStatus::CUTTED ? "cutted-" :
+                              "killed");
+            partStatus.append(std::to_string(part.part_densityDef) + "-" + std::to_string(part.part_penetrationDef) + "-" + std::to_string(part.part_crushingDef) + "\n");
+
         }
-        partStatus.append(part.part_status == PartCreatureStatus::NORMAL ? "norm-" :
-                          part.part_status == PartCreatureStatus::WONDED ? "wonded-" :
-                          part.part_status == PartCreatureStatus::CUTTED ? "cutted-" :
-                          "killed");
-        partStatus.append(std::to_string(part.part_densityDef) + "-" + std::to_string(part.part_penetrationDef) + "-" + std::to_string(part.part_crushingDef) + "\n");
-    
+        partStatus.append("brain:");
+        partStatus.append(getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::NORMAL ? "norm\n" :
+                          getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::WONDED ? "wonded\n" :
+                          getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::CUTTED ? "cutted\n" :
+                          "killed\n");
+        partStatus.append("lungs:");
+        partStatus.append(getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::NORMAL ? "norm\n" :
+                          getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::WONDED ? "wonded\n" :
+                          getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::CUTTED ? "cutted\n" :
+                          "killed\n");
+        partStatus.append("heart:");
+        partStatus.append(getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::NORMAL ? "norm\n" :
+                          getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::WONDED ? "wonded\n" :
+                          getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::CUTTED ? "cutted\n" :
+                          "killed\n");
+        partStatus.append("gut:");
+        partStatus.append(getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::NORMAL ? "norm\n" :
+                          getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::WONDED ? "wonded\n" :
+                          getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::CUTTED ? "cutted\n" :
+                          "killed\n");
+        /*Set strings about body*/
+        partStatus.append("blood:" + std::to_string(creature_blood) + "l\n");    
+        partStatus.append("stamina:" + std::to_string(creature_stamina) + "\n");
     }
-    partStatus.append("brain:");
-    partStatus.append(getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::NORMAL ? "norm\n" :
-                      getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::WONDED ? "wonded\n" :
-                      getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::CUTTED ? "cutted\n" :
-                      "killed\n");
-    partStatus.append("lungs:");
-    partStatus.append(getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::NORMAL ? "norm\n" :
-                      getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::WONDED ? "wonded\n" :
-                      getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::CUTTED ? "cutted\n" :
-                      "killed\n");
-    partStatus.append("heart:");
-    partStatus.append(getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::NORMAL ? "norm\n" :
-                      getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::WONDED ? "wonded\n" :
-                      getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::CUTTED ? "cutted\n" :
-                      "killed\n");
-    partStatus.append("gut:");
-    partStatus.append(getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::NORMAL ? "norm\n" :
-                      getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::WONDED ? "wonded\n" :
-                      getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::CUTTED ? "cutted\n" :
-                      "killed\n");
-    /*Set strings about body*/
-    partStatus.append("blood:" + std::to_string(creature_blood) + "l\n");    
-    partStatus.append("stamina:" + std::to_string(creature_stamina) + "\n");
+    else if (mode == DebugStatistics::PHYSICS){
+        partStatus.append("Position x = ");
+        partStatus.append(std::to_string(creature_sprite->getPosition().x) + "\ty= " + std::to_string(creature_sprite->getPosition().y) + "\n");
+        partStatus.append("Velocity x = ");
+        partStatus.append(std::to_string(creature_physic_body->getVelocity().x) + "\ty= " + std::to_string(creature_physic_body->getVelocity().y) + "\n");
+        
+    }
     creature_statistics->setString(partStatus);
 }
 void Creature::setWeapon(WeaponType wMap ){
@@ -207,7 +214,15 @@ void Creature::setWeapon(WeaponType wMap ){
     static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_weapon->getSprite(),ZLevel::MIDLEGROUND);
     static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_weapon->getDammageSprite(),ZLevel::MIDLEGROUND);
 }
-
+void Creature::showStatistics(){
+    /*For statistics*/
+    if (isStatisticsShowing){
+        setStatistics(DebugStatistics::GAME_STATS);
+        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
+                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
+    }
+    creature_weapon->getSprite()->runAction(cocos2d::MoveTo::create(0.1f,creature_sprite->getPosition()));
+}
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
 PartOrgan::PartOrgan(PartOrganType type){
     this->type = type;
@@ -263,13 +278,7 @@ Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* g
     Creature(texturePath,bMap,pos,gameLayer,id){
 }
 void Enemy::update(float dt){
-    /*For statistics*/
-    if (isStatisticsShowing){
-        setStatistics();
-        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
-                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
-    }
-    creature_weapon->getSprite()->runAction(cocos2d::MoveTo::create(0.1f,creature_sprite->getPosition()));
+    showStatistics();
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
@@ -280,54 +289,7 @@ Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void*
     creature_stamina_regeneration_counter = 0;
 }
 void Player::update(float dt){
-    /*For statistics*/
-    if (isStatisticsShowing){
-        setStatistics();
-        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x - creature_statistics->getBoundingBox().size.width/2,
-                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
-    }
-    //For moves of all body
-    if (ControlKeys::getMoving()){
-        //Breathtaken limit
-        if (creature_physic_body->getVelocity().x >= 90)
-            creature_stamina--;
-        if (creature_velocity.x < 150 && creature_velocity.x > -150 )
-            creature_velocity = cocos2d::Vec2(creature_physic_body->getVelocity().x + ControlKeys::getDirection().x,
-                                              creature_physic_body->getVelocity().y + ControlKeys::getDirection().y);
-        OUT("vel x = %f\n",creature_velocity.x);
-        creature_physic_body->setVelocity(creature_velocity);
-        //creature_sprite->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(1.f,ControlKeys::getDirection())));
-        //Weapon follow by body
-        creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x - creature_weapon->getSprite()->getPosition().x,
-                                                                                                                                    creature_sprite->getPosition().y - creature_weapon->getSprite()->getPosition().y))));
-    }
-    else{ 
-        creature_weapon->getSprite()->runAction(cocos2d::EaseQuadraticActionInOut::create(cocos2d::MoveBy::create(0.1,cocos2d::Vec2(creature_sprite->getPosition().x - creature_weapon->getSprite()->getPosition().x,
-                                                                                                                                    creature_sprite->getPosition().y - creature_weapon->getSprite()->getPosition().y))));
-    }
-    //For attacke
-    if (ControlAttc::getAttacke() && creature_stamina >= 20){
-        //Set to default state
-        ControlAttc::setAttacke(false);
-        creature_weapon->attacke();
-        creature_weapon->takeEffect(this);
-        for (int i=0; i < enemyNode->size(); ++i)
-            if (enemyNode->at(i)->getCreatureSprite()->getBoundingBox().intersectsRect(creature_weapon->getDammageSprite()->getBoundingBox()))
-                currentInteractedEnemy = i;
-        /*If we hit the enemy*/
-        if (currentInteractedEnemy >= 0){
-            creature_weapon->giveEffect(enemyNode->at(currentInteractedEnemy));
-        }
-            
-        currentInteractedEnemy = -1;
-    }
-    //For regeneration of stamina
-    creature_stamina_regeneration_counter += dt;
-    if (creature_stamina < 100 && creature_stamina_regeneration_counter >= 1){
-        creature_stamina++;
-        creature_stamina_regeneration_counter = 0;
-    }
-    
+    showStatistics();
 }
 
 /**Some code for future

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "area0/level0.tmx",
     "expandedProjectPaths": [
         ".",
         "area0"
@@ -14,11 +14,11 @@
             "scaleInDock": 1
         },
         "area0/level0.tmx": {
-            "scale": 1.5,
+            "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 350,
-                "y": 1344.3333333333333
+                "x": 72,
+                "y": 1447.25
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -26,7 +26,7 @@
             "scaleInEditor": 1
         },
         "area0/level0.tmx#tilesetMidlegr": {
-            "scaleInDock": 1,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1
         }
     },
@@ -35,6 +35,7 @@
     "map.tileHeight": 16,
     "map.tileWidth": 16,
     "openFiles": [
+        "area0/level0.tmx"
     ],
     "project": "World.tiled-project",
     "property.type": "bool",

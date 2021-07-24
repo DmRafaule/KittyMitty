@@ -26,7 +26,7 @@ Implement(Main) ITEMS      {c}
 
 
 
-Implement(Main) HERO           {c}
+Implement(Main) HERO           
     Implement(L) creature generator                             {cm:2021-07-22}
     Implement(UI) attace controlle for characteer             {cm:2021-07-22}
     Implement(UI) properly attcking interaction wt enemy      {cm:2021-07-22}
@@ -53,6 +53,7 @@ Implement(Main) HERO           {c}
     Implement double jump  
     Implement run
     Implement walk
+    Implement attack button
 
 Implement(Main) ENEMIES     {c}
     Implement(L) creature generator                             {cm:2021-07-22}

@@ -3,44 +3,40 @@
 #include <cocos2d.h>
 #include <cocos/ui/CocosGUI.h>
 #include "engEnums.hpp"
+#include "Creature.h"
 
 class GameUIPhone{
 public:
-    /**
-     * @param type which GUI will be created
-     * @param layer To which layer(scene) this GUI will be attached
-     * In common just create GUI
-    */
     GameUIPhone();
     virtual ~GameUIPhone();
     /**
      * Update GUI by the time 
      * @param dt -> elapsed time
-     * @param type -> which GUI will be updated
-     * @param Layer -> for which node will be applayed changes
     */
-    virtual void update(float dt, void* Layer) = 0;
+    virtual void update(float dt) = 0;
         // Will be called in touchBegan function in any of Node(Layer)
-        virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) = 0;
+        virtual void updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event) = 0;
         // Will be called in touchEnded function in any of Node(Layer)
-        virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) = 0;
+        virtual void updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event) = 0;
         // Will be called in touchMoved function in any of Node(Layer)
-        virtual void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) = 0;
+        virtual void updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event) = 0;
         // Will be called in touchCanceled function in any of Node(Layer)
-        virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) = 0;
+        virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) = 0;
     /**
      * Create line path effect
      * @param node wich layer should render this eff
     */
-    virtual void createEffect( void* node) = 0;
+    virtual void createEffect() = 0;
     /**
      * Create line path effect
      * @param node wich layer should remove this eff
     */
-    virtual void removeEffect( void* node) = 0;
+    virtual void removeEffect() = 0;
 protected:
     std::vector<cocos2d::DrawNode*> pathEffect;
-    cocos2d::Vec2  touchPoint;
+    cocos2d::Node*  currentLayer;
+    Creature*       creature;
+    cocos2d::Vec2   touchPoint;
 };
 
 /**
@@ -49,21 +45,18 @@ protected:
 */
 class ShowStats   : public GameUIPhone{
 public:
-    ShowStats(void* layer);
+    ShowStats(Creature* target, std::vector<Enemy*>* targetE, cocos2d::Node* layer);
     virtual ~ShowStats();
-    virtual void update(float dt,void* Layer) override;
-        virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-    virtual void createEffect( void* node) override;
-    virtual void removeEffect( void* node) override;
+    virtual void update(float dt) override;
+        virtual void updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
+    virtual void createEffect() override;
+    virtual void removeEffect() override;
 private:
-    float doubleDelay;
-    int doubleCount;
-    bool isdouble;
-    bool forPlayer;
-    bool forEnemy;
+    std::vector<Enemy*>* creatureE;
+    bool clickForOpen;
 
 };
 /**
@@ -72,15 +65,15 @@ private:
 */
 class ControlTargeting : public GameUIPhone{
 public:
-    ControlTargeting(void* layer);
+    ControlTargeting(Creature* target,cocos2d::Node* layer);
     virtual ~ControlTargeting();
-    virtual void update(float dt,void* Layer) override;
-        virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-    virtual void createEffect( void* node) override;
-    virtual void removeEffect( void* node) override;
+    virtual void update(float dt) override;
+        virtual void updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
+    virtual void createEffect() override;
+    virtual void removeEffect() override;
 
     /**
      * @return chosen target by player
@@ -89,12 +82,12 @@ public:
     /**
      * @brief set some ui(one buttom for each part of body) for choosing target
     */
-    static void setTarget(DirectionAttacke direction, void* currentLayer);
+    void setTarget(DirectionAttacke direction);
 private:
     /**
      * @brief unset all created buttons (created by setTarget)
     */
-    static void unsetTarget(void* currentLayer);
+    void unsetTarget();
 private:
     static PartCreatureType target;//Which target(part of body) will be attacked
     static cocos2d::Vec2 offset;
@@ -107,15 +100,15 @@ private:
 */
 class ControlKeys : public GameUIPhone{
 public:
-    ControlKeys(cocos2d::Vec2 offset, void* layer);
+    ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* layer);
     virtual ~ControlKeys();
-    virtual void update(float dt,void* Layer) override;
-        virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-    virtual void createEffect( void* node) override;
-    virtual void removeEffect( void* node) override;
+    virtual void update(float dt) override;
+        virtual void updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
+    virtual void createEffect() override;
+    virtual void removeEffect() override;
     /**
      * @return angle bettween touch point and center of ball control
     */
@@ -134,8 +127,9 @@ private:
     cocos2d::Sprite* button_jump;
     cocos2d::Vec2 offset;
     static cocos2d::Vec2 directionPoint;
-    static bool isMoving;
     static DirectionMove directionMove;
+    static bool isMoving;
+    bool isJump;
 };
 /**
  * @brief
@@ -144,16 +138,15 @@ private:
 class ControlAttc : public GameUIPhone{
 public:
     /*Inherite func*/    
-    ControlAttc(void* layer);
+    ControlAttc(Creature* target, cocos2d::Node* layer);
     virtual ~ControlAttc();
-    virtual void update(float dt, void* layer) override;
-        virtual void updateTouchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-        virtual void updateTouchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event,void* Layer) override;
-
-    virtual void createEffect( void* node) override;
-    virtual void removeEffect( void* node) override;
+    virtual void update(float dt) override;
+        virtual void updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
+    virtual void createEffect() override;
+    virtual void removeEffect() override;
 public:
     /**
      * @return status of attack

@@ -19,8 +19,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -62,6 +62,12 @@ void GameLayer::intCreatures(){
     spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
     this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
 
+    Enemy* e;
+    SceneEntities::enemy.push_back("enemy0");
+    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this,SceneEntities::enemy.back());
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
+
 
     player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this,SceneEntities::player);
     player->setWeapon(WeaponType::SWORD); 
@@ -70,10 +76,10 @@ void GameLayer::intCreatures(){
     this->getChildByName(SceneEntities::gamesession)->runAction(cocos2d::Follow::createWithOffset(player->getCreatureSprite(),-100,-100,cocos2d::Rect(0,0,2500,3200)));
 }
 void GameLayer::initUI(){
-    ctarg = new ControlTargeting(this);
-    ckeys = new ControlKeys(cocos2d::Vec2(0.15,0.1),this);
-    cattc = new ControlAttc(this);
-    shows = new ShowStats(this);
+    ctarg = new ControlTargeting(player,this->getChildByName(SceneEntities::ui));
+    ckeys = new ControlKeys(player,cocos2d::Vec2(0.15,0.1),this->getChildByName(SceneEntities::ui));
+    cattc = new ControlAttc(player,this->getChildByName(SceneEntities::ui));
+    shows = new ShowStats(player,&enemy,this->getChildByName(SceneEntities::gamesession));
 }
 void GameLayer::initListeners(){
     /*Init listeners*/
@@ -93,10 +99,10 @@ void GameLayer::initListeners(){
     this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
 }
 void GameLayer::update(float dt){
-    shows->update(dt,this);
-    ctarg->update(dt,this);
-    cattc->update(dt,this);
-    ckeys->update(dt,this);
+    shows->update(dt);
+    ctarg->update(dt);
+    cattc->update(dt);
+    ckeys->update(dt);
     player->update(dt);
     for (auto &i : enemy){
         i->update(dt);
@@ -106,29 +112,37 @@ void GameLayer::update(float dt){
 
 
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    shows->updateTouchBegan(touch,event,this);
-    ctarg->updateTouchBegan(touch,event,this);
-    cattc->updateTouchBegan(touch,event,this);
-    ckeys->updateTouchBegan(touch,event,this);
+    for (auto& one_touch : touch){
+        shows->updateTouchBegan(one_touch,event);
+        ctarg->updateTouchBegan(one_touch,event);
+        cattc->updateTouchBegan(one_touch,event);
+        ckeys->updateTouchBegan(one_touch,event);
+    }
     return true;
 }
 void GameLayer::touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    shows->updateTouchEnded(touch,event,this);
-    ctarg->updateTouchEnded(touch,event,this);
-    cattc->updateTouchEnded(touch,event,this);
-    ckeys->updateTouchEnded(touch,event,this);
+    for (auto& one_touch : touch){
+        shows->updateTouchEnded(one_touch,event);
+        ctarg->updateTouchEnded(one_touch,event);
+        cattc->updateTouchEnded(one_touch,event);
+        ckeys->updateTouchEnded(one_touch,event);
+    }
 }
 void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    shows->updateTouchMoved(touch,event,this);
-    ctarg->updateTouchMoved(touch,event,this);
-    cattc->updateTouchMoved(touch,event,this);
-    ckeys->updateTouchMoved(touch,event,this);
+    for (auto& one_touch : touch){
+        shows->updateTouchMoved(one_touch,event);
+        ctarg->updateTouchMoved(one_touch,event);
+        cattc->updateTouchMoved(one_touch,event);
+        ckeys->updateTouchMoved(one_touch,event);
+    }
 }
 void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    shows->updateTouchCanceled(touch,event,this);
-    ctarg->updateTouchCanceled(touch,event,this);
-    cattc->updateTouchCanceled(touch,event,this);
-    ckeys->updateTouchCanceled(touch,event,this);
+    for (auto& one_touch : touch){
+        shows->updateTouchCanceled(one_touch,event);
+        ctarg->updateTouchCanceled(one_touch,event);
+        cattc->updateTouchCanceled(one_touch,event);
+        ckeys->updateTouchCanceled(one_touch,event);
+    }
 }
 bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();

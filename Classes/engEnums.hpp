@@ -7,14 +7,6 @@ enum CreatureType : uint{
     TREE,
     FISH,
 };
-/*This is current state of creature*/
-enum CreatureState : uint{
-    IDLE,
-    WALK,
-    RUN,
-    JUMP,
-    FIGHT,
-};
 enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,
@@ -90,7 +82,10 @@ enum DirectionMove{
     IN,
     OUT,
 };
-
+enum DebugStatistics{
+    GAME_STATS,
+    PHYSICS,
+};
 
 enum WeaponType : uint{
    SWORD,

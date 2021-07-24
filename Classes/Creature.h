@@ -17,7 +17,6 @@ public:
     /*Getters*/
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline CreatureType getCreatureType() {return creature_type; };
-    inline uint getCreatureSpeed() { return creature_speed; };
     inline uint getCreatureBlood() {return creature_blood; };
     inline uint getCreatureStamina() {return creature_stamina; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
@@ -27,12 +26,12 @@ public:
     /*Setters*/
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
-    void setCreatureSpeed(uint creature_speed);
     void setCreatureBlood(uint creature_blood);
     void setCreatureStamina(uint creature_stamina);
-    void setStatistics();//Init information about creature node 
+    void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
+    void showStatistics();
     /*This is part of body(*/
     class PartCreature{
     friend class Creature;
@@ -65,11 +64,11 @@ protected:
     uint                      creature_blood;//How many blood liquid in creature
     float                     crearure_mass;
     cocos2d::Vec2             creature_velocity;
-    float                     creature_speed;//Creature speed
+    float                     creature_velocity_limit;
     uint                      creature_stamina;//How long creature can fight efficient
     float                     creature_stamina_regeneration_counter;//Timer for regenaration stamina
     bool                      isStatisticsShowing;
-    void*                     currentlayer;//Current plaing scene;
+    void*                     currentlayer;//Current playing scene;
 };
 
 
