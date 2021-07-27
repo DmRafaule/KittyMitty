@@ -34,8 +34,9 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     creature_physic_body->setDynamic(true);
     creature_physic_body->setVelocityLimit(creature_characteristics.velocity_limit);
     creature_physic_body->setGravityEnable(true);
-    creature_physic_body->setContactTestBitmask(true);
-    creature_physic_body->setCollisionBitmask(ContactMasks::creatureMask);
+    
+    creature_physic_body->setContactTestBitmask(0x01);
+    creature_physic_body->setCollisionBitmask(0x02);
     creature_sprite->setPhysicsBody(creature_physic_body);
     creature_sprite->setPosition(pos);
     creature_sprite->setScale(5);

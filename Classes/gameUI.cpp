@@ -147,33 +147,21 @@ bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
     //Check if body was collided with floor objects
-    if ((a->getCollisionBitmask() == ContactMasks::creatureMask && b->getCollisionBitmask() == ContactMasks::floorMask) || 
-        (b->getCollisionBitmask() == ContactMasks::creatureMask && a->getCollisionBitmask() == ContactMasks::floorMask)){
-        isJump = false;
-        jumpCount = 0;
-        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
-        return true;
-    }
-    //Check if body was collided with wall objects
-    else if ((a->getCollisionBitmask() == ContactMasks::creatureMask && b->getCollisionBitmask() == ContactMasks::wallMask) || 
-             (b->getCollisionBitmask() == ContactMasks::creatureMask && a->getCollisionBitmask() == ContactMasks::wallMask)){
-        isJump = false;
-        jumpCount = 0;
-        return true;
-    }
-    //Check if body was collided with roof objects
-    else if ((a->getCollisionBitmask() == ContactMasks::creatureMask && b->getCollisionBitmask() == ContactMasks::roofMask) || 
-             (b->getCollisionBitmask() == ContactMasks::creatureMask && a->getCollisionBitmask() == ContactMasks::roofMask)){
-
-        return true;
-    }
-    //Check if body was collided with enemy objects
-    else if ((a->getCollisionBitmask() == ContactMasks::creatureMask && b->getCollisionBitmask() == ContactMasks::creatureMask) || 
-             (b->getCollisionBitmask() == ContactMasks::creatureMask && a->getCollisionBitmask() == ContactMasks::creatureMask)){
-
+    if ((a->getCollisionBitmask() & b->getCategoryBitmask()) == 0 || 
+        (b->getCollisionBitmask() & a->getCategoryBitmask()) == 0 ){
+        OUT("collision\n");
         return false;
     }
+    else{
+        OUT("collision2\n");
+        return true;
+    }
 }
+/**
+ * isJump = false;
+        jumpCount = 0;
+        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
+*/
 void ControlKeys::createEffect(){}
 void ControlKeys::removeEffect(){}
 
