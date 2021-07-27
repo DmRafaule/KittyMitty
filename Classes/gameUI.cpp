@@ -147,8 +147,8 @@ bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
     //Check if body was collided with floor objects
-    if ((a->getCollisionBitmask() & b->getCategoryBitmask()) == 0 || 
-        (b->getCollisionBitmask() & a->getCategoryBitmask()) == 0 ){
+    if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 0 || 
+        (b->getCollisionBitmask() & a->getContactTestBitmask()) == 0 ){
         OUT("collision\n");
         return false;
     }
