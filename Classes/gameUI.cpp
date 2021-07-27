@@ -57,6 +57,7 @@ ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* 
     this->creature = target;
     this->currentLayer = layer;
     isJump = false;
+    jumpCount = 0;
 
     button_left = cocos2d::Sprite::createWithSpriteFrameName("controlB.png");
     cocos2d::Texture2D::TexParams tpar = {
@@ -89,8 +90,8 @@ ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* 
 ControlKeys::~ControlKeys(){}
 
 void ControlKeys::update(float dt){
-    //Player can increase speed only not in air
-    if (isRunning && !isJump){
+    //Player can change direction in anytime
+    if (isRunning){
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x + directionPoint.x,
                                                                                    creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
         if (creature->getCreatureCharacteristic()->stamina <= creature->getCreatureCharacteristic()->stamina_limit * 0.25)
@@ -113,11 +114,12 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
         }
         //Make jump if player have stamina and he is not in air
         if (button_jump->getBoundingBox().containsPoint(touch->getLocation()) &&
-            creature->getCreatureCharacteristic()->stamina >= 15 && !isJump){
+            creature->getCreatureCharacteristic()->stamina >= 5 && jumpCount <= 2){
             isJump = true;
-            //Lose some stamina
-            creature->setCreatureCharacteristic()->stamina = creature->getCreatureCharacteristic()->stamina - 15;
+            jumpCount++;
             directionMove = DirectionMove::TOP;
+            //Lose some stamina
+            creature->setCreatureCharacteristic()->stamina = creature->getCreatureCharacteristic()->stamina - 5;
             directionPoint = cocos2d::Vec2(0,creature->getCreatureCharacteristic()->jump_power);
             /*Set vertical velocity once for the body*/
             creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x,
@@ -125,41 +127,56 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
         }
     
 }
-void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
-     
-        if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-            isRunning = false;
-        }
-        if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-            isRunning = false;
-        }
-        if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
-            
-        }
+void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){ 
+    if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
+
+    }
+    if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
+       
+    }
+    if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
+        
+    }
+    isRunning = false;
 }
 void ControlKeys::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
 void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){
     isRunning = false;
 }
-void ControlKeys::createEffect(){}
-void ControlKeys::removeEffect(){}
 bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
-    //Check if body was collided with 'not world'
-    if ((a->getContactTestBitmask() & b->getCollisionBitmask()) == 0 ||
-        (b->getContactTestBitmask() & a->getCollisionBitmask()) == 0){
-        
-        return false;
-    }
-    //When Player has landed he lose all horisontal speed
-    //But he can run, again
-    else{
+    //Check if body was collided with floor objects
+    if ((a->getCollisionBitmask() == ContactMasks::creatureMask && b->getCollisionBitmask() == ContactMasks::floorMask) || 
+        (b->getCollisionBitmask() == ContactMasks::creatureMask && a->getCollisionBitmask() == ContactMasks::floorMask)){
         isJump = false;
-        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,0));
+        jumpCount = 0;
+        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
         return true;
     }
+    //Check if body was collided with wall objects
+    else if ((a->getCollisionBitmask() == ContactMasks::creatureMask && b->getCollisionBitmask() == ContactMasks::wallMask) || 
+             (b->getCollisionBitmask() == ContactMasks::creatureMask && a->getCollisionBitmask() == ContactMasks::wallMask)){
+        isJump = false;
+        jumpCount = 0;
+        return true;
+    }
+    //Check if body was collided with roof objects
+    else if ((a->getCollisionBitmask() == ContactMasks::creatureMask && b->getCollisionBitmask() == ContactMasks::roofMask) || 
+             (b->getCollisionBitmask() == ContactMasks::creatureMask && a->getCollisionBitmask() == ContactMasks::roofMask)){
+
+        return true;
+    }
+    //Check if body was collided with enemy objects
+    else if ((a->getCollisionBitmask() == ContactMasks::creatureMask && b->getCollisionBitmask() == ContactMasks::creatureMask) || 
+             (b->getCollisionBitmask() == ContactMasks::creatureMask && a->getCollisionBitmask() == ContactMasks::creatureMask)){
+
+        return false;
+    }
 }
+void ControlKeys::createEffect(){}
+void ControlKeys::removeEffect(){}
+
 ///////////////////////////////////////////////////////////////*ControlAttc class*////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*Init static members*/

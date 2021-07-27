@@ -70,6 +70,12 @@ struct SceneEntities{
     static std::string ui;
     static std::string gamesession;
 };
+enum ContactMasks{
+    floorMask = 1,
+    wallMask = 2,
+    roofMask = 3,
+    creatureMask = 4,
+};
 
 enum TypeUI{
     CONTROL_IN_GAMESESSION,

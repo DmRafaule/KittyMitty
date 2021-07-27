@@ -42,9 +42,9 @@ public:
     
     virtual bool init();
 
-    inline Player* getPlayer(){ return player;};
-    inline std::vector<Enemy*>* getEnemy(){ return &enemy;};
-    inline World* getWorld(){ return world;};
+    inline Player* getPlayer(){ return player;};//MAYBE NOT NEED
+    inline std::vector<Enemy*>* getEnemy(){ return &enemy;};//MAYBE NOT NEED
+    inline World* getWorld(){ return world;};//MAYBE NOT NEED
 private:
     /**
      * initialize level using tmx file

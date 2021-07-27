@@ -53,7 +53,7 @@ void GameLayer::initLayers(){
     this->addChild(UILayer,ZLevel::USER_INTERFACE,SceneEntities::ui);
 }
 void GameLayer::initLevel(std::string level_path){
-    world = new World(level_path,this);
+    world = new World(level_path,this->getChildByName(SceneEntities::gamesession));
 }
 void GameLayer::intCreatures(){
     visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
@@ -64,12 +64,12 @@ void GameLayer::intCreatures(){
 
     Enemy* e;
     SceneEntities::enemy.push_back("enemy0");
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this,SceneEntities::enemy.back());
+    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this->getChildByName(SceneEntities::gamesession),SceneEntities::enemy.back());
     e->setWeapon(WeaponType::SPEAR);
     enemy.push_back(e);
 
 
-    player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this,SceneEntities::player);
+    player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this->getChildByName(SceneEntities::gamesession),SceneEntities::player);
     player->setWeapon(WeaponType::SWORD); 
     /*Init camera. And set on player*/
     

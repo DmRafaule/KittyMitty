@@ -1,12 +1,16 @@
-Implement(Main) WORLD      {c}
-    Implement(UI) Test Level {cm:2021-07-22}
+Implement(Main) WORLD        {c}
+    Implement(UI) Test Level {cm:2021-07-22} {c}
         Implement(Ph) collisions   {cm:2021-07-22}
         Implement(Ph) gravity   {cm:2021-07-22}
     
-    Implement[L] Switching levels(load levels on right place)    
+    Implement[L] Switching levels(load levels on right place)
+    Implement[Ph] diffrent type of surface  {cm:2021-07-25} {c}
+        wall {cm:2021-07-25}
+        floor {cm:2021-07-25}
+        roof  {cm:2021-07-25}
 
-Implement(Main) ITEMS      {c}
-    Implement(SubMain) Weapon  {cm:2021-07-22} {c}
+Implement(Main) ITEMS       
+    Implement(SubMain) Weapon  {cm:2021-07-22}  {c}
         Implement(G) some animation for attacke    {cm:2021-07-22}
         Implement(L) interaction with enemy(and his part)   {cm:2021-07-22}
         Implement(L) method attacke   {cm:2021-07-22}
@@ -26,7 +30,7 @@ Implement(Main) ITEMS      {c}
 
 
 
-Implement(Main) HERO             {c}
+Implement(Main) HERO              
     Implement(L) creature generator                             {cm:2021-07-22}
     Implement(UI) attace controlle for characteer             {cm:2021-07-22}
     Implement(UI) properly attcking interaction wt enemy      {cm:2021-07-22}
@@ -50,12 +54,12 @@ Implement(Main) HERO             {c}
     
     Implement(UI) Camera for hero   {cm:2021-07-22}
     Implement jump {cm:2021-07-24}
-    Implement double jump  
+    Implement double jump   {cm:2021-07-24}
     Implement run {cm:2021-07-24}
     Implement walk
     Implement attack button
 
-Implement(Main) ENEMIES     {c}
+Implement(Main) ENEMIES      {c}
     Implement(L) creature generator                             {cm:2021-07-22}
     Implement(L) those states like: 
         power of attacke      
@@ -74,7 +78,7 @@ Implement(Main) ENEMIES     {c}
 Implement(Main) HISTORY   
 
 
-Implement(Main) UI       {c}
+Implement(Main) UI         
     Implement(UI) ball controller for character   {cm:2021-07-22}
     Implement(UI) ability visualize status of creatures        {cm:2021-07-24}
       
@@ -85,6 +89,6 @@ Implement(Main) UI       {c}
     Fix bug when player suddenly stopes in the air   {cm:2021-07-24}
 
  
-Implement(Main) CODE STUFF      {c}
+Implement(Main) CODE STUFF       {c}
      Implement(CORE) free up memory from entity    {cm:2021-07-22}
 

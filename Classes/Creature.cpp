@@ -2,10 +2,10 @@
 #include "GameLayer.h"
 
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
-Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,void* gameLayer,std::string id){
+Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id){
     isStatisticsShowing = false;
     this->creature_type = creature_type;
-    currentlayer = gameLayer;
+    this->currentlayer = gameLayer;
     switch(creature_type){
         case CreatureType::HUMANOID:{
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
@@ -34,8 +34,8 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     creature_physic_body->setDynamic(true);
     creature_physic_body->setVelocityLimit(creature_characteristics.velocity_limit);
     creature_physic_body->setGravityEnable(true);
-    creature_physic_body->setContactTestBitmask(0x02);
-    creature_physic_body->setCollisionBitmask(0x01);
+    creature_physic_body->setContactTestBitmask(true);
+    creature_physic_body->setCollisionBitmask(ContactMasks::creatureMask);
     creature_sprite->setPhysicsBody(creature_physic_body);
     creature_sprite->setPosition(pos);
     creature_sprite->setScale(5);
@@ -47,17 +47,17 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
     };
     creature_sprite->getTexture()->setTexParameters(tpar);
-    static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_sprite,ZLevel::MIDLEGROUND,id);
+    currentlayer->addChild(creature_sprite,ZLevel::MIDLEGROUND,id);
 }
 Creature::~Creature(){
     creature_parts.clear();
 }
 void Creature::removeSprite(){
-    static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->removeChildByName(creature_sprite->getName());
+    currentlayer->removeChildByName(creature_sprite->getName());
 }
 void Creature::removeStatistics(){
     if (isStatisticsShowing)
-        static_cast<GameLayer*>(currentlayer)->removeChild(creature_statistics);
+        currentlayer->removeChild(creature_statistics);
     isStatisticsShowing = false;
 }
 void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef){
@@ -94,11 +94,11 @@ void Creature::getStatistics(){
         isStatisticsShowing = true;
         creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
         creature_statistics->setPosition(creature_sprite->getPosition());
-        static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_statistics,ZLevel::USER_INTERFACE);
+        currentlayer->addChild(creature_statistics,ZLevel::USER_INTERFACE);
     }
     else{
         isStatisticsShowing = false;
-        static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->removeChild(creature_statistics);
+        currentlayer->removeChild(creature_statistics);
     }
 }
 
@@ -208,8 +208,8 @@ void Creature::setWeapon(WeaponType wMap ){
     }
     creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
     creature_weapon->getDammageSprite()->setPosition(creature_weapon->getSprite()->getPosition());
-    static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_weapon->getSprite(),ZLevel::MIDLEGROUND);
-    static_cast<GameLayer*>(currentlayer)->getChildByName(SceneEntities::gamesession)->addChild(creature_weapon->getDammageSprite(),ZLevel::MIDLEGROUND);
+    currentlayer->addChild(creature_weapon->getSprite(),ZLevel::MIDLEGROUND);
+    currentlayer->addChild(creature_weapon->getDammageSprite(),ZLevel::MIDLEGROUND);
 }
 void Creature::showStatistics(DebugStatistics type){
     /*For statistics*/
@@ -223,7 +223,7 @@ void Creature::showStatistics(DebugStatistics type){
 void Creature::losingStamina(){
     if ((creature_physic_body->getVelocity().x > 100 || creature_physic_body->getVelocity().x < -100) &&
         creature_physic_body->getVelocity().y == 0){
-        creature_characteristics.stamina--;
+        //creature_characteristics.stamina--;
     }
 }
 void Creature::regeneratingStamina(float dt){
@@ -289,7 +289,7 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
 }
 
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
-Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
+Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id) :
     Creature(texturePath,bMap,pos,gameLayer,id){
 }
 void Enemy::update(float dt){
@@ -297,14 +297,14 @@ void Enemy::update(float dt){
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
-Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id) :
+Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id) :
     Creature(texturePath,bMap,pos,gameLayer,id){
-    enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
+    //enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
     currentInteractedEnemy = -1;
     creature_characteristics.stamina_regeneration_counter = 0;
 }
 void Player::update(float dt){
-    showStatistics(DebugStatistics::GAME_STATS);
+    showStatistics(DebugStatistics::PHYSICS);
     losingStamina();
     regeneratingStamina(dt);
 }

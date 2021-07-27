@@ -8,7 +8,7 @@
 class Creature{
 friend class PartCreature;
 public:
-    Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,void* gameLayer,std::string id);
+    Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
     virtual ~Creature();
     virtual void update(float dt) = 0;
     /*Clearers*/
@@ -63,7 +63,7 @@ protected:
     CreatureType              creature_type;//Type of creature
     CreatureCharacteristics   creature_characteristics;
     bool                      isStatisticsShowing;
-    void*                     currentlayer;//Current playing scene;
+    cocos2d::Node*                     currentlayer;//Current playing scene;
 };
 
 
@@ -73,7 +73,7 @@ protected:
 /*INHERITATED CLASSES*/
 class Enemy : public Creature{
 public:
-    Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
+    Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
     virtual void update(float dt) override;
     /**
      * @return pointer to data of creature_parts of enemy object
@@ -83,7 +83,7 @@ private:
 };
 class Player : public Creature{
 public:
-    Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
+    Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
     virtual void update(float dt) override;
     /**
      * @return pointer to data of creature_parts of player object
@@ -91,6 +91,6 @@ public:
     inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
     inline int* getCurrentInteractedEnemy(){ return &currentInteractedEnemy; };
 private:
-    std::vector<Enemy*>* enemyNode;//All enemies which player can giveEffect
+    std::vector<Enemy*>* enemyNode;//All enemies which player can giveEffect//MAYBE NOT NEED
     int  currentInteractedEnemy;//current available enemy for giveEffect
 };
