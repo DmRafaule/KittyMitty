@@ -146,22 +146,18 @@ void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* even
 bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
-    //Check if body was collided with floor objects
-    if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 0 || 
-        (b->getCollisionBitmask() & a->getContactTestBitmask()) == 0 ){
-        OUT("collision\n");
-        return false;
-    }
-    else{
-        OUT("collision2\n");
-        return true;
-    }
-}
-/**
- * isJump = false;
+    //Check if body was collided with objects
+    if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
+        (b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
+        isJump = false;
         jumpCount = 0;
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
-*/
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 void ControlKeys::createEffect(){}
 void ControlKeys::removeEffect(){}
 

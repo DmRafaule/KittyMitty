@@ -25,7 +25,7 @@ World::World(std::string world_file_path,cocos2d::Node* currentLayer){
       ground_body->setGravityEnable(false);
       ground_body->setPositionOffset(cocos2d::Vec2(width/2,height/2));
       
-      ground_body->setContactTestBitmask(0x02);
+      ground_body->setContactTestBitmask(0xFF);
       ground_body->setCollisionBitmask(0x01);
 
       ground->setPosition(x,y);
