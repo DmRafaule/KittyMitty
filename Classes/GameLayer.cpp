@@ -17,7 +17,8 @@ cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
 cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
 cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
 std::vector<cocos2d::Vec2>  WorldProperties::enemySpawnPoint(0);
-cocos2d::Rect               WorldProperties::levelEnd = cocos2d::Rect();
+std::vector<cocos2d::Rect>  WorldProperties::levelEnd(0);
+std::vector<cocos2d::Rect>  WorldProperties::levelDeathZone(0);
 
 
 cocos2d::Scene* GameLayer::createScene(){
@@ -59,15 +60,9 @@ void GameLayer::initLayers(){
     this->addChild(UILayer,ZLevel::USER_INTERFACE,SceneEntities::ui);
 }
 void GameLayer::initLevel(std::string level_path){
-    world = new World(level_path,this->getChildByName(SceneEntities::gamesession));
-    
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
-    WorldProperties::mapSize = world->getMapSize();
-    WorldProperties::playerSpawnPoint = world->getPlayerSpawnPoint();     
-    WorldProperties::levelEnd = world->getLevelEnd();
-    for (uint index = 0; index < world->getEnemySpawnPoint().size(); ++index)
-        WorldProperties::enemySpawnPoint.push_back(world->getEnemySpawnPoint().at(index)); 
 
+    world = new World(level_path,this->getChildByName(SceneEntities::gamesession));
 }
 void GameLayer::intCreatures(){
     

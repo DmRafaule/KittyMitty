@@ -149,6 +149,7 @@ bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     //Collide with floors
     if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
         (b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
+        OUT("collision floors\n");
         isJump = false;
         jumpCount = 0;
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
@@ -157,12 +158,23 @@ bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     /*Collide with walls*/
     else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
              (b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
+        OUT("collision walls\n");
         isJump = false;
         jumpCount = 0;
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,0));
         return true;
     }
     else {
+        for (const auto& lE : WorldProperties::levelEnd){
+            if(creature->getCreatureSprite()->getBoundingBox().intersectsRect(lE)){
+                OUT("new level\n");
+            }
+        }
+        for (const auto& dZ : WorldProperties::levelDeathZone){
+            if (creature->getCreatureSprite()->getBoundingBox().intersectsRect(dZ)){
+                OUT("death zone\n");
+            }
+        }
         return false;
     }
 }

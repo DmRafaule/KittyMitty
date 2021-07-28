@@ -308,9 +308,6 @@ void Player::update(float dt){
     showStatistics(DebugStatistics::PHYSICS);
     losingStamina();
     regeneratingStamina(dt);
-    if (creature_sprite->getBoundingBox().intersectsRect(WorldProperties::levelEnd)){
-        OUT("end level\n");
-    }
 }
 
 /**Some code for future
