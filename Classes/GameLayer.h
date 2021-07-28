@@ -77,7 +77,7 @@ private:
     ControlTargeting* ctarg;
     ControlKeys*      ckeys;
     ControlAttc*      cattc;
-    cocos2d::Size visibleSize;
+
     cocos2d::SpriteBatchNode* spriteSheet;
     /*Game entyties*/
     World*  world;

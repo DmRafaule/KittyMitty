@@ -119,7 +119,7 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
             jumpCount++;
             directionMove = DirectionMove::TOP;
             //Lose some stamina
-            creature->setCreatureCharacteristic()->stamina = creature->getCreatureCharacteristic()->stamina - 5;
+            creature->setCreatureCharacteristic()->stamina = creature->getCreatureCharacteristic()->stamina - 2;
             directionPoint = cocos2d::Vec2(0,creature->getCreatureCharacteristic()->jump_power);
             /*Set vertical velocity once for the body*/
             creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x,
@@ -146,12 +146,20 @@ void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* even
 bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
-    //Check if body was collided with objects
+    //Collide with floors
     if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
         (b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
         isJump = false;
         jumpCount = 0;
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
+        return true;
+    }
+    /*Collide with walls*/
+    else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
+             (b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
+        isJump = false;
+        jumpCount = 0;
+        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,0));
         return true;
     }
     else {

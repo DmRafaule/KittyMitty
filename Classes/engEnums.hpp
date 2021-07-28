@@ -70,13 +70,13 @@ struct SceneEntities{
     static std::string ui;
     static std::string gamesession;
 };
-enum ContactMasks{
-    floorMask = 1,
-    wallMask = 2,
-    roofMask = 3,
-    creatureMask = 4,
+struct WorldProperties{
+    static cocos2d::Size screenSize;
+    static cocos2d::Size mapSize;
+    static cocos2d::Vec2 playerSpawnPoint;
+    static std::vector<cocos2d::Vec2> enemySpawnPoint;
+    static cocos2d::Rect   levelEnd;
 };
-
 enum TypeUI{
     CONTROL_IN_GAMESESSION,
     CONTROL_KEYS,

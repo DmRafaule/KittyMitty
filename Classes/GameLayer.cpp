@@ -5,13 +5,19 @@
 #include "Creature.h"
 
 
-std::string SceneEntities::player = "player";
-std::string SceneEntities::ball = "ball";
-std::string SceneEntities::ball_attacke = "ball_attacke";
-std::vector<std::string> SceneEntities::enemy(0);
-std::string SceneEntities::text = "text";
-std::string SceneEntities::ui = "ui";
-std::string SceneEntities::gamesession = "gamesession";
+std::string                 SceneEntities::player = "player";
+std::string                 SceneEntities::ball = "ball";
+std::string                 SceneEntities::ball_attacke = "ball_attacke";
+std::vector<std::string>    SceneEntities::enemy(0);
+std::string                 SceneEntities::text = "text";
+std::string                 SceneEntities::ui = "ui";
+std::string                 SceneEntities::gamesession = "gamesession";
+
+cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
+cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
+cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
+std::vector<cocos2d::Vec2>  WorldProperties::enemySpawnPoint(0);
+cocos2d::Rect               WorldProperties::levelEnd = cocos2d::Rect();
 
 
 cocos2d::Scene* GameLayer::createScene(){
@@ -19,8 +25,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+   // cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+   // ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -54,22 +60,31 @@ void GameLayer::initLayers(){
 }
 void GameLayer::initLevel(std::string level_path){
     world = new World(level_path,this->getChildByName(SceneEntities::gamesession));
+    
+    WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
+    WorldProperties::mapSize = world->getMapSize();
+    WorldProperties::playerSpawnPoint = world->getPlayerSpawnPoint();     
+    WorldProperties::levelEnd = world->getLevelEnd();
+    for (uint index = 0; index < world->getEnemySpawnPoint().size(); ++index)
+        WorldProperties::enemySpawnPoint.push_back(world->getEnemySpawnPoint().at(index)); 
+
 }
 void GameLayer::intCreatures(){
-    visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
     spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
     this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
 
     Enemy* e;
-    SceneEntities::enemy.push_back("enemy0");
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this->getChildByName(SceneEntities::gamesession),SceneEntities::enemy.back());
-    e->setWeapon(WeaponType::SPEAR);
-    enemy.push_back(e);
+    for (const auto& spawnPoint : WorldProperties::enemySpawnPoint){
+        SceneEntities::enemy.push_back("enemy0");
+        e = new Enemy("enemy.png",CreatureType::HUMANOID,spawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::enemy.back());
+        e->setWeapon(WeaponType::SPEAR);
+        enemy.push_back(e);
+    }
 
 
-    player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this->getChildByName(SceneEntities::gamesession),SceneEntities::player);
+    player = new Player("kittymitty.png",CreatureType::HUMANOID,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::player);
     player->setWeapon(WeaponType::SWORD); 
     /*Init camera. And set on player*/
     

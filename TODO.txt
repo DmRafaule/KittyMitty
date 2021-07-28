@@ -1,15 +1,15 @@
-Implement(Main) WORLD        {c}
+Implement(Main) WORLD        
     Implement(UI) Test Level {cm:2021-07-22} {c}
         Implement(Ph) collisions   {cm:2021-07-22}
         Implement(Ph) gravity   {cm:2021-07-22}
     
     Implement[L] Switching levels(load levels on right place)
-    Implement[Ph] diffrent type of surface  {cm:2021-07-25} {c}
+    Implement[Ph] diffrent type of surface  {cm:2021-07-25} 
         wall {cm:2021-07-25}
         floor {cm:2021-07-25}
         roof  {cm:2021-07-25}
 
-Implement(Main) ITEMS       
+Implement(Main) ITEMS        {c}
     Implement(SubMain) Weapon  {cm:2021-07-22}  {c}
         Implement(G) some animation for attacke    {cm:2021-07-22}
         Implement(L) interaction with enemy(and his part)   {cm:2021-07-22}
@@ -30,7 +30,7 @@ Implement(Main) ITEMS
 
 
 
-Implement(Main) HERO              
+Implement(Main) HERO               {c}
     Implement(L) creature generator                             {cm:2021-07-22}
     Implement(UI) attace controlle for characteer             {cm:2021-07-22}
     Implement(UI) properly attcking interaction wt enemy      {cm:2021-07-22}
