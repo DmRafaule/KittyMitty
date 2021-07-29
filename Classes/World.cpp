@@ -33,6 +33,14 @@ World::World(std::string world_file_path,cocos2d::Node* currentLayer){
          ground_body->setCollisionBitmask(0x03);
       else if (dict["name"].asString() == "floor")
          ground_body->setCollisionBitmask(0x01);
+      
+      if (dict["name"].asString() == "door" ||
+          dict["name"].asString() == "stair"){
+         WorldProperties::levelItems.push_back(cocos2d::Rect(dict["x"].asFloat()      * scaleOffset,
+                                                           dict["y"].asFloat()      * scaleOffset,
+                                                           dict["width"].asFloat()  * scaleOffset,
+                                                           dict["height"].asFloat() * scaleOffset));
+      }
 
       ground->setPosition(x,y);
       ground->setPhysicsBody(ground_body);

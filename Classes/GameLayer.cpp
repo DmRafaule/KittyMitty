@@ -19,6 +19,7 @@ cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
 std::vector<cocos2d::Vec2>  WorldProperties::enemySpawnPoint(0);
 std::vector<cocos2d::Rect>  WorldProperties::levelEnd(0);
 std::vector<cocos2d::Rect>  WorldProperties::levelDeathZone(0);
+std::vector<cocos2d::Rect>  WorldProperties::levelItems(0);
 
 
 cocos2d::Scene* GameLayer::createScene(){
