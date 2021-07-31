@@ -77,7 +77,7 @@ struct WorldProperties{
     static std::vector<cocos2d::Vec2> enemySpawnPoint;
     static std::vector<cocos2d::Rect> levelEnd;
     static std::vector<cocos2d::Rect> levelDeathZone;
-    static std::vector<cocos2d::Rect> levelItems;
+    static std::vector<std::pair<std::string,cocos2d::Rect>> levelItems;
 };
 enum TypeUI{
     CONTROL_IN_GAMESESSION,

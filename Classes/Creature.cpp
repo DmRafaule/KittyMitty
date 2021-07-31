@@ -3,7 +3,9 @@
 
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
 Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id){
-    isStatisticsShowing = false;
+    this->isStatisticsShowing = false;
+    this->isItemNearBy = false;
+    this->updateItemTimer = 0;
     this->creature_type = creature_type;
     this->currentlayer = gameLayer;
     switch(creature_type){
@@ -239,6 +241,22 @@ void Creature::regeneratingStamina(float dt){
     if (creature_characteristics.stamina <= 0)
         creature_characteristics.stamina = 0;
 }
+void Creature::itemInteract(float dt){
+    updateItemTimer += dt;
+    if (updateItemTimer > 2.f){
+        updateItemTimer = 0;
+        for (const auto& lI : WorldProperties::levelItems){
+            if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "door"){
+                OUT("item door\n");
+
+            }
+            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "stair"){
+                OUT("item stair\n");
+
+            }
+        }
+    }
+}
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
 PartOrgan::PartOrgan(PartOrganType type){
     this->type = type;
@@ -308,6 +326,7 @@ void Player::update(float dt){
     showStatistics(DebugStatistics::PHYSICS);
     losingStamina();
     regeneratingStamina(dt);
+    itemInteract(dt);
 }
 
 /**Some code for future

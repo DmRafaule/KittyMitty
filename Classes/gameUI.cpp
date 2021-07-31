@@ -175,11 +175,6 @@ bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
                 OUT("death zone\n");
             }
         }
-        for (const auto& lI : WorldProperties::levelItems){
-            if (creature->getCreatureSprite()->getBoundingBox().intersectsRect(lI)){
-                OUT("item\n");
-            }
-        }
         return false;
     }
 }

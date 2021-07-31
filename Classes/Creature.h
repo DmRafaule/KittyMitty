@@ -32,6 +32,7 @@ protected:
     void showStatistics(DebugStatistics type);
     void losingStamina();
     void regeneratingStamina(float dt);
+    void itemInteract(float dt);
     /*This is part of body(*/
     class PartCreature{
     friend class Creature;
@@ -62,8 +63,10 @@ protected:
     Weapon*                   creature_weapon;
     CreatureType              creature_type;//Type of creature
     CreatureCharacteristics   creature_characteristics;
+    cocos2d::Node*            currentlayer;//Current playing scene;
+    float                     updateItemTimer;//How  freaquency creaure will search nearby items
     bool                      isStatisticsShowing;
-    cocos2d::Node*                     currentlayer;//Current playing scene;
+    bool                      isItemNearBy;//Can creature interact with item
 };
 
 

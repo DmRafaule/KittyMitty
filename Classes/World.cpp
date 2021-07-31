@@ -2,6 +2,14 @@
 #include "engEnums.hpp"
 #include "engMacros.hpp"
 
+cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
+cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
+cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
+std::vector<cocos2d::Vec2>  WorldProperties::enemySpawnPoint(0);
+std::vector<cocos2d::Rect>  WorldProperties::levelEnd(0);
+std::vector<cocos2d::Rect>  WorldProperties::levelDeathZone(0);
+std::vector<std::pair<std::string,cocos2d::Rect>>  WorldProperties::levelItems(0);
+
 World::World(std::string world_file_path,cocos2d::Node* currentLayer){
    scaleOffset = 2;
    level = cocos2d::TMXTiledMap::create(world_file_path);
@@ -33,13 +41,17 @@ World::World(std::string world_file_path,cocos2d::Node* currentLayer){
          ground_body->setCollisionBitmask(0x03);
       else if (dict["name"].asString() == "floor")
          ground_body->setCollisionBitmask(0x01);
-      
-      if (dict["name"].asString() == "door" ||
-          dict["name"].asString() == "stair"){
-         WorldProperties::levelItems.push_back(cocos2d::Rect(dict["x"].asFloat()      * scaleOffset,
-                                                           dict["y"].asFloat()      * scaleOffset,
-                                                           dict["width"].asFloat()  * scaleOffset,
-                                                           dict["height"].asFloat() * scaleOffset));
+      else if (dict["name"].asString() == "door"){
+         WorldProperties::levelItems.push_back(std::pair<std::string,cocos2d::Rect>("door",cocos2d::Rect(dict["x"].asFloat()      * scaleOffset,
+                                                                                                  dict["y"].asFloat()      * scaleOffset,
+                                                                                                  dict["width"].asFloat()  * scaleOffset,
+                                                                                                  dict["height"].asFloat() * scaleOffset)));
+      }
+      else if (dict["name"].asString() == "stair"){
+         WorldProperties::levelItems.push_back(std::pair<std::string,cocos2d::Rect>("stair",cocos2d::Rect(dict["x"].asFloat()      * scaleOffset,
+                                                                                                  dict["y"].asFloat()      * scaleOffset,
+                                                                                                  dict["width"].asFloat()  * scaleOffset,
+                                                                                                  dict["height"].asFloat() * scaleOffset)));
       }
 
       ground->setPosition(x,y);

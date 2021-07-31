@@ -281,7 +281,7 @@
   <object id="146" name="floor" x="64.182" y="912.955" width="497.636" height="5.09091"/>
   <object id="147" name="floor" x="64.5153" y="1094.29" width="526.886" height="8.84091"/>
   <object id="148" name="floor" x="64.5153" y="1056.54" width="497.636" height="5.09091"/>
-  <object id="149" name="PlayerSpawnPoint" x="76.03" y="1511.79">
+  <object id="149" name="PlayerSpawnPoint" x="398.697" y="1305.12">
    <point/>
   </object>
   <object id="150" name="EnemySpawnPoint" x="442.667" y="1477.33">
@@ -308,7 +308,7 @@
   <object id="161" name="DeathZone" x="222" y="1558" width="396" height="494.587"/>
   <object id="165" name="stair" x="16.5" y="495.75" width="20.75" height="816"/>
   <object id="166" name="stair" x="524.818" y="1200.23" width="19.1818" height="110.773"/>
-  <object id="167" name="door" x="-3.83333" y="1458.5" width="19.75" height="61.5"/>
-  <object id="168" name="door" x="1089.4" y="1347.43" width="19.75" height="61.5"/>
+  <object id="167" name="door" x="-3.83333" y="1458.5" width="30.25" height="61.5"/>
+  <object id="168" name="door" x="1076.9" y="1347.43" width="32.25" height="61.5"/>
  </objectgroup>
 </map>
