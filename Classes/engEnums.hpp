@@ -69,6 +69,7 @@ struct SceneEntities{
     static std::string player_weapon;
     static std::string ui;
     static std::string gamesession;
+    static std::string bg;
 };
 struct WorldProperties{
     static cocos2d::Size screenSize;

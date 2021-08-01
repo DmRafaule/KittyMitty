@@ -12,5 +12,6 @@ private:
    cocos2d::TMXTiledMap* level;
    cocos2d::TMXLayer* level_layer_midleground;
    cocos2d::Node* currentLayer;
+   cocos2d::Sprite* backgroundSprite;
    float scaleOffset;
 };

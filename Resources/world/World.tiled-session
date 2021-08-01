@@ -5,8 +5,8 @@
     },
     "activeFile": "area0/level0.tmx",
     "expandedProjectPaths": [
-        ".",
-        "area0"
+        "area0",
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -14,11 +14,11 @@
             "scaleInDock": 1
         },
         "area0/level0.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "scale": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 80.66666666666663,
-                "y": 964.6666666666666
+                "x": 253.5,
+                "y": 731.5
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -26,7 +26,7 @@
             "scaleInEditor": 1
         },
         "area0/level0.tmx#tilesetMidlegr": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 3,
             "scaleInEditor": 1
         }
     },

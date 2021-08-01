@@ -12,6 +12,7 @@ std::vector<std::string>    SceneEntities::enemy(0);
 std::string                 SceneEntities::text = "text";
 std::string                 SceneEntities::ui = "ui";
 std::string                 SceneEntities::gamesession = "gamesession";
+std::string                 SceneEntities::bg = "background";
 
 
 
@@ -52,11 +53,13 @@ void GameLayer::initLayers(){
     this->addChild(gameSessionLayer,ZLevel::MIDLEGROUND,SceneEntities::gamesession);
     cocos2d::Layer* UILayer = cocos2d::Layer::create();
     this->addChild(UILayer,ZLevel::USER_INTERFACE,SceneEntities::ui);
+    cocos2d::Layer* BGLayer = cocos2d::Layer::create();
+    this->addChild(BGLayer,ZLevel::BACKGROUND,SceneEntities::bg);
 }
 void GameLayer::initLevel(std::string level_path){
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 
-    world = new World(level_path,this->getChildByName(SceneEntities::gamesession));
+    world = new World(level_path,this);
 }
 void GameLayer::intCreatures(){
     
@@ -77,7 +80,18 @@ void GameLayer::intCreatures(){
     player->setWeapon(WeaponType::SWORD); 
     /*Init camera. And set on player*/
     
-    this->getChildByName(SceneEntities::gamesession)->runAction(cocos2d::Follow::createWithOffset(player->getCreatureSprite(),-100,-100,cocos2d::Rect(0,0,2500,3200)));
+    this->getChildByName(SceneEntities::gamesession)->runAction(
+        cocos2d::Follow::createWithOffset(
+            player->getCreatureSprite(),
+            -100,-100,
+            cocos2d::Rect(
+                0,
+                0,
+                WorldProperties::mapSize.width-WorldProperties::screenSize.width   - 64,
+                WorldProperties::mapSize.height-WorldProperties::screenSize.height - 64
+            )
+        )
+    );
 }
 void GameLayer::initUI(){
     ctarg = new ControlTargeting(player,this->getChildByName(SceneEntities::ui));

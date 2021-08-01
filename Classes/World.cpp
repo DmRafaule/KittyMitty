@@ -16,7 +16,7 @@ World::World(std::string world_file_path,cocos2d::Node* currentLayer){
    level->setScale(scaleOffset);
    level_layer_midleground = level->getLayer("midleground");
    this->currentLayer = currentLayer;
-   this->currentLayer->addChild(level,1);
+   this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(level,1);
    /*Define level size*/
    WorldProperties::mapSize.setSize(level->getMapSize().width  * level->getTileSize().width  * scaleOffset,
                                     level->getMapSize().height * level->getTileSize().height * scaleOffset);
@@ -56,7 +56,7 @@ World::World(std::string world_file_path,cocos2d::Node* currentLayer){
 
       ground->setPosition(x,y);
       ground->setPhysicsBody(ground_body);
-      currentLayer->addChild(ground);
+      currentLayer->getChildByName(SceneEntities::gamesession)->addChild(ground);
       /*Define where will be appear player*/
       if (dict["name"].asString() == "PlayerSpawnPoint")
          WorldProperties::playerSpawnPoint.setPoint(dict["x"].asFloat() * scaleOffset, dict["y"].asFloat() * scaleOffset);
@@ -76,7 +76,19 @@ World::World(std::string world_file_path,cocos2d::Node* currentLayer){
                                                                  dict["width"].asFloat()  * scaleOffset,
                                                                  dict["height"].asFloat() * scaleOffset));
    }
-   
+   //Try to create new layer for background
+   this->backgroundSprite = cocos2d::Sprite::create("world/area0/backgroundImage.png");
+   cocos2d::Texture2D::TexParams tpar = {
+      cocos2d::backend::SamplerFilter::NEAREST,
+      cocos2d::backend::SamplerFilter::NEAREST,
+      cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE,
+      cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
+   };
+   backgroundSprite->getTexture()->setTexParameters(tpar);
+   backgroundSprite->setPosition(WorldProperties::screenSize.width/2,WorldProperties::screenSize.height/2);
+   backgroundSprite->setScale(MAX(WorldProperties::screenSize.width/backgroundSprite->getBoundingBox().size.width,
+                                  WorldProperties::screenSize.height/backgroundSprite->getBoundingBox().size.height));
+   currentLayer->getChildByName(SceneEntities::bg)->addChild(backgroundSprite);
 }
 World::~World(){}
 void World::update(float dt){
