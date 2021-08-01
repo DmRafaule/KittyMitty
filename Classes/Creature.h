@@ -17,6 +17,7 @@ public:
     /*Getters*/
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline CreatureType getCreatureType() {return creature_type; };
+    inline const CreatureState* getCreatureState() {return &creature_state; };
     inline const CreatureCharacteristics* getCreatureCharacteristic() {return &creature_characteristics; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
@@ -26,13 +27,16 @@ public:
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
     inline CreatureCharacteristics* setCreatureCharacteristic() {return &creature_characteristics; };
+    void setCreatureState(CreatureState creature_state);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
+    void updateInteractState(float dt);//set up creature ability interact with items
+    void updateOngoingState(float dt);//set up one of continuose state(like running,falling,idle etc)
+    void updateCurrentState();//Make some actions depens on which state creature have
     void showStatistics(DebugStatistics type);
     void losingStamina();
     void regeneratingStamina(float dt);
-    void itemInteract(float dt);
     /*This is part of body(*/
     class PartCreature{
     friend class Creature;
@@ -63,10 +67,15 @@ protected:
     Weapon*                   creature_weapon;
     CreatureType              creature_type;//Type of creature
     CreatureCharacteristics   creature_characteristics;
+    CreatureState             creature_state;
     cocos2d::Node*            currentlayer;//Current playing scene;
-    float                     updateItemTimer;//How  freaquency creaure will search nearby items
+    float                     updateItemTimer;//Timer for updating searching items
+    float                     freaquencyItemUpdate;
+    float                     updateStateTimer;//Timer for updating state
+    float                     freaquencyStateUpdate;
     bool                      isStatisticsShowing;
-    bool                      isItemNearBy;//Can creature interact with item
+    bool                      canInteract;//Can creature interact with item
+    bool                      isNewState;
 };
 
 

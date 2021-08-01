@@ -91,22 +91,24 @@ ControlKeys::~ControlKeys(){}
 
 void ControlKeys::update(float dt){
     //Player can change direction in anytime
-    if (isRunning){
-        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x + directionPoint.x,
-                                                                                   creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
-        if (creature->getCreatureCharacteristic()->stamina <= creature->getCreatureCharacteristic()->stamina_limit * 0.25)
-            isRunning = false;
-    }
+    //if (isRunning){
+    //    creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x + directionPoint.x,
+    //                                                                               creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
+    //    if (creature->getCreatureCharacteristic()->stamina <= creature->getCreatureCharacteristic()->stamina_limit * 0.25)
+    //        isRunning = false;
+    //}
 }
 void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
      
         if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
+            creature->setCreatureState(CreatureState::RUNNING);
             isRunning = true;
             directionMove = DirectionMove::LEFT;
             directionPoint = cocos2d::Vec2(creature->getCreatureCharacteristic()->acceleration_power*-1,0);
             creature->getWeapon()->getSprite()->setFlippedX(true);
         }
         if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
+            creature->setCreatureState(CreatureState::RUNNING);
             isRunning = true;
             directionMove = DirectionMove::RIGHT;
             directionPoint = cocos2d::Vec2(creature->getCreatureCharacteristic()->acceleration_power,0);
@@ -129,10 +131,10 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
 }
 void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){ 
     if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-
+        creature->setCreatureState(CreatureState::SLOWDOWNING);
     }
     if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-       
+        creature->setCreatureState(CreatureState::SLOWDOWNING);
     }
     if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
         
@@ -146,10 +148,11 @@ void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* even
 bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
+    
     //Collide with floors
     if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
         (b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
-        OUT("collision floors\n");
+        creature->setCreatureState(CreatureState::LAND_ON);
         isJump = false;
         jumpCount = 0;
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
@@ -158,21 +161,29 @@ bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     /*Collide with walls*/
     else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
              (b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
-        OUT("collision walls\n");
+        creature->setCreatureState(CreatureState::ON_WALL);
         isJump = false;
         jumpCount = 0;
         creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,0));
         return true;
     }
+    /*Collide with steps*/
+    else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
+             (b->getCollisionBitmask() & a->getContactTestBitmask()) == 4 ){
+        creature->setCreatureState(CreatureState::ON_STEPS);
+        
+        
+        return true;
+    }
     else {
         for (const auto& lE : WorldProperties::levelEnd){
             if(creature->getCreatureSprite()->getBoundingBox().intersectsRect(lE)){
-                OUT("new level\n");
+                
             }
         }
         for (const auto& dZ : WorldProperties::levelDeathZone){
             if (creature->getCreatureSprite()->getBoundingBox().intersectsRect(dZ)){
-                OUT("death zone\n");
+                
             }
         }
         return false;

@@ -132,7 +132,6 @@ private:
     static bool isRunning;
     bool isJump;
     uint jumpCount;
-    uint ii = 0;
 };
 /**
  * @brief

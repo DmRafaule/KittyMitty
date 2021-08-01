@@ -18,6 +18,19 @@ struct CreatureCharacteristics{
     float                     stamina_regeneration_counter;//Timer for regenaration stamina
 
 };
+enum CreatureState{
+    IDLE,
+    RUNNING,
+    SLOWDOWNING,
+    IN_JUMP,
+    IN_FALL,
+    ON_STAIR,
+    ON_STEPS,
+    ON_WALL,
+    LAND_ON,
+    GRAB_ON,
+    ON_EDGE,
+};
 enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,
@@ -80,10 +93,7 @@ struct WorldProperties{
     static std::vector<cocos2d::Rect> levelDeathZone;
     static std::vector<std::pair<std::string,cocos2d::Rect>> levelItems;
 };
-enum TypeUI{
-    CONTROL_IN_GAMESESSION,
-    CONTROL_KEYS,
-};
+
 enum DirectionAttacke{
     TOP_TO_DOWN,
     DOWN_TO_TOP,

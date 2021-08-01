@@ -4,9 +4,14 @@
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
 Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id){
     this->isStatisticsShowing = false;
-    this->isItemNearBy = false;
+    this->canInteract = false;
+    this->isNewState = false;
     this->updateItemTimer = 0;
+    this->freaquencyItemUpdate = 2.f;
+    this->updateStateTimer = 0;
+    this->freaquencyStateUpdate = 1.f;
     this->creature_type = creature_type;
+    this->creature_state = CreatureState::IDLE;
     this->currentlayer = gameLayer;
     switch(creature_type){
         case CreatureType::HUMANOID:{
@@ -31,7 +36,7 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
         }
     }
     creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
-    creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(creature_sprite->getBoundingBox().size,cocos2d::PhysicsMaterial(0,0,1.5));
+    creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(cocos2d::Size(creature_sprite->getBoundingBox().size.width/2,creature_sprite->getBoundingBox().size.height),cocos2d::PhysicsMaterial(0,0,1.5));
     creature_physic_body->setMass(creature_characteristics.mass);
     creature_physic_body->setDynamic(true);
     creature_physic_body->setVelocityLimit(creature_characteristics.velocity_limit);
@@ -115,7 +120,10 @@ void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_typ
         }
     }
 }
-
+void Creature::setCreatureState(CreatureState creature_state){
+    this->creature_state  = creature_state;
+    isNewState = true;
+}
 
 void Creature::setStatistics(DebugStatistics mode){
     std::string partStatus;
@@ -241,20 +249,86 @@ void Creature::regeneratingStamina(float dt){
     if (creature_characteristics.stamina <= 0)
         creature_characteristics.stamina = 0;
 }
-void Creature::itemInteract(float dt){
+void Creature::updateInteractState(float dt){
     updateItemTimer += dt;
-    if (updateItemTimer > 2.f){
+    if (updateItemTimer > freaquencyItemUpdate){
         updateItemTimer = 0;
         for (const auto& lI : WorldProperties::levelItems){
             if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "door"){
-                OUT("item door\n");
-
+                canInteract = true;
             }
             else if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "stair"){
-                OUT("item stair\n");
-
+                canInteract = true;
+            }
+            else {
+                canInteract = false;
             }
         }
+    }
+}
+void Creature::updateOngoingState(float dt){
+    updateStateTimer += dt;
+    if (updateStateTimer >= freaquencyStateUpdate){
+        updateStateTimer = 0;
+        if ((creature_physic_body->getVelocity().x >= -5 && creature_physic_body->getVelocity().x <= 5) && 
+            (creature_physic_body->getVelocity().y >= -5 && creature_physic_body->getVelocity().y <= 5)){
+            setCreatureState(CreatureState::IDLE);
+        }
+        if (creature_physic_body->getVelocity().y < -5){
+            setCreatureState(CreatureState::IN_FALL);
+        }
+        if (creature_physic_body->getVelocity().y > 5){
+            setCreatureState(CreatureState::IN_JUMP);
+        }
+    }
+}
+void Creature::updateCurrentState(){
+    switch (creature_state){
+    case CreatureState::IDLE:
+        OUT("idle\n");
+        isNewState = false;
+        break;
+    case CreatureState::RUNNING:
+        OUT("running\n");
+        creature_physic_body->setVelocity(cocos2d::Vec2(creature_physic_body->getVelocity().x + ControlKeys::getDirection().x,
+                                                        creature_physic_body->getVelocity().y));
+        break;
+    case CreatureState::SLOWDOWNING:
+        OUT("slowdowning\n");
+        isNewState = false;
+        break;
+    case CreatureState::GRAB_ON:
+        OUT("grab on\n");
+        isNewState = false;
+        break;
+    case CreatureState::IN_FALL:
+        OUT("in fall\n");
+        isNewState = false;
+        break;
+    case CreatureState::IN_JUMP:
+        OUT("in jump\n");
+        isNewState = false;
+        break;
+    case CreatureState::LAND_ON:
+        OUT("land on\n");
+        isNewState = false;
+        break;
+    case CreatureState::ON_EDGE:
+        OUT("on edge\n");
+        isNewState = false;
+        break;
+    case CreatureState::ON_STAIR:
+        OUT("on stair\n");
+        isNewState = false;
+        break;
+    case CreatureState::ON_STEPS:
+        OUT("on steps\n");
+        isNewState = false;
+        break;
+    case CreatureState::ON_WALL:
+        OUT("on wall\n");
+        isNewState = false;
+        break;
     }
 }
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
@@ -323,11 +397,13 @@ Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos
     creature_characteristics.stamina_regeneration_counter = 0;
 }
 void Player::update(float dt){
-    showStatistics(DebugStatistics::PHYSICS);
-    losingStamina();
-    regeneratingStamina(dt);
-    itemInteract(dt);
+    updateInteractState(dt);
+    updateOngoingState(dt);
+    if (isNewState){
+        updateCurrentState();
+    }
 }
+
 
 /**Some code for future
  **First clean engine's calls
