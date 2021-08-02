@@ -53,8 +53,6 @@ ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* 
     this->offset = offset;
     this->creature = target;
     this->currentLayer = layer;
-    jumpCount = 0;
-
     button_left = cocos2d::Sprite::createWithSpriteFrameName("controlB.png");
     cocos2d::Texture2D::TexParams tpar = {
         cocos2d::backend::SamplerFilter::NEAREST,
@@ -119,12 +117,8 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
         creature->setCreatureState(CreatureState::IN_JUMP);
         creature->setCreatureDirectionMove(DirectionMove::TOP);
     }
-    if (button_interact->getBoundingBox().containsPoint(touch->getLocation()) && creature->getCreatureInteractState()){
-        if (*(creature->getCreatureState()) == CreatureState::ON_DOOR)//Make interaction button
-            OUT("INTERACT w door\n");
-        else if (*(creature->getCreatureState()) == CreatureState::ON_STAIR)
-            OUT("INTERACT w stair\n");
-        creature->setCreatureInteractState(false);
+    if (button_interact->getBoundingBox().containsPoint(touch->getLocation())){
+        creature->setCreatureState(CreatureState::INTERACTING);
     }
     if (button_attack->getBoundingBox().containsPoint(touch->getLocation())){
 
@@ -142,7 +136,7 @@ void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
         
     }
     if (button_interact->getBoundingBox().containsPoint(touch->getLocation())){
-
+        
     }
     if (button_attack->getBoundingBox().containsPoint(touch->getLocation())){
         

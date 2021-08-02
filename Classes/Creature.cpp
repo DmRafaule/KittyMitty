@@ -4,12 +4,7 @@
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
 Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id){
     this->isStatisticsShowing = false;
-    this->canInteract = false;
     this->isNewState = false;
-    this->updateItemTimer = 0;
-    this->freaquencyItemUpdate = 2.f;
-    this->updateStateTimer = 0;
-    this->freaquencyStateUpdate = 1.f;
     this->creature_type = creature_type;
     this->creature_state = CreatureState::IDLE;
     this->currentlayer = gameLayer;
@@ -58,6 +53,20 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     };
     creature_sprite->getTexture()->setTexParameters(tpar);
     currentlayer->addChild(creature_sprite,ZLevel::MIDLEGROUND,id);
+    initAnimations();
+}
+void Creature::initAnimations(){
+    
+    auto animation = cocos2d::Animation::create();
+    for (uint i = 0; i <= 5;++i){
+        std::string name = "animation_idle" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation->addSpriteFrame(frame);
+    }
+    animation->setDelayPerUnit(0.18f);
+    animation->setRestoreOriginalFrame(true);
+    animation_idle = cocos2d::Animate::create(animation);
+    animation_idle->retain();
 }
 Creature::~Creature(){
     creature_parts.clear();
@@ -125,9 +134,6 @@ void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_typ
 void Creature::setCreatureState(CreatureState creature_state){
     this->creature_state  = creature_state;
     isNewState = true;
-}
-void Creature::setCreatureInteractState(bool canInteract){
-    this->canInteract = canInteract;
 }
 void Creature::setCreatureDirectionMove(DirectionMove creature_direction_move){
     this->creature_direction_move = creature_direction_move;
@@ -258,69 +264,22 @@ void Creature::regeneratingStamina(float dt){
 }
 void Creature::updatePermament(){
     creature_weapon->update();
-    if ((creature_physic_body->getVelocity().x >= -5 && creature_physic_body->getVelocity().x <= 5) && 
-        (creature_physic_body->getVelocity().y >= -5 && creature_physic_body->getVelocity().y <= 5)){
-        setCreatureState(CreatureState::IDLE);
-    }
-    if (creature_physic_body->getVelocity().y < -5){
+    if (creature_physic_body->getVelocity().y < -5 && creature_state != CreatureState::IN_FALL){
         setCreatureState(CreatureState::IN_FALL);
     }
 }
-void Creature::updateInteractState(float dt){
-    updateItemTimer += dt;
-    if (updateItemTimer > freaquencyItemUpdate){
-        updateItemTimer = 0;
-        for (const auto& lI : WorldProperties::levelItems){
-            if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "door"){
-                 creature_state = CreatureState::ON_DOOR;
-            }
-            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "stair"){
-                creature_state = CreatureState::ON_STAIR;
-            }
-            else {
-                canInteract = false;
-            }
-        }
-    }
-}
-void Creature::updateOngoingState(float dt){
-    updateStateTimer += dt;
-    if (updateStateTimer >= freaquencyStateUpdate){
-        updateStateTimer = 0;
-        switch(creature_state){
-        case CreatureState::IDLE:{
-            OUT("idle\n");
-            break;
-        }
-        case CreatureState::IN_FALL:{
-            OUT("in fall\n");
-            break;
-        }
-        case CreatureState::IN_JUMP:{
-            OUT("in jump still\n");
-            break;
-        }
-        case CreatureState::ON_STAIR:{
-            OUT("on stair still\n");
-            canInteract = true;
-            break;
-        }
-        case CreatureState::ON_DOOR:{
-            OUT("on door still\n");
-            canInteract = true;
-            break;
-        }
-        case CreatureState::ON_STEPS:{
-            OUT("on steps still\n");
-            break;
-        }
-        }
-    }
-}
-void Creature::updateOnceState(){
+void Creature::updateCurrentState(){
     switch (creature_state){
+    case CreatureState::IDLE:{
+        OUT("idle\n");
+        creature_sprite->stopAllActions();
+        creature_sprite->runAction(cocos2d::RepeatForever::create(animation_idle));
+        isNewState = false;
+        break;
+    }
     case CreatureState::RUNNING:{
         OUT("running\n");
+        creature_sprite->stopAllActions();
         bool isFlipped;
         cocos2d::Vec2 newVelocity;
         if (creature_direction_move == DirectionMove::LEFT){
@@ -336,16 +295,19 @@ void Creature::updateOnceState(){
         break;
     }
     case CreatureState::SLOWDOWNING:{
+        creature_sprite->stopAllActions();
         OUT("slowdowning\n");
-        isNewState = false;
+        setCreatureState(CreatureState::IDLE);
         break;
     }
     case CreatureState::GRAB_ON:{
+        creature_sprite->stopAllActions();
         OUT("grab on\n");
         isNewState = false;
         break;
     }
     case CreatureState::IN_JUMP:{
+        creature_sprite->stopAllActions();
         OUT("in jump\n");
         creature_characteristics.current_jump_ability_num++;
         //Lose some stamina
@@ -357,32 +319,60 @@ void Creature::updateOnceState(){
         isNewState = false;
         break;
     }
-    case CreatureState::LAND_ON:{
-        OUT("land on\n");
-        creature_characteristics.current_jump_ability_num = 0;
-        creature_physic_body->setVelocity(cocos2d::Vec2(0,creature_physic_body->getVelocity().y));
+    case CreatureState::IN_FALL:{
+        creature_sprite->stopAllActions();
+        OUT("in fall\n");
         isNewState = false;
         break;
     }
+    case CreatureState::LAND_ON:{
+        creature_sprite->stopAllActions();
+        OUT("land on\n");
+        creature_characteristics.current_jump_ability_num = 0;
+        creature_physic_body->setVelocity(cocos2d::Vec2(0,creature_physic_body->getVelocity().y));
+        setCreatureState(CreatureState::IDLE);
+        break;
+    }
     case CreatureState::ON_EDGE:{
+        creature_sprite->stopAllActions();
         OUT("on edge\n");
         isNewState = false;
         break;
     }
-    case CreatureState::ON_STAIR:{
-        OUT("on stair\n");
-        isNewState = false;
-        break;
-    }
     case CreatureState::ON_STEPS:{
+        creature_sprite->stopAllActions();
         OUT("on steps\n");
         isNewState = false;
         break;
     }
     case CreatureState::ON_WALL:{
+        creature_sprite->stopAllActions();
         OUT("on wall\n");
         creature_characteristics.current_jump_ability_num = 0;
         creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
+        isNewState = false;
+        break;
+    }
+    case CreatureState::INTERACTING:{
+        creature_sprite->stopAllActions();
+        bool isIntersection = false;
+        for (const auto& lI : WorldProperties::levelItems){
+            //Will open door if creature neer by, it's a door and buttom E pressed
+            if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "door"){
+                OUT("open door\n");
+                isIntersection = true;
+            }
+            //Will climbin on stair if creature neer by, it's a stair and buttom E pressed
+            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "stair"){
+                OUT("climbin on\n");
+                isIntersection = true;
+            }
+        
+        }
+        //If we not closed to item or buttom not pressed we will reser buttom state
+        if (!isIntersection){
+            setCreatureState(CreatureState::IDLE);
+        }
         isNewState = false;
         break;
     }
@@ -455,11 +445,8 @@ Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos
 }
 void Player::update(float dt){
     
-    updateInteractState(dt);
-
-    updateOngoingState(dt);
     if (isNewState){
-        updateOnceState();
+        updateCurrentState();
     }
     updatePermament();
 }

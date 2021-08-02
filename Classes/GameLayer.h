@@ -78,7 +78,6 @@ private:
     ControlKeys*      ckeys;
     ControlAttc*      cattc;
 
-    cocos2d::SpriteBatchNode* spriteSheet;
     /*Game entyties*/
     World*  world;
     Player* player;

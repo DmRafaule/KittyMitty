@@ -11,6 +11,8 @@ public:
     Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
     virtual ~Creature();
     virtual void update(float dt) = 0;
+    /*Initializer*/
+    void initAnimations();
     /*Clearers*/
     void removeSprite();
     void removeStatistics();
@@ -18,7 +20,6 @@ public:
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline CreatureType getCreatureType() {return creature_type; };
     inline const CreatureState* getCreatureState() {return &creature_state; };
-    inline const bool getCreatureInteractState() { return canInteract; };
     inline const CreatureCharacteristics* getCreatureCharacteristic() {return &creature_characteristics; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
@@ -31,14 +32,11 @@ public:
     inline CreatureCharacteristics* setCreatureCharacteristic() {return &creature_characteristics; };
     void setCreatureDirectionMove(DirectionMove dirMove);
     void setCreatureState(CreatureState creature_state);
-    void setCreatureInteractState(bool canInteract);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
     void updatePermament();//update stuff permamently
-    void updateInteractState(float dt);//set up creature ability interact with items
-    void updateOngoingState(float dt);//set up one of continuose state(like running,falling,idle etc)
-    void updateOnceState();//Make some actions depens on which state creature have
+    void updateCurrentState();//Make some actions depens on which state creature have
     void showStatistics(DebugStatistics type);
     void losingStamina();
     void regeneratingStamina(float dt);
@@ -75,15 +73,11 @@ protected:
     CreatureState             creature_state;
     DirectionMove             creature_direction_move;
     cocos2d::Node*            currentlayer;//Current playing scene;
-    
-    float                     updateItemTimer;//Timer for updating searching items
-    float                     freaquencyItemUpdate;
+    /*Animations*/
+    cocos2d::Animate*         animation_idle;
 
-    float                     updateStateTimer;//Timer for updating state
-    float                     freaquencyStateUpdate;
-    
+
     bool                      isStatisticsShowing;
-    bool                      canInteract;//Can creature interact with item
     bool                      isNewState;
 };
 

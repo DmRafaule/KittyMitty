@@ -117,7 +117,6 @@ private:
     cocos2d::Sprite* button_attack;
     cocos2d::Sprite* button_interact;
     cocos2d::Vec2 offset;
-    uint jumpCount;
 };
 /**
  * @brief

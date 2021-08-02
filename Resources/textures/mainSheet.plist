@@ -32,7 +32,7 @@
                 <key>textureRect</key>
                 <string>{{101,19},{8,10}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>controlB.png</key>
             <dict>
@@ -75,7 +75,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,29},{8,16}}</string>
+                <string>{{101,1},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -91,21 +91,6 @@
                 <string>{32,32}</string>
                 <key>textureRect</key>
                 <string>{{35,69},{32,32}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>kittymitty.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{12,16}</string>
-                <key>spriteSourceSize</key>
-                <string>{16,16}</string>
-                <key>textureRect</key>
-                <string>{{91,103},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -135,7 +120,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,47},{6,16}}</string>
+                <string>{{101,31},{6,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -150,7 +135,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,1},{10,16}}</string>
+                <string>{{91,103},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -256,9 +241,9 @@
             <key>realTextureFileName</key>
             <string>mainSheet.png</string>
             <key>size</key>
-            <string>{112,120}</string>
+            <string>{110,120}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:a96c676d4fc9613e12894fe4de6b6fab:7f804e928231cc1cb59e341114caa168:b5c3f50db41091b09fa78d282de805b5$</string>
+            <string>$TexturePacker:SmartUpdate:6d22fbdf5d094bf10f225959bc8154ff:ab9e72327ee2331a98e4add9fab98a00:b5c3f50db41091b09fa78d282de805b5$</string>
             <key>textureFileName</key>
             <string>mainSheet.png</string>
         </dict>
