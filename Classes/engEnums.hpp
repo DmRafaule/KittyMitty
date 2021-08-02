@@ -12,6 +12,8 @@ struct CreatureCharacteristics{
     float                     mass;
     float                     velocity_limit;//How fast player can run
     float                     jump_power;//How hard(heighst) creature can jump
+    uint                      jump_ability;//How many jumps creature can make
+    uint                      current_jump_ability_num;//How many jumps creature did already
     float                     acceleration_power;//How fast creature will be accelerating to velocity limit
     int                       stamina;//How long creature can fight efficient
     int                       stamina_limit;
@@ -25,6 +27,7 @@ enum CreatureState{
     IN_JUMP,
     IN_FALL,
     ON_STAIR,
+    ON_DOOR,
     ON_STEPS,
     ON_WALL,
     LAND_ON,
@@ -105,12 +108,12 @@ enum DirectionAttacke{
     BOTTOMRIGHT_TO_TOPLEFT,
 };
 enum DirectionMove{
-    LEFT,
-    RIGHT,
-    TOP,
-    DOWN,
-    IN,
-    OUT,
+    OUT  =  3,
+    DOWN = -2,
+    LEFT = -1,
+    RIGHT= 1,
+    TOP  = 2,
+    IN   = 3,
 };
 enum DebugStatistics{
     GAME_STATS,

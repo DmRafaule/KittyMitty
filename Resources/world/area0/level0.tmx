@@ -444,27 +444,27 @@
   <object id="98" name="wall" x="-2.66667" y="1312.67" width="20" height="145.083"/>
   <object id="100" name="floor" x="897" y="1489.25" width="34.25" height="2.75"/>
   <object id="101" name="floor" x="1009" y="1409.33" width="617.333" height="4.167"/>
-  <object id="102" name="floor" x="1088.75" y="1121" width="507.25" height="18.833"/>
+  <object id="102" name="floor" x="1090.39" y="1121" width="505.614" height="18.833"/>
   <object id="103" name="floor" x="857.136" y="1264.67" width="139.318" height="2.12118"/>
-  <object id="104" name="wall" x="760" y="1520" width="9.5" height="33"/>
-  <object id="108" name="wall" x="1088.67" y="1130.67" width="29.5" height="70.917"/>
-  <object id="109" name="wall" x="856.909" y="1266.05" width="3.81818" height="17.2728"/>
-  <object id="110" name="wall" x="991.23" y="1264.73" width="5.09091" height="19.7273"/>
+  <object id="104" name="wall" x="759" y="1522.73" width="10.5" height="30.2727"/>
+  <object id="108" name="wall" x="1089.4" y="1130.67" width="28.7727" height="70.917"/>
+  <object id="109" name="wall" x="856.409" y="1265.67" width="3.81818" height="17.2728"/>
+  <object id="110" name="wall" x="990.855" y="1265.98" width="6.46591" height="16.1023"/>
   <object id="111" name="floor" x="858" y="1279.54" width="137.409" height="4.72727"/>
   <object id="112" name="floor" x="18.7498" y="1339.63" width="620.542" height="7.70833"/>
-  <object id="113" name="wall" x="545" y="1199.72" width="3" height="119.283"/>
+  <object id="113" name="wall" x="545" y="1201.41" width="3" height="117.596"/>
   <object id="114" name="wall" x="665.5" y="1288.5" width="4.5" height="48"/>
-  <object id="115" name="wall" x="721" y="1264.05" width="4" height="30.4545"/>
+  <object id="115" name="wall" x="720" y="1264.67" width="5.5" height="30.4545"/>
   <object id="118" name="floor" x="545.341" y="1199.68" width="47.125" height="3.125"/>
   <object id="120" name="floor" x="655.341" y="1263.75" width="69.3411" height="4.5"/>
   <object id="121" name="floor" x="665" y="1290.75" width="59.25" height="4.75"/>
   <object id="122" name="floor" x="618.5" y="1332.5" width="48.5" height="5"/>
   <object id="123" name="wall" x="-5.38636" y="237.788" width="20" height="1075.38"/>
   <object id="124" name="wall" x="560.848" y="452.459" width="46.5076" height="641.125"/>
-  <object id="125" name="wall" x="70.856" y="544.39" width="6.47727" height="37.7345"/>
-  <object id="126" name="wall" x="68.2386" y="736.14" width="5.02273" height="36.9163"/>
-  <object id="127" name="wall" x="68.8296" y="914.095" width="7.84091" height="33.0679"/>
-  <object id="128" name="wall" x="68.9129" y="1056.38" width="5.75" height="33.9163"/>
+  <object id="125" name="wall" x="70.856" y="548.64" width="6.47727" height="27.4845"/>
+  <object id="126" name="wall" x="68.2386" y="741.14" width="5.02273" height="27.4163"/>
+  <object id="127" name="wall" x="68.8296" y="918.595" width="7.84091" height="24.5679"/>
+  <object id="128" name="wall" x="68.9129" y="1058.26" width="5.75" height="30.7913"/>
   <object id="129" name="wall" x="649.583" y="515.667" width="5.75" height="27.9997"/>
   <object id="130" name="floor" x="607.875" y="513" width="47.75" height="2.5"/>
   <object id="131" name="floor" x="559.375" y="449" width="47.75" height="2.5"/>
@@ -529,8 +529,8 @@
    <point/>
   </object>
   <object id="178" name="floor" x="1098.33" y="1328.42" width="205.333" height="4.167"/>
-  <object id="179" name="wall" x="1299.25" y="1267.54" width="6.5" height="70.917"/>
-  <object id="180" name="wall" x="1384.75" y="1265.54" width="6.5" height="30.417"/>
+  <object id="179" name="wall" x="1302.8" y="1267.45" width="6.5" height="70.917"/>
+  <object id="180" name="wall" x="1384.75" y="1267.6" width="6.5" height="26.4795"/>
   <object id="181" name="floor" x="1083.33" y="1263.92" width="222.333" height="4.167"/>
   <object id="182" name="floor" x="1386.33" y="1292.42" width="253.833" height="4.167"/>
   <object id="183" name="steps" x="848.631" y="1535.22" rotation="0.700831">

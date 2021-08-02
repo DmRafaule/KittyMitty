@@ -48,15 +48,11 @@ void ShowStats::removeEffect(){}
 
 ///////////////////////////////////////////////////////////////*ControlKey class*////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-cocos2d::Vec2 ControlKeys::directionPoint(0,0);
-DirectionMove ControlKeys::directionMove = DirectionMove::LEFT;
-bool  ControlKeys::isRunning = false;
 
 ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* layer){
     this->offset = offset;
     this->creature = target;
     this->currentLayer = layer;
-    isJump = false;
     jumpCount = 0;
 
     button_left = cocos2d::Sprite::createWithSpriteFrameName("controlB.png");
@@ -83,50 +79,56 @@ ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* 
     button_jump = cocos2d::Sprite::createWithSpriteFrameName("controlBJump.png");
     button_jump->getTexture()->setTexParameters(tpar);
     button_jump->setScale(3);
-    button_jump->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_jump->getBoundingBox().size.width*2,
+    button_jump->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_jump->getBoundingBox().size.width,
                                            cocos2d::Director::getInstance()->getVisibleSize().height*offset.y));
     currentLayer->addChild(button_jump);
+
+    button_attack = cocos2d::Sprite::createWithSpriteFrameName("attackB.png");
+    button_attack->getTexture()->setTexParameters(tpar);
+    button_attack->setScale(3);
+    button_attack->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_attack->getBoundingBox().size.width*2.5,
+                                           cocos2d::Director::getInstance()->getVisibleSize().height*offset.y));
+    currentLayer->addChild(button_attack);
+
+    button_interact = cocos2d::Sprite::createWithSpriteFrameName("interactB.png");
+    button_interact->getTexture()->setTexParameters(tpar);
+    button_interact->setScale(3);
+    button_interact->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_interact->getBoundingBox().size.width,
+                                               cocos2d::Director::getInstance()->getVisibleSize().height*offset.y + button_interact->getBoundingBox().size.height * 1.5));
+    currentLayer->addChild(button_interact);
 }
 ControlKeys::~ControlKeys(){}
 
 void ControlKeys::update(float dt){
-    //Player can change direction in anytime
-    //if (isRunning){
-    //    creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x + directionPoint.x,
-    //                                                                               creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
-    //    if (creature->getCreatureCharacteristic()->stamina <= creature->getCreatureCharacteristic()->stamina_limit * 0.25)
-    //        isRunning = false;
-    //}
+    
 }
 void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
      
-        if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-            creature->setCreatureState(CreatureState::RUNNING);
-            isRunning = true;
-            directionMove = DirectionMove::LEFT;
-            directionPoint = cocos2d::Vec2(creature->getCreatureCharacteristic()->acceleration_power*-1,0);
-            creature->getWeapon()->getSprite()->setFlippedX(true);
-        }
-        if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-            creature->setCreatureState(CreatureState::RUNNING);
-            isRunning = true;
-            directionMove = DirectionMove::RIGHT;
-            directionPoint = cocos2d::Vec2(creature->getCreatureCharacteristic()->acceleration_power,0);
-            creature->getWeapon()->getSprite()->setFlippedX(false);
-        }
-        //Make jump if player have stamina and he is not in air
-        if (button_jump->getBoundingBox().containsPoint(touch->getLocation()) &&
-            creature->getCreatureCharacteristic()->stamina >= 5 && jumpCount <= 2){
-            isJump = true;
-            jumpCount++;
-            directionMove = DirectionMove::TOP;
-            //Lose some stamina
-            creature->setCreatureCharacteristic()->stamina = creature->getCreatureCharacteristic()->stamina - 2;
-            directionPoint = cocos2d::Vec2(0,creature->getCreatureCharacteristic()->jump_power);
-            /*Set vertical velocity once for the body*/
-            creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(creature->getCreatureSprite()->getPhysicsBody()->getVelocity().x,
-                                                                                       directionPoint.y));
-        }
+    if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
+        creature->setCreatureState(CreatureState::RUNNING);
+        creature->setCreatureDirectionMove(DirectionMove::LEFT);
+    }
+    if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
+        creature->setCreatureState(CreatureState::RUNNING);
+        creature->setCreatureDirectionMove(DirectionMove::RIGHT);
+    }
+    //Make jump if player have stamina and he is do not make more than 2 jumps
+    if (button_jump->getBoundingBox().containsPoint(touch->getLocation()) &&
+        creature->getCreatureCharacteristic()->stamina >= 5 && 
+        creature->getCreatureCharacteristic()->current_jump_ability_num <= creature->getCreatureCharacteristic()->jump_ability){
+        creature->setCreatureState(CreatureState::IN_JUMP);
+        creature->setCreatureDirectionMove(DirectionMove::TOP);
+    }
+    if (button_interact->getBoundingBox().containsPoint(touch->getLocation()) && creature->getCreatureInteractState()){
+        if (*(creature->getCreatureState()) == CreatureState::ON_DOOR)//Make interaction button
+            OUT("INTERACT w door\n");
+        else if (*(creature->getCreatureState()) == CreatureState::ON_STAIR)
+            OUT("INTERACT w stair\n");
+        creature->setCreatureInteractState(false);
+    }
+    if (button_attack->getBoundingBox().containsPoint(touch->getLocation())){
+
+    }
     
 }
 void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){ 
@@ -139,12 +141,15 @@ void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
     if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
         
     }
-    isRunning = false;
+    if (button_interact->getBoundingBox().containsPoint(touch->getLocation())){
+
+    }
+    if (button_attack->getBoundingBox().containsPoint(touch->getLocation())){
+        
+    }
 }
 void ControlKeys::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
-void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){
-    isRunning = false;
-}
+void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
 bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
@@ -153,26 +158,18 @@ bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
     if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
         (b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
         creature->setCreatureState(CreatureState::LAND_ON);
-        isJump = false;
-        jumpCount = 0;
-        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,creature->getCreatureSprite()->getPhysicsBody()->getVelocity().y));
         return true;
     }
     /*Collide with walls*/
     else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
              (b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
         creature->setCreatureState(CreatureState::ON_WALL);
-        isJump = false;
-        jumpCount = 0;
-        creature->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(0,0));
         return true;
     }
     /*Collide with steps*/
     else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
              (b->getCollisionBitmask() & a->getContactTestBitmask()) == 4 ){
         creature->setCreatureState(CreatureState::ON_STEPS);
-        
-        
         return true;
     }
     else {

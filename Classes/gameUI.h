@@ -110,27 +110,13 @@ public:
     virtual void createEffect() override;
     virtual void removeEffect() override;
     bool updateContactBegan(cocos2d::PhysicsContact& contact);
-    /**
-     * @return angle bettween touch point and center of ball control
-    */
-    static inline const DirectionMove getDirectionMove(){ return directionMove; };
-    /**
-     * @return status of interaction with ball controller
-    */
-    static inline const bool getRunning(){ return isRunning; };
-    /**
-     * @return direction of movement for ball Sprite
-    */
-    static inline const cocos2d::Vec2 getDirection(){ return directionPoint; };
 private:
     cocos2d::Sprite* button_left;
     cocos2d::Sprite* button_right;
     cocos2d::Sprite* button_jump;
+    cocos2d::Sprite* button_attack;
+    cocos2d::Sprite* button_interact;
     cocos2d::Vec2 offset;
-    static cocos2d::Vec2 directionPoint;
-    static DirectionMove directionMove;
-    static bool isRunning;
-    bool isJump;
     uint jumpCount;
 };
 /**

@@ -3,7 +3,7 @@
 #include "engMacros.hpp"
 #include "gameUI.h"
 
-Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
+Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite){
    weapon_mass = 10;
    weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
    //weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size);
@@ -30,11 +30,11 @@ Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner){
 Weapon::~Weapon(){}
 void Weapon::attacke(){
     /*Get weapon owner's direction of movement */
-   DirectionMove dirctionMove = ControlKeys::getDirectionMove();
+   DirectionMove dirctionMove = *(weapon_owner_dirmove);
    /*For running action*/
    float angleOfAttacke;
    //where weapon will be, related of owner
-   weapon_sprite->setPosition(weapon_owner->getPosition());
+   weapon_sprite->setPosition(weapon_owner_sprite->getPosition());
 
    /*Here make some animations/actions and calculate hit box of weapon*/ 
    switch(ControlAttc::getDirectionAttacke()){
@@ -86,7 +86,7 @@ void Weapon::attacke(){
          forMoveBack = -50;
          forMoveForward = 100;
          weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(0.3,cocos2d::Vec2(forMoveBack,0)),cocos2d::MoveBy::create(0.1,cocos2d::Vec2(forMoveForward,0)),nullptr),
-                                                            cocos2d::MoveTo::create(0,weapon_owner->getPosition()),
+                                                            cocos2d::MoveTo::create(0,weapon_owner_sprite->getPosition()),
                                                             nullptr));
          break;
       }
@@ -100,7 +100,7 @@ void Weapon::attacke(){
          forMoveBack = 50;
          forMoveForward = -100;
          weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(0.3,cocos2d::Vec2(forMoveBack,0)),cocos2d::MoveBy::create(0.1,cocos2d::Vec2(forMoveForward,0)),nullptr),
-                                                            cocos2d::MoveTo::create(0,weapon_owner->getPosition()),
+                                                            cocos2d::MoveTo::create(0,weapon_owner_sprite->getPosition()),
                                                             nullptr));
          break;
       }
@@ -199,6 +199,9 @@ void Weapon::defend(){
 }
 void Weapon::parry(){
 
+}
+void Weapon::update(){
+   weapon_sprite->runAction(cocos2d::MoveTo::create(0.1,weapon_owner_sprite->getPosition()));
 }
 
 void Weapon::giveEffect(void* target_creature){
@@ -595,9 +598,10 @@ void Weapon::setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol,
 }
 
 
-Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner):
-   Weapon(weapon_sprite_path,weapon_owner){
-   this->weapon_owner = weapon_owner;
+Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj):
+   Weapon(weapon_sprite_path,weapon_owner_sprite){
+   this->weapon_owner_sprite = weapon_owner_sprite;
+   this->weapon_owner_dirmove = static_cast<Creature*>(owner_obj)->getCreatureDirectionMove();
    weapon_mass = 10;
    weapon_caracteristics.weapon_cuttinPower = 10;
    weapon_caracteristics.weapon_penetratingPower = 5;
@@ -607,9 +611,10 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner):
    //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
-Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner):
-   Weapon(weapon_sprite_path,weapon_owner){
-   this->weapon_owner = weapon_owner;
+Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj):
+   Weapon(weapon_sprite_path,weapon_owner_sprite){
+   this->weapon_owner_sprite = weapon_owner_sprite;
+   this->weapon_owner_dirmove = static_cast<Creature*>(owner_obj)->getCreatureDirectionMove();
    weapon_caracteristics.weapon_cuttinPower = 10;
    weapon_caracteristics.weapon_penetratingPower = 10;
    weapon_caracteristics.weapon_crushingPower =  15;
@@ -618,9 +623,10 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner):
    //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
-Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner) :
-   Weapon(weapon_sprite_path,weapon_owner){
-   this->weapon_owner = weapon_owner;
+Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj) :
+   Weapon(weapon_sprite_path,weapon_owner_sprite){
+   this->weapon_owner_sprite = weapon_owner_sprite;
+   this->weapon_owner_dirmove = static_cast<Creature*>(owner_obj)->getCreatureDirectionMove();
    weapon_mass = 10;
    weapon_caracteristics.weapon_cuttinPower = 5;
    weapon_caracteristics.weapon_penetratingPower = 20;

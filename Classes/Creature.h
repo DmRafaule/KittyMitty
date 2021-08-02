@@ -18,22 +18,27 @@ public:
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline CreatureType getCreatureType() {return creature_type; };
     inline const CreatureState* getCreatureState() {return &creature_state; };
+    inline const bool getCreatureInteractState() { return canInteract; };
     inline const CreatureCharacteristics* getCreatureCharacteristic() {return &creature_characteristics; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 
-    inline Weapon* getWeapon() { return creature_weapon;}
+    inline Weapon* getWeapon() { return creature_weapon;};
+    inline DirectionMove* getCreatureDirectionMove() { return &creature_direction_move;};
     /*Setters*/
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
     inline CreatureCharacteristics* setCreatureCharacteristic() {return &creature_characteristics; };
+    void setCreatureDirectionMove(DirectionMove dirMove);
     void setCreatureState(CreatureState creature_state);
+    void setCreatureInteractState(bool canInteract);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
+    void updatePermament();//update stuff permamently
     void updateInteractState(float dt);//set up creature ability interact with items
     void updateOngoingState(float dt);//set up one of continuose state(like running,falling,idle etc)
-    void updateCurrentState();//Make some actions depens on which state creature have
+    void updateOnceState();//Make some actions depens on which state creature have
     void showStatistics(DebugStatistics type);
     void losingStamina();
     void regeneratingStamina(float dt);
@@ -68,11 +73,15 @@ protected:
     CreatureType              creature_type;//Type of creature
     CreatureCharacteristics   creature_characteristics;
     CreatureState             creature_state;
+    DirectionMove             creature_direction_move;
     cocos2d::Node*            currentlayer;//Current playing scene;
+    
     float                     updateItemTimer;//Timer for updating searching items
     float                     freaquencyItemUpdate;
+
     float                     updateStateTimer;//Timer for updating state
     float                     freaquencyStateUpdate;
+    
     bool                      isStatisticsShowing;
     bool                      canInteract;//Can creature interact with item
     bool                      isNewState;

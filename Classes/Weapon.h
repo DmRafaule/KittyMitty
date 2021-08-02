@@ -12,7 +12,7 @@ public:
    /**
     * @param type set up weapon characteristics and sprite and sprite_hitbox
    */
-   Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner);
+   Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite);
    virtual ~Weapon();
    /**
     * @brief What kind of attacke run(just for animation and properly movements for each attack)
@@ -21,6 +21,7 @@ public:
    virtual void attacke();
    virtual void defend();
    virtual void parry();
+   virtual void update();
    /**
     * @brief How some kind of attack will make some change on target
    */
@@ -54,10 +55,11 @@ public:
 protected:
    cocos2d::Sprite* weapon_sprite;              //What player can see
    cocos2d::Sprite* weapon_damage_hitbox;       //What detect collision between weapon and enemies
-   cocos2d::Sprite* weapon_owner;               //Who have this weapon(used methos setWeapon)
+   cocos2d::Sprite* weapon_owner_sprite;        //Who have this weapon(used methos setWeapon)
+   DirectionMove*    weapon_owner_dirmove;
    cocos2d::PhysicsBody* weapon_physic_body;
    WeaponCaracteristics weapon_caracteristics;  //Weapon characteristics, look at structure
-   float weapon_mass;
+   float weapon_mass; 
 };
 
 /**
@@ -65,19 +67,19 @@ protected:
 */
 class Sword : public Weapon{
 public:
-   Sword(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
+   Sword(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj);
 };
 /**
  * @brief Implement stock axe
 */
 class Axe : public Weapon{
 public:
-   Axe(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
+   Axe(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj);
 };
 /**
  * @brief Implement stock spear
 */
 class Spear : public Weapon{
 public:
-   Spear(std::string weapon_sprite,cocos2d::Sprite* weapon_owner);
+   Spear(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj);
 };
