@@ -32,7 +32,82 @@
                 <key>textureRect</key>
                 <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
+            </dict>
+            <key>animation_idle10.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,37},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>animation_idle11.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,55},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>animation_idle12.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,73},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>animation_idle13.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,91},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>animation_idle14.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
             </dict>
             <key>animation_idle2.png</key>
             <dict>
@@ -45,9 +120,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,1},{12,16}}</string>
+                <string>{{1,109},{12,16}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>animation_idle3.png</key>
             <dict>
@@ -60,9 +135,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,19},{12,16}}</string>
+                <string>{{1,127},{12,16}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>animation_idle4.png</key>
             <dict>
@@ -75,7 +150,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,15},{12,16}}</string>
+                <string>{{1,145},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -90,9 +165,69 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,19},{12,16}}</string>
+                <string>{{1,73},{12,16}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
+            </dict>
+            <key>animation_idle6.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,73},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>animation_idle7.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-1,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,55},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>animation_idle8.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,37},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>animation_idle9.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,163},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
             </dict>
         </dict>
         <key>metadata</key>
@@ -106,9 +241,9 @@
             <key>realTextureFileName</key>
             <string>animationSheet.png</string>
             <key>size</key>
-            <string>{32,32}</string>
+            <string>{14,180}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:01896ade87dd51e93356e2ad6ff06920:33db7f29bd49a3aa7cf8a46f9c63428b:ab537d3f677981f9b864136542960916$</string>
+            <string>$TexturePacker:SmartUpdate:15335838579a781a7d543c5298a9db54:17168c34c617fdacdf05b1d5e5fe8e2d:ab537d3f677981f9b864136542960916$</string>
             <key>textureFileName</key>
             <string>animationSheet.png</string>
         </dict>

@@ -12,7 +12,7 @@ Implement(L) item class
 
  
 
-{cr:2021-08-02} Fix bug: wallhack in stairs poligon
+{cr:2021-08-02} Fix bug: wallhack in stairs poligon {cm:2021-08-04}
 {cr:2021-08-02} Make interation button work {cm:2021-08-02}
 
 {cr:2021-08-02} Animation for level items

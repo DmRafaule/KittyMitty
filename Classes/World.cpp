@@ -76,7 +76,7 @@ void World::initLevelObjects(){
          points.push_back(cocos2d::Vec2((level_layer_midleground->getMapTileSize().width * dict["widthInTiles"].asInt() * scaleOffset - dict["widthInTiles"].asInt()*8)*dict["toRightMod"].asInt(),
                                         0));
          cocos2d::PhysicsBody* poligon = cocos2d::PhysicsBody::createEdgePolygon(points.data(),points.size());
-         poligon->setDynamic(false);
+         poligon->setDynamic(true);
          poligon->setGravityEnable(false);
          poligon->setContactTestBitmask(0xFF);
          poligon->setCollisionBitmask(0x04);

@@ -21,8 +21,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -81,8 +81,8 @@ void GameLayer::intCreatures(){
 
     player = new Player("animation_idle0.png",CreatureType::HUMANOID,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::player);
     player->setWeapon(WeaponType::SWORD); 
-    /*Init camera. And set on player*/
     
+    /*Init camera. And set on player*/
     this->getChildByName(SceneEntities::gamesession)->runAction(
         cocos2d::Follow::createWithOffset(
             player->getCreatureSprite(),

@@ -58,12 +58,12 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
 void Creature::initAnimations(){
     
     auto animation = cocos2d::Animation::create();
-    for (uint i = 0; i <= 5;++i){
+    for (uint i = 0; i <= 14;++i){
         std::string name = "animation_idle" + std::to_string(i) + ".png";
         auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
         animation->addSpriteFrame(frame);
     }
-    animation->setDelayPerUnit(0.18f);
+    animation->setDelayPerUnit(0.35f);
     animation->setRestoreOriginalFrame(true);
     animation_idle = cocos2d::Animate::create(animation);
     animation_idle->retain();
