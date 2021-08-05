@@ -1,11 +1,23 @@
 #pragma once
 
+
+struct Animation{
+    Animation();
+    Animation(uint framesIdleNum,std::string animationForWho);
+    uint framesIdleNum;
+    std::string animationForWho;
+};
 enum CreatureType : uint{
     HUMANOID,
     INSECT,
     ANIMAL,
     TREE,
     FISH,
+};
+struct CreatureInfo{
+    CreatureInfo(CreatureType type,Animation animation);
+    CreatureType type;
+    Animation animation;
 };
 struct CreatureCharacteristics{
     uint                      blood;//How many blood liquid in creature

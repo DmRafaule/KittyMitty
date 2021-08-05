@@ -64,22 +64,21 @@ void GameLayer::initLevel(std::string level_path){
 void GameLayer::intCreatures(){
     
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
-    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/hero/animationSheet.plist");
     cocos2d::SpriteBatchNode* spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
-    cocos2d::SpriteBatchNode* animationHeroSheet = cocos2d::SpriteBatchNode::create("textures/animations/hero/animationSheet.png");
     this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
-    this->getChildByName(SceneEntities::gamesession)->addChild(animationHeroSheet);
+    
 
     Enemy* e;
     for (const auto& spawnPoint : WorldProperties::enemySpawnPoint){
         SceneEntities::enemy.push_back("enemy0");
-        e = new Enemy("enemy.png",CreatureType::HUMANOID,spawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::enemy.back());
+        e = new Enemy(CreatureInfo(CreatureType::HUMANOID,Animation(8,"kool-hash")),
+                      spawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::enemy.back());
         e->setWeapon(WeaponType::SPEAR);
         enemy.push_back(e);
     }
 
-
-    player = new Player("animation_idle0.png",CreatureType::HUMANOID,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::player);
+    player = new Player(CreatureInfo(CreatureType::HUMANOID,Animation(15,"hero")),
+                        WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::player);
     player->setWeapon(WeaponType::SWORD); 
     
     /*Init camera. And set on player*/

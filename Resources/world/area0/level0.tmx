@@ -484,7 +484,7 @@
   <object id="146" name="floor" x="70.6365" y="913.682" width="491.181" height="4.36364"/>
   <object id="147" name="floor" x="72.538" y="1082.88" width="521.363" height="9.75"/>
   <object id="148" name="floor" x="70.0153" y="1056.54" width="492.136" height="5.09091"/>
-  <object id="149" name="PlayerSpawnPoint" x="478.54" y="1244.78">
+  <object id="149" name="PlayerSpawnPoint" x="247.873" y="1278.11">
    <point/>
   </object>
   <object id="150" name="EnemySpawnPoint" x="442.667" y="1477.33">

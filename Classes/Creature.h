@@ -8,11 +8,11 @@
 class Creature{
 friend class PartCreature;
 public:
-    Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
+    Creature(CreatureInfo info ,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
     virtual ~Creature();
     virtual void update(float dt) = 0;
     /*Initializer*/
-    void initAnimations();
+    void initAnimations(Animation infoAnimation);
     /*Clearers*/
     void removeSprite();
     void removeStatistics();
@@ -68,7 +68,7 @@ protected:
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
     Weapon*                   creature_weapon;
-    CreatureType              creature_type;//Type of creature
+    CreatureType              creature_type;//CreatureType of creature
     CreatureCharacteristics   creature_characteristics;
     CreatureState             creature_state;
     DirectionMove             creature_direction_move;
@@ -88,7 +88,7 @@ protected:
 /*INHERITATED CLASSES*/
 class Enemy : public Creature{
 public:
-    Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
+    Enemy(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
     virtual void update(float dt) override;
     /**
      * @return pointer to data of creature_parts of enemy object
@@ -98,7 +98,7 @@ private:
 };
 class Player : public Creature{
 public:
-    Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
+    Player(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
     virtual void update(float dt) override;
     /**
      * @return pointer to data of creature_parts of player object

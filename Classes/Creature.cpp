@@ -1,11 +1,11 @@
 #include "Creature.h"
 #include "GameLayer.h"
-
+#include <dirent.h>
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
-Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id){
+Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id){
     this->isStatisticsShowing = false;
     this->isNewState = false;
-    this->creature_type = creature_type;
+    this->creature_type = info.type;
     this->creature_state = CreatureState::IDLE;
     this->currentlayer = gameLayer;
     switch(creature_type){
@@ -32,7 +32,8 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
             break;
         }
     }
-    creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(texturePath);
+    initAnimations(info.animation);
+    creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(info.animation.animationForWho + "_animation_idle0.png");
     creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(cocos2d::Size(creature_sprite->getBoundingBox().size.width/2,creature_sprite->getBoundingBox().size.height),cocos2d::PhysicsMaterial(0,0,1.5));
     creature_physic_body->setMass(creature_characteristics.mass);
     creature_physic_body->setDynamic(true);
@@ -53,13 +54,16 @@ Creature::Creature(std::string texturePath,CreatureType creature_type,cocos2d::V
     };
     creature_sprite->getTexture()->setTexParameters(tpar);
     currentlayer->addChild(creature_sprite,ZLevel::MIDLEGROUND,id);
-    initAnimations();
+    creature_sprite->runAction(animation_idle);
 }
-void Creature::initAnimations(){
-    
+void Creature::initAnimations(Animation infoAnimation){
+
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/" + infoAnimation.animationForWho + "/animationSheet.plist");
+    currentlayer->addChild(cocos2d::SpriteBatchNode::create("textures/animations/" + infoAnimation.animationForWho + "/animationSheet.png"));
+
     auto animation = cocos2d::Animation::create();
-    for (uint i = 0; i <= 14;++i){
-        std::string name = "animation_idle" + std::to_string(i) + ".png";
+    for (uint i = 0; i < infoAnimation.framesIdleNum;++i){
+        std::string name = infoAnimation.animationForWho + "_animation_idle" + std::to_string(i) + ".png";
         auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
         animation->addSpriteFrame(frame);
     }
@@ -67,6 +71,7 @@ void Creature::initAnimations(){
     animation->setRestoreOriginalFrame(true);
     animation_idle = cocos2d::Animate::create(animation);
     animation_idle->retain();
+
 }
 Creature::~Creature(){
     creature_parts.clear();
@@ -427,18 +432,30 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
     }
     }
 }
+CreatureInfo::CreatureInfo(CreatureType type,Animation animation){
+    this->type = type;
+    this->animation.animationForWho = animation.animationForWho;
+    this->animation.framesIdleNum   = animation.framesIdleNum;
+}
+Animation::Animation(){
+
+}
+Animation::Animation(uint framesIdleNum,std::string animationForWho){
+    this->framesIdleNum = framesIdleNum;
+    this->animationForWho = animationForWho;
+}
 
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
-Enemy::Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id) :
-    Creature(texturePath,bMap,pos,gameLayer,id){
+Enemy::Enemy(CreatureInfo info,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id) :
+    Creature(info,pos,gameLayer,id){
 }
 void Enemy::update(float dt){
     showStatistics(DebugStatistics::GAME_STATS);
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
-Player::Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id) :
-    Creature(texturePath,bMap,pos,gameLayer,id){
+Player::Player(CreatureInfo info,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id) :
+    Creature(info,pos,gameLayer,id){
     //enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
     currentInteractedEnemy = -1;
     creature_characteristics.stamina_regeneration_counter = 0;
