@@ -71,13 +71,13 @@ void GameLayer::intCreatures(){
     Enemy* e;
     for (const auto& spawnPoint : WorldProperties::enemySpawnPoint){
         SceneEntities::enemy.push_back("enemy0");
-        e = new Enemy(CreatureInfo(CreatureType::HUMANOID,Animation(8,"kool-hash")),
+        e = new Enemy(CreatureInfo(CreatureInfo::Type::HUMANOID,CreatureInfo::Animation(8,"kool-hash")),
                       spawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::enemy.back());
         e->setWeapon(WeaponType::SPEAR);
         enemy.push_back(e);
     }
 
-    player = new Player(CreatureInfo(CreatureType::HUMANOID,Animation(15,"hero")),
+    player = new Player(CreatureInfo(CreatureInfo::Type::HUMANOID,CreatureInfo::Animation(15,"hero")),
                         WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::player);
     player->setWeapon(WeaponType::SWORD); 
     

@@ -12,26 +12,24 @@ public:
     virtual ~Creature();
     virtual void update(float dt) = 0;
     /*Initializer*/
-    void initAnimations(Animation infoAnimation);
+    void initAnimations(CreatureInfo::Animation infoAnimation);
     /*Clearers*/
     void removeSprite();
     void removeStatistics();
     /*Getters*/
+    inline const CreatureInfo* getCreatureInfo() { return &creature_info; };
+
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
-    inline CreatureType getCreatureType() {return creature_type; };
-    inline const CreatureState* getCreatureState() {return &creature_state; };
-    inline const CreatureCharacteristics* getCreatureCharacteristic() {return &creature_characteristics; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 
     inline Weapon* getWeapon() { return creature_weapon;};
-    inline DirectionMove* getCreatureDirectionMove() { return &creature_direction_move;};
     /*Setters*/
+    void setCreatureState(CreatureInfo::State creature_state);
+    inline CreatureInfo* setCreatureInfo() { return &creature_info; };
+
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
-    inline CreatureCharacteristics* setCreatureCharacteristic() {return &creature_characteristics; };
-    void setCreatureDirectionMove(DirectionMove dirMove);
-    void setCreatureState(CreatureState creature_state);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
@@ -68,11 +66,8 @@ protected:
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
     Weapon*                   creature_weapon;
-    CreatureType              creature_type;//CreatureType of creature
-    CreatureCharacteristics   creature_characteristics;
-    CreatureState             creature_state;
-    DirectionMove             creature_direction_move;
-    cocos2d::Node*            currentlayer;//Current playing scene;
+    CreatureInfo              creature_info;
+    cocos2d::Node*            currentLayer;//Current playing scene;
     /*Animations*/
     cocos2d::Animate*         animation_idle;
 

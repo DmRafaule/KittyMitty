@@ -56,7 +56,7 @@ protected:
    cocos2d::Sprite* weapon_sprite;              //What player can see
    cocos2d::Sprite* weapon_damage_hitbox;       //What detect collision between weapon and enemies
    cocos2d::Sprite* weapon_owner_sprite;        //Who have this weapon(used methos setWeapon)
-   DirectionMove*    weapon_owner_dirmove;
+   CreatureInfo::DMove*    weapon_owner_dirmove;
    cocos2d::PhysicsBody* weapon_physic_body;
    WeaponCaracteristics weapon_caracteristics;  //Weapon characteristics, look at structure
    float weapon_mass; 

@@ -1,50 +1,63 @@
 #pragma once
 
 
-struct Animation{
-    Animation();
-    Animation(uint framesIdleNum,std::string animationForWho);
-    uint framesIdleNum;
-    std::string animationForWho;
-};
-enum CreatureType : uint{
-    HUMANOID,
-    INSECT,
-    ANIMAL,
-    TREE,
-    FISH,
-};
 struct CreatureInfo{
-    CreatureInfo(CreatureType type,Animation animation);
-    CreatureType type;
+    struct Animation{
+        Animation();
+        Animation(uint framesIdleNum,std::string animationForWho);
+        uint framesIdleNum;
+        std::string animationForWho;
+    };
+    struct Characteristic{
+        uint                      blood;//How many blood liquid in creature
+        float                     mass;
+        float                     velocity_limit;//How fast player can run
+        float                     jump_power;//How hard(heighst) creature can jump
+        uint                      jump_ability;//How many jumps creature can make
+        uint                      current_jump_ability_num;//How many jumps creature did already
+        float                     acceleration_power;//How fast creature will be accelerating to velocity limit
+        int                       stamina;//How long creature can fight efficient
+        int                       stamina_limit;
+        float                     stamina_regeneration_counter;//Timer for regenaration stamina
+    
+    };
+    enum Type : uint{
+        HUMANOID,
+        INSECT,
+        ANIMAL,
+        TREE,
+        FISH,
+    };
+    enum State{
+        IDLE,
+        RUNNING,
+        SLOWDOWNING,
+        IN_JUMP,
+        IN_FALL,
+        INTERACTING,
+        ON_STEPS,
+        ON_WALL,
+        LAND_ON,
+        GRAB_ON,
+        ON_EDGE,
+    };
+    enum DMove{
+        OUT   =  3,
+        DOWN  = -2,
+        LEFT  = -1,
+        RIGHT =  1,
+        TOP   =  2,
+        IN    =  3,
+    };
+    CreatureInfo();
+    CreatureInfo(Type type,Animation animation);
+    Type type;
     Animation animation;
+    State state;
+    Characteristic characteristic;
+    DMove dmove;
 };
-struct CreatureCharacteristics{
-    uint                      blood;//How many blood liquid in creature
-    float                     mass;
-    float                     velocity_limit;//How fast player can run
-    float                     jump_power;//How hard(heighst) creature can jump
-    uint                      jump_ability;//How many jumps creature can make
-    uint                      current_jump_ability_num;//How many jumps creature did already
-    float                     acceleration_power;//How fast creature will be accelerating to velocity limit
-    int                       stamina;//How long creature can fight efficient
-    int                       stamina_limit;
-    float                     stamina_regeneration_counter;//Timer for regenaration stamina
 
-};
-enum CreatureState{
-    IDLE,
-    RUNNING,
-    SLOWDOWNING,
-    IN_JUMP,
-    IN_FALL,
-    INTERACTING,
-    ON_STEPS,
-    ON_WALL,
-    LAND_ON,
-    GRAB_ON,
-    ON_EDGE,
-};
 enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,
@@ -118,14 +131,7 @@ enum DirectionAttacke{
     BOTTOMLEFT_TO_TOPRIGHT,
     BOTTOMRIGHT_TO_TOPLEFT,
 };
-enum DirectionMove{
-    OUT  =  3,
-    DOWN = -2,
-    LEFT = -1,
-    RIGHT= 1,
-    TOP  = 2,
-    IN   = 3,
-};
+
 enum DebugStatistics{
     GAME_STATS,
     PHYSICS,
