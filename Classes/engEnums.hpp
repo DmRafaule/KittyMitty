@@ -4,8 +4,8 @@
 struct CreatureInfo{
     struct Animation{
         Animation();
-        Animation(uint framesIdleNum,std::string animationForWho);
-        uint framesIdleNum;
+        Animation(std::vector<uint> framesIdleNum,std::string animationForWho);
+        std::vector<uint> framesIdleNum;
         std::string animationForWho;
     };
     struct Characteristic{

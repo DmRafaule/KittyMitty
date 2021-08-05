@@ -18,7 +18,6 @@ public:
     void removeStatistics();
     /*Getters*/
     inline const CreatureInfo* getCreatureInfo() { return &creature_info; };
-
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
@@ -27,7 +26,6 @@ public:
     /*Setters*/
     void setCreatureState(CreatureInfo::State creature_state);
     inline CreatureInfo* setCreatureInfo() { return &creature_info; };
-
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
@@ -70,10 +68,13 @@ protected:
     cocos2d::Node*            currentLayer;//Current playing scene;
     /*Animations*/
     cocos2d::Animate*         animation_idle;
-
+    cocos2d::Animate*         animation_speedUp;
+    cocos2d::Animate*         animation_run;
+    cocos2d::Animate*         animation_slowdown;
 
     bool                      isStatisticsShowing;
     bool                      isNewState;
+    bool                      isRun;
 };
 
 

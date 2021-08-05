@@ -14,11 +14,11 @@
             "scaleInDock": 1
         },
         "area0/level0.tmx": {
-            "scale": 4,
+            "scale": 8,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 892.125,
-                "y": 1437.625
+                "x": 535.3125,
+                "y": 1201.3125
             }
         },
         "area0/level0.tmx#midlegr": {

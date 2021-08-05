@@ -5,6 +5,7 @@
 Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id){
     this->isStatisticsShowing = false;
     this->isNewState = false;
+    this->isRun = true;
     this->creature_info.type = info.type;
     this->creature_info.state = CreatureInfo::State::IDLE;
     this->currentLayer = gameLayer;
@@ -62,7 +63,7 @@ void Creature::initAnimations(CreatureInfo::Animation infoAnimation){
     currentLayer->addChild(cocos2d::SpriteBatchNode::create("textures/animations/" + infoAnimation.animationForWho + "/animationSheet.png"));
 
     auto animation = cocos2d::Animation::create();
-    for (uint i = 0; i < infoAnimation.framesIdleNum;++i){
+    for (uint i = 0; i < infoAnimation.framesIdleNum[0];++i){
         std::string name = infoAnimation.animationForWho + "_animation_idle" + std::to_string(i) + ".png";
         auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
         animation->addSpriteFrame(frame);
@@ -71,6 +72,40 @@ void Creature::initAnimations(CreatureInfo::Animation infoAnimation){
     animation->setRestoreOriginalFrame(true);
     animation_idle = cocos2d::Animate::create(animation);
     animation_idle->retain();
+
+    auto animation1 = cocos2d::Animation::create();
+    for (uint i = 0; i < infoAnimation.framesIdleNum[1];++i){
+        std::string name = infoAnimation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation1->addSpriteFrame(frame);
+    }
+    animation1->setDelayPerUnit(0.15f);
+    animation1->setRestoreOriginalFrame(false);
+    animation_speedUp = cocos2d::Animate::create(animation1);
+    animation_speedUp->retain();
+
+    auto animation2 = cocos2d::Animation::create();
+    for (uint i = 4; i < infoAnimation.framesIdleNum[2] + 4 ;++i){
+        std::string name = infoAnimation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation2->addSpriteFrame(frame);
+    }
+    animation2->setDelayPerUnit(0.2f);
+    animation2->setRestoreOriginalFrame(false);
+    animation_run = cocos2d::Animate::create(animation2);
+    animation_run->retain();
+
+    auto animation3 = cocos2d::Animation::create();
+    for (uint i = 11; i < infoAnimation.framesIdleNum[3] + 11;++i){
+        std::string name = infoAnimation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation3->addSpriteFrame(frame);
+        
+    }
+    animation3->setDelayPerUnit(0.3f);
+    animation3->setRestoreOriginalFrame(false);
+    animation_slowdown = cocos2d::Animate::create(animation3);
+    animation_slowdown->retain();
 
 }
 Creature::~Creature(){
@@ -275,21 +310,30 @@ void Creature::updateCurrentState(){
     switch (creature_info.state){
     case CreatureInfo::State::IDLE:{
         OUT("idle\n");
-        creature_sprite->stopAllActions();
-        creature_sprite->runAction(cocos2d::RepeatForever::create(animation_idle));
-        isNewState = false;
+        if (creature_physic_body->getVelocity().x >= -5 && creature_physic_body->getVelocity().x <= 5){
+            creature_sprite->stopAllActions();
+            creature_sprite->runAction(cocos2d::RepeatForever::create(animation_idle));
+            isNewState = false;
+        }
         break;
     }
     case CreatureInfo::State::RUNNING:{
         OUT("running\n");
-        creature_sprite->stopAllActions();
+        if (isRun && creature_physic_body->getVelocity().x >= 80 || creature_physic_body->getVelocity().x <= -80){
+            creature_sprite->stopAllActions();
+            OUT("run\n");
+            creature_sprite->runAction(cocos2d::RepeatForever::create(animation_run));
+            isRun = false;
+        }
         bool isFlipped;
         cocos2d::Vec2 newVelocity;
         if (creature_info.dmove == CreatureInfo::DMove::LEFT){
             isFlipped = true;
+            creature_sprite->setFlippedX(true);
         }
         else if (creature_info.dmove == CreatureInfo::DMove::RIGHT){
             isFlipped = false;
+            creature_sprite->setFlippedX(false);
         }
         creature_weapon->getSprite()->setFlippedX(isFlipped);
         newVelocity = cocos2d::Vec2(creature_info.characteristic.acceleration_power * creature_info.dmove, 0);
@@ -300,6 +344,8 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::SLOWDOWNING:{
         creature_sprite->stopAllActions();
         OUT("slowdowning\n");
+        creature_sprite->runAction(animation_slowdown);
+        isRun = true;
         setCreatureState(CreatureInfo::State::IDLE);
         break;
     }
@@ -434,11 +480,16 @@ CreatureInfo::CreatureInfo(){}
 CreatureInfo::CreatureInfo(Type type,CreatureInfo::Animation animation){
     this->type = type;
     this->animation.animationForWho = animation.animationForWho;
-    this->animation.framesIdleNum   = animation.framesIdleNum;
+    for (uint i = 0; i < animation.framesIdleNum.size(); ++i)
+        this->animation.framesIdleNum.push_back(animation.framesIdleNum[i]);
 }
 CreatureInfo::Animation::Animation(){}
-CreatureInfo::Animation::Animation(uint framesIdleNum,std::string animationForWho){
-    this->framesIdleNum = framesIdleNum;
+CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string animationForWho){
+    OUT("init\n");
+    for (uint i = 0; i < framesIdleNum.size(); ++i){
+        this->framesIdleNum.push_back(framesIdleNum[i]);
+        OUT("%d\n",i);
+    }
     this->animationForWho = animationForWho;
 }
 
