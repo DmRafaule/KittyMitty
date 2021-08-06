@@ -5,8 +5,8 @@
     },
     "activeFile": "area0/level0.tmx",
     "expandedProjectPaths": [
-        ".",
-        "area0"
+        "area0",
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -14,11 +14,11 @@
             "scaleInDock": 1
         },
         "area0/level0.tmx": {
-            "scale": 8,
+            "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 535.3125,
-                "y": 1201.3125
+                "x": 276.3333333333333,
+                "y": 1336.3333333333333
             }
         },
         "area0/level0.tmx#midlegr": {

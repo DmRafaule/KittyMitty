@@ -69,17 +69,17 @@ void GameLayer::intCreatures(){
     
 
     Enemy* e;
-    for (const auto& spawnPoint : WorldProperties::enemySpawnPoint){
-        SceneEntities::enemy.push_back("enemy0");
-        e = new Enemy(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({8,0,0,0}),"kool-hash"}),
-                      spawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::enemy.back());
+    for (int i = 0; i < WorldProperties::enemySpawnPoint.size(); ++i){
+        e = new Enemy(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({8,0,0,0,0}),"kool-hash"}),
+                      WorldProperties::enemySpawnPoint.at(i),this->getChildByName(SceneEntities::gamesession),6+i);
         e->setWeapon(WeaponType::SPEAR);
         enemy.push_back(e);
     }
 
-    player = new Player(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({15,4,7,4}),"hero"}),
-                        WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),SceneEntities::player);
+    player = new Player(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({15,4,7,4,2}),"hero"}),
+                        WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
     player->setWeapon(WeaponType::SWORD); 
+
     
     /*Init camera. And set on player*/
     this->getChildByName(SceneEntities::gamesession)->runAction(
@@ -165,9 +165,79 @@ void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event*
     }
 }
 bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
-    bool res;
-
-    res = ckeys->updateContactBegan(contact);
+    cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
+    cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
     
-    return res;
+    //Collide with floors
+    if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
+        if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+            player->setCreatureState(CreatureInfo::State::LAND_ON);
+            return true;
+        }else{
+            for (auto& e : enemy){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
+                    e->setCreatureState(CreatureInfo::State::LAND_ON);
+                    return true;
+                }
+            }
+        }
+    }
+    /*Collide with walls*/
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
+        if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+            player->setCreatureState(CreatureInfo::State::ON_WALL);
+            return true;
+        }else{
+            for (auto& e : enemy){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
+                    e->setCreatureState(CreatureInfo::State::ON_WALL);
+                    return true;
+                }
+            }
+        }
+    }
+    /*Collide with steps*/
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 4 ){
+        if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+            player->setCreatureState(CreatureInfo::State::ON_STEPS);
+            return true;
+        }else{
+            for (auto& e : enemy){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
+                    e->setCreatureState(CreatureInfo::State::ON_STEPS);
+                    return true;
+                }
+            }
+        }
+    }
+    //Collisions with other objects which will not affected on velocity and directions
+    else {
+        for (const auto& lE : WorldProperties::levelEnd){
+            if(player->getCreatureSprite()->getBoundingBox().intersectsRect(lE)){
+
+            }
+        }
+        for (const auto& dZ : WorldProperties::levelDeathZone){
+            if (player->getCreatureSprite()->getBoundingBox().intersectsRect(dZ)){
+
+            }
+            else {
+                for (auto& e : enemy){
+                    if (e->getCreatureSprite()->getBoundingBox().intersectsRect(dZ)){    
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    return false;
 }
+
+
+
+
+
+
+
+//Это очень, очень странно. WTF??? Почему при портировании на андроид в ф-ии onContactBegin я должен в каждом if-else стэйтменте возвращать что-либо. 
+//Либо я тупой либо этото движок говно которое хуй пойми что делает :( :( :( :( :( :(

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="196">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="208">
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -461,7 +461,7 @@
   <object id="122" name="floor" x="618.5" y="1332.5" width="48.5" height="5"/>
   <object id="123" name="wall" x="-5.38636" y="237.788" width="20" height="1075.38"/>
   <object id="124" name="wall" x="560.848" y="452.459" width="46.5076" height="641.125"/>
-  <object id="125" name="wall" x="70.856" y="548.64" width="6.47727" height="27.4845"/>
+  <object id="125" name="wall" x="71.1893" y="547.973" width="6.47727" height="27.4845"/>
   <object id="126" name="wall" x="68.2386" y="741.14" width="5.02273" height="27.4163"/>
   <object id="127" name="wall" x="68.8296" y="918.595" width="7.84091" height="24.5679"/>
   <object id="128" name="wall" x="68.9129" y="1058.26" width="5.75" height="30.7913"/>
@@ -484,25 +484,25 @@
   <object id="146" name="floor" x="70.6365" y="913.682" width="491.181" height="4.36364"/>
   <object id="147" name="floor" x="72.538" y="1082.88" width="521.363" height="9.75"/>
   <object id="148" name="floor" x="70.0153" y="1056.54" width="492.136" height="5.09091"/>
-  <object id="149" name="PlayerSpawnPoint" x="246.123" y="1187.11">
+  <object id="149" name="PlayerSpawnPoint" x="380.123" y="479.777">
    <point/>
   </object>
-  <object id="150" name="EnemySpawnPoint" x="442.667" y="1477.33">
+  <object id="150" name="EnemySpawnPoint" x="436" y="459.997">
    <point/>
   </object>
-  <object id="151" name="EnemySpawnPoint" x="303.666" y="1277.67">
+  <object id="151" name="EnemySpawnPoint" x="151.666" y="492.337">
    <point/>
   </object>
-  <object id="152" name="EnemySpawnPoint" x="172" y="1281.67">
+  <object id="152" name="EnemySpawnPoint" x="189.334" y="494.333">
    <point/>
   </object>
-  <object id="153" name="EnemySpawnPoint" x="525.333" y="1032">
+  <object id="153" name="EnemySpawnPoint" x="413.333" y="499.337">
    <point/>
   </object>
-  <object id="154" name="EnemySpawnPoint" x="457" y="530">
+  <object id="154" name="EnemySpawnPoint" x="480.333" y="432.667">
    <point/>
   </object>
-  <object id="155" name="EnemySpawnPoint" x="273.333" y="525.333">
+  <object id="155" name="EnemySpawnPoint" x="273.333" y="462.666">
    <point/>
   </object>
   <object id="156" name="NewLocation" x="1586" y="344.667" width="132" height="1148.67"/>
@@ -525,7 +525,7 @@
   <object id="176" name="SpawnArmor" x="532" y="895">
    <point/>
   </object>
-  <object id="177" name="SpawnItem" x="201" y="1036">
+  <object id="177" name="SpawnItem" x="198.333" y="1042">
    <point/>
   </object>
   <object id="178" name="floor" x="1098.33" y="1328.42" width="205.333" height="4.167"/>
@@ -574,5 +574,17 @@
    <polygon points="0,0 -111.155,-108.186 -112.454,0.640151"/>
   </object>
   <object id="195" name="stair" x="1355.91" y="1265.11" width="19.1818" height="140.773"/>
+  <object id="196" name="edge" x="69.7045" y="543.364" width="8.375" height="7.75"/>
+  <object id="197" name="edge" x="65.8125" y="735.458" width="8.375" height="7.75"/>
+  <object id="198" name="edge" x="67.8125" y="912.125" width="8.375" height="7.75"/>
+  <object id="199" name="edge" x="67.2367" y="1055.03" width="8.375" height="7.75"/>
+  <object id="200" name="edge" x="542.903" y="1198.13" width="8.375" height="7.75"/>
+  <object id="201" name="edge" x="1087.94" y="1120" width="8.375" height="7.75"/>
+  <object id="202" name="edge" x="1082.54" y="1263.58" width="8.375" height="7.75"/>
+  <object id="203" name="edge" x="989.994" y="1263.03" width="8.375" height="7.75"/>
+  <object id="204" name="edge" x="854.813" y="1263.13" width="8.375" height="7.75"/>
+  <object id="205" name="edge" x="718.146" y="1263.12" width="8.375" height="7.75"/>
+  <object id="206" name="edge" x="757.979" y="1519.54" width="8.375" height="7.75"/>
+  <object id="207" name="edge" x="620.438" y="1520" width="8.375" height="7.75"/>
  </objectgroup>
 </map>

@@ -103,11 +103,11 @@ void ControlKeys::update(float dt){
 void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
      
     if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-        creature->setCreatureState(CreatureInfo::State::RUNNING);
+        creature->setCreatureState(CreatureInfo::State::START_RUN);
         creature->setCreatureInfo()->dmove = CreatureInfo::DMove::LEFT;
     }
     if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-        creature->setCreatureState(CreatureInfo::State::RUNNING);
+        creature->setCreatureState(CreatureInfo::State::START_RUN);
         creature->setCreatureInfo()->dmove = CreatureInfo::DMove::RIGHT;
     }
     //Make jump if player have stamina and he is do not make more than 2 jumps
@@ -128,10 +128,10 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
 }
 void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){ 
     if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-        creature->setCreatureState(CreatureInfo::State::SLOWDOWNING);
+        creature->setCreatureState(CreatureInfo::State::BRACKING);
     }
     if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-        creature->setCreatureState(CreatureInfo::State::SLOWDOWNING);
+        creature->setCreatureState(CreatureInfo::State::BRACKING);
     }
     if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
         
@@ -145,42 +145,7 @@ void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
 }
 void ControlKeys::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
 void ControlKeys::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
-bool ControlKeys::updateContactBegan(cocos2d::PhysicsContact& contact){
-    cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
-    cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
-    
-    //Collide with floors
-    if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
-        (b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
-        creature->setCreatureState(CreatureInfo::State::LAND_ON);
-        return true;
-    }
-    /*Collide with walls*/
-    else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
-             (b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
-        creature->setCreatureState(CreatureInfo::State::ON_WALL);
-        return true;
-    }
-    /*Collide with steps*/
-    else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2 && 
-             (b->getCollisionBitmask() & a->getContactTestBitmask()) == 4 ){
-        creature->setCreatureState(CreatureInfo::State::ON_STEPS);
-        return true;
-    }
-    else {
-        for (const auto& lE : WorldProperties::levelEnd){
-            if(creature->getCreatureSprite()->getBoundingBox().intersectsRect(lE)){
-                
-            }
-        }
-        for (const auto& dZ : WorldProperties::levelDeathZone){
-            if (creature->getCreatureSprite()->getBoundingBox().intersectsRect(dZ)){
-                
-            }
-        }
-        return false;
-    }
-}
+
 void ControlKeys::createEffect(){}
 void ControlKeys::removeEffect(){}
 

@@ -109,7 +109,6 @@ public:
         virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
     virtual void createEffect() override;
     virtual void removeEffect() override;
-    bool updateContactBegan(cocos2d::PhysicsContact& contact);
 private:
     cocos2d::Sprite* button_left;
     cocos2d::Sprite* button_right;

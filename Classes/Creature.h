@@ -8,7 +8,7 @@
 class Creature{
 friend class PartCreature;
 public:
-    Creature(CreatureInfo info ,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
+    Creature(CreatureInfo info ,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual ~Creature();
     virtual void update(float dt) = 0;
     /*Initializer*/
@@ -71,10 +71,10 @@ protected:
     cocos2d::Animate*         animation_speedUp;
     cocos2d::Animate*         animation_run;
     cocos2d::Animate*         animation_slowdown;
+    cocos2d::Animate*         animation_braking;
 
     bool                      isStatisticsShowing;
     bool                      isNewState;
-    bool                      isRun;
 };
 
 
@@ -84,7 +84,7 @@ protected:
 /*INHERITATED CLASSES*/
 class Enemy : public Creature{
 public:
-    Enemy(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
+    Enemy(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual void update(float dt) override;
     /**
      * @return pointer to data of creature_parts of enemy object
@@ -94,7 +94,7 @@ private:
 };
 class Player : public Creature{
 public:
-    Player(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id);
+    Player(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual void update(float dt) override;
     /**
      * @return pointer to data of creature_parts of player object

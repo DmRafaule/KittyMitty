@@ -2,12 +2,11 @@
 #include "GameLayer.h"
 #include <dirent.h>
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
-Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id){
+Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
     this->isStatisticsShowing = false;
     this->isNewState = false;
-    this->isRun = true;
     this->creature_info.type = info.type;
-    this->creature_info.state = CreatureInfo::State::IDLE;
+    this->creature_info.state = CreatureInfo::State::IN_FALL;
     this->currentLayer = gameLayer;
     switch(creature_info.type){
         case CreatureInfo::Type::HUMANOID:{
@@ -40,9 +39,8 @@ Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer
     creature_physic_body->setDynamic(true);
     creature_physic_body->setVelocityLimit(creature_info.characteristic.velocity_limit);
     creature_physic_body->setGravityEnable(true);
-    
+    creature_physic_body->setCollisionBitmask(id);
     creature_physic_body->setContactTestBitmask(0xFF);
-    creature_physic_body->setCollisionBitmask(0x02);
     creature_sprite->setPhysicsBody(creature_physic_body);
     creature_sprite->setPosition(pos);
     creature_sprite->setScale(5);
@@ -106,6 +104,18 @@ void Creature::initAnimations(CreatureInfo::Animation infoAnimation){
     animation3->setRestoreOriginalFrame(false);
     animation_slowdown = cocos2d::Animate::create(animation3);
     animation_slowdown->retain();
+
+    auto animation4 = cocos2d::Animation::create();
+    for (uint i = 15; i < infoAnimation.framesIdleNum[4] + 15;++i){
+        std::string name = infoAnimation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation4->addSpriteFrame(frame);
+        
+    }
+    animation4->setDelayPerUnit(0.2f);
+    animation4->setRestoreOriginalFrame(false);
+    animation_braking = cocos2d::Animate::create(animation4);
+    animation_braking->retain();
 
 }
 Creature::~Creature(){
@@ -178,7 +188,6 @@ void Creature::setCreatureState(CreatureInfo::State creature_state){
 
 void Creature::setStatistics(DebugStatistics mode){
     std::string partStatus;
-
     /*Set strings about part of body*/
     partStatus.append("Status:\n");
     if (mode == DebugStatistics::GAME_STATS){
@@ -249,8 +258,24 @@ void Creature::setStatistics(DebugStatistics mode){
         partStatus.append(std::to_string(creature_sprite->getPosition().x) + "\ty= " + std::to_string(creature_sprite->getPosition().y) + "\n");
         partStatus.append("Velocity x = ");
         partStatus.append(std::to_string(creature_physic_body->getVelocity().x) + "\ty= " + std::to_string(creature_physic_body->getVelocity().y) + "\n");
-        
+        partStatus.append("State==");
+        partStatus.append(creature_info.state == CreatureInfo::State::IDLE ? "IDLE\n" :
+                          creature_info.state == CreatureInfo::State::START_RUN ? "START_RUN\n" :
+                          creature_info.state == CreatureInfo::State::RUNNING ? "RUN\n" :
+                          creature_info.state == CreatureInfo::State::BRACKING ? "BRACKING\n" :
+                          creature_info.state == CreatureInfo::State::STAND_UP ? "STAND_UP\n" :
+                          creature_info.state == CreatureInfo::State::IN_JUMP ? "IN_JUMP\n" :
+                          creature_info.state == CreatureInfo::State::IN_FALL ? "IN_FALL\n" :
+                          creature_info.state == CreatureInfo::State::INTERACTING ? "INTERACTING\n" :
+                          creature_info.state == CreatureInfo::State::ON_EDGE ? "ON_EDGE\n" :
+                          creature_info.state == CreatureInfo::State::ON_STEPS ? "ON_STEPS\n" :
+                          creature_info.state == CreatureInfo::State::ON_WALL ? "ON_WALL\n" :
+                          creature_info.state == CreatureInfo::State::GRAB_ON ? "GRAB_ON\n" :
+                          creature_info.state == CreatureInfo::State::LAND_ON ? "LAND_ON\n" :
+                          "UNDEFIND\n");    
+    
     }
+    
     creature_statistics->setString(partStatus);
 }
 void Creature::setWeapon(WeaponType wMap ){
@@ -280,7 +305,6 @@ void Creature::showStatistics(DebugStatistics type){
         creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
                                                                                  creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
     }
-    creature_weapon->getSprite()->runAction(cocos2d::MoveTo::create(0.1f,creature_sprite->getPosition()));
 }
 void Creature::losingStamina(){
     if ((creature_physic_body->getVelocity().x > 100 || creature_physic_body->getVelocity().x < -100) &&
@@ -309,22 +333,24 @@ void Creature::updatePermament(){
 void Creature::updateCurrentState(){
     switch (creature_info.state){
     case CreatureInfo::State::IDLE:{
-        OUT("idle\n");
-        if (creature_physic_body->getVelocity().x >= -5 && creature_physic_body->getVelocity().x <= 5){
-            creature_sprite->stopAllActions();
+        if (creature_sprite->getNumberOfRunningActions() == 0){
             creature_sprite->runAction(cocos2d::RepeatForever::create(animation_idle));
             isNewState = false;
         }
         break;
     }
+    case CreatureInfo::State::START_RUN:{
+        creature_sprite->stopAllActions();
+        creature_sprite->runAction(animation_speedUp);
+        setCreatureState(CreatureInfo::State::RUNNING);
+        break;
+    }
     case CreatureInfo::State::RUNNING:{
-        OUT("running\n");
-        if (isRun && creature_physic_body->getVelocity().x >= 80 || creature_physic_body->getVelocity().x <= -80){
+        if (creature_sprite->getNumberOfRunningActions() == 0){
             creature_sprite->stopAllActions();
-            OUT("run\n");
             creature_sprite->runAction(cocos2d::RepeatForever::create(animation_run));
-            isRun = false;
         }
+        
         bool isFlipped;
         cocos2d::Vec2 newVelocity;
         if (creature_info.dmove == CreatureInfo::DMove::LEFT){
@@ -339,25 +365,30 @@ void Creature::updateCurrentState(){
         newVelocity = cocos2d::Vec2(creature_info.characteristic.acceleration_power * creature_info.dmove, 0);
         creature_physic_body->setVelocity(cocos2d::Vec2(creature_physic_body->getVelocity().x + newVelocity.x,
                                                         creature_physic_body->getVelocity().y));
+        
         break;
     }
-    case CreatureInfo::State::SLOWDOWNING:{
+    case CreatureInfo::State::STAND_UP:{
+        if (creature_physic_body->getVelocity().x >= -5 && creature_physic_body->getVelocity().x <= 5){
+            creature_sprite->stopAllActions();
+            creature_sprite->runAction(animation_slowdown);
+            setCreatureState(CreatureInfo::State::IDLE);
+        }
+        break;
+    }
+    case CreatureInfo::State::BRACKING:{
         creature_sprite->stopAllActions();
-        OUT("slowdowning\n");
-        creature_sprite->runAction(animation_slowdown);
-        isRun = true;
-        setCreatureState(CreatureInfo::State::IDLE);
+        creature_sprite->runAction(cocos2d::RepeatForever::create(animation_braking));
+        setCreatureState(CreatureInfo::State::STAND_UP);
         break;
     }
     case CreatureInfo::State::GRAB_ON:{
         creature_sprite->stopAllActions();
-        OUT("grab on\n");
         isNewState = false;
         break;
     }
     case CreatureInfo::State::IN_JUMP:{
         creature_sprite->stopAllActions();
-        OUT("in jump\n");
         creature_info.characteristic.current_jump_ability_num++;
         //Lose some stamina
         creature_info.characteristic.stamina = creature_info.characteristic.stamina - 2;
@@ -370,13 +401,11 @@ void Creature::updateCurrentState(){
     }
     case CreatureInfo::State::IN_FALL:{
         creature_sprite->stopAllActions();
-        OUT("in fall\n");
         isNewState = false;
         break;
     }
     case CreatureInfo::State::LAND_ON:{
         creature_sprite->stopAllActions();
-        OUT("land on\n");
         creature_info.characteristic.current_jump_ability_num = 0;
         creature_physic_body->setVelocity(cocos2d::Vec2(0,creature_physic_body->getVelocity().y));
         setCreatureState(CreatureInfo::State::IDLE);
@@ -384,19 +413,16 @@ void Creature::updateCurrentState(){
     }
     case CreatureInfo::State::ON_EDGE:{
         creature_sprite->stopAllActions();
-        OUT("on edge\n");
         isNewState = false;
         break;
     }
     case CreatureInfo::State::ON_STEPS:{
         creature_sprite->stopAllActions();
-        OUT("on steps\n");
         isNewState = false;
         break;
     }
     case CreatureInfo::State::ON_WALL:{
         creature_sprite->stopAllActions();
-        OUT("on wall\n");
         creature_info.characteristic.current_jump_ability_num = 0;
         creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
         isNewState = false;
@@ -408,12 +434,10 @@ void Creature::updateCurrentState(){
         for (const auto& lI : WorldProperties::levelItems){
             //Will open door if creature neer by, it's a door and buttom E pressed
             if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "door"){
-                OUT("open door\n");
                 isIntersection = true;
             }
             //Will climbin on stair if creature neer by, it's a stair and buttom E pressed
             else if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "stair"){
-                OUT("climbin on\n");
                 isIntersection = true;
             }
         
@@ -485,31 +509,34 @@ CreatureInfo::CreatureInfo(Type type,CreatureInfo::Animation animation){
 }
 CreatureInfo::Animation::Animation(){}
 CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string animationForWho){
-    OUT("init\n");
     for (uint i = 0; i < framesIdleNum.size(); ++i){
         this->framesIdleNum.push_back(framesIdleNum[i]);
-        OUT("%d\n",i);
     }
     this->animationForWho = animationForWho;
 }
 
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
-Enemy::Enemy(CreatureInfo info,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id) :
+Enemy::Enemy(CreatureInfo info,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(info,pos,gameLayer,id){
+    
 }
 void Enemy::update(float dt){
-    showStatistics(DebugStatistics::GAME_STATS);
+    showStatistics(DebugStatistics::PHYSICS);
+    if (isNewState){
+        updateCurrentState();
+    }
+    updatePermament();
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
-Player::Player(CreatureInfo info,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,std::string id) :
+Player::Player(CreatureInfo info,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(info,pos,gameLayer,id){
     //enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
     currentInteractedEnemy = -1;
     creature_info.characteristic.stamina_regeneration_counter = 0;
 }
 void Player::update(float dt){
-    
+    showStatistics(DebugStatistics::PHYSICS);
     if (isNewState){
         updateCurrentState();
     }

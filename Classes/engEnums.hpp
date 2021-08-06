@@ -30,8 +30,10 @@ struct CreatureInfo{
     };
     enum State{
         IDLE,
+        START_RUN,
         RUNNING,
-        SLOWDOWNING,
+        BRACKING,
+        STAND_UP,
         IN_JUMP,
         IN_FALL,
         INTERACTING,
