@@ -3,11 +3,20 @@
 #include <dirent.h>
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
 Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
+    this->currentLayer = gameLayer;
     this->isStatisticsShowing = false;
     this->isNewState = false;
+    this->indentificator = id;
     this->creature_info.type = info.type;
     this->creature_info.state = CreatureInfo::State::IN_FALL;
-    this->currentLayer = gameLayer;
+    this->creature_info.animation.animationForWho = info.animation.animationForWho;
+    this->creature_info.animation.framesIdleNum   = info.animation.framesIdleNum;
+
+    initStats();
+    initAnimations();
+    initBody(pos);
+}
+void Creature::initStats(){ 
     switch(creature_info.type){
         case CreatureInfo::Type::HUMANOID:{
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
@@ -32,14 +41,78 @@ Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer
             break;
         }
     }
-    initAnimations(info.animation);
-    creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(info.animation.animationForWho + "_animation_idle0.png");
+}
+void Creature::initAnimations(){
+
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/" + creature_info.animation.animationForWho + "/animationSheet.plist");
+    currentLayer->addChild(cocos2d::SpriteBatchNode::create("textures/animations/" + creature_info.animation.animationForWho + "/animationSheet.png"));
+
+    auto animation = cocos2d::Animation::create();
+    for (uint i = 0; i < creature_info.animation.framesIdleNum[0];++i){
+        std::string name = creature_info.animation.animationForWho + "_animation_idle" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation->addSpriteFrame(frame);
+    }
+    animation->setDelayPerUnit(0.35f);
+    animation->setRestoreOriginalFrame(true);
+    animation_idle = cocos2d::Animate::create(animation);
+    animation_idle->retain();
+
+    auto animation1 = cocos2d::Animation::create();
+    for (uint i = 0; i < creature_info.animation.framesIdleNum[1];++i){
+        std::string name = creature_info.animation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation1->addSpriteFrame(frame);
+    }
+    animation1->setDelayPerUnit(0.1f);
+    animation1->setRestoreOriginalFrame(false);
+    animation_startRun = cocos2d::Animate::create(animation1);
+    animation_startRun->retain();
+
+    auto animation2 = cocos2d::Animation::create();
+    for (uint i = 4; i < creature_info.animation.framesIdleNum[2] + 4 ;++i){
+        std::string name = creature_info.animation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation2->addSpriteFrame(frame);
+    }
+    animation2->setDelayPerUnit(0.15f);
+    animation2->setRestoreOriginalFrame(false);
+    animation_run = cocos2d::Animate::create(animation2);
+    animation_run->retain();
+
+    auto animation3 = cocos2d::Animation::create();
+    for (uint i = 11; i < creature_info.animation.framesIdleNum[3] + 11;++i){
+        std::string name = creature_info.animation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation3->addSpriteFrame(frame);
+        
+    }
+    animation3->setDelayPerUnit(0.15f);
+    animation3->setRestoreOriginalFrame(false);
+    animation_standUp = cocos2d::Animate::create(animation3);
+    animation_standUp->retain();
+
+    auto animation4 = cocos2d::Animation::create();
+    for (uint i = 15; i < creature_info.animation.framesIdleNum[4] + 15;++i){
+        std::string name = creature_info.animation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
+        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        animation4->addSpriteFrame(frame);
+        
+    }
+    animation4->setDelayPerUnit(0.2f);
+    animation4->setRestoreOriginalFrame(false);
+    animation_braking = cocos2d::Animate::create(animation4);
+    animation_braking->retain();
+
+}
+void Creature::initBody(cocos2d::Vec2 pos){
+    creature_sprite = cocos2d::Sprite::createWithSpriteFrameName(creature_info.animation.animationForWho + "_animation_idle0.png");
     creature_physic_body = cocos2d::PhysicsBody::createEdgeBox(cocos2d::Size(creature_sprite->getBoundingBox().size.width/2,creature_sprite->getBoundingBox().size.height),cocos2d::PhysicsMaterial(0,0,1.5));
     creature_physic_body->setMass(creature_info.characteristic.mass);
     creature_physic_body->setDynamic(true);
     creature_physic_body->setVelocityLimit(creature_info.characteristic.velocity_limit);
     creature_physic_body->setGravityEnable(true);
-    creature_physic_body->setCollisionBitmask(id);
+    creature_physic_body->setCollisionBitmask(indentificator);
     creature_physic_body->setContactTestBitmask(0xFF);
     creature_sprite->setPhysicsBody(creature_physic_body);
     creature_sprite->setPosition(pos);
@@ -52,71 +125,7 @@ Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
     };
     creature_sprite->getTexture()->setTexParameters(tpar);
-    currentLayer->addChild(creature_sprite,ZLevel::MIDLEGROUND,id);
-    creature_sprite->runAction(animation_idle);
-}
-void Creature::initAnimations(CreatureInfo::Animation infoAnimation){
-
-    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/" + infoAnimation.animationForWho + "/animationSheet.plist");
-    currentLayer->addChild(cocos2d::SpriteBatchNode::create("textures/animations/" + infoAnimation.animationForWho + "/animationSheet.png"));
-
-    auto animation = cocos2d::Animation::create();
-    for (uint i = 0; i < infoAnimation.framesIdleNum[0];++i){
-        std::string name = infoAnimation.animationForWho + "_animation_idle" + std::to_string(i) + ".png";
-        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
-        animation->addSpriteFrame(frame);
-    }
-    animation->setDelayPerUnit(0.35f);
-    animation->setRestoreOriginalFrame(true);
-    animation_idle = cocos2d::Animate::create(animation);
-    animation_idle->retain();
-
-    auto animation1 = cocos2d::Animation::create();
-    for (uint i = 0; i < infoAnimation.framesIdleNum[1];++i){
-        std::string name = infoAnimation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
-        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
-        animation1->addSpriteFrame(frame);
-    }
-    animation1->setDelayPerUnit(0.15f);
-    animation1->setRestoreOriginalFrame(false);
-    animation_speedUp = cocos2d::Animate::create(animation1);
-    animation_speedUp->retain();
-
-    auto animation2 = cocos2d::Animation::create();
-    for (uint i = 4; i < infoAnimation.framesIdleNum[2] + 4 ;++i){
-        std::string name = infoAnimation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
-        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
-        animation2->addSpriteFrame(frame);
-    }
-    animation2->setDelayPerUnit(0.2f);
-    animation2->setRestoreOriginalFrame(false);
-    animation_run = cocos2d::Animate::create(animation2);
-    animation_run->retain();
-
-    auto animation3 = cocos2d::Animation::create();
-    for (uint i = 11; i < infoAnimation.framesIdleNum[3] + 11;++i){
-        std::string name = infoAnimation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
-        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
-        animation3->addSpriteFrame(frame);
-        
-    }
-    animation3->setDelayPerUnit(0.3f);
-    animation3->setRestoreOriginalFrame(false);
-    animation_slowdown = cocos2d::Animate::create(animation3);
-    animation_slowdown->retain();
-
-    auto animation4 = cocos2d::Animation::create();
-    for (uint i = 15; i < infoAnimation.framesIdleNum[4] + 15;++i){
-        std::string name = infoAnimation.animationForWho + "_animation_run" + std::to_string(i) + ".png";
-        auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
-        animation4->addSpriteFrame(frame);
-        
-    }
-    animation4->setDelayPerUnit(0.2f);
-    animation4->setRestoreOriginalFrame(false);
-    animation_braking = cocos2d::Animate::create(animation4);
-    animation_braking->retain();
-
+    currentLayer->addChild(creature_sprite,ZLevel::MIDLEGROUND,indentificator);
 }
 Creature::~Creature(){
     creature_parts.clear();
@@ -341,7 +350,7 @@ void Creature::updateCurrentState(){
     }
     case CreatureInfo::State::START_RUN:{
         creature_sprite->stopAllActions();
-        creature_sprite->runAction(animation_speedUp);
+        creature_sprite->runAction(animation_startRun);
         setCreatureState(CreatureInfo::State::RUNNING);
         break;
     }
@@ -371,7 +380,7 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::STAND_UP:{
         if (creature_physic_body->getVelocity().x >= -5 && creature_physic_body->getVelocity().x <= 5){
             creature_sprite->stopAllActions();
-            creature_sprite->runAction(animation_slowdown);
+            creature_sprite->runAction(animation_standUp);
             setCreatureState(CreatureInfo::State::IDLE);
         }
         break;
@@ -384,6 +393,8 @@ void Creature::updateCurrentState(){
     }
     case CreatureInfo::State::GRAB_ON:{
         creature_sprite->stopAllActions();
+        OUT("grab on\n");
+        creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
         isNewState = false;
         break;
     }
@@ -413,6 +424,8 @@ void Creature::updateCurrentState(){
     }
     case CreatureInfo::State::ON_EDGE:{
         creature_sprite->stopAllActions();
+        OUT("on edge\n");
+        creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
         isNewState = false;
         break;
     }
@@ -425,7 +438,7 @@ void Creature::updateCurrentState(){
         creature_sprite->stopAllActions();
         creature_info.characteristic.current_jump_ability_num = 0;
         creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
-        isNewState = false;
+        
         break;
     }
     case CreatureInfo::State::INTERACTING:{

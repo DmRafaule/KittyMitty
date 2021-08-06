@@ -11,8 +11,6 @@ public:
     Creature(CreatureInfo info ,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual ~Creature();
     virtual void update(float dt) = 0;
-    /*Initializer*/
-    void initAnimations(CreatureInfo::Animation infoAnimation);
     /*Clearers*/
     void removeSprite();
     void removeStatistics();
@@ -31,11 +29,18 @@ public:
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
 protected:
+    /*Initializer*/
+    void initStats();
+    void initAnimations();
+    void initBody(cocos2d::Vec2 pos);
+    
     void updatePermament();//update stuff permamently
     void updateCurrentState();//Make some actions depens on which state creature have
+    
     void showStatistics(DebugStatistics type);
     void losingStamina();
     void regeneratingStamina(float dt);
+protected:
     /*This is part of body(*/
     class PartCreature{
     friend class Creature;
@@ -57,7 +62,6 @@ protected:
         uint                            part_penetrationDef;
         uint                            part_crushingDef;
     };
-protected:
     /*Properties related to whole creature*/
     std::vector<PartCreature> creature_parts;//Container for holding info about creature_parts of creature 
     cocos2d::PhysicsBody*     creature_physic_body;
@@ -68,11 +72,12 @@ protected:
     cocos2d::Node*            currentLayer;//Current playing scene;
     /*Animations*/
     cocos2d::Animate*         animation_idle;
-    cocos2d::Animate*         animation_speedUp;
+    cocos2d::Animate*         animation_startRun;
     cocos2d::Animate*         animation_run;
-    cocos2d::Animate*         animation_slowdown;
+    cocos2d::Animate*         animation_standUp;
     cocos2d::Animate*         animation_braking;
 
+    int                       indentificator;
     bool                      isStatisticsShowing;
     bool                      isNewState;
 };

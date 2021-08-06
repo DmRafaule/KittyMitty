@@ -210,6 +210,27 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
             }
         }
     }
+    /*Collide with edge*/
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 5 ){
+        if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+            if (player->getCreatureInfo()->state == CreatureInfo::State::BRACKING || 
+                player->getCreatureInfo()->state == CreatureInfo::State::RUNNING  ||
+                player->getCreatureInfo()->state == CreatureInfo::State::STAND_UP)
+                player->setCreatureState(CreatureInfo::State::ON_EDGE);
+            else if (player->getCreatureInfo()->state == CreatureInfo::State::IN_JUMP ||
+                     player->getCreatureInfo()->state == CreatureInfo::State::IN_FALL)
+                player->setCreatureState(CreatureInfo::State::GRAB_ON);
+            return false;
+        }else{
+            for (auto& e : enemy){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
+                    //e->setCreatureState(CreatureInfo::State::ON_STEPS);
+                    //return true;
+                    return false;
+                }
+            }
+        }
+    }
     //Collisions with other objects which will not affected on velocity and directions
     else {
         for (const auto& lE : WorldProperties::levelEnd){

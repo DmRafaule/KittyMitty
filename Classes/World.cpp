@@ -62,6 +62,11 @@ void World::initLevelObjects(){
       else if (dict["name"].asString() == "stair"){
          WorldProperties::levelItems.push_back(std::pair<std::string,cocos2d::Rect>("stair",cocos2d::Rect(x,y,width,height)));
       }
+      //Define object edge
+      else if (dict["name"].asString() == "edge"){
+         ground_body->setCollisionBitmask(0x05);
+         ground->setPhysicsBody(ground_body);
+      }
       //Define object steps
       else if (dict["name"].asString() == "steps"){
          std::vector<cocos2d::Vec2> points;
