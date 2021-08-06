@@ -103,11 +103,21 @@ void ControlKeys::update(float dt){
 void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
      
     if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-        creature->setCreatureState(CreatureInfo::State::START_RUN);
+        if (creature->getCreatureInfo()->state == CreatureInfo::State::IDLE ||
+            creature->getCreatureInfo()->state == CreatureInfo::State::STAND_UP)
+            creature->setCreatureState(CreatureInfo::State::START_RUN);
+        else if (creature->getCreatureInfo()->state == CreatureInfo::State::IN_FALL ||
+                 creature->getCreatureInfo()->state == CreatureInfo::State::IN_JUMP)
+            creature->setCreatureState(CreatureInfo::State::SOARING);
         creature->setCreatureInfo()->dmove = CreatureInfo::DMove::LEFT;
     }
     if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-        creature->setCreatureState(CreatureInfo::State::START_RUN);
+        if (creature->getCreatureInfo()->state == CreatureInfo::State::IDLE ||
+            creature->getCreatureInfo()->state == CreatureInfo::State::STAND_UP)
+            creature->setCreatureState(CreatureInfo::State::START_RUN);
+        else if (creature->getCreatureInfo()->state == CreatureInfo::State::IN_FALL ||
+                 creature->getCreatureInfo()->state == CreatureInfo::State::IN_JUMP)
+            creature->setCreatureState(CreatureInfo::State::SOARING);
         creature->setCreatureInfo()->dmove = CreatureInfo::DMove::RIGHT;
     }
     //Make jump if player have stamina and he is do not make more than 2 jumps
@@ -128,10 +138,12 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
 }
 void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){ 
     if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-        creature->setCreatureState(CreatureInfo::State::BRACKING);
+        if (creature->getCreatureInfo()->state == CreatureInfo::State::RUNNING)
+            creature->setCreatureState(CreatureInfo::State::BRACKING);
     }
     if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
-        creature->setCreatureState(CreatureInfo::State::BRACKING);
+        if (creature->getCreatureInfo()->state == CreatureInfo::State::RUNNING)
+            creature->setCreatureState(CreatureInfo::State::BRACKING);
     }
     if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
         

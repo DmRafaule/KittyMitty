@@ -34,6 +34,7 @@ struct CreatureInfo{
         RUNNING,
         BRACKING,
         STAND_UP,
+        SOARING,
         IN_JUMP,
         IN_FALL,
         INTERACTING,

@@ -281,6 +281,7 @@ void Creature::setStatistics(DebugStatistics mode){
                           creature_info.state == CreatureInfo::State::ON_WALL ? "ON_WALL\n" :
                           creature_info.state == CreatureInfo::State::GRAB_ON ? "GRAB_ON\n" :
                           creature_info.state == CreatureInfo::State::LAND_ON ? "LAND_ON\n" :
+                          creature_info.state == CreatureInfo::State::SOARING ? "SOARING\n" :
                           "UNDEFIND\n");    
     
     }
@@ -413,6 +414,24 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::IN_FALL:{
         creature_sprite->stopAllActions();
         isNewState = false;
+        break;
+    }
+    case CreatureInfo::State::SOARING:{
+        creature_sprite->stopAllActions();
+        bool isFlipped;
+        cocos2d::Vec2 newVelocity;
+        if (creature_info.dmove == CreatureInfo::DMove::LEFT){
+            isFlipped = true;
+            creature_sprite->setFlippedX(true);
+        }
+        else if (creature_info.dmove == CreatureInfo::DMove::RIGHT){
+            isFlipped = false;
+            creature_sprite->setFlippedX(false);
+        }
+        creature_weapon->getSprite()->setFlippedX(isFlipped);
+        newVelocity = cocos2d::Vec2(creature_info.characteristic.acceleration_power * creature_info.dmove, 0);
+        creature_physic_body->setVelocity(cocos2d::Vec2(creature_physic_body->getVelocity().x + newVelocity.x,
+                                                        creature_physic_body->getVelocity().y));
         break;
     }
     case CreatureInfo::State::LAND_ON:{
