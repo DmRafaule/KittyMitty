@@ -54,6 +54,10 @@ void World::initLevelObjects(){
          ground_body->setCollisionBitmask(0x01);
          ground->setPhysicsBody(ground_body);
       }
+      else if (dict["name"].asString() == "roof"){
+         ground_body->setCollisionBitmask(0x05);
+         ground->setPhysicsBody(ground_body);
+      }
       //Define object door
       else if (dict["name"].asString() == "door"){
          WorldProperties::levelItems.push_back(std::pair<std::string,cocos2d::Rect>("door",cocos2d::Rect(x,y,width,height)));
@@ -61,11 +65,6 @@ void World::initLevelObjects(){
       //Define object stair
       else if (dict["name"].asString() == "stair"){
          WorldProperties::levelItems.push_back(std::pair<std::string,cocos2d::Rect>("stair",cocos2d::Rect(x,y,width,height)));
-      }
-      //Define object edge
-      else if (dict["name"].asString() == "edge"){
-         ground_body->setCollisionBitmask(0x05);
-         ground->setPhysicsBody(ground_body);
       }
       //Define object steps
       else if (dict["name"].asString() == "steps"){
@@ -80,8 +79,8 @@ void World::initLevelObjects(){
                                         level_layer_midleground->getMapTileSize().height* dict["heightInTiles"].asInt()* scaleOffset - dict["widthInTiles"].asInt()*8));
          points.push_back(cocos2d::Vec2((level_layer_midleground->getMapTileSize().width * dict["widthInTiles"].asInt() * scaleOffset - dict["widthInTiles"].asInt()*8)*dict["toRightMod"].asInt(),
                                         0));
-         cocos2d::PhysicsBody* poligon = cocos2d::PhysicsBody::createEdgePolygon(points.data(),points.size());
-         poligon->setDynamic(true);
+         cocos2d::PhysicsBody* poligon = cocos2d::PhysicsBody::createPolygon(points.data(),points.size());
+         poligon->setDynamic(false);
          poligon->setGravityEnable(false);
          poligon->setContactTestBitmask(0xFF);
          poligon->setCollisionBitmask(0x04);

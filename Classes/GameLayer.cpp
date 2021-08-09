@@ -21,8 +21,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -70,13 +70,13 @@ void GameLayer::intCreatures(){
 
     Enemy* e;
     for (int i = 0; i < WorldProperties::enemySpawnPoint.size(); ++i){
-        e = new Enemy(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({8,0,0,0,0}),"kool-hash"}),
+        e = new Enemy(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({8,0,0,0,0,0,0,0,0,0,0,0,4}),"kool-hash"}),
                       WorldProperties::enemySpawnPoint.at(i),this->getChildByName(SceneEntities::gamesession),6+i);
         e->setWeapon(WeaponType::SPEAR);
         enemy.push_back(e);
     }
 
-    player = new Player(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({15,4,7,4,2}),"hero"}),
+    player = new Player(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({15,4,7,4,2,7,2,5,5,5,2,4,4}),"hero"}),
                         WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
     player->setWeapon(WeaponType::SWORD); 
 
@@ -210,23 +210,16 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
             }
         }
     }
-    /*Collide with edge*/
+    //Collision with roofs
     else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 5 ){
         if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
-            if (player->getCreatureInfo()->state == CreatureInfo::State::BRACKING || 
-                player->getCreatureInfo()->state == CreatureInfo::State::RUNNING  ||
-                player->getCreatureInfo()->state == CreatureInfo::State::STAND_UP)
-                player->setCreatureState(CreatureInfo::State::ON_EDGE);
-            else if (player->getCreatureInfo()->state == CreatureInfo::State::IN_JUMP ||
-                     player->getCreatureInfo()->state == CreatureInfo::State::IN_FALL)
-                player->setCreatureState(CreatureInfo::State::GRAB_ON);
-            return false;
+            player->setCreatureState(CreatureInfo::State::TAKE_ROOF);
+            return true;
         }else{
             for (auto& e : enemy){
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
-                    //e->setCreatureState(CreatureInfo::State::ON_STEPS);
-                    //return true;
-                    return false;
+                    e->setCreatureState(CreatureInfo::State::TAKE_ROOF);
+                    return true;
                 }
             }
         }

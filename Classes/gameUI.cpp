@@ -109,6 +109,8 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
         else if (creature->getCreatureInfo()->state == CreatureInfo::State::IN_FALL ||
                  creature->getCreatureInfo()->state == CreatureInfo::State::IN_JUMP)
             creature->setCreatureState(CreatureInfo::State::SOARING);
+        else if (creature->getCreatureInfo()->state == CreatureInfo::State::ON_STEPS)
+            creature->setCreatureState(CreatureInfo::State::MOVE_BY_STEPS);
         creature->setCreatureInfo()->dmove = CreatureInfo::DMove::LEFT;
     }
     if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
@@ -118,6 +120,8 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
         else if (creature->getCreatureInfo()->state == CreatureInfo::State::IN_FALL ||
                  creature->getCreatureInfo()->state == CreatureInfo::State::IN_JUMP)
             creature->setCreatureState(CreatureInfo::State::SOARING);
+        else if (creature->getCreatureInfo()->state == CreatureInfo::State::ON_STEPS)
+            creature->setCreatureState(CreatureInfo::State::MOVE_BY_STEPS);
         creature->setCreatureInfo()->dmove = CreatureInfo::DMove::RIGHT;
     }
     //Make jump if player have stamina and he is do not make more than 2 jumps
@@ -125,8 +129,14 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
         creature->getCreatureInfo()->characteristic.stamina >= 5 && 
         creature->getCreatureInfo()->characteristic.current_jump_ability_num <= creature->getCreatureInfo()->characteristic.jump_ability){
         
-        creature->setCreatureState(CreatureInfo::State::IN_JUMP);
-        creature->setCreatureInfo()->dmove = CreatureInfo::DMove::TOP;
+        if (creature->getCreatureInfo()->state == CreatureInfo::State::ON_WALL){
+            creature->setCreatureState(CreatureInfo::State::JUMP_FROM_WALL);
+            
+        }
+        else if (creature->getCreatureInfo()->state != CreatureInfo::State::JUMP_FROM_WALL){
+            creature->setCreatureState(CreatureInfo::State::IN_JUMP);
+            creature->setCreatureInfo()->dmove = CreatureInfo::DMove::TOP;
+        }
     }
     if (button_interact->getBoundingBox().containsPoint(touch->getLocation())){
         creature->setCreatureState(CreatureInfo::State::INTERACTING);
@@ -140,10 +150,14 @@ void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
     if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
         if (creature->getCreatureInfo()->state == CreatureInfo::State::RUNNING)
             creature->setCreatureState(CreatureInfo::State::BRACKING);
+        else if (creature->getCreatureInfo()->state == CreatureInfo::State::MOVE_BY_STEPS)
+            creature->setCreatureState(CreatureInfo::State::ON_STEPS);
     }
     if (button_right->getBoundingBox().containsPoint(touch->getLocation())){
         if (creature->getCreatureInfo()->state == CreatureInfo::State::RUNNING)
             creature->setCreatureState(CreatureInfo::State::BRACKING);
+        else if (creature->getCreatureInfo()->state == CreatureInfo::State::MOVE_BY_STEPS)
+            creature->setCreatureState(CreatureInfo::State::ON_STEPS);
     }
     if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
         

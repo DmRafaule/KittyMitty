@@ -36,13 +36,14 @@ struct CreatureInfo{
         STAND_UP,
         SOARING,
         IN_JUMP,
+        JUMP_FROM_WALL,
+        TAKE_ROOF,
         IN_FALL,
         INTERACTING,
         ON_STEPS,
+        MOVE_BY_STEPS,
         ON_WALL,
         LAND_ON,
-        GRAB_ON,
-        ON_EDGE,
     };
     enum DMove{
         OUT   =  3,

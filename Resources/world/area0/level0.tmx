@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="208">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="215">
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -441,50 +441,48 @@
   <object id="93" name="floor" x="8.875" y="1521.13" width="618.666" height="34"/>
   <object id="96" name="floor" x="760.042" y="1520.67" width="106" height="3.333"/>
   <object id="97" name="floor" x="0.33333" y="1312.42" width="544.167" height="5.08333"/>
-  <object id="98" name="wall" x="-2.66667" y="1312.67" width="20" height="145.083"/>
-  <object id="100" name="floor" x="897" y="1489.25" width="34.25" height="2.75"/>
-  <object id="101" name="floor" x="1009" y="1409.33" width="617.333" height="4.167"/>
-  <object id="102" name="floor" x="1090.39" y="1121" width="505.614" height="18.833"/>
+  <object id="98" name="wall" x="-2.66667" y="1314.15" width="17.6925" height="143.6"/>
+  <object id="100" name="floor" x="911.702" y="1489.25" width="19.5485" height="2.75"/>
+  <object id="101" name="floor" x="1024.36" y="1409.33" width="601.975" height="4.167"/>
+  <object id="102" name="floor" x="1090.39" y="1121" width="505.614" height="9.833"/>
   <object id="103" name="floor" x="857.136" y="1264.67" width="139.318" height="2.12118"/>
   <object id="104" name="wall" x="759" y="1522.73" width="10.5" height="30.2727"/>
   <object id="108" name="wall" x="1089.4" y="1130.67" width="28.7727" height="70.917"/>
   <object id="109" name="wall" x="856.409" y="1265.67" width="3.81818" height="17.2728"/>
   <object id="110" name="wall" x="990.855" y="1265.98" width="6.46591" height="16.1023"/>
-  <object id="111" name="floor" x="858" y="1279.54" width="137.409" height="4.72727"/>
-  <object id="112" name="floor" x="18.7498" y="1339.63" width="620.542" height="7.70833"/>
+  <object id="111" name="roof" x="858" y="1279.54" width="137.409" height="4.72727"/>
+  <object id="112" name="roof" x="18.7498" y="1339.63" width="620.542" height="7.70833"/>
   <object id="113" name="wall" x="545" y="1201.41" width="3" height="117.596"/>
   <object id="114" name="wall" x="665.5" y="1288.5" width="4.5" height="48"/>
   <object id="115" name="wall" x="720" y="1264.67" width="5.5" height="30.4545"/>
-  <object id="118" name="floor" x="545.341" y="1199.68" width="47.125" height="3.125"/>
+  <object id="118" name="floor" x="545.341" y="1199.68" width="32.2159" height="3.125"/>
   <object id="120" name="floor" x="655.341" y="1263.75" width="69.3411" height="4.5"/>
-  <object id="121" name="floor" x="665" y="1290.75" width="59.25" height="4.75"/>
-  <object id="122" name="floor" x="618.5" y="1332.5" width="48.5" height="5"/>
+  <object id="121" name="roof" x="665" y="1290.75" width="59.25" height="4.75"/>
+  <object id="122" name="roof" x="618.5" y="1332.5" width="48.5" height="5"/>
   <object id="123" name="wall" x="-5.38636" y="237.788" width="20" height="1075.38"/>
-  <object id="124" name="wall" x="560.848" y="452.459" width="46.5076" height="641.125"/>
+  <object id="124" name="wall" x="560.848" y="479.459" width="46.5076" height="606.625"/>
   <object id="125" name="wall" x="71.1893" y="547.973" width="6.47727" height="27.4845"/>
   <object id="126" name="wall" x="68.2386" y="741.14" width="5.02273" height="27.4163"/>
   <object id="127" name="wall" x="68.8296" y="918.595" width="7.84091" height="24.5679"/>
   <object id="128" name="wall" x="68.9129" y="1058.26" width="5.75" height="30.7913"/>
-  <object id="129" name="wall" x="649.583" y="515.667" width="5.75" height="27.9997"/>
-  <object id="130" name="floor" x="607.875" y="513" width="47.75" height="2.5"/>
-  <object id="131" name="floor" x="559.375" y="449" width="47.75" height="2.5"/>
+  <object id="131" name="floor" x="576.17" y="451.602" width="15.75" height="2.5"/>
   <object id="132" name="floor" x="649.792" y="545.083" width="976.083" height="7.83333"/>
-  <object id="133" name="floor" x="648.625" y="635.25" width="976.083" height="7.83333"/>
+  <object id="133" name="roof" x="648.625" y="635.25" width="976.083" height="7.83333"/>
   <object id="134" name="wall" x="699.125" y="643.833" width="5.75" height="43.4997"/>
   <object id="135" name="wall" x="634.458" y="723.333" width="5.75" height="27.9997"/>
   <object id="136" name="wall" x="663.792" y="689.333" width="5.75" height="27.9997"/>
-  <object id="138" name="floor" x="656.125" y="686.083" width="47.75" height="2.5"/>
-  <object id="139" name="floor" x="622.125" y="718.75" width="47.75" height="2.5"/>
-  <object id="140" name="floor" x="592.792" y="748.75" width="47.75" height="2.5"/>
+  <object id="138" name="roof" x="656.125" y="686.083" width="47.75" height="2.5"/>
+  <object id="139" name="roof" x="622.125" y="718.75" width="47.75" height="2.5"/>
+  <object id="140" name="roof" x="592.792" y="748.75" width="47.75" height="2.5"/>
   <object id="141" name="floor" x="72.2955" y="544.364" width="492.386" height="5.09091"/>
-  <object id="142" name="floor" x="71.5153" y="575.622" width="492.136" height="5.09091"/>
+  <object id="142" name="roof" x="71.5153" y="575.622" width="492.136" height="5.09091"/>
   <object id="143" name="floor" x="69.932" y="736.455" width="492.386" height="5.09091"/>
-  <object id="144" name="floor" x="69.2653" y="767.122" width="493.886" height="5.09091"/>
-  <object id="145" name="floor" x="70.3487" y="942.955" width="492.136" height="5.09091"/>
+  <object id="144" name="roof" x="69.2653" y="767.122" width="493.886" height="5.09091"/>
+  <object id="145" name="roof" x="70.3487" y="942.955" width="492.136" height="5.09091"/>
   <object id="146" name="floor" x="70.6365" y="913.682" width="491.181" height="4.36364"/>
-  <object id="147" name="floor" x="72.538" y="1082.88" width="521.363" height="9.75"/>
+  <object id="147" name="roof" x="72.538" y="1082.88" width="521.363" height="9.75"/>
   <object id="148" name="floor" x="70.0153" y="1056.54" width="492.136" height="5.09091"/>
-  <object id="149" name="PlayerSpawnPoint" x="216.537" y="1494">
+  <object id="149" name="PlayerSpawnPoint" x="232.648" y="514.553">
    <point/>
   </object>
   <object id="150" name="EnemySpawnPoint" x="368.167" y="1489.33">
@@ -499,7 +497,7 @@
   <object id="153" name="EnemySpawnPoint" x="413.333" y="499.337">
    <point/>
   </object>
-  <object id="154" name="EnemySpawnPoint" x="578.333" y="424.667">
+  <object id="154" name="EnemySpawnPoint" x="584.333" y="425">
    <point/>
   </object>
   <object id="155" name="EnemySpawnPoint" x="162.666" y="1288">
@@ -528,12 +526,12 @@
   <object id="177" name="SpawnItem" x="198.333" y="1042">
    <point/>
   </object>
-  <object id="178" name="floor" x="1098.33" y="1328.42" width="205.333" height="4.167"/>
+  <object id="178" name="roof" x="1098.33" y="1328.42" width="205.333" height="4.167"/>
   <object id="179" name="wall" x="1302.8" y="1267.45" width="6.5" height="70.917"/>
   <object id="180" name="wall" x="1384.75" y="1267.6" width="6.5" height="26.4795"/>
   <object id="181" name="floor" x="1083.33" y="1263.92" width="222.333" height="4.167"/>
-  <object id="182" name="floor" x="1386.33" y="1292.42" width="253.833" height="4.167"/>
-  <object id="183" name="steps" x="848.631" y="1535.22" rotation="0.700831">
+  <object id="182" name="roof" x="1386.33" y="1292.42" width="253.833" height="4.167"/>
+  <object id="183" name="steps" x="865.073" y="1535.18" rotation="0.700831">
    <properties>
     <property name="heightInTiles" type="int" value="3"/>
     <property name="toRightMod" type="int" value="1"/>
@@ -541,7 +539,7 @@
    </properties>
    <polygon points="0,0 46.9655,-44.0338 47.5972,0.124905"/>
   </object>
-  <object id="189" name="steps" x="912.533" y="1503.69" rotation="1.25736">
+  <object id="189" name="steps" x="928.946" y="1503.44" rotation="1.25736">
    <properties>
     <property name="heightInTiles" type="int" value="6"/>
     <property name="toRightMod" type="int" value="1"/>
@@ -549,7 +547,7 @@
    </properties>
    <polygon points="0,0 93.1363,-96.7059 94.389,0.274314"/>
   </object>
-  <object id="192" name="steps" x="672.25" y="1279.22">
+  <object id="192" name="steps" x="655.917" y="1281.01">
    <properties>
     <property name="heightInTiles" type="int" value="5"/>
     <property name="toRightMod" type="int" value="-1"/>
@@ -557,15 +555,15 @@
    </properties>
    <polygon points="0,0 -78.536,-78.6935 -79.4545,0.465641"/>
   </object>
-  <object id="193" name="steps" x="448.624" y="557.473" rotation="1.25736">
+  <object id="193" name="steps" x="465.042" y="558.791" rotation="1.25736">
    <properties>
     <property name="heightInTiles" type="int" value="7"/>
     <property name="toRightMod" type="int" value="1"/>
     <property name="widthInTiles" type="int" value="7"/>
    </properties>
-   <polygon points="0.0445582,2.03924 109.507,-108.302 110.955,-0.858075"/>
+   <polygon points="0.0441858,2.05399 108.592,-109.085 110.028,-0.864281"/>
   </object>
-  <object id="194" name="steps" x="719.333" y="558.731">
+  <object id="194" name="steps" x="703.833" y="559.731">
    <properties>
     <property name="heightInTiles" type="int" value="7"/>
     <property name="toRightMod" type="int" value="-1"/>
@@ -574,17 +572,6 @@
    <polygon points="0,0 -111.155,-108.186 -112.454,0.640151"/>
   </object>
   <object id="195" name="stair" x="1355.91" y="1265.11" width="19.1818" height="140.773"/>
-  <object id="196" name="edge" x="69.7045" y="543.364" width="8.375" height="7.75"/>
-  <object id="197" name="edge" x="65.8125" y="735.458" width="8.375" height="7.75"/>
-  <object id="198" name="edge" x="67.8125" y="912.125" width="8.375" height="7.75"/>
-  <object id="199" name="edge" x="67.2367" y="1055.03" width="8.375" height="7.75"/>
-  <object id="200" name="edge" x="542.903" y="1198.13" width="8.375" height="7.75"/>
-  <object id="201" name="edge" x="1087.94" y="1120" width="8.375" height="7.75"/>
-  <object id="202" name="edge" x="1082.54" y="1263.58" width="8.375" height="7.75"/>
-  <object id="203" name="edge" x="989.994" y="1263.03" width="8.375" height="7.75"/>
-  <object id="204" name="edge" x="854.813" y="1263.13" width="8.375" height="7.75"/>
-  <object id="205" name="edge" x="718.146" y="1263.12" width="8.375" height="7.75"/>
-  <object id="206" name="edge" x="757.979" y="1519.54" width="8.375" height="7.75"/>
-  <object id="207" name="edge" x="620.438" y="1520" width="8.375" height="7.75"/>
+  <object id="208" name="roof" x="1119.28" y="1128.49" width="505.614" height="9.833"/>
  </objectgroup>
 </map>

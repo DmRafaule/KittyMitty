@@ -3,7 +3,7 @@
 #include <cocos2d.h>
 #include "Weapon.h"
 #include "engEnums.hpp"
-
+#include <map>
 
 class Creature{
 friend class PartCreature;
@@ -40,6 +40,7 @@ protected:
     void showStatistics(DebugStatistics type);
     void losingStamina();
     void regeneratingStamina(float dt);
+    void addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr);
 protected:
     /*This is part of body(*/
     class PartCreature{
@@ -69,13 +70,8 @@ protected:
     cocos2d::Label*           creature_statistics;
     Weapon*                   creature_weapon;
     CreatureInfo              creature_info;
+    std::multimap<std::string,cocos2d::Animate*> animations;//Animations
     cocos2d::Node*            currentLayer;//Current playing scene;
-    /*Animations*/
-    cocos2d::Animate*         animation_idle;
-    cocos2d::Animate*         animation_startRun;
-    cocos2d::Animate*         animation_run;
-    cocos2d::Animate*         animation_standUp;
-    cocos2d::Animate*         animation_braking;
 
     int                       indentificator;
     bool                      isStatisticsShowing;
