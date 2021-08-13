@@ -5,25 +5,37 @@
 cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
 cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
 cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
+cocos2d::Vec2               WorldProperties::world_offset = cocos2d::Vec2();
 std::vector<cocos2d::Vec2>  WorldProperties::enemySpawnPoint(0);
 std::vector<cocos2d::Rect>  WorldProperties::levelEnd(0);
 std::vector<cocos2d::Rect>  WorldProperties::levelDeathZone(0);
 std::vector<std::pair<std::string,cocos2d::Rect>>  WorldProperties::levelItems(0);
 
-World::World(std::string world_file_path,cocos2d::Node* currentLayer){
+World::World(std::string world_file_path,cocos2d::Vec2 world_offset,cocos2d::Node* currentLayer){
    this->scaleOffset = 2;
    this->level = cocos2d::TMXTiledMap::create(world_file_path);
+   this->level->setPosition(world_offset);
    this->level->setScale(scaleOffset);
+   level->
    this->level_layer_midleground = level->getLayer("midleground");
    this->currentLayer = currentLayer;
    this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(level,1);
+   WorldProperties::world_offset = world_offset;
    /*Define level size*/
    WorldProperties::mapSize.setSize(level->getMapSize().width  * level->getTileSize().width  * scaleOffset,
                                     level->getMapSize().height * level->getTileSize().height * scaleOffset);
    initLevelObjects();
    initBackground();
 }
-World::~World(){}
+World::~World(){
+   currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(level);
+   for (auto & i : ground)
+      currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(i);
+   WorldProperties::levelEnd.clear();
+   WorldProperties::enemySpawnPoint.clear();
+   WorldProperties::levelDeathZone.clear();
+   WorldProperties::levelItems.clear();
+}
 void World::initLevelObjects(){
    //Get object layer
    auto group = level->getObjectGroup("objectsLayer");
@@ -33,12 +45,12 @@ void World::initLevelObjects(){
    for (auto& obj : objects){
       //Get data from property of tiled map
       cocos2d::ValueMap& dict = obj.asValueMap();
-      float x = dict["x"].asFloat()           * scaleOffset;
-      float y = dict["y"].asFloat()           * scaleOffset;
+      float x = dict["x"].asFloat()           * scaleOffset + WorldProperties::world_offset.x;
+      float y = dict["y"].asFloat()           * scaleOffset  + WorldProperties::world_offset.y;
       float width = dict["width"].asFloat()   * scaleOffset;
       float height = dict["height"].asFloat() * scaleOffset;
       //Init node for add in physic scene physic bodies
-      cocos2d::Node* ground = cocos2d::Node::create();
+      ground.push_back(cocos2d::Node::create());
       auto ground_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(width,height));
       ground_body->setDynamic(false);
       ground_body->setGravityEnable(false);
@@ -47,16 +59,16 @@ void World::initLevelObjects(){
       //Define object wall
       if (dict["name"].asString() == "wall"){
          ground_body->setCollisionBitmask(0x03);
-         ground->setPhysicsBody(ground_body);
+         ground.back()->setPhysicsBody(ground_body);
       }
       //Define object floor
       else if (dict["name"].asString() == "floor"){
          ground_body->setCollisionBitmask(0x01);
-         ground->setPhysicsBody(ground_body);
+         ground.back()->setPhysicsBody(ground_body);
       }
       else if (dict["name"].asString() == "roof"){
          ground_body->setCollisionBitmask(0x05);
-         ground->setPhysicsBody(ground_body);
+         ground.back()->setPhysicsBody(ground_body);
       }
       //Define object door
       else if (dict["name"].asString() == "door"){
@@ -84,11 +96,11 @@ void World::initLevelObjects(){
          poligon->setGravityEnable(false);
          poligon->setContactTestBitmask(0xFF);
          poligon->setCollisionBitmask(0x04);
-         ground->setPhysicsBody(poligon);
+         ground.back()->setPhysicsBody(poligon);
       }
 
-      ground->setPosition(x,y);
-      currentLayer->getChildByName(SceneEntities::gamesession)->addChild(ground);
+      ground.back()->setPosition(x,y);
+      currentLayer->getChildByName(SceneEntities::gamesession)->addChild(ground.back());
       /*Define where will be appear player*/
       if (dict["name"].asString() == "PlayerSpawnPoint")
          WorldProperties::playerSpawnPoint.setPoint(x,y);

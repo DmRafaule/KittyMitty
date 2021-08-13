@@ -49,7 +49,7 @@ private:
     /**
      * initialize level using tmx file
     */
-    void initLevel(std::string level_path);
+    void initLevel(std::string level_path, cocos2d::Vec2 level_offset);
     /**
      * initialize user interface(for phones it will be controle ball, screen action and some buttons) for desktop it will be keyboard and mouse
     */

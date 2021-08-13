@@ -21,8 +21,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -41,7 +41,7 @@ bool GameLayer::init(){
         return false;
     isNewLevel = false;
     initLayers();
-    initLevel("world/area0/level0.tmx");
+    initLevel("world/area0/level0.tmx",cocos2d::Vec2(0,0));
     intCreatures();
     initListeners();
     initUI();
@@ -56,10 +56,10 @@ void GameLayer::initLayers(){
     cocos2d::Layer* BGLayer = cocos2d::Layer::create();
     this->addChild(BGLayer,ZLevel::BACKGROUND,SceneEntities::bg);
 }
-void GameLayer::initLevel(std::string level_path){
+void GameLayer::initLevel(std::string level_path, cocos2d::Vec2 level_offset){
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 
-    world = new World(level_path,this);
+    world = new World(level_path,level_offset,this);
 }
 void GameLayer::intCreatures(){
     
@@ -127,11 +127,13 @@ void GameLayer::update(float dt){
     ctarg->update(dt);
     cattc->update(dt);
     ckeys->update(dt);
+
     player->update(dt);
     if(!isNewLevel){
         for (const auto& level : WorldProperties::levelEnd){
             if (player->getCreatureSprite()->getBoundingBox().intersectsRect(level)){
-                initLevel("world/area0/level1.tmx");
+                delete world;
+                initLevel("world/area0/level1.tmx",cocos2d::Vec2(WorldProperties::mapSize.width-WorldProperties::screenSize.width,0));
                 OUT("newl\n");
                 isNewLevel = true;
                 /*Init camera. And set on player*/
@@ -140,10 +142,10 @@ void GameLayer::update(float dt){
                         player->getCreatureSprite(),
                         -100,-100,
                         cocos2d::Rect(
-                            1600,
+                            WorldProperties::mapSize.width-WorldProperties::screenSize.width+64,
                             0,
-                            WorldProperties::mapSize.width-WorldProperties::screenSize.width   - 64,
-                            WorldProperties::mapSize.height-WorldProperties::screenSize.height - 64
+                            WorldProperties::mapSize.width-WorldProperties::screenSize.width   - 96,
+                            WorldProperties::mapSize.height-WorldProperties::screenSize.height - 96
                         )
                     )
                 );

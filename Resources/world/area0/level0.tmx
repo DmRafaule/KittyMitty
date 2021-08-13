@@ -506,7 +506,7 @@
   <object id="151" name="EnemySpawnPoint" x="388" y="1482.67">
    <point/>
   </object>
-  <object id="156" name="NewLocation" x="1466" y="344.667" width="252" height="1148.67"/>
+  <object id="156" name="NewLocation" x="1585" y="344.667" width="133" height="1148.67"/>
   <object id="158" name="DeathZone" x="772.456" y="1552.34" width="560" height="508.465"/>
   <object id="160" name="DeathZone" x="604.667" y="1686" width="172" height="544.667"/>
   <object id="161" name="DeathZone" x="222" y="1558" width="396" height="494.587"/>

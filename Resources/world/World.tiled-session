@@ -19,11 +19,11 @@
             "scaleInEditor": 1
         },
         "area0/level0.tmx": {
-            "scale": 0.75,
+            "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 852.6666666666666,
-                "y": 352.66666666666663
+                "x": 1162.5,
+                "y": 560.5
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -35,11 +35,11 @@
             "scaleInEditor": 3
         },
         "area0/level1.tmx": {
-            "scale": 0.57296875,
+            "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 793.2369784565041,
-                "y": 796.727570220889
+                "x": 195.66666666666666,
+                "y": 576.3333333333333
             }
         },
         "area0/tilesetMidlegr.tsx": {
@@ -63,6 +63,7 @@
     "project": "World.tiled-project",
     "property.type": "float",
     "recentFiles": [
+        "area0/level1.tmx",
         "area0/tilesetMidlegr.tsx",
         "area0/level0.tmx",
         "/home/dimond/Projects/KittyMitty/archive/textures/animations/animations.tsx"

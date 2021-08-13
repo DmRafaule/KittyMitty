@@ -122,6 +122,7 @@ struct WorldProperties{
     static cocos2d::Size screenSize;
     static cocos2d::Size mapSize;
     static cocos2d::Vec2 playerSpawnPoint;
+    static cocos2d::Vec2 world_offset;
     static std::vector<cocos2d::Vec2> enemySpawnPoint;
     static std::vector<cocos2d::Rect> levelEnd;
     static std::vector<cocos2d::Rect> levelDeathZone;
