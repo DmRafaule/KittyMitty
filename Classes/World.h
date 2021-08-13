@@ -32,6 +32,7 @@ private:
    cocos2d::Node* currentLayer;
    cocos2d::Sprite* backgroundSprite;
    cocos2d::Vec2 level_offset;
+   cocos2d::Vec2 current_level_offset;
 
    float scaleOffset;
    bool isNewChunk = false;

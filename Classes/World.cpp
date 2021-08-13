@@ -45,29 +45,33 @@ void Level::update(float dt){
       for (const auto& chunk : WorldProperties::chunks_transitions){
          /*intersection player body with chunks_transitions*/
          if (currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->getBoundingBox().intersectsRect(chunk.first)){
-            //unloadChunk();
-            //loadChunk(chunk.second.first, chunk.second.second);
-            //this->currentLayer->getChildByName(SceneEntities::gamesession)->stopAllActions();
-            //this->currentLayer->getChildByName(SceneEntities::gamesession)->runAction(
-            //     cocos2d::Follow::createWithOffset(
-            //         this->currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2),
-            //         -100,-100,
-            //         cocos2d::Rect(
-            //            level_offset.x - (WorldProperties::screenSize.width * 2),
-            //            level_offset.y - WorldProperties::screenSize.height,
-            //            WorldProperties::mapSize.width - WorldProperties::screenSize.width   - 64  + level_offset.x,
-            //            WorldProperties::mapSize.height - WorldProperties::screenSize.height - 64  + level_offset.y
-            //         )
-            //     )
-            // );
+            unloadChunk();
+            loadChunk(chunk.second.first, chunk.second.second);
+            this->currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->setPosition(3200,
+                                                                                          this->currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->getPosition().y);
+            this->currentLayer->getChildByName(SceneEntities::gamesession)->stopAllActions();
+            this->currentLayer->getChildByName(SceneEntities::gamesession)->runAction(
+                 cocos2d::Follow::createWithOffset(
+                     this->currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2),
+                     -100,-100,
+                     cocos2d::Rect(
+                        ,
+                        ,
+                        WorldProperties::mapSize.width - WorldProperties::screenSize.width,
+                        WorldProperties::mapSize.height - WorldProperties::screenSize.height 
+                     )
+                 )
+             );
             isNewChunk = true;
          }
       }
 }
 void Level::loadChunk(std::string chunkPath, cocos2d::Vec2 offset){
    this->level_offset = offset;
+   this->current_level_offset = offset;
    this->level = cocos2d::TMXTiledMap::create(chunkPath);
    this->level->setScale(scaleOffset);
+   this->level->setPosition(level_offset);
    //this->level->setPosition(level_offset);
    this->level_layer_midleground = this->level->getLayer("midleground");
    this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,1);
@@ -96,8 +100,8 @@ void Level::initLevelObjects(){
    for (auto& obj : objects){
       //Get data from property of tiled map
       cocos2d::ValueMap& dict = obj.asValueMap();
-      float x = dict["x"].asFloat()           * scaleOffset;//Here somo poligons just wont be in right place FIX IT!!!
-      float y = dict["y"].asFloat()           * scaleOffset;
+      float x = dict["x"].asFloat()           * scaleOffset + current_level_offset.x;//Here somo poligons just wont be in right place FIX IT!!!
+      float y = dict["y"].asFloat()           * scaleOffset + current_level_offset.y;
       float width = dict["width"].asFloat()   * scaleOffset;
       float height = dict["height"].asFloat() * scaleOffset;
       //Init node for add in physic scene physic bodies

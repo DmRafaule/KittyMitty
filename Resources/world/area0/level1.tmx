@@ -418,7 +418,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="objectsLayer">
-  <object id="1" name="floor" x="-164.264" y="587.976" width="1935.42" height="7.83333"/>
+  <object id="1" name="floor" x="-113.264" y="547.476" width="1935.42" height="7.83333"/>
   <object id="2" name="EnemySpawnPoint" x="117.667" y="530.333">
    <point/>
   </object>
