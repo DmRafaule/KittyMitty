@@ -124,9 +124,24 @@ struct WorldProperties{
     static cocos2d::Vec2 playerSpawnPoint;
     static cocos2d::Vec2 world_offset;
     static std::vector<cocos2d::Vec2> enemySpawnPoint;
-    static std::vector<cocos2d::Rect> levelEnd;
+    static std::vector<cocos2d::Rect> newChunk;
     static std::vector<cocos2d::Rect> levelDeathZone;
     static std::vector<std::pair<std::string,cocos2d::Rect>> levelItems;
+    enum CHUNKS {
+        CHUNK1,
+        CHUNK2,
+        CHUNK3,
+        CHUNK4,
+        CHUNK5,
+        CHUNK6,
+        CHUNK7,
+        CHUNK8,
+        CHUNK9,
+        CHUNK10,
+        CHUNK11,
+        CHUNK12,
+    };
+    static std::map<CHUNKS,std::string> chunks;
 };
 
 enum DirectionAttacke{

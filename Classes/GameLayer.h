@@ -42,14 +42,14 @@ public:
     
     virtual bool init();
 
-    inline Player* getPlayer(){ return player;};//MAYBE NOT NEED
-    inline std::vector<Enemy*>* getEnemy(){ return &enemy;};//MAYBE NOT NEED
-    inline World* getWorld(){ return world;};//MAYBE NOT NEED
+    //inline Player* getPlayer(){ return player;};//MAYBE NOT NEED
+    //inline std::vector<Enemy*>* getEnemy(){ return &enemy;};//MAYBE NOT NEED
+    //inline World* getWorld(){ return world;};//MAYBE NOT NEED
 private:
     /**
      * initialize level using tmx file
     */
-    void initLevel(std::string level_path, cocos2d::Vec2 level_offset);
+    void initWorld();
     /**
      * initialize user interface(for phones it will be controle ball, screen action and some buttons) for desktop it will be keyboard and mouse
     */
@@ -82,8 +82,6 @@ private:
     std::vector<Enemy*> enemy;
     Player* player;
     World*  world;
-
-    bool isNewLevel;
 };
 
 #endif // GAME_LAYER

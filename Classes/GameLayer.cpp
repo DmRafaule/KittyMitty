@@ -39,9 +39,8 @@ bool GameLayer::init(){
 
     if ( !cocos2d::Scene::init() )
         return false;
-    isNewLevel = false;
     initLayers();
-    initLevel("world/area0/level0.tmx",cocos2d::Vec2(0,0));
+    initWorld();
     intCreatures();
     initListeners();
     initUI();
@@ -56,10 +55,10 @@ void GameLayer::initLayers(){
     cocos2d::Layer* BGLayer = cocos2d::Layer::create();
     this->addChild(BGLayer,ZLevel::BACKGROUND,SceneEntities::bg);
 }
-void GameLayer::initLevel(std::string level_path, cocos2d::Vec2 level_offset){
+void GameLayer::initWorld(){
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 
-    world = new World(level_path,level_offset,this);
+    world = new World(0,this);
 }
 void GameLayer::intCreatures(){
     
@@ -67,19 +66,6 @@ void GameLayer::intCreatures(){
     cocos2d::SpriteBatchNode* spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
     this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
     
-
-    Enemy* e;
-    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(0),this->getChildByName(SceneEntities::gamesession),6);
-    e->setWeapon(WeaponType::SPEAR);
-    enemy.push_back(e);
-
-    e = new Enemy(CreatureInfo::Type::ERENU_DOO,WorldProperties::enemySpawnPoint.at(1),this->getChildByName(SceneEntities::gamesession),7);
-    e->setWeapon(WeaponType::SPEAR);
-    enemy.push_back(e);
-
-    e = new Enemy(CreatureInfo::Type::GOO_ZOO,WorldProperties::enemySpawnPoint.at(2),this->getChildByName(SceneEntities::gamesession),8);
-    e->setWeapon(WeaponType::SWORD);
-    enemy.push_back(e);
 
     player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
     player->setWeapon(WeaponType::SWORD); 
@@ -93,8 +79,8 @@ void GameLayer::intCreatures(){
             cocos2d::Rect(
                 0,
                 0,
-                WorldProperties::mapSize.width-WorldProperties::screenSize.width   - 64,
-                WorldProperties::mapSize.height-WorldProperties::screenSize.height - 64
+                3200-WorldProperties::screenSize.width   - 64,
+                3200-WorldProperties::screenSize.height - 64
             )
         )
     );
@@ -129,29 +115,6 @@ void GameLayer::update(float dt){
     ckeys->update(dt);
 
     player->update(dt);
-    if(!isNewLevel){
-        for (const auto& level : WorldProperties::levelEnd){
-            if (player->getCreatureSprite()->getBoundingBox().intersectsRect(level)){
-                delete world;
-                initLevel("world/area0/level1.tmx",cocos2d::Vec2(WorldProperties::mapSize.width-WorldProperties::screenSize.width,0));
-                OUT("newl\n");
-                isNewLevel = true;
-                /*Init camera. And set on player*/
-                this->getChildByName(SceneEntities::gamesession)->runAction(
-                    cocos2d::Follow::createWithOffset(
-                        player->getCreatureSprite(),
-                        -100,-100,
-                        cocos2d::Rect(
-                            WorldProperties::mapSize.width-WorldProperties::screenSize.width+64,
-                            0,
-                            WorldProperties::mapSize.width-WorldProperties::screenSize.width   - 96,
-                            WorldProperties::mapSize.height-WorldProperties::screenSize.height - 96
-                        )
-                    )
-                );
-            }
-        }
-    }
     for (auto &i : enemy){
         i->update(dt);
     }

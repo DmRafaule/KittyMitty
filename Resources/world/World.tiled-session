@@ -5,8 +5,8 @@
     },
     "activeFile": "area0/level0.tmx",
     "expandedProjectPaths": [
-        "area0",
-        "."
+        ".",
+        "area0"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -58,14 +58,15 @@
     "map.width": 100,
     "mapScene.enableWorlds": false,
     "openFiles": [
-        "area0/level0.tmx"
+        "area0/level0.tmx",
+        "area0/level1.tmx"
     ],
     "project": "World.tiled-project",
     "property.type": "float",
     "recentFiles": [
         "area0/level1.tmx",
-        "area0/tilesetMidlegr.tsx",
         "area0/level0.tmx",
+        "area0/tilesetMidlegr.tsx",
         "/home/dimond/Projects/KittyMitty/archive/textures/animations/animations.tsx"
     ],
     "tileset.embedInMap": false,

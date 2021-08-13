@@ -2,21 +2,41 @@
 
 #include <cocos2d.h>
 
-using namespace cocos2d;
+class Level;
+class Chunk;
 
 class World {
 public:
-   World(std::string world_file_path,cocos2d::Vec2 world_offset,cocos2d::Node* currentLayer);
-   ~World();
-   void update(float dt);
+   World();
+   World(uint level,cocos2d::Node* currentLayer);
+   virtual ~World();
+   virtual void update(float dt);
+private:
+   Level* level;
+private:
+   
+};
+class Level : public World{
+public:
+   Level();
+   Level(uint level,cocos2d::Node* currentLayer);
+   virtual ~Level();
+   virtual void update(float dt) override;
 private:
    void initLevelObjects();
    void initBackground();
 private:
    cocos2d::TMXTiledMap* level;
    cocos2d::TMXLayer* level_layer_midleground;
+   std::vector<cocos2d::Node*> level_bodies;
    cocos2d::Node* currentLayer;
-   std::vector<cocos2d::Node*> ground;
    cocos2d::Sprite* backgroundSprite;
    float scaleOffset;
+};
+class Chunk : public Level{
+public:
+   Chunk();
+   Chunk(uint chunk,cocos2d::Node* currentLayer);
+   virtual ~Chunk();
+   virtual void update(float dt) override;
 };

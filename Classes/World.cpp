@@ -7,36 +7,51 @@ cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
 cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
 cocos2d::Vec2               WorldProperties::world_offset = cocos2d::Vec2();
 std::vector<cocos2d::Vec2>  WorldProperties::enemySpawnPoint(0);
-std::vector<cocos2d::Rect>  WorldProperties::levelEnd(0);
+std::vector<cocos2d::Rect>  WorldProperties::newChunk(0);
 std::vector<cocos2d::Rect>  WorldProperties::levelDeathZone(0);
 std::vector<std::pair<std::string,cocos2d::Rect>>  WorldProperties::levelItems(0);
+std::map<WorldProperties::CHUNKS,std::string> WorldProperties::chunks;
 
-World::World(std::string world_file_path,cocos2d::Vec2 world_offset,cocos2d::Node* currentLayer){
-   this->scaleOffset = 2;
-   this->level = cocos2d::TMXTiledMap::create(world_file_path);
-   this->level->setPosition(world_offset);
-   this->level->setScale(scaleOffset);
-   level->
-   this->level_layer_midleground = level->getLayer("midleground");
-   this->currentLayer = currentLayer;
-   this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(level,1);
-   WorldProperties::world_offset = world_offset;
-   /*Define level size*/
-   WorldProperties::mapSize.setSize(level->getMapSize().width  * level->getTileSize().width  * scaleOffset,
-                                    level->getMapSize().height * level->getTileSize().height * scaleOffset);
-   initLevelObjects();
-   initBackground();
+World::World(){};
+World::World(uint levelNum,cocos2d::Node* currentLayer){
+   level = new Level(levelNum,currentLayer);
 }
 World::~World(){
-   currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(level);
-   for (auto & i : ground)
-      currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(i);
-   WorldProperties::levelEnd.clear();
-   WorldProperties::enemySpawnPoint.clear();
-   WorldProperties::levelDeathZone.clear();
-   WorldProperties::levelItems.clear();
+   delete level;
 }
-void World::initLevelObjects(){
+void World::update(float dt){
+   level->update(dt);
+}
+
+Level::Level(){};
+Level::Level(uint level,cocos2d::Node* currentLayer){
+   this->scaleOffset = 2;
+   this->currentLayer = currentLayer;
+   switch (level){
+   case 0:{
+      WorldProperties::chunks.emplace(WorldProperties::CHUNKS::CHUNK1,"world/area0/level0.tmx");
+      WorldProperties::chunks.emplace(WorldProperties::CHUNKS::CHUNK2,"world/area0/level1.tmx");
+      this->level = cocos2d::TMXTiledMap::create(WorldProperties::chunks.find(WorldProperties::CHUNKS::CHUNK1)->second);
+      this->level->setScale(scaleOffset);
+      this->level_layer_midleground = this->level->getLayer("midleground");
+      this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,1);
+      /*Define level size*/
+      WorldProperties::mapSize.setSize(this->level->getMapSize().width  * this->level->getTileSize().width  * scaleOffset,
+                                       this->level->getMapSize().height * this->level->getTileSize().height * scaleOffset);
+      initLevelObjects();
+      initBackground();
+      break;
+   }
+   case 1:{
+      break;
+   
+   }
+   }
+}
+Level::~Level(){
+   
+}
+void Level::initLevelObjects(){
    //Get object layer
    auto group = level->getObjectGroup("objectsLayer");
    //Get all objects(points,poligons,reqtangles etc)
@@ -45,12 +60,12 @@ void World::initLevelObjects(){
    for (auto& obj : objects){
       //Get data from property of tiled map
       cocos2d::ValueMap& dict = obj.asValueMap();
-      float x = dict["x"].asFloat()           * scaleOffset + WorldProperties::world_offset.x;
-      float y = dict["y"].asFloat()           * scaleOffset  + WorldProperties::world_offset.y;
+      float x = dict["x"].asFloat()           * scaleOffset;
+      float y = dict["y"].asFloat()           * scaleOffset;
       float width = dict["width"].asFloat()   * scaleOffset;
       float height = dict["height"].asFloat() * scaleOffset;
       //Init node for add in physic scene physic bodies
-      ground.push_back(cocos2d::Node::create());
+      level_bodies.push_back(cocos2d::Node::create());
       auto ground_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(width,height));
       ground_body->setDynamic(false);
       ground_body->setGravityEnable(false);
@@ -59,16 +74,16 @@ void World::initLevelObjects(){
       //Define object wall
       if (dict["name"].asString() == "wall"){
          ground_body->setCollisionBitmask(0x03);
-         ground.back()->setPhysicsBody(ground_body);
+         level_bodies.back()->setPhysicsBody(ground_body);
       }
       //Define object floor
       else if (dict["name"].asString() == "floor"){
          ground_body->setCollisionBitmask(0x01);
-         ground.back()->setPhysicsBody(ground_body);
+         level_bodies.back()->setPhysicsBody(ground_body);
       }
       else if (dict["name"].asString() == "roof"){
          ground_body->setCollisionBitmask(0x05);
-         ground.back()->setPhysicsBody(ground_body);
+         level_bodies.back()->setPhysicsBody(ground_body);
       }
       //Define object door
       else if (dict["name"].asString() == "door"){
@@ -96,17 +111,17 @@ void World::initLevelObjects(){
          poligon->setGravityEnable(false);
          poligon->setContactTestBitmask(0xFF);
          poligon->setCollisionBitmask(0x04);
-         ground.back()->setPhysicsBody(poligon);
+         level_bodies.back()->setPhysicsBody(poligon);
       }
 
-      ground.back()->setPosition(x,y);
-      currentLayer->getChildByName(SceneEntities::gamesession)->addChild(ground.back());
+      level_bodies.back()->setPosition(x,y);
+      currentLayer->getChildByName(SceneEntities::gamesession)->addChild(level_bodies.back());
       /*Define where will be appear player*/
       if (dict["name"].asString() == "PlayerSpawnPoint")
          WorldProperties::playerSpawnPoint.setPoint(x,y);
       /*Define where is new locations*/
       if (dict["name"].asString() == "NewLocation")
-         WorldProperties::levelEnd.push_back(cocos2d::Rect(x,y,width,height));
+         WorldProperties::newChunk.push_back(cocos2d::Rect(x,y,width,height));
       /*Define where will appears enemies*/
       if (dict["name"].asString() == "EnemySpawnPoint")
          WorldProperties::enemySpawnPoint.push_back(cocos2d::Vec2(x,y));
@@ -115,7 +130,7 @@ void World::initLevelObjects(){
          WorldProperties::levelDeathZone.push_back(cocos2d::Rect(x,y,width,height));
    }
 }
-void World::initBackground(){
+void Level::initBackground(){
    this->backgroundSprite = cocos2d::Sprite::create("world/area0/backgroundImage.png");
    cocos2d::Texture2D::TexParams tpar = {
       cocos2d::backend::SamplerFilter::NEAREST,
@@ -129,11 +144,18 @@ void World::initBackground(){
                                   WorldProperties::screenSize.height/backgroundSprite->getBoundingBox().size.height));
    currentLayer->getChildByName(SceneEntities::bg)->addChild(backgroundSprite);
 }
+void Level::update(float dt){
+   
+   if (currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->getBoundingBox().intersectsRect(WorldProperties::newChunk)))
+}
 
-void World::update(float dt){
+Chunk::Chunk(){};
+Chunk::Chunk(uint level,cocos2d::Node* currentLayer){
    
 }
-/*
-   <1>  I do not know why is this 8 pixel for each tile, but it is,
-   It's factor for delete trash pixels size
-*/
+Chunk::~Chunk(){
+   
+}
+void Chunk::update(float dt){
+   
+}
