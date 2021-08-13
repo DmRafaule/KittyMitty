@@ -509,6 +509,8 @@
   <object id="156" name="NewLocation" x="1565" y="344.667" width="153" height="1148.67">
    <properties>
     <property name="nextChunk" value="world/area0/level1.tmx"/>
+    <property name="nextLevelOffsetX" type="float" value="3200"/>
+    <property name="nextLevelOffsetY" type="float" value="0"/>
    </properties>
   </object>
   <object id="158" name="DeathZone" x="772.456" y="1552.34" width="560" height="508.465"/>

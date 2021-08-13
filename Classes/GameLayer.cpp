@@ -66,6 +66,10 @@ void GameLayer::intCreatures(){
     cocos2d::SpriteBatchNode* spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
     this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
     
+    Enemy* e;
+    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(0),this->getChildByName(SceneEntities::gamesession),6);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
 
     player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
     player->setWeapon(WeaponType::SWORD); 
@@ -79,8 +83,8 @@ void GameLayer::intCreatures(){
             cocos2d::Rect(
                 0,
                 0,
-                3200-WorldProperties::screenSize.width   - 64,
-                3200-WorldProperties::screenSize.height - 64
+                WorldProperties::mapSize.width  - WorldProperties::screenSize.width  - 64,
+                WorldProperties::mapSize.height - WorldProperties::screenSize.height - 64
             )
         )
     );

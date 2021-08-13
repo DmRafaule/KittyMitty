@@ -24,10 +24,11 @@ void World::update(float dt){
 Level::Level(){};
 Level::Level(uint level,cocos2d::Node* currentLayer){
    this->scaleOffset = 2;
+   this->level_offset = cocos2d::Vec2(0,0);
    this->currentLayer = currentLayer;
    switch (level){
    case 0:{
-      loadChunk("world/area0/level0.tmx");
+      loadChunk("world/area0/level0.tmx",level_offset);
       break;
    }
    case 1:{
@@ -39,6 +40,53 @@ Level::Level(uint level,cocos2d::Node* currentLayer){
 Level::~Level(){
    
 }
+void Level::update(float dt){
+   if (!isNewChunk)
+      for (const auto& chunk : WorldProperties::chunks_transitions){
+         /*intersection player body with chunks_transitions*/
+         if (currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->getBoundingBox().intersectsRect(chunk.first)){
+            //unloadChunk();
+            //loadChunk(chunk.second.first, chunk.second.second);
+            //this->currentLayer->getChildByName(SceneEntities::gamesession)->stopAllActions();
+            //this->currentLayer->getChildByName(SceneEntities::gamesession)->runAction(
+            //     cocos2d::Follow::createWithOffset(
+            //         this->currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2),
+            //         -100,-100,
+            //         cocos2d::Rect(
+            //            level_offset.x - (WorldProperties::screenSize.width * 2),
+            //            level_offset.y - WorldProperties::screenSize.height,
+            //            WorldProperties::mapSize.width - WorldProperties::screenSize.width   - 64  + level_offset.x,
+            //            WorldProperties::mapSize.height - WorldProperties::screenSize.height - 64  + level_offset.y
+            //         )
+            //     )
+            // );
+            isNewChunk = true;
+         }
+      }
+}
+void Level::loadChunk(std::string chunkPath, cocos2d::Vec2 offset){
+   this->level_offset = offset;
+   this->level = cocos2d::TMXTiledMap::create(chunkPath);
+   this->level->setScale(scaleOffset);
+   //this->level->setPosition(level_offset);
+   this->level_layer_midleground = this->level->getLayer("midleground");
+   this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,1);
+   /*Define level size*/
+   WorldProperties::mapSize.setSize(this->level->getMapSize().width  * this->level->getTileSize().width  * scaleOffset,
+                                    this->level->getMapSize().height * this->level->getTileSize().height * scaleOffset);
+   initLevelObjects();
+   initBackground();
+}
+void Level::unloadChunk(){
+   currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(level);
+   for (auto& i : level_bodies){
+      currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(i);
+   }
+   WorldProperties::enemySpawnPoint.clear();
+   WorldProperties::levelDeathZone.clear();
+   WorldProperties::levelItems.clear();
+}
+
 void Level::initLevelObjects(){
    //Get object layer
    auto group = level->getObjectGroup("objectsLayer");
@@ -48,8 +96,8 @@ void Level::initLevelObjects(){
    for (auto& obj : objects){
       //Get data from property of tiled map
       cocos2d::ValueMap& dict = obj.asValueMap();
-      float x = dict["x"].asFloat()           * scaleOffset + level_offset.x;
-      float y = dict["y"].asFloat()           * scaleOffset + level_offset.y;
+      float x = dict["x"].asFloat()           * scaleOffset;//Here somo poligons just wont be in right place FIX IT!!!
+      float y = dict["y"].asFloat()           * scaleOffset;
       float width = dict["width"].asFloat()   * scaleOffset;
       float height = dict["height"].asFloat() * scaleOffset;
       //Init node for add in physic scene physic bodies
@@ -102,7 +150,7 @@ void Level::initLevelObjects(){
          level_bodies.back()->setPhysicsBody(poligon);
       }
 
-      level_bodies.back()->setPosition(x,y);
+      level_bodies.back()->setPosition(x, y );
       currentLayer->getChildByName(SceneEntities::gamesession)->addChild(level_bodies.back());
       /*Define where will be appear player*/
       if (dict["name"].asString() == "PlayerSpawnPoint")
@@ -135,37 +183,4 @@ void Level::initBackground(){
    backgroundSprite->setScale(MAX(WorldProperties::screenSize.width/backgroundSprite->getBoundingBox().size.width,
                                   WorldProperties::screenSize.height/backgroundSprite->getBoundingBox().size.height));
    currentLayer->getChildByName(SceneEntities::bg)->addChild(backgroundSprite);
-}
-void Level::update(float dt){
-   if (!isNewChunk)
-      for (const auto& chunk : WorldProperties::chunks_transitions){
-         /*intersection player body with chunks_transitions*/
-         if (currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->getBoundingBox().intersectsRect(chunk.first)){
-            unloadChunk();
-            loadChunk(chunk.second.first);
-            isNewChunk = true;
-         }
-      }
-}
-void Level::loadChunk(std::string chunkPath){
-   this->level_offset = cocos2d::Vec2(0,0);
-   this->level = cocos2d::TMXTiledMap::create(chunkPath);
-   this->level->setScale(scaleOffset);
-   this->level->setPosition(level_offset);
-   this->level_layer_midleground = this->level->getLayer("midleground");
-   this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,1);
-   /*Define level size*/
-   WorldProperties::mapSize.setSize(this->level->getMapSize().width  * this->level->getTileSize().width  * scaleOffset,
-                                    this->level->getMapSize().height * this->level->getTileSize().height * scaleOffset);
-   initLevelObjects();
-   initBackground();
-}
-void Level::unloadChunk(){
-   currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(level);
-   for (auto& i : level_bodies){
-      currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(i);
-   }
-   WorldProperties::enemySpawnPoint.clear();
-   WorldProperties::levelDeathZone.clear();
-   WorldProperties::levelItems.clear();
 }
