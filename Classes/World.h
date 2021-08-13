@@ -13,8 +13,6 @@ public:
    virtual void update(float dt);
 private:
    Level* level;
-private:
-   
 };
 class Level : public World{
 public:
@@ -25,18 +23,16 @@ public:
 private:
    void initLevelObjects();
    void initBackground();
+   void loadChunk(std::string chunkPath);
+   void unloadChunk();
 private:
    cocos2d::TMXTiledMap* level;
    cocos2d::TMXLayer* level_layer_midleground;
    std::vector<cocos2d::Node*> level_bodies;
    cocos2d::Node* currentLayer;
    cocos2d::Sprite* backgroundSprite;
+   cocos2d::Vec2 level_offset;
+   
    float scaleOffset;
-};
-class Chunk : public Level{
-public:
-   Chunk();
-   Chunk(uint chunk,cocos2d::Node* currentLayer);
-   virtual ~Chunk();
-   virtual void update(float dt) override;
+   bool isNewChunk = false;
 };
