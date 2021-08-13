@@ -79,9 +79,11 @@ private:
     ControlAttc*      cattc;
 
     /*Game entyties*/
-    World*  world;
-    Player* player;
     std::vector<Enemy*> enemy;
+    Player* player;
+    World*  world;
+
+    bool isNewLevel;
 };
 
 #endif // GAME_LAYER

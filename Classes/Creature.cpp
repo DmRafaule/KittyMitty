@@ -1,16 +1,80 @@
 #include "Creature.h"
 #include "GameLayer.h"
 #include <dirent.h>
+
+///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
+PartOrgan::PartOrgan(PartOrganType type){
+    this->type = type;
+    this->status = PartCreatureStatus::NORMAL;
+}
+Creature::PartCreature::PartCreature(PartCreatureType part_type){
+    this->part_status      = PartCreatureStatus::NORMAL;
+    this->part_type        = part_type;
+    this->part_penetrationDef = 1;
+    this->part_crushingDef    = 5;
+    switch (part_type){
+    case PartCreatureType::HEAD:{
+        this->part_densityDef = 10;
+        this->part_organs.push_back(PartOrgan(PartOrganType::BRAIN));
+        break;
+    }
+    case PartCreatureType::UPPER_TORSE:{
+        this->part_densityDef = 30;
+        this->part_organs.push_back(PartOrgan(PartOrganType::LUNGS));
+        this->part_organs.push_back(PartOrgan(PartOrganType::HEART));     
+        break;
+    }
+    case PartCreatureType::HAND_LEFT:{
+        this->part_densityDef = 10;
+        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
+        break;
+    }
+    case PartCreatureType::HAND_RIGHT:{
+        this->part_densityDef = 10;
+        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
+        break;
+    }
+    case PartCreatureType::BUTTOM_TORSE:{
+        this->part_densityDef = 20;
+        this->part_organs.push_back(PartOrgan(PartOrganType::GUT));
+        break;
+    }
+    case PartCreatureType::LEG_LEFT:{
+        this->part_densityDef = 15;
+        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
+        break;
+    }
+    case PartCreatureType::LEG_RIGHT:{
+        this->part_densityDef = 15;
+        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
+        break;
+    }
+    }
+}
+CreatureInfo::CreatureInfo(){}
+CreatureInfo::CreatureInfo(Type type,CreatureInfo::Animation animation){
+    this->type = type;
+    this->animation.animationForWho = animation.animationForWho;
+    for (uint i = 0; i < animation.framesIdleNum.size(); ++i)
+        this->animation.framesIdleNum.push_back(animation.framesIdleNum[i]);
+}
+CreatureInfo::Animation::Animation(){}
+CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string animationForWho){
+    for (uint i = 0; i < framesIdleNum.size(); ++i){
+        this->framesIdleNum.push_back(framesIdleNum[i]);
+    }
+    this->animationForWho = animationForWho;
+}
+
+
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
-Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
+Creature::Creature(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
     this->currentLayer = gameLayer;
     this->isStatisticsShowing = false;
     this->isNewState = false;
     this->indentificator = id;
-    this->creature_info.type = info.type;
+    this->creature_info.type = type;
     this->creature_info.state = CreatureInfo::State::IN_FALL;
-    this->creature_info.animation.animationForWho = info.animation.animationForWho;
-    this->creature_info.animation.framesIdleNum   = info.animation.framesIdleNum;
 
     initStats();
     initAnimations();
@@ -18,7 +82,10 @@ Creature::Creature(CreatureInfo info, cocos2d::Vec2 pos,cocos2d::Node* gameLayer
 }
 void Creature::initStats(){ 
     switch(creature_info.type){
-        case CreatureInfo::Type::HUMANOID:{
+        case CreatureInfo::Type::KITTYMITTY:{
+            this->creature_info.animation.animationForWho = "hero";
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({15,4,7,4,2,7,2,5,5,2,4,4,5,5});
+
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
             creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
             creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
@@ -37,7 +104,92 @@ void Creature::initStats(){
             creature_info.characteristic.mass = 10;
             break;
         }
-        case CreatureInfo::Type::ANIMAL:{
+        case CreatureInfo::Type::KOOL_HASH:{
+            this->creature_info.animation.animationForWho = "kool-hash";
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({8,3,5,3,4,9,4,6,5,4,4,4,8,5});
+
+            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
+            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
+            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_info.characteristic.velocity_limit  = 180;
+            creature_info.characteristic.jump_power = 120;
+            creature_info.characteristic.acceleration_power = 55;
+            creature_info.characteristic.stamina = 80;
+            creature_info.characteristic.stamina_limit = 80;
+            creature_info.characteristic.blood   = 20;
+            creature_info.characteristic.jump_ability = 1;
+            creature_info.characteristic.current_jump_ability_num = 0;
+            creature_info.characteristic.mass = 15;
+            break;
+        }
+        case CreatureInfo::Type::ERENU_DOO:{
+            this->creature_info.animation.animationForWho = "erenu-doo";
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({9,4,5,4,8,0,4,10,0,4,3,0,5,5});
+
+            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
+            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
+            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_info.characteristic.velocity_limit  = 50;
+            creature_info.characteristic.jump_power = 0;
+            creature_info.characteristic.acceleration_power = 15;
+            creature_info.characteristic.stamina = 300;
+            creature_info.characteristic.stamina_limit = 300;
+            creature_info.characteristic.blood   = 10;
+            creature_info.characteristic.jump_ability = 0;
+            creature_info.characteristic.current_jump_ability_num = 0;
+            creature_info.characteristic.mass = 25;
+            break;
+        }
+        case CreatureInfo::Type::GOO_ZOO:{
+            this->creature_info.animation.animationForWho = "goo-zoo";
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({7,5,4,5,4,7,3,7,0,2,4,0,6,5});
+
+            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
+            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
+            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_info.characteristic.velocity_limit  = 120;
+            creature_info.characteristic.jump_power = 80;
+            creature_info.characteristic.acceleration_power = 15;
+            creature_info.characteristic.stamina = 200;
+            creature_info.characteristic.stamina_limit = 200;
+            creature_info.characteristic.blood   = 60;
+            creature_info.characteristic.jump_ability = 0;
+            creature_info.characteristic.current_jump_ability_num = 0;
+            creature_info.characteristic.mass = 50;
+            break;
+        }
+        case CreatureInfo::Type::AVR:{
+            this->creature_info.animation.animationForWho = "avr";
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({12,3,4,3,7,8,8,6,5,2,4,4,6,5});
+
+            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
+            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
+            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
+            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_info.characteristic.velocity_limit  = 300;
+            creature_info.characteristic.jump_power = 180;
+            creature_info.characteristic.acceleration_power = 45;
+            creature_info.characteristic.stamina = 500;
+            creature_info.characteristic.stamina_limit = 500;
+            creature_info.characteristic.blood   = 30;
+            creature_info.characteristic.jump_ability = 2;
+            creature_info.characteristic.current_jump_ability_num = 0;
+            creature_info.characteristic.mass = 10;
             break;
         }
     }
@@ -46,7 +198,7 @@ void Creature::initAnimations(){
 
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/" + creature_info.animation.animationForWho + "/animationSheet.plist");
     currentLayer->addChild(cocos2d::SpriteBatchNode::create("textures/animations/" + creature_info.animation.animationForWho + "/animationSheet.png"));
-
+    
     addAnimation("_animation_idle",creature_info.animation.framesIdleNum[0],0.35,true);
     addAnimation("_animation_startrun",creature_info.animation.framesIdleNum[1],0.1,false);
     addAnimation("_animation_run",creature_info.animation.framesIdleNum[2],0.15,false);
@@ -54,12 +206,13 @@ void Creature::initAnimations(){
     addAnimation("_animation_braking",creature_info.animation.framesIdleNum[4],0.2,false);
     addAnimation("_animation_injump",creature_info.animation.framesIdleNum[5],0.03,false);
     addAnimation("_animation_infall",creature_info.animation.framesIdleNum[6],0.2,false);
-    addAnimation("_animation_injumpaside",creature_info.animation.framesIdleNum[7],0.2,false);
-    addAnimation("_animation_landon",creature_info.animation.framesIdleNum[8],0.1,false);
-    addAnimation("_animation_onwall",creature_info.animation.framesIdleNum[9],0.15,false);
-    addAnimation("_animation_soaring",creature_info.animation.framesIdleNum[10],0.2,false);
-    addAnimation("_animation_stepsrun",creature_info.animation.framesIdleNum[11],0.2,false);
-    addAnimation("_animation_jumpfromwall",creature_info.animation.framesIdleNum[12],0.1,false);
+    addAnimation("_animation_landon",creature_info.animation.framesIdleNum[7],0.1,false);
+    addAnimation("_animation_onwall",creature_info.animation.framesIdleNum[8],0.15,false);
+    addAnimation("_animation_soaring",creature_info.animation.framesIdleNum[9],0.2,false);
+    addAnimation("_animation_stepsrun",creature_info.animation.framesIdleNum[10],0.2,false);
+    addAnimation("_animation_jumpfromwall",creature_info.animation.framesIdleNum[11],0.1,false);
+    addAnimation("_animation_attack",creature_info.animation.framesIdleNum[12],0.07,false);
+    addAnimation("_animation_getdammage",creature_info.animation.framesIdleNum[13],0.1,false);
 
     
 }
@@ -139,6 +292,16 @@ PartOrgan& Creature::getOrgan(PartCreatureType part_type,PartOrganType part_orga
         }
     }
 }
+void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_type,PartCreatureStatus status){
+    for (auto& part : creature_parts){
+        if (part.part_type == part_type){
+            for (auto& organ : part.part_organs){
+                if (organ.type == part_organ_type)
+                    organ.status = status;
+            }
+        }
+    }
+}
 void Creature::getStatistics(){
     if (!isStatisticsShowing){
         isStatisticsShowing = true;
@@ -151,22 +314,6 @@ void Creature::getStatistics(){
         currentLayer->removeChild(creature_statistics);
     }
 }
-
-void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_type,PartCreatureStatus status){
-    for (auto& part : creature_parts){
-        if (part.part_type == part_type){
-            for (auto& organ : part.part_organs){
-                if (organ.type == part_organ_type)
-                    organ.status = status;
-            }
-        }
-    }
-}
-void Creature::setCreatureState(CreatureInfo::State creature_state){
-    this->creature_info.state  = creature_state;
-    isNewState = true;
-}
-
 void Creature::setStatistics(DebugStatistics mode){
     std::string partStatus;
     /*Set strings about part of body*/
@@ -241,16 +388,21 @@ void Creature::setStatistics(DebugStatistics mode){
         partStatus.append(std::to_string(creature_physic_body->getVelocity().x) + "\ty= " + std::to_string(creature_physic_body->getVelocity().y) + "\n");
         partStatus.append("State==");
         partStatus.append(creature_info.state == CreatureInfo::State::IDLE ? "IDLE\n" :
+                          creature_info.state == CreatureInfo::State::ATTACK ? "ATTACK\n" :
+                          creature_info.state == CreatureInfo::State::GET_DAMMAGE ? "GET_DAMMAGE\n" :
                           creature_info.state == CreatureInfo::State::START_RUN ? "START_RUN\n" :
                           creature_info.state == CreatureInfo::State::RUNNING ? "RUN\n" :
                           creature_info.state == CreatureInfo::State::BRACKING ? "BRACKING\n" :
                           creature_info.state == CreatureInfo::State::STAND_UP ? "STAND_UP\n" :
                           creature_info.state == CreatureInfo::State::IN_JUMP ? "IN_JUMP\n" :
+                          creature_info.state == CreatureInfo::State::JUMP_FROM_WALL ? "JUMP_FROM_WALL\n" :
                           creature_info.state == CreatureInfo::State::IN_FALL ? "IN_FALL\n" :
                           creature_info.state == CreatureInfo::State::INTERACTING ? "INTERACTING\n" :
                           creature_info.state == CreatureInfo::State::ON_STEPS ? "ON_STEPS\n" :
                           creature_info.state == CreatureInfo::State::ON_WALL ? "ON_WALL\n" :
+                          creature_info.state == CreatureInfo::State::TAKE_ROOF ? "TAKE_ROOF\n" :
                           creature_info.state == CreatureInfo::State::LAND_ON ? "LAND_ON\n" :
+                          creature_info.state == CreatureInfo::State::LETGO ? "LETGO\n" :
                           creature_info.state == CreatureInfo::State::MOVE_BY_STEPS ? "MOVE_BY_STEPS\n" :
                           creature_info.state == CreatureInfo::State::SOARING ? "SOARING\n" :
                           "UNDEFIND\n");    
@@ -258,6 +410,19 @@ void Creature::setStatistics(DebugStatistics mode){
     }
     
     creature_statistics->setString(partStatus);
+}
+void Creature::showStatistics(DebugStatistics type){
+    /*For statistics*/
+    if (isStatisticsShowing){
+        setStatistics(type);
+        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
+                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
+    }
+}
+
+void Creature::setCreatureState(CreatureInfo::State creature_state){
+    this->creature_info.state  = creature_state;
+    isNewState = true;
 }
 void Creature::setWeapon(WeaponType wMap ){
     switch (wMap){
@@ -279,14 +444,7 @@ void Creature::setWeapon(WeaponType wMap ){
     currentLayer->addChild(creature_weapon->getSprite(),ZLevel::MIDLEGROUND);
     currentLayer->addChild(creature_weapon->getDammageSprite(),ZLevel::MIDLEGROUND);
 }
-void Creature::showStatistics(DebugStatistics type){
-    /*For statistics*/
-    if (isStatisticsShowing){
-        setStatistics(type);
-        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
-                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
-    }
-}
+
 void Creature::losingStamina(){
     if ((creature_physic_body->getVelocity().x > 100 || creature_physic_body->getVelocity().x < -100) &&
         creature_physic_body->getVelocity().y == 0){
@@ -317,10 +475,29 @@ void Creature::updatePermament(){
         else if (creature_physic_body->getVelocity().x < 0)
             creature_info.dmove = CreatureInfo::DMove::LEFT;
     }
-   
 }
 void Creature::updateCurrentState(){
     switch (creature_info.state){
+    case CreatureInfo::State::ATTACK:{
+        creature_sprite->stopAllActions();
+        creature_sprite->runAction(animations.find("_animation_attack")->second);
+        setCreatureState(CreatureInfo::State::IDLE);
+        break;
+    }
+    case CreatureInfo::State::GET_DAMMAGE:{
+        creature_sprite->stopAllActions();
+        creature_sprite->runAction(animations.find("_animation_getdammage")->second);
+        if (creature_info.dmove == CreatureInfo::DMove::RIGHT)
+            creature_physic_body->setVelocity(cocos2d::Vec2(-50,50));
+        else if (creature_info.dmove == CreatureInfo::DMove::LEFT)
+            creature_physic_body->setVelocity(cocos2d::Vec2(50,50));
+        else if (creature_info.dmove == CreatureInfo::DMove::TOP)
+            creature_physic_body->setVelocity(cocos2d::Vec2(0,-50));
+        else if (creature_info.dmove == CreatureInfo::DMove::DOWN)
+            creature_physic_body->setVelocity(cocos2d::Vec2(0,50));
+        setCreatureState(CreatureInfo::State::IDLE);
+        break;
+    }
     case CreatureInfo::State::IDLE:{
         if (creature_sprite->getNumberOfRunningActions() == 0){
             creature_sprite->stopAllActions();
@@ -386,7 +563,10 @@ void Creature::updateCurrentState(){
         break;
     }
     case CreatureInfo::State::JUMP_FROM_WALL:{
-        creature_physic_body->setVelocity(cocos2d::Vec2(100,100));
+        if (creature_info.dmove == CreatureInfo::DMove::LEFT)
+            creature_physic_body->setVelocity(cocos2d::Vec2(100,100));
+        else if (creature_info.dmove == CreatureInfo::DMove::RIGHT)
+            creature_physic_body->setVelocity(cocos2d::Vec2(-100,100));
         creature_sprite->stopAllActions();
         creature_sprite->runAction(animations.find("_animation_jumpfromwall")->second);
         isNewState = false;
@@ -463,6 +643,16 @@ void Creature::updateCurrentState(){
         //setCreatureState(CreatureInfo::State::IDLE);
         break;
     }
+    case CreatureInfo::State::LETGO:{
+        creature_sprite->stopAllActions();
+        if (creature_info.dmove == CreatureInfo::DMove::LEFT)
+            creature_physic_body->setVelocity(cocos2d::Vec2(25,0));
+        else
+            creature_physic_body->setVelocity(cocos2d::Vec2(-25,0));
+        creature_info.characteristic.current_jump_ability_num = 3;
+        setCreatureState(CreatureInfo::State::IN_FALL);
+        break;
+    }
     case CreatureInfo::State::TAKE_ROOF:{
         creature_sprite->stopAllActions();
         creature_info.characteristic.current_jump_ability_num = 3;
@@ -492,73 +682,10 @@ void Creature::updateCurrentState(){
     }
     }
 }
-///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
-PartOrgan::PartOrgan(PartOrganType type){
-    this->type = type;
-    this->status = PartCreatureStatus::NORMAL;
-}
-Creature::PartCreature::PartCreature(PartCreatureType part_type){
-    this->part_status      = PartCreatureStatus::NORMAL;
-    this->part_type        = part_type;
-    this->part_penetrationDef = 1;
-    this->part_crushingDef    = 5;
-    switch (part_type){
-    case PartCreatureType::HEAD:{
-        this->part_densityDef = 10;
-        this->part_organs.push_back(PartOrgan(PartOrganType::BRAIN));
-        break;
-    }
-    case PartCreatureType::UPPER_TORSE:{
-        this->part_densityDef = 30;
-        this->part_organs.push_back(PartOrgan(PartOrganType::LUNGS));
-        this->part_organs.push_back(PartOrgan(PartOrganType::HEART));     
-        break;
-    }
-    case PartCreatureType::HAND_LEFT:{
-        this->part_densityDef = 10;
-        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
-        break;
-    }
-    case PartCreatureType::HAND_RIGHT:{
-        this->part_densityDef = 10;
-        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
-        break;
-    }
-    case PartCreatureType::BUTTOM_TORSE:{
-        this->part_densityDef = 20;
-        this->part_organs.push_back(PartOrgan(PartOrganType::GUT));
-        break;
-    }
-    case PartCreatureType::LEG_LEFT:{
-        this->part_densityDef = 15;
-        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
-        break;
-    }
-    case PartCreatureType::LEG_RIGHT:{
-        this->part_densityDef = 15;
-        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
-        break;
-    }
-    }
-}
-CreatureInfo::CreatureInfo(){}
-CreatureInfo::CreatureInfo(Type type,CreatureInfo::Animation animation){
-    this->type = type;
-    this->animation.animationForWho = animation.animationForWho;
-    for (uint i = 0; i < animation.framesIdleNum.size(); ++i)
-        this->animation.framesIdleNum.push_back(animation.framesIdleNum[i]);
-}
-CreatureInfo::Animation::Animation(){}
-CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string animationForWho){
-    for (uint i = 0; i < framesIdleNum.size(); ++i){
-        this->framesIdleNum.push_back(framesIdleNum[i]);
-    }
-    this->animationForWho = animationForWho;
-}
 
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
-Enemy::Enemy(CreatureInfo info,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
-    Creature(info,pos,gameLayer,id){
+Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
+    Creature(type,pos,gameLayer,id){
     
 }
 void Enemy::update(float dt){
@@ -570,8 +697,8 @@ void Enemy::update(float dt){
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
-Player::Player(CreatureInfo info,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
-    Creature(info,pos,gameLayer,id){
+Player::Player(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
+    Creature(type,pos,gameLayer,id){
     //enemyNode = static_cast<GameLayer*>(gameLayer)->getEnemy();
     currentInteractedEnemy = -1;
     creature_info.characteristic.stamina_regeneration_counter = 0;

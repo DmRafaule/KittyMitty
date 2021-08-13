@@ -2,6 +2,8 @@
 
 #include <cocos2d.h>
 
+using namespace cocos2d;
+
 class World {
 public:
    World(std::string world_file_path,cocos2d::Node* currentLayer);

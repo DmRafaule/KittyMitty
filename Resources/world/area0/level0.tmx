@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="215">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="219">
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -19,6 +19,21 @@
    <properties>
     <property name="isCollided" type="bool" value="false"/>
    </properties>
+  </tile>
+  <tile id="23">
+   <animation>
+    <frame tileid="12" duration="150"/>
+    <frame tileid="13" duration="150"/>
+    <frame tileid="14" duration="150"/>
+    <frame tileid="15" duration="150"/>
+    <frame tileid="16" duration="150"/>
+    <frame tileid="17" duration="150"/>
+    <frame tileid="18" duration="150"/>
+    <frame tileid="19" duration="150"/>
+    <frame tileid="20" duration="150"/>
+    <frame tileid="21" duration="150"/>
+    <frame tileid="22" duration="150"/>
+   </animation>
   </tile>
  </tileset>
  <layer id="11" name="background" width="100" height="100">
@@ -482,28 +497,16 @@
   <object id="146" name="floor" x="70.6365" y="913.682" width="491.181" height="4.36364"/>
   <object id="147" name="roof" x="72.538" y="1082.88" width="521.363" height="9.75"/>
   <object id="148" name="floor" x="70.0153" y="1056.54" width="492.136" height="5.09091"/>
-  <object id="149" name="PlayerSpawnPoint" x="232.648" y="514.553">
+  <object id="149" name="PlayerSpawnPoint" x="1236.31" y="447.89">
    <point/>
   </object>
-  <object id="150" name="EnemySpawnPoint" x="368.167" y="1489.33">
+  <object id="150" name="EnemySpawnPoint" x="500.167" y="1034.66">
    <point/>
   </object>
-  <object id="151" name="EnemySpawnPoint" x="406.333" y="1285.67">
+  <object id="151" name="EnemySpawnPoint" x="388" y="1482.67">
    <point/>
   </object>
-  <object id="152" name="EnemySpawnPoint" x="510.667" y="1042.33">
-   <point/>
-  </object>
-  <object id="153" name="EnemySpawnPoint" x="413.333" y="499.337">
-   <point/>
-  </object>
-  <object id="154" name="EnemySpawnPoint" x="584.333" y="425">
-   <point/>
-  </object>
-  <object id="155" name="EnemySpawnPoint" x="162.666" y="1288">
-   <point/>
-  </object>
-  <object id="156" name="NewLocation" x="1586" y="344.667" width="132" height="1148.67"/>
+  <object id="156" name="NewLocation" x="1466" y="344.667" width="252" height="1148.67"/>
   <object id="158" name="DeathZone" x="772.456" y="1552.34" width="560" height="508.465"/>
   <object id="160" name="DeathZone" x="604.667" y="1686" width="172" height="544.667"/>
   <object id="161" name="DeathZone" x="222" y="1558" width="396" height="494.587"/>
@@ -573,5 +576,17 @@
   </object>
   <object id="195" name="stair" x="1355.91" y="1265.11" width="19.1818" height="140.773"/>
   <object id="208" name="roof" x="1119.28" y="1128.49" width="505.614" height="9.833"/>
+  <object id="215" name="EnemySpawnPoint" x="160.333" y="1290.33">
+   <point/>
+  </object>
+  <object id="216" name="EnemySpawnPoint" x="402.667" y="512">
+   <point/>
+  </object>
+  <object id="217" name="EnemySpawnPoint" x="348.667" y="1278.67">
+   <point/>
+  </object>
+  <object id="218" name="EnemySpawnPoint" x="592" y="410.667">
+   <point/>
+  </object>
  </objectgroup>
 </map>

@@ -21,8 +21,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -39,7 +39,7 @@ bool GameLayer::init(){
 
     if ( !cocos2d::Scene::init() )
         return false;
-
+    isNewLevel = false;
     initLayers();
     initLevel("world/area0/level0.tmx");
     intCreatures();
@@ -69,15 +69,19 @@ void GameLayer::intCreatures(){
     
 
     Enemy* e;
-    for (int i = 0; i < WorldProperties::enemySpawnPoint.size(); ++i){
-        e = new Enemy(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({8,0,0,0,0,0,0,0,0,0,0,0,4}),"kool-hash"}),
-                      WorldProperties::enemySpawnPoint.at(i),this->getChildByName(SceneEntities::gamesession),6+i);
-        e->setWeapon(WeaponType::SPEAR);
-        enemy.push_back(e);
-    }
+    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(0),this->getChildByName(SceneEntities::gamesession),6);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
 
-    player = new Player(CreatureInfo(CreatureInfo::Type::HUMANOID,{std::vector<uint>({15,4,7,4,2,7,2,5,5,5,2,4,4}),"hero"}),
-                        WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
+    e = new Enemy(CreatureInfo::Type::ERENU_DOO,WorldProperties::enemySpawnPoint.at(1),this->getChildByName(SceneEntities::gamesession),7);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
+
+    e = new Enemy(CreatureInfo::Type::GOO_ZOO,WorldProperties::enemySpawnPoint.at(2),this->getChildByName(SceneEntities::gamesession),8);
+    e->setWeapon(WeaponType::SWORD);
+    enemy.push_back(e);
+
+    player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
     player->setWeapon(WeaponType::SWORD); 
 
     
@@ -124,6 +128,28 @@ void GameLayer::update(float dt){
     cattc->update(dt);
     ckeys->update(dt);
     player->update(dt);
+    if(!isNewLevel){
+        for (const auto& level : WorldProperties::levelEnd){
+            if (player->getCreatureSprite()->getBoundingBox().intersectsRect(level)){
+                initLevel("world/area0/level1.tmx");
+                OUT("newl\n");
+                isNewLevel = true;
+                /*Init camera. And set on player*/
+                this->getChildByName(SceneEntities::gamesession)->runAction(
+                    cocos2d::Follow::createWithOffset(
+                        player->getCreatureSprite(),
+                        -100,-100,
+                        cocos2d::Rect(
+                            1600,
+                            0,
+                            WorldProperties::mapSize.width-WorldProperties::screenSize.width   - 64,
+                            WorldProperties::mapSize.height-WorldProperties::screenSize.height - 64
+                        )
+                    )
+                );
+            }
+        }
+    }
     for (auto &i : enemy){
         i->update(dt);
     }
@@ -182,6 +208,11 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
             }
         }
     }
+    //Collide with other enemies
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 2 ){
+        player->setCreatureState(CreatureInfo::State::GET_DAMMAGE);
+        return false;
+    }
     /*Collide with walls*/
     else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
         if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
@@ -226,11 +257,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     }
     //Collisions with other objects which will not affected on velocity and directions
     else {
-        for (const auto& lE : WorldProperties::levelEnd){
-            if(player->getCreatureSprite()->getBoundingBox().intersectsRect(lE)){
 
-            }
-        }
         for (const auto& dZ : WorldProperties::levelDeathZone){
             if (player->getCreatureSprite()->getBoundingBox().intersectsRect(dZ)){
 

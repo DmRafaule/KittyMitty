@@ -22,13 +22,15 @@ struct CreatureInfo{
     
     };
     enum Type : uint{
-        HUMANOID,
-        INSECT,
-        ANIMAL,
-        TREE,
-        FISH,
+        KITTYMITTY,
+        KOOL_HASH,
+        ERENU_DOO,
+        GOO_ZOO,
+        AVR,
     };
     enum State{
+        ATTACK,
+        GET_DAMMAGE,
         IDLE,
         START_RUN,
         RUNNING,
@@ -43,6 +45,7 @@ struct CreatureInfo{
         ON_STEPS,
         MOVE_BY_STEPS,
         ON_WALL,
+        LETGO,
         LAND_ON,
     };
     enum DMove{
