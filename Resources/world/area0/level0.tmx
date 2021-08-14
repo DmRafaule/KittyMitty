@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="225">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="232">
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -480,7 +480,7 @@
   <object id="126" name="wall" x="68.2386" y="741.14" width="5.02273" height="27.4163"/>
   <object id="127" name="wall" x="68.8296" y="918.595" width="7.84091" height="24.5679"/>
   <object id="128" name="wall" x="68.9129" y="1058.26" width="5.75" height="30.7913"/>
-  <object id="131" name="floor" x="576.17" y="451.602" width="15.75" height="2.5"/>
+  <object id="131" name="floor" x="576.17" y="451.602" width="15.75" height="20.5"/>
   <object id="132" name="floor" x="649.792" y="545.083" width="976.083" height="7.83333"/>
   <object id="133" name="roof" x="648.625" y="635.25" width="976.083" height="7.83333"/>
   <object id="134" name="wall" x="699.125" y="643.833" width="5.75" height="43.4997"/>
@@ -497,12 +497,6 @@
   <object id="146" name="floor" x="70.6365" y="913.682" width="491.181" height="4.36364"/>
   <object id="147" name="roof" x="72.538" y="1082.88" width="521.363" height="9.75"/>
   <object id="148" name="floor" x="70.0153" y="1056.54" width="492.136" height="5.09091"/>
-  <object id="150" name="EnemySpawnPoint" x="500.167" y="1034.66">
-   <point/>
-  </object>
-  <object id="151" name="EnemySpawnPoint" x="388" y="1486.67">
-   <point/>
-  </object>
   <object id="156" name="NewLocation" x="1601.33" y="147.334" width="153" height="1294.25">
    <properties>
     <property name="levelBackground" value="world/area0/backgroundImage.png"/>
@@ -580,22 +574,25 @@
   </object>
   <object id="195" name="stair" x="1355.91" y="1265.11" width="19.1818" height="140.773"/>
   <object id="208" name="roof" x="1119.28" y="1128.49" width="505.614" height="9.833"/>
-  <object id="215" name="EnemySpawnPoint" x="160.333" y="1290.33">
+  <object id="219" name="PlayerSpawnPoint" x="1440.67" y="480.663">
    <point/>
   </object>
-  <object id="216" name="EnemySpawnPoint" x="402.667" y="512">
+  <object id="226" name="EnemySpawnPoint" type="kool-hash" x="604.458" y="433.083">
    <point/>
   </object>
-  <object id="217" name="EnemySpawnPoint" x="348.667" y="1278.67">
+  <object id="227" name="EnemySpawnPoint" type="kool-hash" x="370.667" y="520">
    <point/>
   </object>
-  <object id="218" name="EnemySpawnPoint" x="592" y="410.667">
+  <object id="228" name="EnemySpawnPoint" type="kool-hash" x="500" y="1042.67">
    <point/>
   </object>
-  <object id="219" name="PlayerSpawnPoint" x="1542" y="519.33">
+  <object id="229" name="EnemySpawnPoint" type="kool-hash" x="328" y="1282.67">
    <point/>
   </object>
-  <object id="223" name="EnemySpawnPoint" x="1270" y="1072">
+  <object id="230" name="EnemySpawnPoint" type="kool-hash" x="194.667" y="1282.67">
+   <point/>
+  </object>
+  <object id="231" name="EnemySpawnPoint" type="kool-hash" x="486.667" y="1497.33">
    <point/>
   </object>
  </objectgroup>

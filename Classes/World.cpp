@@ -5,16 +5,23 @@
 cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
 cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
 cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
-std::vector<cocos2d::Vec2>  WorldProperties::enemySpawnPoint(0);
+std::vector<LevelCreatures> WorldProperties::creatureData(0);
 std::vector<cocos2d::Rect>  WorldProperties::levelDeathZone(0);
 std::vector<std::pair<std::string,cocos2d::Rect>>  WorldProperties::levelItems(0);
 std::vector<LevelTransition> WorldProperties::levelTransitions(0);
+
 LevelTransition::LevelTransition(){}
 LevelTransition::LevelTransition(cocos2d::Rect reqt,std::string path,std::string backgroundPath,cocos2d::Vec2 offset){
    this->reqt = reqt;
    this->path = path;
    this->backgroundPath = backgroundPath;
    this->offset = offset;
+}
+LevelCreatures::LevelCreatures(){}
+LevelCreatures::LevelCreatures(std::string typeCr,std::string typeWepon,cocos2d::Vec2 point){
+   this->point = point;
+   this->typeCr = typeCr;
+   this->typeWepon = typeWepon;
 }
 
 
@@ -33,6 +40,7 @@ Level::Level(){};
 Level::Level(uint level,GameLayer* currentLayer){
    this->scaleOffset = 2;
    this->currentLayer = currentLayer;
+   this->creatureIndex = 6;
    switch (level){
    case 0:{
       loadChunk("world/area0/level0.tmx","world/area0/backgroundImage.png");
@@ -123,8 +131,9 @@ void Level::initLevelObjects(){
          WorldProperties::levelTransitions.push_back(LevelTransition(cocos2d::Rect(x,y,width,height),dict["nextChunk"].asString(),dict["levelBackground"].asString(),level_offset));
       }
       /*Define where will appears enemies*/
-      if (dict["name"].asString() == "EnemySpawnPoint")
-         WorldProperties::enemySpawnPoint.push_back(cocos2d::Vec2(x,y));
+      if (dict["name"].asString() == "EnemySpawnPoint"){
+         WorldProperties::creatureData.push_back(LevelCreatures(dict["type"].asString(),dict["typeW"].asString(),cocos2d::Vec2(x,y)));
+      }
       /*Define where death will be emidiatly*/
       if (dict["name"].asString() == "DeathZone")
          WorldProperties::levelDeathZone.push_back(cocos2d::Rect(x,y,width,height));
@@ -198,8 +207,40 @@ void Level::loadChunk(std::string chunkPath,std::string chunkBackground){
    initLevelObjects();
    //Init background image
    initBackground(chunkBackground);
+
+   for (auto& en : WorldProperties::creatureData){
+      if (en.typeCr == "kool-hash"){
+         Enemy* e;
+         e = new Enemy(CreatureInfo::Type::KOOL_HASH,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
+         e->setWeapon(WeaponType::SPEAR);
+         creatureIndex++;
+         currentLayer->getEnemy()->push_back(e);
+      }
+      else if (en.typeCr == "erenu-doo"){
+         Enemy* e;
+         e = new Enemy(CreatureInfo::Type::ERENU_DOO,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
+         e->setWeapon(WeaponType::SWORD);
+         creatureIndex++;
+         currentLayer->getEnemy()->push_back(e);
+      }
+      else if (en.typeCr == "goo-zoo"){
+         Enemy* e;
+         e = new Enemy(CreatureInfo::Type::GOO_ZOO,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
+         e->setWeapon(WeaponType::SPEAR);
+         creatureIndex++;
+         currentLayer->getEnemy()->push_back(e);
+      }
+      else if (en.typeCr == "avr"){
+         Enemy* e;
+         e = new Enemy(CreatureInfo::Type::AVR,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
+         e->setWeapon(WeaponType::SPEAR);
+         creatureIndex++;
+         currentLayer->getEnemy()->push_back(e);
+      }
+   }
 }
 void Level::unloadChunk(){
+   creatureIndex = 6;
    //Remove all level tiles
    //Remove all level objects
    currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(level);
@@ -214,7 +255,7 @@ void Level::unloadChunk(){
    //Clean arr
    currentLayer->getEnemy()->clear();
    //Clean spawn points for new enemies
-   WorldProperties::enemySpawnPoint.clear();
+   WorldProperties::creatureData.clear();
    //Clean death zones for new lvl
    WorldProperties::levelDeathZone.clear();
    //Clean all level items for new lvl

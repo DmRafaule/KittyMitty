@@ -687,7 +687,6 @@ void Creature::updateCurrentState(){
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){
-    
 }
 void Enemy::update(float dt){
     showStatistics(DebugStatistics::PHYSICS);

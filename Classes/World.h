@@ -34,4 +34,5 @@ private:
    cocos2d::Sprite* backgroundSprite;
 
    float scaleOffset;
+   uint  creatureIndex;
 };

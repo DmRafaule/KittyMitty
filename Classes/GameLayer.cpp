@@ -56,20 +56,20 @@ void GameLayer::initLayers(){
     this->addChild(BGLayer,ZLevel::BACKGROUND,SceneEntities::bg);
 }
 void GameLayer::initWorld(){
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
+    cocos2d::SpriteBatchNode* spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
+    this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
+    
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 
     world = new World(0,this);
 }
 void GameLayer::intCreatures(){
     
-    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
-    cocos2d::SpriteBatchNode* spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
-    this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
-    
-    Enemy* e;
-    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(0),this->getChildByName(SceneEntities::gamesession),6);
-    e->setWeapon(WeaponType::SPEAR);
-    enemy.push_back(e);
+    //Enemy* e;
+    //e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(0),this->getChildByName(SceneEntities::gamesession),6);
+    //e->setWeapon(WeaponType::SPEAR);
+    //enemy.push_back(e);
 
     
     

@@ -22,8 +22,8 @@
             "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 1111.3333333333335,
-                "y": 830
+                "x": 799.3333333333333,
+                "y": 799.3333333333333
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -35,11 +35,11 @@
             "scaleInEditor": 3
         },
         "area0/level1.tmx": {
-            "scale": 0.5,
+            "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 759,
-                "y": 739
+                "x": 791.3333333333333,
+                "y": 799.3333333333333
             }
         },
         "area0/level2.tmx": {

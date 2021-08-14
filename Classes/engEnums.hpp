@@ -126,11 +126,18 @@ struct LevelTransition{
     std::string   path;
     std::string   backgroundPath;
 };
+struct LevelCreatures{
+    LevelCreatures();
+    LevelCreatures(std::string,std::string,cocos2d::Vec2);
+    std::string typeCr;
+    std::string typeWepon;
+    cocos2d::Vec2 point;
+};
 struct WorldProperties{
     static cocos2d::Size screenSize;
     static cocos2d::Size mapSize;
     static cocos2d::Vec2 playerSpawnPoint;
-    static std::vector<cocos2d::Vec2> enemySpawnPoint;
+    static std::vector<LevelCreatures> creatureData;
     static std::vector<LevelTransition> levelTransitions;
     static std::vector<cocos2d::Rect> levelDeathZone;
     static std::vector<std::pair<std::string,cocos2d::Rect>> levelItems;

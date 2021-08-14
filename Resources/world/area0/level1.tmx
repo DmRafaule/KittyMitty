@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="9">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="15">
  <tileset firstgid="1" source="tilesetMidlegr.tsx"/>
  <layer id="5" name="background" width="100" height="100">
   <data encoding="csv">
@@ -428,7 +428,7 @@
    </properties>
   </object>
   <object id="5" name="floor" x="-229.043" y="1126.75" width="1335.42" height="7.83333"/>
-  <object id="6" name="floor" x="-266.377" y="1317.42" width="1359.42" height="7.83333"/>
+  <object id="6" name="floor" x="-261.377" y="1313.42" width="1359.42" height="7.83333"/>
   <object id="7" name="wall" x="1308.28" y="941.875" width="28.7727" height="729.584"/>
   <object id="8" name="NewLocation" x="1049.5" y="1599.66" width="324" height="484.67">
    <properties>
@@ -437,6 +437,39 @@
     <property name="nextLevelOffsetX" type="float" value="0"/>
     <property name="nextLevelOffsetY" type="float" value="1"/>
    </properties>
+  </object>
+  <object id="9" name="PlayerSpawnPoint" x="112" y="515">
+   <point/>
+  </object>
+  <object id="10" name="EnemySpawnPoint" type="kool-hash" x="424" y="505">
+   <properties>
+    <property name="typeW" value="spear"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="11" name="EnemySpawnPoint" type="erenu-doo" x="582" y="495">
+   <properties>
+    <property name="typeW" value="spear"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" name="EnemySpawnPoint" type="goo-zoo" x="692" y="504">
+   <properties>
+    <property name="typeW" value="spear"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" name="EnemySpawnPoint" type="avr" x="798" y="493">
+   <properties>
+    <property name="typeW" value="spear"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" name="EnemySpawnPoint" type="kool-hash" x="356" y="506.667">
+   <properties>
+    <property name="typeW" value="spear"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>
