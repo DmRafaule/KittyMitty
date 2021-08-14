@@ -5,8 +5,8 @@
     },
     "activeFile": "area0/level0.tmx",
     "expandedProjectPaths": [
-        "area0",
-        "."
+        ".",
+        "area0"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -22,8 +22,8 @@
             "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 1116.6666666666665,
-                "y": 1023.3333333333334
+                "x": 1111.3333333333335,
+                "y": 830
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -39,7 +39,7 @@
             "selectedLayer": 4,
             "viewCenter": {
                 "x": 759,
-                "y": 1023
+                "y": 739
             }
         },
         "area0/tilesetMidlegr.tsx": {

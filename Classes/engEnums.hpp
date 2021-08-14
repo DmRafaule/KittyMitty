@@ -118,13 +118,20 @@ struct SceneEntities{
     static std::string gamesession;
     static std::string bg;
 };
+struct LevelTransition{
+    LevelTransition();
+    LevelTransition(cocos2d::Rect,std::string,std::string,cocos2d::Vec2);
+    cocos2d::Rect reqt;
+    cocos2d::Vec2 offset;     
+    std::string   path;
+    std::string   backgroundPath;
+};
 struct WorldProperties{
     static cocos2d::Size screenSize;
     static cocos2d::Size mapSize;
     static cocos2d::Vec2 playerSpawnPoint;
-    static std::string backgroundPath;
     static std::vector<cocos2d::Vec2> enemySpawnPoint;
-    static std::vector<std::pair<cocos2d::Rect,std::pair<std::string,cocos2d::Vec2>>> chunks_transitions;
+    static std::vector<LevelTransition> levelTransitions;
     static std::vector<cocos2d::Rect> levelDeathZone;
     static std::vector<std::pair<std::string,cocos2d::Rect>> levelItems;
 };

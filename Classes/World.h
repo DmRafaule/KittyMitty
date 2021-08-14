@@ -24,7 +24,7 @@ public:
 private:
    void initLevelObjects();
    void initBackground(std::string chunkBackground);
-   void loadChunk(std::string chunkPath,std::string chunkBackground, cocos2d::Vec2 offset);
+   void loadChunk(std::string chunkPath,std::string chunkBackground);
    void unloadChunk();
 private:
    cocos2d::TMXTiledMap* level;
@@ -32,10 +32,6 @@ private:
    std::vector<cocos2d::Node*> level_bodies;
    GameLayer* currentLayer;
    cocos2d::Sprite* backgroundSprite;
-   cocos2d::Vec2 level_offset;
-   cocos2d::Vec2 current_level_offset;
 
    float scaleOffset;
-   float timerToNewLocation;
-   bool isNewChunk = false;
 };
