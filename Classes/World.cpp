@@ -18,7 +18,7 @@ LevelTransition::LevelTransition(cocos2d::Rect reqt,std::string path,std::string
    this->offset = offset;
 }
 LevelCreatures::LevelCreatures(){}
-LevelCreatures::LevelCreatures(std::string typeCr,std::string typeWepon,cocos2d::Vec2 point){
+LevelCreatures::LevelCreatures(uint typeCr,uint typeWepon,cocos2d::Vec2 point){
    this->point = point;
    this->typeCr = typeCr;
    this->typeWepon = typeWepon;
@@ -53,6 +53,16 @@ Level::Level(uint level,GameLayer* currentLayer){
    }
 }
 Level::~Level(){}
+void Level::initLevelLayers(std::string chunkPath){
+   this->level = cocos2d::TMXTiledMap::create(chunkPath);
+   this->level->setScale(scaleOffset);
+   this->level->setMapSize(cocos2d::Size(99,99));
+   this->level_layer_midleground = this->level->getLayer("midleground");
+   this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,ZLevel::BACKGROUND);
+   /*Define level size*/
+   WorldProperties::mapSize.setSize(this->level->getMapSize().width  * this->level->getTileSize().width  * scaleOffset,
+                                    this->level->getMapSize().height * this->level->getTileSize().height * scaleOffset);
+}
 void Level::initLevelObjects(){
    //Get object layer
    auto group = level->getObjectGroup("objectsLayer");
@@ -132,7 +142,7 @@ void Level::initLevelObjects(){
       }
       /*Define where will appears enemies*/
       if (dict["name"].asString() == "EnemySpawnPoint"){
-         WorldProperties::creatureData.push_back(LevelCreatures(dict["type"].asString(),dict["typeW"].asString(),cocos2d::Vec2(x,y)));
+         WorldProperties::creatureData.push_back(LevelCreatures(dict["typeCreature"].asInt(),dict["typeWeapon"].asInt(),cocos2d::Vec2(x,y)));
       }
       /*Define where death will be emidiatly*/
       if (dict["name"].asString() == "DeathZone")
@@ -152,6 +162,15 @@ void Level::initBackground(std::string chunkBackground){
    backgroundSprite->setScale(MAX(WorldProperties::screenSize.width/backgroundSprite->getBoundingBox().size.width,
                                   WorldProperties::screenSize.height/backgroundSprite->getBoundingBox().size.height));
    currentLayer->getChildByName(SceneEntities::bg)->addChild(backgroundSprite);
+}
+void Level::initCreatures(){
+   for (auto& en : WorldProperties::creatureData){
+      Enemy* e;
+      e = new Enemy((CreatureInfo::Type)en.typeCr,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
+      e->setWeapon((WeaponType)en.typeWepon);
+      creatureIndex++;
+      currentLayer->getEnemy()->push_back(e);
+   }
 }
 void Level::update(float dt){
    //Will execute if hero not in NewLocation reqtangle
@@ -195,49 +214,13 @@ void Level::update(float dt){
 }
 
 void Level::loadChunk(std::string chunkPath,std::string chunkBackground){
-   this->level = cocos2d::TMXTiledMap::create(chunkPath);
-   this->level->setScale(scaleOffset);
-   level->setMapSize(cocos2d::Size(99,99));
-   this->level_layer_midleground = this->level->getLayer("midleground");
-   this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,ZLevel::BACKGROUND);
-   /*Define level size*/
-   WorldProperties::mapSize.setSize(this->level->getMapSize().width  * this->level->getTileSize().width  * scaleOffset,
-                                    this->level->getMapSize().height * this->level->getTileSize().height * scaleOffset);
+   initLevelLayers(chunkPath);
    //Init all level objects
    initLevelObjects();
    //Init background image
    initBackground(chunkBackground);
-
-   for (auto& en : WorldProperties::creatureData){
-      if (en.typeCr == "kool-hash"){
-         Enemy* e;
-         e = new Enemy(CreatureInfo::Type::KOOL_HASH,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
-         e->setWeapon(WeaponType::SPEAR);
-         creatureIndex++;
-         currentLayer->getEnemy()->push_back(e);
-      }
-      else if (en.typeCr == "erenu-doo"){
-         Enemy* e;
-         e = new Enemy(CreatureInfo::Type::ERENU_DOO,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
-         e->setWeapon(WeaponType::SWORD);
-         creatureIndex++;
-         currentLayer->getEnemy()->push_back(e);
-      }
-      else if (en.typeCr == "goo-zoo"){
-         Enemy* e;
-         e = new Enemy(CreatureInfo::Type::GOO_ZOO,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
-         e->setWeapon(WeaponType::SPEAR);
-         creatureIndex++;
-         currentLayer->getEnemy()->push_back(e);
-      }
-      else if (en.typeCr == "avr"){
-         Enemy* e;
-         e = new Enemy(CreatureInfo::Type::AVR,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
-         e->setWeapon(WeaponType::SPEAR);
-         creatureIndex++;
-         currentLayer->getEnemy()->push_back(e);
-      }
-   }
+   //Init creatures
+   initCreatures();
 }
 void Level::unloadChunk(){
    creatureIndex = 6;

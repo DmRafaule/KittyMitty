@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="15">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="24">
  <tileset firstgid="1" source="tilesetMidlegr.tsx"/>
  <layer id="5" name="background" width="100" height="100">
   <data encoding="csv">
@@ -441,33 +441,47 @@
   <object id="9" name="PlayerSpawnPoint" x="112" y="515">
    <point/>
   </object>
-  <object id="10" name="EnemySpawnPoint" type="kool-hash" x="424" y="505">
+  <object id="13" name="EnemySpawnPoint" x="799.333" y="518.333">
    <properties>
-    <property name="typeW" value="spear"/>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="1"/>
    </properties>
    <point/>
   </object>
-  <object id="11" name="EnemySpawnPoint" type="erenu-doo" x="582" y="495">
+  <object id="15" x="145.281" y="215.5" width="91.4375" height="19">
+   <text wrap="1">Hello World</text>
+  </object>
+  <object id="16" x="21.2813" y="247.5" width="91.4375" height="19">
+   <text wrap="1">Hello World</text>
+  </object>
+  <object id="17" x="-253.719" y="247.5" width="91.4375" height="19">
+   <text wrap="1">Hello World</text>
+  </object>
+  <object id="20" name="EnemySpawnPoint" x="652" y="520">
    <properties>
-    <property name="typeW" value="spear"/>
+    <property name="typeCreature" type="int" value="4"/>
+    <property name="typeWeapon" type="int" value="0"/>
    </properties>
    <point/>
   </object>
-  <object id="12" name="EnemySpawnPoint" type="goo-zoo" x="692" y="504">
+  <object id="21" name="EnemySpawnPoint" x="433.333" y="510.667">
    <properties>
-    <property name="typeW" value="spear"/>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="13" name="EnemySpawnPoint" type="avr" x="798" y="493">
+  <object id="22" name="EnemySpawnPoint" x="529.333" y="513.333">
    <properties>
-    <property name="typeW" value="spear"/>
+    <property name="typeCreature" type="int" value="3"/>
+    <property name="typeWeapon" type="int" value="1"/>
    </properties>
    <point/>
   </object>
-  <object id="14" name="EnemySpawnPoint" type="kool-hash" x="356" y="506.667">
+  <object id="23" name="EnemySpawnPoint" x="349.333" y="509.333">
    <properties>
-    <property name="typeW" value="spear"/>
+    <property name="typeCreature" type="int" value="2"/>
+    <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>

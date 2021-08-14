@@ -19,11 +19,11 @@
             "scaleInEditor": 1
         },
         "area0/level0.tmx": {
-            "scale": 0.75,
+            "scale": 0.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 799.3333333333333,
-                "y": 799.3333333333333
+                "x": 561,
+                "y": 1111
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -38,8 +38,8 @@
             "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 791.3333333333333,
-                "y": 799.3333333333333
+                "x": 130,
+                "y": 490
             }
         },
         "area0/level2.tmx": {
@@ -73,7 +73,7 @@
         "area0/level1.tmx"
     ],
     "project": "World.tiled-project",
-    "property.type": "string",
+    "property.type": "int",
     "recentFiles": [
         "area0/level2.tmx",
         "area0/level1.tmx",
@@ -81,6 +81,7 @@
         "area0/tilesetMidlegr.tsx",
         "/home/dimond/Projects/KittyMitty/archive/textures/animations/animations.tsx"
     ],
+    "textEdit.monospace": true,
     "tileset.embedInMap": false,
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

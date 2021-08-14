@@ -128,9 +128,9 @@ struct LevelTransition{
 };
 struct LevelCreatures{
     LevelCreatures();
-    LevelCreatures(std::string,std::string,cocos2d::Vec2);
-    std::string typeCr;
-    std::string typeWepon;
+    LevelCreatures(uint,uint,cocos2d::Vec2);
+    uint typeCr;
+    uint typeWepon;
     cocos2d::Vec2 point;
 };
 struct WorldProperties{

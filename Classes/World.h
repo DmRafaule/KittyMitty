@@ -22,10 +22,13 @@ public:
    virtual ~Level();
    virtual void update(float dt) override;
 private:
-   void initLevelObjects();
-   void initBackground(std::string chunkBackground);
    void loadChunk(std::string chunkPath,std::string chunkBackground);
    void unloadChunk();
+
+   void initLevelLayers(std::string chunkPath);
+   void initLevelObjects();
+   void initBackground(std::string chunkBackground);
+   void initCreatures();
 private:
    cocos2d::TMXTiledMap* level;
    cocos2d::TMXLayer* level_layer_midleground;

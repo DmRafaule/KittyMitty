@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="232">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="239">
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -577,22 +577,46 @@
   <object id="219" name="PlayerSpawnPoint" x="1440.67" y="480.663">
    <point/>
   </object>
-  <object id="226" name="EnemySpawnPoint" type="kool-hash" x="604.458" y="433.083">
+  <object id="233" name="EnemySpawnPoint" x="611" y="424">
+   <properties>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="2"/>
+   </properties>
    <point/>
   </object>
-  <object id="227" name="EnemySpawnPoint" type="kool-hash" x="370.667" y="520">
+  <object id="234" name="EnemySpawnPoint" x="361.5" y="493">
+   <properties>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="0"/>
+   </properties>
    <point/>
   </object>
-  <object id="228" name="EnemySpawnPoint" type="kool-hash" x="500" y="1042.67">
+  <object id="235" name="EnemySpawnPoint" x="469" y="1034">
+   <properties>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
-  <object id="229" name="EnemySpawnPoint" type="kool-hash" x="328" y="1282.67">
+  <object id="236" name="EnemySpawnPoint" x="447" y="1490">
+   <properties>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="2"/>
+   </properties>
    <point/>
   </object>
-  <object id="230" name="EnemySpawnPoint" type="kool-hash" x="194.667" y="1282.67">
+  <object id="237" name="EnemySpawnPoint" x="209" y="1265">
+   <properties>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
-  <object id="231" name="EnemySpawnPoint" type="kool-hash" x="486.667" y="1497.33">
+  <object id="238" name="EnemySpawnPoint" x="374" y="1260">
+   <properties>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="2"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
