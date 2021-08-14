@@ -19,11 +19,11 @@
             "scaleInEditor": 1
         },
         "area0/level0.tmx": {
-            "scale": 0.5,
+            "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 1495,
-                "y": 897
+                "x": 1116.6666666666665,
+                "y": 1023.3333333333334
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -35,11 +35,11 @@
             "scaleInEditor": 3
         },
         "area0/level1.tmx": {
-            "scale": 0.75,
+            "scale": 0.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 315.3333333333333,
-                "y": 1071.3333333333335
+                "x": 759,
+                "y": 1023
             }
         },
         "area0/tilesetMidlegr.tsx": {

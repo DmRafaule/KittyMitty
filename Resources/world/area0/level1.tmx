@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="7">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="9">
+ <properties>
+  <property name="background" value="world/area0/backgroundImage.png"/>
+ </properties>
  <tileset firstgid="1" source="tilesetMidlegr.tsx"/>
  <layer id="5" name="background" width="100" height="100">
   <data encoding="csv">
@@ -419,14 +422,22 @@
  </layer>
  <objectgroup id="2" name="objectsLayer">
   <object id="1" name="floor" x="-113.264" y="547.476" width="1935.42" height="7.83333"/>
-  <object id="3" name="NewLocation" x="-155" y="103.665" width="153" height="1148.67">
+  <object id="3" name="NewLocation" x="-155" y="103.665" width="153" height="1312.67">
    <properties>
     <property name="nextChunk" value="world/area0/level0.tmx"/>
     <property name="nextLevelOffsetX" type="float" value="1"/>
+    <property name="nextLevelOffsetY" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="5" name="floor" x="-229.043" y="1126.75" width="1335.42" height="7.83333"/>
+  <object id="6" name="floor" x="-266.377" y="1317.42" width="1359.42" height="7.83333"/>
+  <object id="7" name="wall" x="1308.28" y="941.875" width="28.7727" height="729.584"/>
+  <object id="8" name="NewLocation" x="1049.5" y="1599.66" width="324" height="484.67">
+   <properties>
+    <property name="nextChunk" value="world/area0/level0.tmx"/>
+    <property name="nextLevelOffsetX" type="float" value="0"/>
     <property name="nextLevelOffsetY" type="float" value="1"/>
    </properties>
   </object>
-  <object id="5" name="floor" x="-229.043" y="1126.75" width="1935.42" height="7.83333"/>
-  <object id="6" name="floor" x="-266.377" y="1317.42" width="1935.42" height="7.83333"/>
  </objectgroup>
 </map>

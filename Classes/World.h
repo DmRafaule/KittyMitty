@@ -23,8 +23,8 @@ public:
    virtual void update(float dt) override;
 private:
    void initLevelObjects();
-   void initBackground();
-   void loadChunk(std::string chunkPath, cocos2d::Vec2 offset);
+   void initBackground(std::string chunkBackground);
+   void loadChunk(std::string chunkPath,std::string chunkBackground, cocos2d::Vec2 offset);
    void unloadChunk();
 private:
    cocos2d::TMXTiledMap* level;

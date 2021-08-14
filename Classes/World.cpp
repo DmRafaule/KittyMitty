@@ -5,6 +5,7 @@
 cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
 cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
 cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
+std::string                 WorldProperties::backgroundPath;
 std::vector<cocos2d::Vec2>  WorldProperties::enemySpawnPoint(0);
 std::vector<std::pair<cocos2d::Rect,std::pair<std::string,cocos2d::Vec2>>>  WorldProperties::chunks_transitions(0);
 std::vector<cocos2d::Rect>  WorldProperties::levelDeathZone(0);
@@ -29,7 +30,7 @@ Level::Level(uint level,GameLayer* currentLayer){
    this->timerToNewLocation = 0;
    switch (level){
    case 0:{
-      loadChunk("world/area0/level0.tmx",level_offset);
+      loadChunk("world/area0/level0.tmx","world/area0/backgroundImage.png",level_offset);
       break;
    }
    case 1:{
@@ -41,6 +42,7 @@ Level::Level(uint level,GameLayer* currentLayer){
 Level::~Level(){}
 void Level::initLevelObjects(){
    //Get object layer
+   WorldProperties::backgroundPath = level->getProperties()["background"].asString();
    auto group = level->getObjectGroup("objectsLayer");
    //Get all objects(points,poligons,reqtangles etc)
    auto& objects = group->getObjects();
@@ -122,8 +124,8 @@ void Level::initLevelObjects(){
          WorldProperties::levelDeathZone.push_back(cocos2d::Rect(x,y,width,height));
    }
 }
-void Level::initBackground(){
-   this->backgroundSprite = cocos2d::Sprite::create("world/area0/backgroundImage.png");
+void Level::initBackground(std::string chunkBackground){
+   this->backgroundSprite = cocos2d::Sprite::create(chunkBackground);
    cocos2d::Texture2D::TexParams tpar = {
       cocos2d::backend::SamplerFilter::NEAREST,
       cocos2d::backend::SamplerFilter::NEAREST,
@@ -143,17 +145,24 @@ void Level::update(float dt){
          /*Will execute if hero in NewLocation reqt*/
          if (currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->getBoundingBox().intersectsRect(chunk.first)){
             //If Hero passed through NewLocation reqt on right side of map
-            if (level_offset.x == 0)
-            currentLayer->getPlayer()->getCreatureSprite()->setPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x * level_offset.x + 40,
-                                                                        currentLayer->getPlayer()->getCreatureSprite()->getPosition().y * level_offset.y);
+            if (chunk.second.second.x == 0 && chunk.second.second.y == 0)
+            currentLayer->getPlayer()->getCreatureSprite()->setPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x * chunk.second.second.x + 40,
+                                                                        currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
             //If Hero passed through NewLocation reqt on left side of map
-            else if (level_offset.x == 1)
-            currentLayer->getPlayer()->getCreatureSprite()->setPosition(WorldProperties::mapSize.width - WorldProperties::screenSize.width - 40,
-                                                                          currentLayer->getPlayer()->getCreatureSprite()->getPosition().y * level_offset.y);
+            else if (chunk.second.second.x == 1 && chunk.second.second.y == 0)
+            currentLayer->getPlayer()->getCreatureSprite()->setPosition(WorldProperties::mapSize.width  - WorldProperties::screenSize.width - 40,
+                                                                        currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
+            else if (chunk.second.second.x == 0 && chunk.second.second.y == 1)
+            currentLayer->getPlayer()->getCreatureSprite()->setPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
+                                                                        WorldProperties::mapSize.height - WorldProperties::screenSize.height - 40);
+            else if (chunk.second.second.x == 1 && chunk.second.second.y == 1){
+            currentLayer->getPlayer()->getCreatureSprite()->setPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
+                                                                        40);
+            }
             //First release memory allocated for previose chunk
             unloadChunk();
             //Then allocate new mem for new chunk
-            loadChunk(chunk.second.first, chunk.second.second);
+            loadChunk(chunk.second.first,WorldProperties::backgroundPath, chunk.second.second);
             //Set up camera on new location
             currentLayer->getChildByName(SceneEntities::gamesession)->stopAllActions();
             currentLayer->getChildByName(SceneEntities::gamesession)->runAction(
@@ -184,19 +193,20 @@ void Level::update(float dt){
    }
 }
 
-void Level::loadChunk(std::string chunkPath, cocos2d::Vec2 offset){
+void Level::loadChunk(std::string chunkPath,std::string chunkBackground, cocos2d::Vec2 offset){
    this->level_offset = offset;
    this->current_level_offset = offset;
    this->level = cocos2d::TMXTiledMap::create(chunkPath);
    this->level->setScale(scaleOffset);
-   //this->level->setPosition(level_offset);
    this->level_layer_midleground = this->level->getLayer("midleground");
    this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,ZLevel::BACKGROUND);
    /*Define level size*/
    WorldProperties::mapSize.setSize(this->level->getMapSize().width  * this->level->getTileSize().width  * scaleOffset,
                                     this->level->getMapSize().height * this->level->getTileSize().height * scaleOffset);
+   //Init all level objects
    initLevelObjects();
-   initBackground();
+   //Init background image
+   initBackground(chunkBackground);
 }
 void Level::unloadChunk(){
    //Remove all level tiles
