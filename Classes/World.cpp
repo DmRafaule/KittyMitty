@@ -188,6 +188,7 @@ void Level::update(float dt){
 void Level::loadChunk(std::string chunkPath,std::string chunkBackground){
    this->level = cocos2d::TMXTiledMap::create(chunkPath);
    this->level->setScale(scaleOffset);
+   level->setMapSize(cocos2d::Size(99,99));
    this->level_layer_midleground = this->level->getLayer("midleground");
    this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,ZLevel::BACKGROUND);
    /*Define level size*/

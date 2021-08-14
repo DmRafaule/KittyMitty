@@ -42,6 +42,17 @@
                 "y": 739
             }
         },
+        "area0/level2.tmx": {
+            "scale": 2,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 306.25,
+                "y": 1388.75
+            }
+        },
+        "area0/level2.tmx#tilesetMidlegr": {
+            "scaleInDock": 1
+        },
         "area0/tilesetMidlegr.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -64,6 +75,7 @@
     "project": "World.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "area0/level2.tmx",
         "area0/level1.tmx",
         "area0/level0.tmx",
         "area0/tilesetMidlegr.tsx",
