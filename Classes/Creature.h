@@ -12,8 +12,7 @@ public:
     virtual ~Creature();
     virtual void update(float dt) = 0;
     /*Clearers*/
-    void removeSprite();
-    void removeStatistics();
+    void removeCreature();
     /*Getters*/
     inline const CreatureInfo* getCreatureInfo() { return &creature_info; };
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };

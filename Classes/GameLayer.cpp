@@ -71,6 +71,31 @@ void GameLayer::intCreatures(){
     e->setWeapon(WeaponType::SPEAR);
     enemy.push_back(e);
 
+    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(1),this->getChildByName(SceneEntities::gamesession),7);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
+
+
+    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(2),this->getChildByName(SceneEntities::gamesession),8);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
+    
+    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(3),this->getChildByName(SceneEntities::gamesession),8);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
+    
+    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(4),this->getChildByName(SceneEntities::gamesession),9);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
+    
+    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(5),this->getChildByName(SceneEntities::gamesession),10);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
+
+    e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(6),this->getChildByName(SceneEntities::gamesession),11);
+    e->setWeapon(WeaponType::SPEAR);
+    enemy.push_back(e);
+    
     player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
     player->setWeapon(WeaponType::SWORD); 
 

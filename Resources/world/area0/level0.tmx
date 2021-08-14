@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="219">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="224">
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -497,20 +497,17 @@
   <object id="146" name="floor" x="70.6365" y="913.682" width="491.181" height="4.36364"/>
   <object id="147" name="roof" x="72.538" y="1082.88" width="521.363" height="9.75"/>
   <object id="148" name="floor" x="70.0153" y="1056.54" width="492.136" height="5.09091"/>
-  <object id="149" name="PlayerSpawnPoint" x="1236.31" y="447.89">
-   <point/>
-  </object>
   <object id="150" name="EnemySpawnPoint" x="500.167" y="1034.66">
    <point/>
   </object>
   <object id="151" name="EnemySpawnPoint" x="388" y="1482.67">
    <point/>
   </object>
-  <object id="156" name="NewLocation" x="1565" y="344.667" width="153" height="1148.67">
+  <object id="156" name="NewLocation" x="1601.33" y="147.334" width="153" height="402.246">
    <properties>
     <property name="nextChunk" value="world/area0/level1.tmx"/>
-    <property name="nextLevelOffsetX" type="float" value="3200"/>
-    <property name="nextLevelOffsetY" type="float" value="0"/>
+    <property name="nextLevelOffsetX" type="float" value="0"/>
+    <property name="nextLevelOffsetY" type="float" value="1"/>
    </properties>
   </object>
   <object id="158" name="DeathZone" x="772.456" y="1552.34" width="560" height="508.465"/>
@@ -592,6 +589,36 @@
    <point/>
   </object>
   <object id="218" name="EnemySpawnPoint" x="592" y="410.667">
+   <point/>
+  </object>
+  <object id="219" name="PlayerSpawnPoint" x="1372.67" y="1062">
+   <properties>
+    <property name="goto" value="level0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="220" name="NewLocation" x="1586.11" y="651.483" width="153" height="472.246">
+   <properties>
+    <property name="nextChunk" value="world/area0/level1.tmx"/>
+    <property name="nextLevelOffsetX" type="float" value="0"/>
+    <property name="nextLevelOffsetY" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="221" name="NewLocation" x="1586.83" y="1137.85" width="171" height="127.579">
+   <properties>
+    <property name="nextChunk" value="world/area0/level1.tmx"/>
+    <property name="nextLevelOffsetX" type="float" value="0"/>
+    <property name="nextLevelOffsetY" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="222" name="NewLocation" x="1580.5" y="1280.21" width="171" height="127.579">
+   <properties>
+    <property name="nextChunk" value="world/area0/level1.tmx"/>
+    <property name="nextLevelOffsetX" type="float" value="0"/>
+    <property name="nextLevelOffsetY" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="223" name="EnemySpawnPoint" x="1270" y="1072">
    <point/>
   </object>
  </objectgroup>

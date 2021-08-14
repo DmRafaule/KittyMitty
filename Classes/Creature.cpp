@@ -253,12 +253,13 @@ void Creature::initBody(cocos2d::Vec2 pos){
     currentLayer->addChild(creature_sprite,ZLevel::MIDLEGROUND,indentificator);
 }
 Creature::~Creature(){
+    
+}
+void Creature::removeCreature(){
     creature_parts.clear();
-}
-void Creature::removeSprite(){
-    currentLayer->removeChildByName(creature_sprite->getName());
-}
-void Creature::removeStatistics(){
+    currentLayer->removeChild(creature_sprite);
+    currentLayer->removeChild(creature_weapon->getSprite());
+
     if (isStatisticsShowing)
         currentLayer->removeChild(creature_statistics);
     isStatisticsShowing = false;
@@ -714,8 +715,7 @@ void Player::update(float dt){
 
 /**Some code for future
  **First clean engine's calls
- *enemyNode->at(currentInteractedEnemy)->removeSprite();
- *enemyNode->at(currentInteractedEnemy)->removeStatistics();
+ *enemyNode->at(currentInteractedEnemy)->removeCreature();
  **Second clean game's  call
  *enemyNode->erase(enemyNode->begin()+currentInteractedEnemy);
 */
