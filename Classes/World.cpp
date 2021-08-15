@@ -6,16 +6,16 @@ cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
 cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
 cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
 std::vector<LevelCreatures> WorldProperties::creatureData(0);
-std::vector<cocos2d::Rect>  WorldProperties::levelDeathZone(0);
 std::vector<std::pair<std::string,cocos2d::Rect>>  WorldProperties::levelItems(0);
-std::vector<LevelTransition> WorldProperties::levelTransitions(0);
+std::vector<LevelNonePhysicalObj> WorldProperties::levelNonePhysicalObj(0);
 
-LevelTransition::LevelTransition(){}
-LevelTransition::LevelTransition(cocos2d::Rect reqt,std::string path,std::string backgroundPath,cocos2d::Vec2 offset){
+LevelNonePhysicalObj::LevelNonePhysicalObj(){}
+LevelNonePhysicalObj::LevelNonePhysicalObj(cocos2d::Rect reqt,std::string path,std::string backgroundPath,cocos2d::Vec2 offset,std::string name){
    this->reqt = reqt;
    this->path = path;
    this->backgroundPath = backgroundPath;
    this->offset = offset;
+   this->name = name;
 }
 LevelCreatures::LevelCreatures(){}
 LevelCreatures::LevelCreatures(uint typeCr,uint typeWepon,cocos2d::Vec2 point){
@@ -43,7 +43,7 @@ Level::Level(uint level,GameLayer* currentLayer){
    this->creatureIndex = 6;
    switch (level){
    case 0:{
-      loadChunk("world/area0/level0.tmx","world/area0/backgroundImage.png");
+      loadChunk("world/area0/level1.tmx","world/area0/backgroundImage.png");
       break;
    }
    case 1:{
@@ -67,7 +67,7 @@ void Level::initLevelObjects(){
    //Get object layer
    auto group = level->getObjectGroup("objectsLayer");
    //Clear before we will push new one transition obj
-   WorldProperties::levelTransitions.clear();
+   WorldProperties::levelNonePhysicalObj.clear();
    //Get all objects(points,poligons,reqtangles etc)
    auto& objects = group->getObjects();
    //Save their properties to memory
@@ -138,15 +138,19 @@ void Level::initLevelObjects(){
          cocos2d::Vec2 level_offset;
          level_offset.x = dict["nextLevelOffsetX"].asFloat();
          level_offset.y = dict["nextLevelOffsetY"].asFloat();
-         WorldProperties::levelTransitions.push_back(LevelTransition(cocos2d::Rect(x,y,width,height),dict["nextChunk"].asString(),dict["levelBackground"].asString(),level_offset));
+         WorldProperties::levelNonePhysicalObj.push_back(LevelNonePhysicalObj(cocos2d::Rect(x,y,width,height),dict["nextChunk"].asString(),dict["levelBackground"].asString(),level_offset,dict["name"].asString()));
       }
       /*Define where will appears enemies*/
       if (dict["name"].asString() == "EnemySpawnPoint"){
          WorldProperties::creatureData.push_back(LevelCreatures(dict["typeCreature"].asInt(),dict["typeWeapon"].asInt(),cocos2d::Vec2(x,y)));
       }
       /*Define where death will be emidiatly*/
-      if (dict["name"].asString() == "DeathZone")
-         WorldProperties::levelDeathZone.push_back(cocos2d::Rect(x,y,width,height));
+      if (dict["name"].asString() == "DeathZone"){
+         cocos2d::Vec2 level_offset;
+         level_offset.x = -1;
+         level_offset.y = -1;
+         WorldProperties::levelNonePhysicalObj.push_back(LevelNonePhysicalObj(cocos2d::Rect(x,y,width,height),"null","null",level_offset,dict["name"].asString()));
+      }
    }
 }
 void Level::initBackground(std::string chunkBackground){
@@ -173,42 +177,46 @@ void Level::initCreatures(){
    }
 }
 void Level::update(float dt){
-   //Will execute if hero not in NewLocation reqtangle
-   for (const auto& lvl : WorldProperties::levelTransitions){
-      /*Will execute if hero in NewLocation reqt*/
+   for (const auto& lvl : WorldProperties::levelNonePhysicalObj){
       if (currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->getBoundingBox().intersectsRect(lvl.reqt)){
-         //If Hero passed through NewLocation reqt on right side of map
-         if (lvl.offset.x == 0 && lvl.offset.y == 0)
-            currentLayer->getPlayer()->setPlayerPosition(40,
-                                                         currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
-         //If Hero passed through NewLocation reqt on left side of map
-         else if (lvl.offset.x == 1 && lvl.offset.y == 0)
-            currentLayer->getPlayer()->setPlayerPosition(WorldProperties::mapSize.width  - WorldProperties::screenSize.width - 60,
-                                                         currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
-         else if (lvl.offset.x == 0 && lvl.offset.y == 1)
-            currentLayer->getPlayer()->setPlayerPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
-                                                         WorldProperties::mapSize.height - WorldProperties::screenSize.height - 40);
-         else if (lvl.offset.x == 1 && lvl.offset.y == 1)
-            currentLayer->getPlayer()->setPlayerPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
-                                                         40);
-         //First release memory allocated for previose lvl
-         unloadChunk();
-         //Then allocate new mem for new lvl
-         loadChunk(lvl.path, lvl.backgroundPath);
-         //Set up camera on new location
-         currentLayer->getChildByName(SceneEntities::gamesession)->stopAllActions();
-         currentLayer->getChildByName(SceneEntities::gamesession)->runAction(
-              cocos2d::Follow::createWithOffset(
-                  currentLayer->getPlayer()->getCreatureSprite(),
-                  -100,-100,
-                  cocos2d::Rect(
-                     0,
-                     0,
-                     WorldProperties::mapSize.width - WorldProperties::screenSize.width,
-                     WorldProperties::mapSize.height - WorldProperties::screenSize.height 
-                  )
-              )
-          );
+         /*Will execute if hero in NewLocation reqt*/
+         if (lvl.name == "NewLocation"){
+            //If Hero passed through NewLocation reqt on right side of map
+            if (lvl.offset.x == 0 && lvl.offset.y == 0)
+               currentLayer->getPlayer()->setPlayerPosition(40,
+                                                            currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
+            //If Hero passed through NewLocation reqt on left side of map
+            else if (lvl.offset.x == 1 && lvl.offset.y == 0)
+               currentLayer->getPlayer()->setPlayerPosition(WorldProperties::mapSize.width  - WorldProperties::screenSize.width - 60,
+                                                            currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
+            else if (lvl.offset.x == 0 && lvl.offset.y == 1)
+               currentLayer->getPlayer()->setPlayerPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
+                                                            WorldProperties::mapSize.height - WorldProperties::screenSize.height - 40);
+            else if (lvl.offset.x == 1 && lvl.offset.y == 1)
+               currentLayer->getPlayer()->setPlayerPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
+                                                            40);
+            //First release memory allocated for previose lvl
+            unloadChunk();
+            //Then allocate new mem for new lvl
+            loadChunk(lvl.path, lvl.backgroundPath);
+            //Set up camera on new location
+            currentLayer->getChildByName(SceneEntities::gamesession)->stopAllActions();
+            currentLayer->getChildByName(SceneEntities::gamesession)->runAction(
+                 cocos2d::Follow::createWithOffset(
+                     currentLayer->getPlayer()->getCreatureSprite(),
+                     -100,-100,
+                     cocos2d::Rect(
+                        0,
+                        0,
+                        WorldProperties::mapSize.width - WorldProperties::screenSize.width,
+                        WorldProperties::mapSize.height - WorldProperties::screenSize.height 
+                     )
+                 )
+            );
+         }
+         else if (lvl.name == "DeathZone"){
+            OUT("death zone\n");
+         }
       }
    }
 }
@@ -239,8 +247,6 @@ void Level::unloadChunk(){
    currentLayer->getEnemy()->clear();
    //Clean spawn points for new enemies
    WorldProperties::creatureData.clear();
-   //Clean death zones for new lvl
-   WorldProperties::levelDeathZone.clear();
    //Clean all level items for new lvl
    WorldProperties::levelItems.clear();
 }

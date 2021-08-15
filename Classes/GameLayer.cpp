@@ -228,18 +228,6 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     }
     //Collisions with other objects which will not affected on velocity and directions
     else {
-
-        for (const auto& dZ : WorldProperties::levelDeathZone){
-            if (player->getCreatureSprite()->getBoundingBox().intersectsRect(dZ)){
-
-            }
-            else {
-                for (auto& e : enemy){
-                    if (e->getCreatureSprite()->getBoundingBox().intersectsRect(dZ)){    
-                    }
-                }
-            }
-        }
         return false;
     }
     return false;
