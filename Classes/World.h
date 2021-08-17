@@ -6,6 +6,7 @@ class Level;
 class Chunk;
 class GameLayer;
 
+
 class World {
 public:
    World();
@@ -27,15 +28,19 @@ private:
 
    void initLevelLayers(std::string chunkPath);
    void initLevelObjects();
+   void initDynamicObjects();
+   void initDynamicActions();
    void initBackground(std::string chunkBackground);
    void initCreatures();
 private:
    cocos2d::TMXTiledMap* level;
    cocos2d::TMXLayer* level_layer_midleground;
    std::vector<cocos2d::Node*> level_bodies;
+   std::vector<cocos2d::Sprite*> level_dynamic_obj;
    GameLayer* currentLayer;
    cocos2d::Sprite* backgroundSprite;
+   std::map<std::string,cocos2d::Action*> actionPool;
 
    float scaleOffset;
-   uint  creatureIndex;
+   uint  creatureIndex;//It has to be in creature class
 };

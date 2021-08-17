@@ -59,19 +59,17 @@ void GameLayer::initWorld(){
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
     cocos2d::SpriteBatchNode* spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
     this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
+
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/worldObj/worldObjSheet.plist");
+    cocos2d::SpriteBatchNode* wo = cocos2d::SpriteBatchNode::create("textures/worldObj/worldObjSheet.png");
+    this->getChildByName(SceneEntities::gamesession)->addChild(wo);
     
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 
     world = new World(0,this);
 }
 void GameLayer::intCreatures(){
-    
-    //Enemy* e;
-    //e = new Enemy(CreatureInfo::Type::KOOL_HASH,WorldProperties::enemySpawnPoint.at(0),this->getChildByName(SceneEntities::gamesession),6);
-    //e->setWeapon(WeaponType::SPEAR);
-    //enemy.push_back(e);
-
-    
+        
     
     player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
     player->setWeapon(WeaponType::SWORD); 

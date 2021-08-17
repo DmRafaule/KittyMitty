@@ -118,6 +118,7 @@ struct SceneEntities{
     static std::string gamesession;
     static std::string bg;
 };
+
 struct LevelNonePhysicalObj{
     LevelNonePhysicalObj();
     LevelNonePhysicalObj(cocos2d::Rect,std::string,std::string,cocos2d::Vec2,std::string);
@@ -134,13 +135,21 @@ struct LevelCreatures{
     uint typeWepon;
     cocos2d::Vec2 point;
 };
+struct LevelPhysicalObj{
+    LevelPhysicalObj();
+    LevelPhysicalObj(std::string,std::string,cocos2d::Rect);
+    std::string frameName;
+    std::string typeAction;
+    cocos2d::Rect rect;
+};
 struct WorldProperties{
     static cocos2d::Size screenSize;
     static cocos2d::Size mapSize;
-    static cocos2d::Vec2 playerSpawnPoint;
-    static std::vector<LevelCreatures> creatureData;
-    static std::vector<LevelNonePhysicalObj> levelNonePhysicalObj;
-    static std::vector<std::pair<std::string,cocos2d::Rect>> levelItems;
+    static cocos2d::Vec2 playerSpawnPoint; //Put this to creatureObj
+    static std::vector<LevelCreatures> creatureObj;//Contetn data about players, nps, enemies exported from tiled map ed
+    static std::vector<LevelNonePhysicalObj> interactiveObj;//Contetn data about objects without physical body but player and enemies can 'interact' exported from tiled map ed
+    static std::vector<LevelPhysicalObj> dynamicObj;//Contetn data about objects with physical body
+    static std::vector<std::pair<std::string,cocos2d::Rect>> levelItems;//Push all doors and stairs to  interactiveObj
 };
 
 enum DirectionAttacke{
