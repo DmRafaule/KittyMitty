@@ -668,15 +668,17 @@ void Creature::updateCurrentState(){
             if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "door_open0.png"){
                 //Door closed
                 if (lI.second.spr->getPhysicsBody()->getCollisionBitmask() == 0x01){
-                    lI.second.spr->runAction(WorldProperties::actionPool.find(lI.second.typeAction)->second->clone());
+                    lI.second.spr->runAction(WorldProperties::actionPool.find("door_open")->second->clone());//Change on lI.second.typeAction
                     lI.second.spr->getPhysicsBody()->setPositionOffset(cocos2d::Vec2(10,0));
                     lI.second.spr->getPhysicsBody()->setCollisionBitmask(0);
+                    isIntersection = true;
                 }
                 //Door opened
                 else {
-                    lI.second.spr->runAction(WorldProperties::actionPool.find(lI.second.typeAction)->second->clone()->reverse());
+                    lI.second.spr->runAction(WorldProperties::actionPool.find("door_open")->second->clone()->reverse());
                     lI.second.spr->getPhysicsBody()->setPositionOffset(cocos2d::Vec2(-10,0));
                     lI.second.spr->getPhysicsBody()->setCollisionBitmask(0x01);
+                    isIntersection = true;
                 }
             }
             //Will activate something
@@ -684,13 +686,15 @@ void Creature::updateCurrentState(){
                 //Execute once
                 if (lI.second.target->getNumberOfRunningActions() == 0){
                     lI.second.spr->runAction(WorldProperties::actionPool.find(lI.second.typeAction)->second->clone());
-                    lI.second.target->runAction(WorldProperties::actionPool.find("moveV")->second->clone());//Implement targetAction
+                    lI.second.target->runAction(WorldProperties::actionPool.find(lI.second.targetAction)->second->clone());//Implement targetAction
                 }
-                OUT("lever\n");
+                isIntersection = true;
             }
             //Will climbin on stair if creature neer by, it's a stair and buttom E pressed
-            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "empty.png"){
-                OUT("ss\n");
+            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "empty.png"){//This fix action
+                //Here animation for climbing
+                creature_physic_body->setVelocity(cocos2d::Vec2(0,400));
+                isIntersection = true;
             }
         
         }

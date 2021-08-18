@@ -25,11 +25,11 @@ LevelCreatures::LevelCreatures(uint typeCr,uint typeWepon,cocos2d::Vec2 point){
    this->typeWepon = typeWepon;
 }
 LevelPhysicalObj::LevelPhysicalObj(){}
-LevelPhysicalObj::LevelPhysicalObj(std::string frameName,std::string typeAction, cocos2d::Rect rect,std::string nameForTargeting){
+LevelPhysicalObj::LevelPhysicalObj(std::string frameName,std::string typeAction, cocos2d::Rect rect,std::string nameTarget){
    this->frameName = frameName; 
    this->typeAction = typeAction;
    this->rect = rect;
-   this->nameForTargeting = nameForTargeting;
+   this->nameTarget = nameTarget;
 }
 World::World(){};
 World::World(uint levelNum,GameLayer* currentLayer){
@@ -49,7 +49,7 @@ Level::Level(uint level,GameLayer* currentLayer){
    initPoolActions();
    switch (level){
    case 0:{
-      loadLevel("world/area0/level1.tmx","world/area0/backgroundImage.png");
+      loadLevel("world/area0/level0.tmx","world/area0/backgroundImage.png");
       break;
    }
    case 1:{
@@ -84,82 +84,89 @@ void Level::parseLevelObjects(){
       float y = dict["y"].asFloat()           * scaleOffset;
       float width = dict["width"].asFloat()   * scaleOffset;
       float height = dict["height"].asFloat() * scaleOffset;
-      //Init node for add in physic scene physic bodies
-      level_bodies.push_back(cocos2d::Node::create());
-      auto ground_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(width,height));
-      ground_body->setDynamic(false);
-      ground_body->setGravityEnable(false);
-      ground_body->setPositionOffset(cocos2d::Vec2(width/2,height/2));
-      ground_body->setContactTestBitmask(0xFF);
-      //Define object wall
-      if (dict["name"].asString() == "wall"){
-         ground_body->setCollisionBitmask(0x03);
-         level_bodies.back()->setPhysicsBody(ground_body);
+      cocos2d::Rect rect(x,y,width,height);
+      
+      parseStaticPhysicalObj(dict,rect);
+      
+      if (dict["type"].asString() == "dynamicObj"){
+         parseDynObjects(dict,rect);
       }
-      //Define object floor
-      else if (dict["name"].asString() == "floor"){
-         ground_body->setCollisionBitmask(0x01);
-         level_bodies.back()->setPhysicsBody(ground_body);
-      }
-      else if (dict["name"].asString() == "roof"){
-         ground_body->setCollisionBitmask(0x05);
-         level_bodies.back()->setPhysicsBody(ground_body);
-      }
-      //Define object door
-      else if (dict["name"].asString() == "door"){
-         WorldProperties::dynamicObj.emplace(dict["name"].asString(),LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height),""));
-      }
-      else if (dict["name"].asString() == "lever"){
-         WorldProperties::dynamicObj.emplace(dict["name"].asString(),LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height),dict["nameForTargeting"].asString()));
-      }
-      //Define object stair
-      else if (dict["name"].asString() == "stair"){
-         WorldProperties::dynamicObj.emplace(dict["name"].asString(),LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height),""));
-      }
-      //Define object steps
-      else if (dict["name"].asString() == "steps"){
-         std::vector<cocos2d::Vec2> points;
-         points.push_back(cocos2d::Vec2(0,0));
-         //  size of tiles(16 as default) *
-         //  how many tiles in width(height) * 
-         //  scale factor(2) -
-         //  factor of cocos resizing<1> *
-         //  where this poligon look at (to right 1 or to left -1)                                                   
-         points.push_back(cocos2d::Vec2((level_layer_midleground->getMapTileSize().width * dict["widthInTiles"].asInt() * scaleOffset - dict["widthInTiles"].asInt()*8)*dict["toRightMod"].asInt(),
-                                        level_layer_midleground->getMapTileSize().height* dict["heightInTiles"].asInt()* scaleOffset - dict["widthInTiles"].asInt()*8));
-         points.push_back(cocos2d::Vec2((level_layer_midleground->getMapTileSize().width * dict["widthInTiles"].asInt() * scaleOffset - dict["widthInTiles"].asInt()*8)*dict["toRightMod"].asInt(),
-                                        0));
-         cocos2d::PhysicsBody* poligon = cocos2d::PhysicsBody::createPolygon(points.data(),points.size());
-         poligon->setDynamic(false);
-         poligon->setGravityEnable(false);
-         poligon->setContactTestBitmask(0xFF);
-         poligon->setCollisionBitmask(0x04);
-         level_bodies.back()->setPhysicsBody(poligon);
-      }
-      /*Define where is new locations*/
-      else if (dict["name"].asString() == "NewLocation"){
-         cocos2d::Vec2 level_offset;
-         level_offset.x = dict["nextLevelOffsetX"].asFloat();
-         level_offset.y = dict["nextLevelOffsetY"].asFloat();
-         WorldProperties::staticObj.push_back(LevelNonePhysicalObj(cocos2d::Rect(x,y,width,height),dict["nextChunk"].asString(),dict["levelBackground"].asString(),level_offset,dict["name"].asString()));
+      else if (dict["type"].asString() == "staticObj"){
+         parseStaticNonePhysicalObj(dict,rect);
       }
       /*Define where will appears creatures*/
       else if (dict["name"].asString() == "CreatureSpawnPoint"){
          WorldProperties::creatureObj.emplace(static_cast<CreatureInfo::Type>(dict["typeCreature"].asInt()),LevelCreatures(dict["typeCreature"].asInt(),dict["typeWeapon"].asInt(),cocos2d::Vec2(x,y)));
       }
-      /*Define where death will be emidiatly*/
-      else if (dict["name"].asString() == "DeathZone"){
-         cocos2d::Vec2 level_offset;
-         level_offset.x = -1;
-         level_offset.y = -1;
-         WorldProperties::staticObj.push_back(LevelNonePhysicalObj(cocos2d::Rect(x,y,width,height),"null","null",level_offset,dict["name"].asString()));
-      }
-      //Define where will be platforms(dynamic)
-      else if (dict["name"].asString() == "platform"){
-         WorldProperties::dynamicObj.emplace(dict["name"].asString(),LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height),dict["nameForTargeting"].asString()));
-      }
       level_bodies.back()->setPosition(x, y );
       currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_bodies.back());
+   }
+}
+void Level::parseDynObjects(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
+   LevelPhysicalObj obj;
+   obj.frameName     = dict["frameName"].asString();
+   obj.typeAction    = dict["typeAction"].asString();
+   obj.nameTarget    = dict["nameTarget"].asString();
+   obj.targetAction  = dict["targetAction"].asString();
+   obj.rect          = rect;
+   
+   WorldProperties::dynamicObj.emplace(dict["name"].asString(),obj);
+}
+void Level::parseStaticNonePhysicalObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
+   cocos2d::Vec2 level_offset;
+   level_offset.x = dict["nextLevelOffsetX"].asFloat();
+   level_offset.y = dict["nextLevelOffsetY"].asFloat();
+
+   LevelNonePhysicalObj obj;
+   obj.name = dict["name"].asString();
+   obj.path = dict["nextChunk"].asString();
+   obj.backgroundPath = dict["levelBackground"].asString();
+   obj.offset = level_offset;
+   obj.reqt = rect;
+   
+   WorldProperties::staticObj.push_back(obj);
+}
+void Level::parseStaticPhysicalObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
+   //Init node for add in physic scene physic bodies
+   level_bodies.push_back(cocos2d::Node::create());
+   auto ground_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(rect.size.width,rect.size.height));
+   ground_body->setDynamic(false);
+   ground_body->setGravityEnable(false);
+   ground_body->setPositionOffset(cocos2d::Vec2(rect.size.width/2,rect.size.height/2));
+   ground_body->setContactTestBitmask(0xFF);
+
+   if (dict["name"].asString() == "wall"){
+      ground_body->setCollisionBitmask(0x03);
+      level_bodies.back()->setPhysicsBody(ground_body);
+   }
+   //Define object floor
+   else if (dict["name"].asString() == "floor"){
+      ground_body->setCollisionBitmask(0x01);
+      level_bodies.back()->setPhysicsBody(ground_body);
+   }
+   else if (dict["name"].asString() == "roof"){
+      ground_body->setCollisionBitmask(0x05);
+      level_bodies.back()->setPhysicsBody(ground_body);
+   }
+   //Define object steps
+   else if (dict["name"].asString() == "steps"){
+      std::vector<cocos2d::Vec2> points;
+      points.push_back(cocos2d::Vec2(0,0));
+      //  size of tiles(16 as default) *
+      //  how many tiles in width(height) * 
+      //  scale factor(2) -
+      //  factor of cocos resizing<1> *
+      //  where this poligon look at (to right 1 or to left -1)                                                   
+      points.push_back(cocos2d::Vec2((level_layer_midleground->getMapTileSize().width * dict["widthInTiles"].asInt() * scaleOffset - dict["widthInTiles"].asInt()*8)*dict["toRightMod"].asInt(),
+                                     level_layer_midleground->getMapTileSize().height* dict["heightInTiles"].asInt()* scaleOffset - dict["widthInTiles"].asInt()*8));
+      points.push_back(cocos2d::Vec2((level_layer_midleground->getMapTileSize().width * dict["widthInTiles"].asInt() * scaleOffset - dict["widthInTiles"].asInt()*8)*dict["toRightMod"].asInt(),
+                                     0));
+      cocos2d::PhysicsBody* poligon = cocos2d::PhysicsBody::createPolygon(points.data(),points.size());
+      poligon->setDynamic(false);
+      poligon->setGravityEnable(false);
+      poligon->setContactTestBitmask(0xFF);
+      poligon->setCollisionBitmask(0x04);
+      level_bodies.back()->setPhysicsBody(poligon);
    }
 }
 void Level::addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr){
@@ -180,8 +187,8 @@ void Level::initPoolActions(){
    addAnimation("lever",6,0.1,false);
    cocos2d::Action* MoveHorisontal = cocos2d::RepeatForever::create(cocos2d::Sequence::create(PhysicMoveBy::create(2,cocos2d::Vec2(-50,0)),PhysicMoveBy::create(2,cocos2d::Vec2(50,0)),nullptr));
    cocos2d::Action* MoveVertical   = cocos2d::RepeatForever::create(cocos2d::Sequence::create(PhysicMoveBy::create(2,cocos2d::Vec2(0,100)),PhysicMoveBy::create(2,cocos2d::Vec2(0,-100)),nullptr));
-   cocos2d::Action* RotateClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,20));
-   cocos2d::Action* RotateOClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,-20));
+   cocos2d::Action* RotateClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,10));//Here is a bug some platform expand their angelSpeed very fast
+   cocos2d::Action* RotateOClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,-10));
    
 
    WorldProperties::actionPool.emplace("moveH",MoveHorisontal);
@@ -194,6 +201,7 @@ void Level::initPoolActions(){
    MoveVertical->retain();
    RotateClW->retain();
    RotateOClW->retain();
+   WorldProperties::actionPool.find("nill")->second->retain();
 }
 void Level::initDynamicObjects(){
    for (auto & obj : WorldProperties::dynamicObj){
@@ -205,7 +213,7 @@ void Level::initDynamicObjects(){
          auto spr_ph = cocos2d::PhysicsBody::createBox(obj.second.rect.size/2);
          spr_ph->setDynamic(false);
          spr_ph->setGravityEnable(false);
-         if (obj.first == "door" || obj.first == "platform"){//Wrong collision bit
+         if (obj.first == "door" || obj.first == "platform"){
             spr_ph->setCollisionBitmask(0x01);
          }
          else {
@@ -227,16 +235,14 @@ void Level::initDynamicObjects(){
       spr->getTexture()->setTexParameters(tpar);
       level_dynamic_obj.push_back(spr);
       if (obj.second.frameName == "platform_s.png"){
-         currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_dynamic_obj.back(),0,obj.second.nameForTargeting);
-         OUT("target name %s\n",obj.second.nameForTargeting.c_str());
+         currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_dynamic_obj.back(),0,obj.second.nameTarget);
       }
       else 
          currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_dynamic_obj.back());
    }
    for (auto & obj : WorldProperties::dynamicObj){
       if (obj.first == "lever"){
-         obj.second.target = currentLayer->getChildByName(SceneLayer::gamesession)->getChildByName(obj.second.nameForTargeting);
-         OUT("target name %s\n",obj.second.nameForTargeting.c_str());
+         obj.second.target = currentLayer->getChildByName(SceneLayer::gamesession)->getChildByName(obj.second.nameTarget);
       }
    }
 }

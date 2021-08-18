@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="241">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="242">
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -497,7 +497,7 @@
   <object id="146" name="floor" x="70.6365" y="913.682" width="491.181" height="4.36364"/>
   <object id="147" name="roof" x="72.538" y="1082.88" width="521.363" height="9.75"/>
   <object id="148" name="floor" x="70.0153" y="1056.54" width="492.136" height="5.09091"/>
-  <object id="156" name="NewLocation" x="1601.33" y="147.334" width="153" height="1294.25">
+  <object id="156" name="NewLocation" type="staticObj" x="1601.33" y="147.334" width="153" height="1294.25">
    <properties>
     <property name="levelBackground" value="world/area0/backgroundImage.png"/>
     <property name="nextChunk" value="world/area0/level1.tmx"/>
@@ -505,16 +505,16 @@
     <property name="nextLevelOffsetY" type="float" value="0"/>
    </properties>
   </object>
-  <object id="158" name="DeathZone" x="772.456" y="1552.34" width="560" height="508.465"/>
-  <object id="160" name="DeathZone" x="604.667" y="1686" width="172" height="544.667"/>
-  <object id="161" name="DeathZone" x="222" y="1558" width="396" height="494.587"/>
-  <object id="165" name="stair" x="16.5" y="543.25" width="20.75" height="768.5">
+  <object id="158" name="DeathZone" type="staticObj" x="770.456" y="1552.34" width="560" height="508.465"/>
+  <object id="160" name="DeathZone" type="staticObj" x="604.667" y="1686" width="172" height="544.667"/>
+  <object id="161" name="DeathZone" type="staticObj" x="222" y="1558" width="396" height="494.587"/>
+  <object id="165" name="stair" type="dynamicObj" x="16.5" y="543.25" width="20.75" height="768.5">
    <properties>
     <property name="frameName" value="empty.png"/>
     <property name="typeAction" value="climbing"/>
    </properties>
   </object>
-  <object id="166" name="stair" x="524.818" y="1200.23" width="19.1818" height="110.773">
+  <object id="166" name="stair" type="dynamicObj" x="524.818" y="1200.23" width="19.1818" height="110.773">
    <properties>
     <property name="frameName" value="empty.png"/>
     <property name="typeAction" value="climbing"/>
@@ -580,14 +580,14 @@
    </properties>
    <polygon points="0,0 -111.155,-108.186 -112.454,0.640151"/>
   </object>
-  <object id="195" name="stair" x="1355.91" y="1265.11" width="19.1818" height="140.773">
+  <object id="195" name="stair" type="dynamicObj" x="1355.91" y="1265.11" width="19.1818" height="140.773">
    <properties>
     <property name="frameName" value="empty.png"/>
     <property name="typeAction" value="climbing"/>
    </properties>
   </object>
   <object id="208" name="roof" x="1119.28" y="1128.49" width="505.614" height="9.833"/>
-  <object id="219" name="CreatureSpawnPoint" x="1154" y="1250">
+  <object id="219" name="CreatureSpawnPoint" x="98" y="1290">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="2"/>
@@ -636,13 +636,13 @@
    </properties>
    <point/>
   </object>
-  <object id="239" name="door" x="1085.08" y="1204.83" width="23.1667" height="57">
+  <object id="239" name="door" type="dynamicObj" x="1085.08" y="1204.83" width="23.1667" height="57">
    <properties>
     <property name="frameName" value="door_open0.png"/>
     <property name="typeAction" value="animationOpen"/>
    </properties>
   </object>
-  <object id="240" name="door" x="-4.25002" y="1460.5" width="23.1667" height="57">
+  <object id="240" name="door" type="dynamicObj" x="-4.25002" y="1460.5" width="23.1667" height="57">
    <properties>
     <property name="frameName" value="door_open0.png"/>
     <property name="typeAction" value="animationOpen"/>

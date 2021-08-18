@@ -131,10 +131,11 @@ struct LevelNonePhysicalObj{
 };
 struct LevelPhysicalObj{
     LevelPhysicalObj();
-    LevelPhysicalObj(std::string frameName,std::string typeAction,cocos2d::Rect rect,std::string nameForTargeting);
+    LevelPhysicalObj(std::string frameName,std::string typeAction,cocos2d::Rect rect,std::string nameTarget);
     std::string frameName;
     std::string typeAction;
-    std::string nameForTargeting;
+    std::string nameTarget;
+    std::string targetAction;
     cocos2d::Rect rect;
     cocos2d::Sprite* spr;
     cocos2d::Node* target;
@@ -144,8 +145,8 @@ struct WorldProperties{
     static cocos2d::Size mapSize;
     static std::multimap<CreatureInfo::Type,LevelCreatures> creatureObj;//Contetn data about players, nps, enemies exported from tiled map ed
     static std::multimap<std::string,LevelPhysicalObj> dynamicObj;//Contetn data about objects with physical body and they are have some animations/actions [door,stair,lever,platform]
-    static std::map<std::string,cocos2d::Action*> actionPool;
     static std::vector<LevelNonePhysicalObj> staticObj;//Contetn data about objects without physical body [death zones, newLevel]
+    static std::map<std::string,cocos2d::Action*> actionPool;
 };
 
 enum DirectionAttacke{

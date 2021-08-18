@@ -5,8 +5,8 @@
     },
     "activeFile": "area0/level0.tmx",
     "expandedProjectPaths": [
-        "area0",
-        "."
+        ".",
+        "area0"
     ],
     "exportAsImage.useCurrentScale": true,
     "exportAsImage.visibleLayersOnly": false,
@@ -29,11 +29,11 @@
             }
         },
         "area0/level0.tmx": {
-            "scale": 2,
+            "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 991.75,
-                "y": 1147.25
+                "x": 155.33333333333337,
+                "y": 747.3333333333333
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -45,11 +45,11 @@
             "scaleInEditor": 3
         },
         "area0/level1.tmx": {
-            "scale": 1.5,
+            "scale": 0.33,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 202.99999999999994,
-                "y": 585.6666666666667
+                "x": 792.4242424242424,
+                "y": 801.5151515151515
             }
         },
         "area0/level2.tmx": {

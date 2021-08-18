@@ -29,6 +29,9 @@ private:
 
    void parseLevelLayers(std::string chunkPath);//Parse data from .tmx file to game(about layers)
    void parseLevelObjects();//Parse data from .tmx file to game(about objects) and init static obj
+      void parseDynObjects(cocos2d::ValueMap& dict, cocos2d::Rect& rect);//Parse dynamic physical objeccts from .tmx
+      void parseStaticNonePhysicalObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect);//Parse static none physical objeccts from .tmx
+      void parseStaticPhysicalObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect);//Parse static physical objeccts from .tmx
    void initDynamicObjects();//Init dynamic obj
    void initPoolActions();//push up to poolActions all needed actions
    void initBackground(std::string chunkBackground);//Init bg image

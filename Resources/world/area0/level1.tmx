@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="41">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="43">
  <tileset firstgid="1" source="tilesetMidlegr.tsx"/>
  <layer id="5" name="background" width="100" height="100">
   <data encoding="csv">
@@ -419,7 +419,7 @@
  </layer>
  <objectgroup id="2" name="objectsLayer">
   <object id="1" name="floor" x="432.736" y="544.749" width="1388.33" height="15.1061"/>
-  <object id="3" name="NewLocation" x="-155" y="103.665" width="153" height="1312.67">
+  <object id="3" name="NewLocation" type="staticObj" x="-155" y="103.665" width="153" height="1312.67">
    <properties>
     <property name="levelBackground" value="world/area0/backgroundImage.png"/>
     <property name="nextChunk" value="world/area0/level0.tmx"/>
@@ -428,9 +428,9 @@
    </properties>
   </object>
   <object id="5" name="floor" x="-229.043" y="1126.75" width="1335.42" height="7.83333"/>
-  <object id="6" name="floor" x="-261.377" y="1313.42" width="1359.42" height="7.83333"/>
+  <object id="6" name="floor" x="-256.044" y="1392.09" width="1359.42" height="7.83333"/>
   <object id="7" name="wall" x="1308.28" y="941.875" width="28.7727" height="729.584"/>
-  <object id="8" name="NewLocation" x="1049.5" y="1599.66" width="324" height="484.67">
+  <object id="8" name="NewLocation" type="staticObj" x="1049.5" y="1599.66" width="324" height="484.67">
    <properties>
     <property name="levelBackground" value="world/area0/backgroundImage.png"/>
     <property name="nextChunk" value="world/area0/level0.tmx"/>
@@ -438,7 +438,7 @@
     <property name="nextLevelOffsetY" type="float" value="1"/>
    </properties>
   </object>
-  <object id="9" name="CreatureSpawnPoint" x="139.334" y="505">
+  <object id="9" name="CreatureSpawnPoint" x="158.001" y="529.667">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="0"/>
@@ -489,48 +489,60 @@
    </properties>
    <point/>
   </object>
-  <object id="24" name="floor" x="-41.3317" y="545.28" width="296.33" height="15.1061"/>
-  <object id="25" name="DeathZone" x="274.439" y="631.166" width="139.955" height="19.3034"/>
+  <object id="24" name="floor" x="-31.3317" y="545.28" width="296.33" height="15.1061"/>
+  <object id="25" name="DeathZone" type="staticObj" x="274.439" y="631.166" width="139.955" height="19.3034">
+   <properties>
+    <property name="nextLevelOffsetX" type="float" value="-1"/>
+    <property name="nextLevelOffsetY" type="float" value="-1"/>
+   </properties>
+  </object>
   <object id="26" name="floor" x="272.335" y="640.447" width="143.83" height="7.1061"/>
-  <object id="32" name="platform" x="417.417" y="719.167" width="80.5" height="29">
+  <object id="32" name="platform" type="dynamicObj" x="303.417" y="519.834" width="80.5" height="29">
    <properties>
     <property name="frameName" value="platform_s.png"/>
-    <property name="nameForTargeting" value=""/>
+    <property name="nameTarget" value=""/>
     <property name="typeAction" value="rotateOpositClockWise"/>
    </properties>
   </object>
-  <object id="33" name="platform" x="81.75" y="392.167" width="80.5" height="29">
+  <object id="33" name="platform" type="dynamicObj" x="81.75" y="392.167" width="80.5" height="29">
    <properties>
     <property name="frameName" value="platform_s.png"/>
-    <property name="nameForTargeting" value=""/>
+    <property name="nameTarget" value=""/>
     <property name="typeAction" value="moveH"/>
    </properties>
   </object>
-  <object id="34" name="platform" x="28.4166" y="480.167" width="80.5" height="29">
+  <object id="34" name="platform" type="dynamicObj" x="28.4166" y="480.167" width="80.5" height="29">
    <properties>
     <property name="frameName" value="platform_s.png"/>
-    <property name="nameForTargeting" value="fljsdf"/>
+    <property name="nameTarget" value="fljsdf"/>
     <property name="typeAction" value="nill"/>
    </properties>
   </object>
-  <object id="35" name="platform" x="256.417" y="798.833" width="80.5" height="29">
+  <object id="35" name="platform" type="dynamicObj" x="188.417" y="433.5" width="80.5" height="29">
    <properties>
     <property name="frameName" value="platform_s.png"/>
-    <property name="nameForTargeting" value=""/>
+    <property name="nameTarget" value=""/>
     <property name="typeAction" value="rotateClockWise"/>
    </properties>
   </object>
-  <object id="39" name="door" x="189.083" y="482.167" width="23.1667" height="57">
-   <properties>
-    <property name="frameName" value="door_open0.png"/>
-    <property name="typeAction" value="door_open"/>
-   </properties>
-  </object>
-  <object id="40" name="lever" x="223.75" y="510.167" width="23.1667" height="27">
+  <object id="40" name="lever" type="dynamicObj" x="223.75" y="518.167" width="23.1667" height="27">
    <properties>
     <property name="frameName" value="lever0.png"/>
-    <property name="nameForTargeting" value="fljsdf"/>
+    <property name="nameTarget" value="fljsdf"/>
+    <property name="targetAction" value="rotateClockWise"/>
     <property name="typeAction" value="lever"/>
+   </properties>
+  </object>
+  <object id="41" name="door" type="dynamicObj" x="187.083" y="486.833" width="23.1667" height="57">
+   <properties>
+    <property name="frameName" value="door_open0.png"/>
+    <property name="typeAction" value="animationOpen"/>
+   </properties>
+  </object>
+  <object id="42" name="stair" type="dynamicObj" x="149.742" y="330.947" width="19.1818" height="140.773">
+   <properties>
+    <property name="frameName" value="empty.png"/>
+    <property name="typeAction" value="climbing"/>
    </properties>
   </object>
  </objectgroup>
