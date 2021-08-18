@@ -5,11 +5,10 @@
 
 cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
 cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
-cocos2d::Vec2               WorldProperties::playerSpawnPoint = cocos2d::Vec2();
-std::vector<std::pair<std::string,cocos2d::Rect>>  WorldProperties::levelItems(0);
-std::vector<LevelCreatures> WorldProperties::creatureObj(0);
-std::vector<LevelNonePhysicalObj> WorldProperties::interactiveObj(0);
-std::vector<LevelPhysicalObj> WorldProperties::dynamicObj(0);
+std::multimap<CreatureInfo::Type,LevelCreatures> WorldProperties::creatureObj;
+std::multimap<std::string,LevelPhysicalObj> WorldProperties::dynamicObj;
+std::map<std::string,cocos2d::Action*> WorldProperties::actionPool;
+std::vector<LevelNonePhysicalObj> WorldProperties::staticObj(0);
 
 LevelNonePhysicalObj::LevelNonePhysicalObj(){}
 LevelNonePhysicalObj::LevelNonePhysicalObj(cocos2d::Rect reqt,std::string path,std::string backgroundPath,cocos2d::Vec2 offset,std::string name){
@@ -26,10 +25,11 @@ LevelCreatures::LevelCreatures(uint typeCr,uint typeWepon,cocos2d::Vec2 point){
    this->typeWepon = typeWepon;
 }
 LevelPhysicalObj::LevelPhysicalObj(){}
-LevelPhysicalObj::LevelPhysicalObj(std::string frameName,std::string typeAction, cocos2d::Rect rect){
+LevelPhysicalObj::LevelPhysicalObj(std::string frameName,std::string typeAction, cocos2d::Rect rect,std::string nameForTargeting){
    this->frameName = frameName; 
    this->typeAction = typeAction;
    this->rect = rect;
+   this->nameForTargeting = nameForTargeting;
 }
 World::World(){};
 World::World(uint levelNum,GameLayer* currentLayer){
@@ -46,11 +46,10 @@ Level::Level(){};
 Level::Level(uint level,GameLayer* currentLayer){
    this->scaleOffset = 2;
    this->currentLayer = currentLayer;
-   this->creatureIndex = 6;
-   initDynamicActions();
+   initPoolActions();
    switch (level){
    case 0:{
-      loadChunk("world/area0/level1.tmx","world/area0/backgroundImage.png");
+      loadLevel("world/area0/level1.tmx","world/area0/backgroundImage.png");
       break;
    }
    case 1:{
@@ -60,21 +59,21 @@ Level::Level(uint level,GameLayer* currentLayer){
    }
 }
 Level::~Level(){}
-void Level::initLevelLayers(std::string chunkPath){
+void Level::parseLevelLayers(std::string chunkPath){
    this->level = cocos2d::TMXTiledMap::create(chunkPath);
    this->level->setScale(scaleOffset);
    this->level->setMapSize(cocos2d::Size(99,99));
    this->level_layer_midleground = this->level->getLayer("midleground");
-   this->currentLayer->getChildByName(SceneEntities::gamesession)->addChild(this->level,ZLevel::BACKGROUND);
+   this->currentLayer->getChildByName(SceneLayer::gamesession)->addChild(this->level,SceneZOrder::BACKGROUND);
    /*Define level size*/
    WorldProperties::mapSize.setSize(this->level->getMapSize().width  * this->level->getTileSize().width  * scaleOffset,
                                     this->level->getMapSize().height * this->level->getTileSize().height * scaleOffset);
 }
-void Level::initLevelObjects(){
+void Level::parseLevelObjects(){
    //Get object layer
    auto group = level->getObjectGroup("objectsLayer");
    //Clear before we will push new one transition obj
-   WorldProperties::interactiveObj.clear();
+   WorldProperties::staticObj.clear();
    //Get all objects(points,poligons,reqtangles etc)
    auto& objects = group->getObjects();
    //Save their properties to memory
@@ -108,11 +107,14 @@ void Level::initLevelObjects(){
       }
       //Define object door
       else if (dict["name"].asString() == "door"){
-         WorldProperties::levelItems.push_back(std::pair<std::string,cocos2d::Rect>("door",cocos2d::Rect(x,y,width,height)));
+         WorldProperties::dynamicObj.emplace(dict["name"].asString(),LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height),""));
+      }
+      else if (dict["name"].asString() == "lever"){
+         WorldProperties::dynamicObj.emplace(dict["name"].asString(),LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height),dict["nameForTargeting"].asString()));
       }
       //Define object stair
       else if (dict["name"].asString() == "stair"){
-         WorldProperties::levelItems.push_back(std::pair<std::string,cocos2d::Rect>("stair",cocos2d::Rect(x,y,width,height)));
+         WorldProperties::dynamicObj.emplace(dict["name"].asString(),LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height),""));
       }
       //Define object steps
       else if (dict["name"].asString() == "steps"){
@@ -134,46 +136,59 @@ void Level::initLevelObjects(){
          poligon->setCollisionBitmask(0x04);
          level_bodies.back()->setPhysicsBody(poligon);
       }
-
-      level_bodies.back()->setPosition(x, y );
-      currentLayer->getChildByName(SceneEntities::gamesession)->addChild(level_bodies.back());
-      /*Define where will be appear player*/
-      if (dict["name"].asString() == "PlayerSpawnPoint")
-         WorldProperties::playerSpawnPoint.setPoint(x,y);
       /*Define where is new locations*/
-      if (dict["name"].asString() == "NewLocation"){
+      else if (dict["name"].asString() == "NewLocation"){
          cocos2d::Vec2 level_offset;
          level_offset.x = dict["nextLevelOffsetX"].asFloat();
          level_offset.y = dict["nextLevelOffsetY"].asFloat();
-         WorldProperties::interactiveObj.push_back(LevelNonePhysicalObj(cocos2d::Rect(x,y,width,height),dict["nextChunk"].asString(),dict["levelBackground"].asString(),level_offset,dict["name"].asString()));
+         WorldProperties::staticObj.push_back(LevelNonePhysicalObj(cocos2d::Rect(x,y,width,height),dict["nextChunk"].asString(),dict["levelBackground"].asString(),level_offset,dict["name"].asString()));
       }
-      /*Define where will appears enemies*/
-      if (dict["name"].asString() == "EnemySpawnPoint"){
-         WorldProperties::creatureObj.push_back(LevelCreatures(dict["typeCreature"].asInt(),dict["typeWeapon"].asInt(),cocos2d::Vec2(x,y)));
+      /*Define where will appears creatures*/
+      else if (dict["name"].asString() == "CreatureSpawnPoint"){
+         WorldProperties::creatureObj.emplace(static_cast<CreatureInfo::Type>(dict["typeCreature"].asInt()),LevelCreatures(dict["typeCreature"].asInt(),dict["typeWeapon"].asInt(),cocos2d::Vec2(x,y)));
       }
       /*Define where death will be emidiatly*/
-      if (dict["name"].asString() == "DeathZone"){
+      else if (dict["name"].asString() == "DeathZone"){
          cocos2d::Vec2 level_offset;
          level_offset.x = -1;
          level_offset.y = -1;
-         WorldProperties::interactiveObj.push_back(LevelNonePhysicalObj(cocos2d::Rect(x,y,width,height),"null","null",level_offset,dict["name"].asString()));
+         WorldProperties::staticObj.push_back(LevelNonePhysicalObj(cocos2d::Rect(x,y,width,height),"null","null",level_offset,dict["name"].asString()));
       }
       //Define where will be platforms(dynamic)
-      if (dict["name"].asString() == "platform"){//HERE make push up for dynobj
-         WorldProperties::dynamicObj.push_back(LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height)));
+      else if (dict["name"].asString() == "platform"){
+         WorldProperties::dynamicObj.emplace(dict["name"].asString(),LevelPhysicalObj(dict["frameName"].asString(),dict["typeAction"].asString(),cocos2d::Rect(x,y,width,height),dict["nameForTargeting"].asString()));
       }
+      level_bodies.back()->setPosition(x, y );
+      currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_bodies.back());
    }
 }
-void Level::initDynamicActions(){
+void Level::addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr){
+   auto animation = cocos2d::Animation::create();
+   for (uint i = 0; i < frame_number;++i){
+       std::string name = anim_name + std::to_string(i) + ".png";
+       auto frame = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+       animation->addSpriteFrame(frame);
+       
+   }
+   animation->setDelayPerUnit(delay);
+   animation->setRestoreOriginalFrame(restoreOrigFr);
+   WorldProperties::actionPool.emplace(anim_name,cocos2d::Animate::create(animation));
+   WorldProperties::actionPool.find(anim_name)->second->retain();
+}
+void Level::initPoolActions(){
+   addAnimation("door_open",5,0.1,false);
+   addAnimation("lever",6,0.1,false);
    cocos2d::Action* MoveHorisontal = cocos2d::RepeatForever::create(cocos2d::Sequence::create(PhysicMoveBy::create(2,cocos2d::Vec2(-50,0)),PhysicMoveBy::create(2,cocos2d::Vec2(50,0)),nullptr));
    cocos2d::Action* MoveVertical   = cocos2d::RepeatForever::create(cocos2d::Sequence::create(PhysicMoveBy::create(2,cocos2d::Vec2(0,100)),PhysicMoveBy::create(2,cocos2d::Vec2(0,-100)),nullptr));
    cocos2d::Action* RotateClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,20));
    cocos2d::Action* RotateOClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,-20));
+   
 
-   actionPool.emplace("moveH",MoveHorisontal);
-   actionPool.emplace("moveV",MoveVertical);
-   actionPool.emplace("rotateClockWise",RotateClW);
-   actionPool.emplace("rotateOpositClockWise",RotateOClW);
+   WorldProperties::actionPool.emplace("moveH",MoveHorisontal);
+   WorldProperties::actionPool.emplace("moveV",MoveVertical);
+   WorldProperties::actionPool.emplace("rotateClockWise",RotateClW);
+   WorldProperties::actionPool.emplace("rotateOpositClockWise",RotateOClW);
+   WorldProperties::actionPool.emplace("nill",cocos2d::MoveBy::create(0,cocos2d::Vec2(0,0)));
    
    MoveHorisontal->retain();
    MoveVertical->retain();
@@ -182,16 +197,22 @@ void Level::initDynamicActions(){
 }
 void Level::initDynamicObjects(){
    for (auto & obj : WorldProperties::dynamicObj){
-      cocos2d::Sprite* spr = cocos2d::Sprite::createWithSpriteFrameName(obj.frameName);
+      cocos2d::Sprite* spr = cocos2d::Sprite::createWithSpriteFrameName(obj.second.frameName);
+      obj.second.spr = spr;
       //Transform position
-      spr->setPosition(obj.rect.origin.x + obj.rect.size.width/2,obj.rect.origin.y + obj.rect.size.height/2);
+      spr->setPosition(obj.second.rect.origin.x + obj.second.rect.size.width/2,obj.second.rect.origin.y + obj.second.rect.size.height/2);
       //Init physic body like floor
-      auto spr_ph = cocos2d::PhysicsBody::createBox(obj.rect.size/2);
-      spr_ph->setDynamic(false);
-      spr_ph->setGravityEnable(false);
-      spr_ph->setCollisionBitmask(0x01);
-      spr_ph->setContactTestBitmask(0xFF);
-      spr->setPhysicsBody(spr_ph);
+         auto spr_ph = cocos2d::PhysicsBody::createBox(obj.second.rect.size/2);
+         spr_ph->setDynamic(false);
+         spr_ph->setGravityEnable(false);
+         if (obj.first == "door" || obj.first == "platform"){//Wrong collision bit
+            spr_ph->setCollisionBitmask(0x01);
+         }
+         else {
+            spr_ph->setCollisionBitmask(0x00);
+         }
+         spr_ph->setContactTestBitmask(0xFF);
+         spr->setPhysicsBody(spr_ph);
       spr->setScale(scaleOffset);
       /*This is prevent of bluring my textures*/
       cocos2d::Texture2D::TexParams tpar = {
@@ -201,113 +222,122 @@ void Level::initDynamicObjects(){
           cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
       };
       //Init action for this object
-      spr->runAction(actionPool.find(obj.typeAction)->second->clone());
+      if (obj.second.frameName == "platform_s.png")
+         spr->runAction(WorldProperties::actionPool.find(obj.second.typeAction)->second->clone());
       spr->getTexture()->setTexParameters(tpar);
       level_dynamic_obj.push_back(spr);
-      currentLayer->getChildByName(SceneEntities::gamesession)->addChild(level_dynamic_obj.back());
+      if (obj.second.frameName == "platform_s.png"){
+         currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_dynamic_obj.back(),0,obj.second.nameForTargeting);
+         OUT("target name %s\n",obj.second.nameForTargeting.c_str());
+      }
+      else 
+         currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_dynamic_obj.back());
+   }
+   for (auto & obj : WorldProperties::dynamicObj){
+      if (obj.first == "lever"){
+         obj.second.target = currentLayer->getChildByName(SceneLayer::gamesession)->getChildByName(obj.second.nameForTargeting);
+         OUT("target name %s\n",obj.second.nameForTargeting.c_str());
+      }
    }
 }
 void Level::initBackground(std::string chunkBackground){
-   this->backgroundSprite = cocos2d::Sprite::create(chunkBackground);
+   this->level_bgSprite = cocos2d::Sprite::create(chunkBackground);
    cocos2d::Texture2D::TexParams tpar = {
       cocos2d::backend::SamplerFilter::NEAREST,
       cocos2d::backend::SamplerFilter::NEAREST,
       cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE,
       cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
    };
-   backgroundSprite->getTexture()->setTexParameters(tpar);
-   backgroundSprite->setPosition(WorldProperties::screenSize.width/2,WorldProperties::screenSize.height/2);
-   backgroundSprite->setScale(MAX(WorldProperties::screenSize.width/backgroundSprite->getBoundingBox().size.width,
-                                  WorldProperties::screenSize.height/backgroundSprite->getBoundingBox().size.height));
-   currentLayer->getChildByName(SceneEntities::bg)->addChild(backgroundSprite);
+   level_bgSprite->getTexture()->setTexParameters(tpar);
+   level_bgSprite->setPosition(WorldProperties::screenSize.width/2,WorldProperties::screenSize.height/2);
+   level_bgSprite->setScale(MAX(WorldProperties::screenSize.width/level_bgSprite->getBoundingBox().size.width,
+                                  WorldProperties::screenSize.height/level_bgSprite->getBoundingBox().size.height));
+   currentLayer->getChildByName(SceneLayer::bg)->addChild(level_bgSprite);
 }
 void Level::initCreatures(){
    for (auto& en : WorldProperties::creatureObj){
-      Enemy* e;
-      e = new Enemy((CreatureInfo::Type)en.typeCr,en.point,currentLayer->getChildByName(SceneEntities::gamesession),creatureIndex);
-      e->setWeapon((WeaponType)en.typeWepon);
-      creatureIndex++;
-      currentLayer->getEnemy()->push_back(e);
+      if (en.first != CreatureInfo::Type::KITTYMITTY){
+         Enemy* e;
+         e = new Enemy(en.first,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
+         e->setWeapon((WeaponType)en.second.typeWepon);
+         currentLayer->getEnemy()->push_back(e);
+      }
    }
 }
 void Level::update(float dt){
-   for (const auto& lvl : WorldProperties::interactiveObj){
-      if (currentLayer->getChildByName(SceneEntities::gamesession)->getChildByTag(2)->getBoundingBox().intersectsRect(lvl.reqt)){
+   for (const auto& lvl : WorldProperties::staticObj){
+      if (currentLayer->getChildByName(SceneLayer::gamesession)->getChildByTag(2)->getBoundingBox().intersectsRect(lvl.reqt)){
          /*Will execute if hero in NewLocation reqt*/
          if (lvl.name == "NewLocation"){
-            //If Hero passed through NewLocation reqt on right side of map
-            if (lvl.offset.x == 0 && lvl.offset.y == 0)
-               currentLayer->getPlayer()->setPlayerPosition(40,
-                                                            currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
-            //If Hero passed through NewLocation reqt on left side of map
-            else if (lvl.offset.x == 1 && lvl.offset.y == 0)
-               currentLayer->getPlayer()->setPlayerPosition(WorldProperties::mapSize.width  - WorldProperties::screenSize.width - 60,
-                                                            currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
-            else if (lvl.offset.x == 0 && lvl.offset.y == 1)
-               currentLayer->getPlayer()->setPlayerPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
-                                                            WorldProperties::mapSize.height - WorldProperties::screenSize.height - 40);
-            else if (lvl.offset.x == 1 && lvl.offset.y == 1)
-               currentLayer->getPlayer()->setPlayerPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
-                                                            40);
-            //First release memory allocated for previose lvl
-            unloadChunk();
-            //Then allocate new mem for new lvl
-            loadChunk(lvl.path, lvl.backgroundPath);
-            //Set up camera on new location
-            currentLayer->getChildByName(SceneEntities::gamesession)->stopAllActions();
-            currentLayer->getChildByName(SceneEntities::gamesession)->runAction(
-                 cocos2d::Follow::createWithOffset(
-                     currentLayer->getPlayer()->getCreatureSprite(),
-                     -100,-100,
-                     cocos2d::Rect(
-                        0,
-                        0,
-                        WorldProperties::mapSize.width - WorldProperties::screenSize.width,
-                        WorldProperties::mapSize.height - WorldProperties::screenSize.height 
-                     )
-                 )
-            );
+            switchLevel(lvl);
          }
+         /*Will execute if hero in NewLocation reqt*/
          else if (lvl.name == "DeathZone"){
             OUT("death zone\n");
          }
       }
    }
 }
-
-void Level::loadChunk(std::string chunkPath,std::string chunkBackground){
-   initLevelLayers(chunkPath);
-   //Init all level objects
-   initLevelObjects();
-   //Init moving platforms;
+void Level::switchLevel(const LevelNonePhysicalObj& lvl){
+   //If Hero passed through NewLocation reqt on right side of map
+   if (lvl.offset.x == 0 && lvl.offset.y == 0)
+      currentLayer->getPlayer()->setPlayerPosition(40,
+                                                   currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
+   //If Hero passed through NewLocation reqt on left side of map
+   else if (lvl.offset.x == 1 && lvl.offset.y == 0)
+      currentLayer->getPlayer()->setPlayerPosition(WorldProperties::mapSize.width  - WorldProperties::screenSize.width - 60,
+                                                   currentLayer->getPlayer()->getCreatureSprite()->getPosition().y);
+   else if (lvl.offset.x == 0 && lvl.offset.y == 1)
+      currentLayer->getPlayer()->setPlayerPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
+                                                   WorldProperties::mapSize.height - WorldProperties::screenSize.height - 40);
+   else if (lvl.offset.x == 1 && lvl.offset.y == 1)
+      currentLayer->getPlayer()->setPlayerPosition(currentLayer->getPlayer()->getCreatureSprite()->getPosition().x,
+                                                   40);
+   //First release memory allocated for previose lvl
+   unloadLevel();
+   //Then allocate new mem for new lvl
+   loadLevel(lvl.path, lvl.backgroundPath);
+   //Set up camera on new location
+   currentLayer->getChildByName(SceneLayer::gamesession)->stopAllActions();
+   currentLayer->getChildByName(SceneLayer::gamesession)->runAction(
+        cocos2d::Follow::createWithOffset(
+            currentLayer->getPlayer()->getCreatureSprite(),
+            -100,-100,
+            cocos2d::Rect(
+               0,
+               0,
+               WorldProperties::mapSize.width - WorldProperties::screenSize.width,
+               WorldProperties::mapSize.height - WorldProperties::screenSize.height 
+            )
+        )
+   );
+}
+void Level::loadLevel(std::string chunkPath,std::string chunkBackground){
+   parseLevelLayers(chunkPath);
+   parseLevelObjects();
    initDynamicObjects();
-   //Init background image
    initBackground(chunkBackground);
-   //Init creatures
    initCreatures();
 }
-void Level::unloadChunk(){
-   creatureIndex = 6;
+void Level::unloadLevel(){
    //Remove all level tiles
+   currentLayer->getChildByName(SceneLayer::gamesession)->removeChild(level);
    //Remove all level objects
-   currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(level);
-   currentLayer->getChildByName(SceneEntities::bg)->removeChild(backgroundSprite);
+   currentLayer->getChildByName(SceneLayer::bg)->removeChild(level_bgSprite);
    for (auto& i : level_bodies){
-      currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(i);
+      currentLayer->getChildByName(SceneLayer::gamesession)->removeChild(i);
    }
    //Remove all dynamic obj
    WorldProperties::dynamicObj.clear();//Erase data about tiled obj
    for (auto & dObj : level_dynamic_obj)//Erase dyn obj from eng calls 
-      currentLayer->getChildByName(SceneEntities::gamesession)->removeChild(dObj);
-   level_dynamic_obj.clear();//Erase data from container
-   //level_dynamic_obj.clear();
+      currentLayer->getChildByName(SceneLayer::gamesession)->removeChild(dObj);
+   //Erase data from container
+   level_dynamic_obj.clear();
    //Remove all creatures(not hero)
    for (auto & enemy : *(currentLayer->getEnemy()))
       enemy->removeCreature();
-   //Clean arr
+   //Clean arr of enemies
    currentLayer->getEnemy()->clear();
    //Clean spawn points for new enemies
    WorldProperties::creatureObj.clear();
-   //Clean all level items for new lvl
-   WorldProperties::levelItems.clear();
 }

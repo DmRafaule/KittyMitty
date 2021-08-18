@@ -250,7 +250,7 @@ void Creature::initBody(cocos2d::Vec2 pos){
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
     };
     creature_sprite->getTexture()->setTexParameters(tpar);
-    currentLayer->addChild(creature_sprite,ZLevel::MIDLEGROUND,indentificator);
+    currentLayer->addChild(creature_sprite,SceneZOrder::MIDLEGROUND,indentificator);
 }
 Creature::~Creature(){
     
@@ -308,7 +308,7 @@ void Creature::getStatistics(){
         isStatisticsShowing = true;
         creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
         creature_statistics->setPosition(creature_sprite->getPosition());
-        currentLayer->addChild(creature_statistics,ZLevel::USER_INTERFACE);
+        currentLayer->addChild(creature_statistics,SceneZOrder::USER_INTERFACE);
     }
     else{
         isStatisticsShowing = false;
@@ -442,8 +442,8 @@ void Creature::setWeapon(WeaponType wMap ){
     }
     creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
     creature_weapon->getDammageSprite()->setPosition(creature_weapon->getSprite()->getPosition());
-    currentLayer->addChild(creature_weapon->getSprite(),ZLevel::MIDLEGROUND);
-    currentLayer->addChild(creature_weapon->getDammageSprite(),ZLevel::MIDLEGROUND);
+    currentLayer->addChild(creature_weapon->getSprite(),SceneZOrder::MIDLEGROUND);
+    currentLayer->addChild(creature_weapon->getDammageSprite(),SceneZOrder::MIDLEGROUND);
 }
 
 void Creature::losingStamina(){
@@ -663,14 +663,34 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::INTERACTING:{
         creature_sprite->stopAllActions();
         bool isIntersection = false;
-        for (const auto& lI : WorldProperties::levelItems){
+        for (const auto& lI : WorldProperties::dynamicObj){
             //Will open door if creature neer by, it's a door and buttom E pressed
-            if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "door"){
-                isIntersection = true;
+            if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "door_open0.png"){
+                //Door closed
+                if (lI.second.spr->getPhysicsBody()->getCollisionBitmask() == 0x01){
+                    lI.second.spr->runAction(WorldProperties::actionPool.find(lI.second.typeAction)->second->clone());
+                    lI.second.spr->getPhysicsBody()->setPositionOffset(cocos2d::Vec2(10,0));
+                    lI.second.spr->getPhysicsBody()->setCollisionBitmask(0);
+                }
+                //Door opened
+                else {
+                    lI.second.spr->runAction(WorldProperties::actionPool.find(lI.second.typeAction)->second->clone()->reverse());
+                    lI.second.spr->getPhysicsBody()->setPositionOffset(cocos2d::Vec2(-10,0));
+                    lI.second.spr->getPhysicsBody()->setCollisionBitmask(0x01);
+                }
+            }
+            //Will activate something
+            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "lever0.png"){
+                //Execute once
+                if (lI.second.target->getNumberOfRunningActions() == 0){
+                    lI.second.spr->runAction(WorldProperties::actionPool.find(lI.second.typeAction)->second->clone());
+                    lI.second.target->runAction(WorldProperties::actionPool.find("moveV")->second->clone());//Implement targetAction
+                }
+                OUT("lever\n");
             }
             //Will climbin on stair if creature neer by, it's a stair and buttom E pressed
-            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second) && lI.first == "stair"){
-                isIntersection = true;
+            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "empty.png"){
+                OUT("ss\n");
             }
         
         }

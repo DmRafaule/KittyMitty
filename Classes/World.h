@@ -23,24 +23,25 @@ public:
    virtual ~Level();
    virtual void update(float dt) override;
 private:
-   void loadChunk(std::string chunkPath,std::string chunkBackground);
-   void unloadChunk();
+   void switchLevel(const LevelNonePhysicalObj& lvl);
+   void loadLevel(std::string chunkPath,std::string chunkBackground);
+   void unloadLevel();
 
-   void initLevelLayers(std::string chunkPath);
-   void initLevelObjects();
-   void initDynamicObjects();
-   void initDynamicActions();
-   void initBackground(std::string chunkBackground);
-   void initCreatures();
+   void parseLevelLayers(std::string chunkPath);//Parse data from .tmx file to game(about layers)
+   void parseLevelObjects();//Parse data from .tmx file to game(about objects) and init static obj
+   void initDynamicObjects();//Init dynamic obj
+   void initPoolActions();//push up to poolActions all needed actions
+   void initBackground(std::string chunkBackground);//Init bg image
+   void initCreatures();//Init Creatures on level
+
+   void addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr);//Add animation to poolActions
 private:
    cocos2d::TMXTiledMap* level;
    cocos2d::TMXLayer* level_layer_midleground;
    std::vector<cocos2d::Node*> level_bodies;
    std::vector<cocos2d::Sprite*> level_dynamic_obj;
+   cocos2d::Sprite* level_bgSprite;
    GameLayer* currentLayer;
-   cocos2d::Sprite* backgroundSprite;
-   std::map<std::string,cocos2d::Action*> actionPool;
 
    float scaleOffset;
-   uint  creatureIndex;//It has to be in creature class
 };

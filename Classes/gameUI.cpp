@@ -341,7 +341,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction){
             unsetTarget();
         }
     });
-    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHead");
+    currentLayer->addChild(targetChoser,SceneZOrder::USER_INTERFACE,"tHead");
 
     /*This attacks will trigged ability attacke a upper torse*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingUpperTorse.png");
@@ -352,7 +352,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction){
         ControlTargeting::target = PartCreatureType::UPPER_TORSE;
         unsetTarget();
     });
-    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tUpperT");
+    currentLayer->addChild(targetChoser,SceneZOrder::USER_INTERFACE,"tUpperT");
     /*This attacks will trigged ability attacke a bottom torse*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingBottomTorse.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -362,7 +362,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction){
         ControlTargeting::target = PartCreatureType::BUTTOM_TORSE;
         unsetTarget();
     });
-    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tBottomT");
+    currentLayer->addChild(targetChoser,SceneZOrder::USER_INTERFACE,"tBottomT");
     /*This attacks will trigged ability attacke a left leg*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingLeg.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -372,7 +372,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction){
         ControlTargeting::target = PartCreatureType::LEG_LEFT;
         unsetTarget();
     });
-    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tLegL");
+    currentLayer->addChild(targetChoser,SceneZOrder::USER_INTERFACE,"tLegL");
     /*This attacks will trigged ability attacke a right leg*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingLeg.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -382,7 +382,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction){
         ControlTargeting::target = PartCreatureType::LEG_RIGHT;
         unsetTarget();
     });
-    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tLegR");
+    currentLayer->addChild(targetChoser,SceneZOrder::USER_INTERFACE,"tLegR");
     /*This attacks will trigged ability attacke a left hand*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingHand.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -393,7 +393,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction){
         ControlTargeting::target = PartCreatureType::HAND_LEFT;
         unsetTarget();
     });
-    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHandL");
+    currentLayer->addChild(targetChoser,SceneZOrder::USER_INTERFACE,"tHandL");
     /*This attacks will trigged ability attacke a right hand*/
     targetChoser = cocos2d::ui::Button::create("textures/targetingHand.png");
     targetChoser->getRendererNormal()->getTexture()->setTexParameters(tpar);
@@ -404,7 +404,7 @@ void ControlTargeting::setTarget(DirectionAttacke direction){
         ControlTargeting::target = PartCreatureType::HAND_RIGHT;
         unsetTarget();
     });
-    currentLayer->addChild(targetChoser,ZLevel::USER_INTERFACE,"tHandR");
+    currentLayer->addChild(targetChoser,SceneZOrder::USER_INTERFACE,"tHandR");
     
 }
 void ControlTargeting::unsetTarget(){

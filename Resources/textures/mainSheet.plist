@@ -64,6 +64,21 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
+            <key>empty.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{1,-1}</string>
+                <key>spriteSize</key>
+                <string>{3,3}</string>
+                <key>spriteSourceSize</key>
+                <string>{1,1}</string>
+                <key>textureRect</key>
+                <string>{{101,49},{3,3}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
             <key>enemy.png</key>
             <dict>
                 <key>aliases</key>
@@ -243,7 +258,7 @@
             <key>size</key>
             <string>{110,120}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:6d22fbdf5d094bf10f225959bc8154ff:ab9e72327ee2331a98e4add9fab98a00:b5c3f50db41091b09fa78d282de805b5$</string>
+            <string>$TexturePacker:SmartUpdate:f36a7915ac3529ddb1d49e07f93a9461:299ff75686c2153043dcd5b049883731:b5c3f50db41091b09fa78d282de805b5$</string>
             <key>textureFileName</key>
             <string>mainSheet.png</string>
         </dict>

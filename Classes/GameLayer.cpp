@@ -5,14 +5,9 @@
 #include "Creature.h"
 
 
-std::string                 SceneEntities::player = "player";
-std::string                 SceneEntities::ball = "ball";
-std::string                 SceneEntities::ball_attacke = "ball_attacke";
-std::vector<std::string>    SceneEntities::enemy(0);
-std::string                 SceneEntities::text = "text";
-std::string                 SceneEntities::ui = "ui";
-std::string                 SceneEntities::gamesession = "gamesession";
-std::string                 SceneEntities::bg = "background";
+std::string                 SceneLayer::ui = "ui";
+std::string                 SceneLayer::gamesession = "gamesession";
+std::string                 SceneLayer::bg = "background";
 
 
 
@@ -49,34 +44,38 @@ bool GameLayer::init(){
 }
 void GameLayer::initLayers(){
     cocos2d::Layer* gameSessionLayer = cocos2d::Layer::create();
-    this->addChild(gameSessionLayer,ZLevel::MIDLEGROUND,SceneEntities::gamesession);
+    this->addChild(gameSessionLayer,SceneZOrder::MIDLEGROUND,SceneLayer::gamesession);
     cocos2d::Layer* UILayer = cocos2d::Layer::create();
-    this->addChild(UILayer,ZLevel::USER_INTERFACE,SceneEntities::ui);
+    this->addChild(UILayer,SceneZOrder::USER_INTERFACE,SceneLayer::ui);
     cocos2d::Layer* BGLayer = cocos2d::Layer::create();
-    this->addChild(BGLayer,ZLevel::BACKGROUND,SceneEntities::bg);
+    this->addChild(BGLayer,SceneZOrder::BACKGROUND,SceneLayer::bg);
 }
 void GameLayer::initWorld(){
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
-    cocos2d::SpriteBatchNode* spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
-    this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/mainSheet.png"));
 
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/worldObj/worldObjSheet.plist");
-    cocos2d::SpriteBatchNode* wo = cocos2d::SpriteBatchNode::create("textures/worldObj/worldObjSheet.png");
-    this->getChildByName(SceneEntities::gamesession)->addChild(wo);
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/worldObj/worldObjSheet.png"));
     
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/door/doorSheet.plist");
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/animations/door/doorSheet.png"));
+
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/lever/leverSheet.plist");
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/animations/lever/leverSheet.png"));
+
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 
     world = new World(0,this);
 }
 void GameLayer::intCreatures(){
         
-    
-    player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::playerSpawnPoint,this->getChildByName(SceneEntities::gamesession),2);
-    player->setWeapon(WeaponType::SWORD); 
+    //Wrong position have to remove creature spawn point
+    player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::creatureObj.find(CreatureInfo::Type::KITTYMITTY)->second.point,this->getChildByName(SceneLayer::gamesession),2);
+    player->setWeapon((WeaponType)WorldProperties::creatureObj.find(CreatureInfo::Type::KITTYMITTY)->second.typeWepon); 
 
     
     /*Init camera. And set on player*/
-    this->getChildByName(SceneEntities::gamesession)->runAction(
+    this->getChildByName(SceneLayer::gamesession)->runAction(
         cocos2d::Follow::createWithOffset(
             player->getCreatureSprite(),
             -100,-100,
@@ -90,10 +89,10 @@ void GameLayer::intCreatures(){
     );
 }
 void GameLayer::initUI(){
-    ctarg = new ControlTargeting(player,this->getChildByName(SceneEntities::ui));
-    ckeys = new ControlKeys(player,cocos2d::Vec2(0.15,0.1),this->getChildByName(SceneEntities::ui));
-    cattc = new ControlAttc(player,this->getChildByName(SceneEntities::ui));
-    shows = new ShowStats(player,&enemy,this->getChildByName(SceneEntities::gamesession));
+    ctarg = new ControlTargeting(player,this->getChildByName(SceneLayer::ui));
+    ckeys = new ControlKeys(player,cocos2d::Vec2(0.15,0.1),this->getChildByName(SceneLayer::ui));
+    cattc = new ControlAttc(player,this->getChildByName(SceneLayer::ui));
+    shows = new ShowStats(player,&enemy,this->getChildByName(SceneLayer::gamesession));
 }
 void GameLayer::initListeners(){
     /*Init listeners*/
