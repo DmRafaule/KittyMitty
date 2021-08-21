@@ -39,7 +39,12 @@
     "project": "World.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "area0/level0.tmx"
+        "area0/level0.tmx",
+        "area0/im.tmx",
+        "area0/level1.tmx",
+        "area0/level2.tmx",
+        "area0/tilesetMidlegr.tsx",
+        "/home/dimond/Projects/KittyMitty/archive/textures/animations/animations.tsx"
     ],
     "tileset.embedInMap": true,
     "tileset.tileSize": {
