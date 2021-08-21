@@ -47,6 +47,8 @@ struct CreatureInfo{
         ON_WALL,
         LETGO,
         LAND_ON,
+        CLIMBING,
+        DEATH,
     };
     enum DMove{
         OUT   =  3,
@@ -134,11 +136,13 @@ struct LevelPhysicalObj{
     LevelPhysicalObj(std::string frameName,std::string typeAction,cocos2d::Rect rect,std::string nameTarget);
     std::string frameName;
     std::string typeAction;
-    std::string nameTarget;
+    uint targetID;
     std::string targetAction;
     cocos2d::Rect rect;
     cocos2d::Sprite* spr;
     cocos2d::Node* target;
+    uint id;
+    bool isCollided;
 };
 struct WorldProperties{
     static cocos2d::Size screenSize;

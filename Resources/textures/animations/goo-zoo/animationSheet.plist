@@ -15,9 +15,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,1},{16,30}}</string>
+                <string>{{115,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_attack1.png</key>
             <dict>
@@ -30,9 +30,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,33},{16,30}}</string>
+                <string>{{147,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_attack2.png</key>
             <dict>
@@ -45,9 +45,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{73,1},{16,30}}</string>
+                <string>{{179,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_attack3.png</key>
             <dict>
@@ -60,9 +60,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{73,33},{16,30}}</string>
+                <string>{{211,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_attack4.png</key>
             <dict>
@@ -75,9 +75,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{73,1},{16,30}}</string>
+                <string>{{179,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_attack5.png</key>
             <dict>
@@ -90,9 +90,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,33},{16,30}}</string>
+                <string>{{147,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_braking0.png</key>
             <dict>
@@ -105,9 +105,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{1,35},{16,28}}</string>
+                <string>{{243,1},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_braking1.png</key>
             <dict>
@@ -120,9 +120,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{19,35},{16,28}}</string>
+                <string>{{273,1},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_braking2.png</key>
             <dict>
@@ -135,9 +135,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{1,35},{16,28}}</string>
+                <string>{{243,1},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_braking3.png</key>
             <dict>
@@ -150,7 +150,172 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{19,35},{16,28}}</string>
+                <string>{{273,1},{16,28}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death0.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-1}</string>
+                <key>spriteSize</key>
+                <string>{16,30}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{115,1},{16,30}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-1}</string>
+                <key>spriteSize</key>
+                <string>{16,30}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{303,1},{16,30}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death10.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-10}</string>
+                <key>spriteSize</key>
+                <string>{16,12}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{16,12}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>goo-zoo_animation_death2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-1}</string>
+                <key>spriteSize</key>
+                <string>{16,30}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{335,1},{16,30}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-2}</string>
+                <key>spriteSize</key>
+                <string>{16,28}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{367,1},{16,28}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death4.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-2}</string>
+                <key>spriteSize</key>
+                <string>{16,28}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{397,1},{16,28}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death5.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-4}</string>
+                <key>spriteSize</key>
+                <string>{16,24}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{427,1},{16,24}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death6.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-5}</string>
+                <key>spriteSize</key>
+                <string>{16,22}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{453,1},{16,22}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death7.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-7}</string>
+                <key>spriteSize</key>
+                <string>{16,18}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{477,1},{16,18}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>goo-zoo_animation_death8.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-9}</string>
+                <key>spriteSize</key>
+                <string>{16,14}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{37,1},{16,14}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>goo-zoo_animation_death9.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-10}</string>
+                <key>spriteSize</key>
+                <string>{16,12}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,32}</string>
+                <key>textureRect</key>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -165,9 +330,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,1},{16,30}}</string>
+                <string>{{115,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_getdammage1.png</key>
             <dict>
@@ -180,9 +345,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{91,1},{16,30}}</string>
+                <string>{{1,15},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_getdammage2.png</key>
             <dict>
@@ -195,9 +360,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{91,33},{16,30}}</string>
+                <string>{{33,17},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_getdammage3.png</key>
             <dict>
@@ -210,9 +375,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{109,1},{16,30}}</string>
+                <string>{{65,17},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_getdammage4.png</key>
             <dict>
@@ -225,9 +390,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{91,1},{16,30}}</string>
+                <string>{{1,15},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_idle0.png</key>
             <dict>
@@ -240,9 +405,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,1},{16,30}}</string>
+                <string>{{115,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_idle1.png</key>
             <dict>
@@ -255,9 +420,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{16,32}}</string>
+                <string>{{97,19},{16,32}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_idle2.png</key>
             <dict>
@@ -270,9 +435,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{109,33},{16,30}}</string>
+                <string>{{131,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_idle3.png</key>
             <dict>
@@ -285,9 +450,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{19,1},{16,32}}</string>
+                <string>{{163,19},{16,32}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_idle4.png</key>
             <dict>
@@ -300,9 +465,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{127,1},{16,30}}</string>
+                <string>{{197,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_idle5.png</key>
             <dict>
@@ -315,9 +480,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{37,1},{16,32}}</string>
+                <string>{{229,19},{16,32}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_idle6.png</key>
             <dict>
@@ -330,9 +495,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{127,33},{16,30}}</string>
+                <string>{{263,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_infall0.png</key>
             <dict>
@@ -345,9 +510,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{145,1},{16,30}}</string>
+                <string>{{295,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_infall1.png</key>
             <dict>
@@ -360,9 +525,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{145,33},{16,30}}</string>
+                <string>{{327,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_infall2.png</key>
             <dict>
@@ -375,9 +540,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{163,1},{16,30}}</string>
+                <string>{{359,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_injump0.png</key>
             <dict>
@@ -390,9 +555,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,1},{16,30}}</string>
+                <string>{{115,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_injump1.png</key>
             <dict>
@@ -405,9 +570,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{163,33},{16,30}}</string>
+                <string>{{391,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_injump2.png</key>
             <dict>
@@ -420,7 +585,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{289,49},{14,28}}</string>
+                <string>{{55,1},{14,28}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -435,7 +600,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{319,49},{14,28}}</string>
+                <string>{{85,1},{14,28}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -450,9 +615,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{181,1},{16,30}}</string>
+                <string>{{423,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_injump5.png</key>
             <dict>
@@ -465,9 +630,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{181,33},{16,30}}</string>
+                <string>{{455,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_injump6.png</key>
             <dict>
@@ -480,9 +645,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{199,1},{16,30}}</string>
+                <string>{{1,33},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_landon0.png</key>
             <dict>
@@ -495,9 +660,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{145,1},{16,30}}</string>
+                <string>{{295,19},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_landon1.png</key>
             <dict>
@@ -510,9 +675,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{37,35},{16,28}}</string>
+                <string>{{33,35},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_landon2.png</key>
             <dict>
@@ -525,9 +690,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{253,33},{16,28}}</string>
+                <string>{{63,35},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_landon3.png</key>
             <dict>
@@ -540,9 +705,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{325,19},{16,26}}</string>
+                <string>{{93,37},{16,26}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_landon4.png</key>
             <dict>
@@ -555,9 +720,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{271,1},{16,28}}</string>
+                <string>{{121,37},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_landon5.png</key>
             <dict>
@@ -570,9 +735,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{199,33},{16,30}}</string>
+                <string>{{151,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_landon6.png</key>
             <dict>
@@ -585,9 +750,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,1},{16,30}}</string>
+                <string>{{115,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_run0.png</key>
             <dict>
@@ -600,9 +765,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{271,31},{16,28}}</string>
+                <string>{{183,37},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_run1.png</key>
             <dict>
@@ -615,7 +780,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{289,1},{16,28}}</string>
+                <string>{{213,37},{16,28}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -630,7 +795,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{319,1},{16,28}}</string>
+                <string>{{243,37},{16,28}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -645,9 +810,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{289,19},{16,28}}</string>
+                <string>{{273,37},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_soaring0.png</key>
             <dict>
@@ -660,9 +825,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{217,1},{16,30}}</string>
+                <string>{{303,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_soaring1.png</key>
             <dict>
@@ -675,9 +840,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{307,19},{16,28}}</string>
+                <string>{{335,37},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_standup0.png</key>
             <dict>
@@ -690,9 +855,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{217,33},{16,30}}</string>
+                <string>{{365,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_standup1.png</key>
             <dict>
@@ -705,9 +870,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{235,1},{16,30}}</string>
+                <string>{{397,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_standup2.png</key>
             <dict>
@@ -720,9 +885,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{235,33},{16,30}}</string>
+                <string>{{429,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_standup3.png</key>
             <dict>
@@ -735,9 +900,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{253,1},{16,30}}</string>
+                <string>{{461,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_standup4.png</key>
             <dict>
@@ -750,9 +915,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,1},{16,30}}</string>
+                <string>{{115,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_startrun0.png</key>
             <dict>
@@ -765,9 +930,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{55,1},{16,30}}</string>
+                <string>{{115,1},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_startrun1.png</key>
             <dict>
@@ -780,9 +945,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{253,1},{16,30}}</string>
+                <string>{{461,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_startrun2.png</key>
             <dict>
@@ -795,9 +960,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{235,33},{16,30}}</string>
+                <string>{{429,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_startrun3.png</key>
             <dict>
@@ -810,9 +975,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{235,1},{16,30}}</string>
+                <string>{{397,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_startrun4.png</key>
             <dict>
@@ -825,9 +990,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{217,33},{16,30}}</string>
+                <string>{{365,37},{16,30}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_stepsrun0.png</key>
             <dict>
@@ -840,9 +1005,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{271,31},{16,28}}</string>
+                <string>{{183,37},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>goo-zoo_animation_stepsrun1.png</key>
             <dict>
@@ -855,7 +1020,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{289,1},{16,28}}</string>
+                <string>{{213,37},{16,28}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -870,7 +1035,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{319,1},{16,28}}</string>
+                <string>{{243,37},{16,28}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -885,9 +1050,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,32}</string>
                 <key>textureRect</key>
-                <string>{{289,19},{16,28}}</string>
+                <string>{{273,37},{16,28}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
         </dict>
         <key>metadata</key>
@@ -901,9 +1066,9 @@
             <key>realTextureFileName</key>
             <string>animationSheet.png</string>
             <key>size</key>
-            <string>{348,64}</string>
+            <string>{496,54}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:b56e8c29bdcc39de373690364824c726:7e38ea385a8bb05471ee689d8896ef54:ab537d3f677981f9b864136542960916$</string>
+            <string>$TexturePacker:SmartUpdate:5255dcf4569d43da204270b9aed62c9f:7ed5c05b1c4daaf79d9d8f7b7ecd7867:ab537d3f677981f9b864136542960916$</string>
             <key>textureFileName</key>
             <string>animationSheet.png</string>
         </dict>

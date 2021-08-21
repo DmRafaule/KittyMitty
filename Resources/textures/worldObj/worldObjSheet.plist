@@ -15,7 +15,22 @@
                 <key>spriteSourceSize</key>
                 <string>{36,32}</string>
                 <key>textureRect</key>
-                <string>{{35,35},{30,26}}</string>
+                <string>{{97,69},{30,26}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>blood_up.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{32,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{83,1},{32,32}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -30,7 +45,7 @@
                 <key>spriteSourceSize</key>
                 <string>{80,32}</string>
                 <key>textureRect</key>
-                <string>{{35,1},{80,32}}</string>
+                <string>{{1,1},{80,32}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -45,9 +60,99 @@
                 <key>spriteSourceSize</key>
                 <string>{36,32}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{36,32}}</string>
+                <string>{{1,35},{36,32}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
+            </dict>
+            <key>power_up.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{32,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{1,69},{32,32}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>scroll_legendary.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{26,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{73,35},{26,32}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>scroll_rare.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{26,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{101,35},{26,32}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>scroll_usual.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{26,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{69,69},{26,32}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>speed_up.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{32,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{39,35},{32,32}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>stamina_up.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{32,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{35,69},{32,32}}</string>
+                <key>textureRotated</key>
+                <false/>
             </dict>
         </dict>
         <key>metadata</key>
@@ -61,9 +166,9 @@
             <key>realTextureFileName</key>
             <string>worldObjSheet.png</string>
             <key>size</key>
-            <string>{116,62}</string>
+            <string>{128,102}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:af3ed3b36d1f1af8ae5cec498ffb0a87:60e8aaf6127346ca705de09f2963964d:02ebaf0f0a61fc0a39d900651302176b$</string>
+            <string>$TexturePacker:SmartUpdate:0e6e9d7ee488adf913bbfc8342c21e98:9f08da826afaf0f1ba66a8a1fda9e5eb:7ed65783510e651f0d4d750712c715cd$</string>
             <key>textureFileName</key>
             <string>worldObjSheet.png</string>
         </dict>

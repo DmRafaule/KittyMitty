@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="242">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="253">
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -511,13 +511,15 @@
   <object id="165" name="stair" type="dynamicObj" x="16.5" y="543.25" width="20.75" height="768.5">
    <properties>
     <property name="frameName" value="empty.png"/>
-    <property name="typeAction" value="climbing"/>
+    <property name="isCollided" type="bool" value="false"/>
+    <property name="typeAction" value="nill"/>
    </properties>
   </object>
   <object id="166" name="stair" type="dynamicObj" x="524.818" y="1200.23" width="19.1818" height="110.773">
    <properties>
     <property name="frameName" value="empty.png"/>
-    <property name="typeAction" value="climbing"/>
+    <property name="isCollided" type="bool" value="false"/>
+    <property name="typeAction" value="nill"/>
    </properties>
   </object>
   <object id="170" name="floor" x="1388.33" y="1265.42" width="222.333" height="4.167"/>
@@ -583,53 +585,54 @@
   <object id="195" name="stair" type="dynamicObj" x="1355.91" y="1265.11" width="19.1818" height="140.773">
    <properties>
     <property name="frameName" value="empty.png"/>
-    <property name="typeAction" value="climbing"/>
+    <property name="isCollided" type="bool" value="false"/>
+    <property name="typeAction" value="nill"/>
    </properties>
   </object>
   <object id="208" name="roof" x="1119.28" y="1128.49" width="505.614" height="9.833"/>
-  <object id="219" name="CreatureSpawnPoint" x="98" y="1290">
+  <object id="219" name="hero" type="creatureObj" x="184.33" y="510.67">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="233" name="CreatureSpawnPoint" x="611" y="424">
+  <object id="233" name="kool-hash" type="creatureObj" x="611" y="424">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="234" name="CreatureSpawnPoint" x="361.5" y="493">
+  <object id="234" name="kool-hash" type="creatureObj" x="361.5" y="493">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="0"/>
    </properties>
    <point/>
   </object>
-  <object id="235" name="CreatureSpawnPoint" x="469" y="1034">
+  <object id="235" name="kool-hash" type="creatureObj" x="469" y="1034">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="1"/>
    </properties>
    <point/>
   </object>
-  <object id="236" name="CreatureSpawnPoint" x="447" y="1490">
+  <object id="236" name="kool-hash" type="creatureObj" x="447" y="1490">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="237" name="CreatureSpawnPoint" x="209" y="1265">
+  <object id="237" name="kool-hash" type="creatureObj" x="209" y="1265">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="1"/>
    </properties>
    <point/>
   </object>
-  <object id="238" name="CreatureSpawnPoint" x="374" y="1260">
+  <object id="238" name="kool-hash" type="creatureObj" x="374" y="1260">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="2"/>
@@ -639,13 +642,15 @@
   <object id="239" name="door" type="dynamicObj" x="1085.08" y="1204.83" width="23.1667" height="57">
    <properties>
     <property name="frameName" value="door_open0.png"/>
-    <property name="typeAction" value="animationOpen"/>
+    <property name="isCollided" type="bool" value="true"/>
+    <property name="typeAction" value="nill"/>
    </properties>
   </object>
   <object id="240" name="door" type="dynamicObj" x="-4.25002" y="1460.5" width="23.1667" height="57">
    <properties>
     <property name="frameName" value="door_open0.png"/>
-    <property name="typeAction" value="animationOpen"/>
+    <property name="isCollided" type="bool" value="true"/>
+    <property name="typeAction" value="nill"/>
    </properties>
   </object>
  </objectgroup>

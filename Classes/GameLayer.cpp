@@ -16,8 +16,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -62,6 +62,9 @@ void GameLayer::initWorld(){
 
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/lever/leverSheet.plist");
     this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/animations/lever/leverSheet.png"));
+
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/button/buttonSheet.plist");
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/animations/button/buttonSheet.png"));
 
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 

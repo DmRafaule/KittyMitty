@@ -29,7 +29,6 @@ LevelPhysicalObj::LevelPhysicalObj(std::string frameName,std::string typeAction,
    this->frameName = frameName; 
    this->typeAction = typeAction;
    this->rect = rect;
-   this->nameTarget = nameTarget;
 }
 World::World(){};
 World::World(uint levelNum,GameLayer* currentLayer){
@@ -86,7 +85,7 @@ void Level::parseLevelObjects(){
       float height = dict["height"].asFloat() * scaleOffset;
       cocos2d::Rect rect(x,y,width,height);
       
-      parseStaticPhysicalObj(dict,rect);
+      parseStaticPhysicalObj(dict,rect);//Maybe in the future you need add type for all physical object, maybe
       
       if (dict["type"].asString() == "dynamicObj"){
          parseDynObjects(dict,rect);
@@ -94,22 +93,21 @@ void Level::parseLevelObjects(){
       else if (dict["type"].asString() == "staticObj"){
          parseStaticNonePhysicalObj(dict,rect);
       }
-      /*Define where will appears creatures*/
-      else if (dict["name"].asString() == "CreatureSpawnPoint"){
-         WorldProperties::creatureObj.emplace(static_cast<CreatureInfo::Type>(dict["typeCreature"].asInt()),LevelCreatures(dict["typeCreature"].asInt(),dict["typeWeapon"].asInt(),cocos2d::Vec2(x,y)));
+      else if (dict["type"].asString() == "creatureObj"){
+         parseCreatureObj(dict,rect);         
       }
-      level_bodies.back()->setPosition(x, y );
-      currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_bodies.back());
    }
 }
 void Level::parseDynObjects(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
    LevelPhysicalObj obj;
    obj.frameName     = dict["frameName"].asString();
    obj.typeAction    = dict["typeAction"].asString();
-   obj.nameTarget    = dict["nameTarget"].asString();
+   obj.targetID      = dict["targetID"].asInt();
    obj.targetAction  = dict["targetAction"].asString();
+   obj.isCollided    = dict["isCollided"].asBool();
+   obj.id            = dict["id"].asUnsignedInt();
    obj.rect          = rect;
-   
+
    WorldProperties::dynamicObj.emplace(dict["name"].asString(),obj);
 }
 void Level::parseStaticNonePhysicalObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
@@ -168,6 +166,16 @@ void Level::parseStaticPhysicalObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect)
       poligon->setCollisionBitmask(0x04);
       level_bodies.back()->setPhysicsBody(poligon);
    }
+   level_bodies.back()->setPosition(rect.origin.x, rect.origin.y );
+   currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_bodies.back());
+}
+void Level::parseCreatureObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
+   LevelCreatures obj;
+   obj.typeCr     = dict["typeCreature"].asInt();
+   obj.typeWepon  = dict["typeWeapon"].asInt();
+   obj.point      = rect.origin;
+
+   WorldProperties::creatureObj.emplace(static_cast<CreatureInfo::Type>(obj.typeCr),obj);
 }
 void Level::addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr){
    auto animation = cocos2d::Animation::create();
@@ -185,6 +193,8 @@ void Level::addAnimation(std::string anim_name,uint frame_number,float delay,boo
 void Level::initPoolActions(){
    addAnimation("door_open",5,0.1,false);
    addAnimation("lever",6,0.1,false);
+   addAnimation("button_push",3,0.1,true);
+
    cocos2d::Action* MoveHorisontal = cocos2d::RepeatForever::create(cocos2d::Sequence::create(PhysicMoveBy::create(2,cocos2d::Vec2(-50,0)),PhysicMoveBy::create(2,cocos2d::Vec2(50,0)),nullptr));
    cocos2d::Action* MoveVertical   = cocos2d::RepeatForever::create(cocos2d::Sequence::create(PhysicMoveBy::create(2,cocos2d::Vec2(0,100)),PhysicMoveBy::create(2,cocos2d::Vec2(0,-100)),nullptr));
    cocos2d::Action* RotateClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,10));//Here is a bug some platform expand their angelSpeed very fast
@@ -210,17 +220,12 @@ void Level::initDynamicObjects(){
       //Transform position
       spr->setPosition(obj.second.rect.origin.x + obj.second.rect.size.width/2,obj.second.rect.origin.y + obj.second.rect.size.height/2);
       //Init physic body like floor
-         auto spr_ph = cocos2d::PhysicsBody::createBox(obj.second.rect.size/2);
-         spr_ph->setDynamic(false);
-         spr_ph->setGravityEnable(false);
-         if (obj.first == "door" || obj.first == "platform"){
-            spr_ph->setCollisionBitmask(0x01);
-         }
-         else {
-            spr_ph->setCollisionBitmask(0x00);
-         }
-         spr_ph->setContactTestBitmask(0xFF);
-         spr->setPhysicsBody(spr_ph);
+      auto spr_ph = cocos2d::PhysicsBody::createBox(obj.second.rect.size/2);
+      spr_ph->setDynamic(false);
+      spr_ph->setGravityEnable(false);
+      spr_ph->setCollisionBitmask(obj.second.isCollided);
+      spr_ph->setContactTestBitmask(0xFF);
+      spr->setPhysicsBody(spr_ph);
       spr->setScale(scaleOffset);
       /*This is prevent of bluring my textures*/
       cocos2d::Texture2D::TexParams tpar = {
@@ -229,21 +234,15 @@ void Level::initDynamicObjects(){
           cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE,
           cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
       };
-      //Init action for this object
-      if (obj.second.frameName == "platform_s.png")
-         spr->runAction(WorldProperties::actionPool.find(obj.second.typeAction)->second->clone());
       spr->getTexture()->setTexParameters(tpar);
       level_dynamic_obj.push_back(spr);
-      if (obj.second.frameName == "platform_s.png"){
-         currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_dynamic_obj.back(),0,obj.second.nameTarget);
-      }
-      else 
-         currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_dynamic_obj.back());
+      //Init action for this object
+      spr->runAction(WorldProperties::actionPool.find(obj.second.typeAction)->second->clone());
+      currentLayer->getChildByName(SceneLayer::gamesession)->addChild(level_dynamic_obj.back(),0,obj.second.id+100);//100 because some game objects somewhere till 100
    }
+   //Set up target for targeting Obj(such as lever or buttons)
    for (auto & obj : WorldProperties::dynamicObj){
-      if (obj.first == "lever"){
-         obj.second.target = currentLayer->getChildByName(SceneLayer::gamesession)->getChildByName(obj.second.nameTarget);
-      }
+      obj.second.target = currentLayer->getChildByName(SceneLayer::gamesession)->getChildByTag(obj.second.targetID+100);
    }
 }
 void Level::initBackground(std::string chunkBackground){

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "area0/level0.tmx",
+    "activeFile": "area0/level1.tmx",
     "expandedProjectPaths": [
         ".",
         "area0"
@@ -32,8 +32,8 @@
             "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 155.33333333333337,
-                "y": 747.3333333333333
+                "x": 590,
+                "y": 963.3333333333334
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -45,11 +45,11 @@
             "scaleInEditor": 3
         },
         "area0/level1.tmx": {
-            "scale": 0.33,
+            "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 792.4242424242424,
-                "y": 801.5151515151515
+                "x": 200.33333333333331,
+                "y": 517.6666666666667
             }
         },
         "area0/level2.tmx": {
@@ -83,10 +83,10 @@
         "area0/level1.tmx"
     ],
     "project": "World.tiled-project",
-    "property.type": "string",
+    "property.type": "object",
     "recentFiles": [
-        "area0/level1.tmx",
         "area0/level0.tmx",
+        "area0/level1.tmx",
         "area0/im.tmx",
         "area0/level2.tmx",
         "area0/tilesetMidlegr.tsx",

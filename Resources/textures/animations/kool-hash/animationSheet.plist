@@ -45,7 +45,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{77,1},{10,14}}</string>
+                <string>{{101,17},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -60,7 +60,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{89,1},{10,14}}</string>
+                <string>{{109,33},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -75,7 +75,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,1},{10,14}}</string>
+                <string>{{113,17},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -90,7 +90,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{89,1},{10,14}}</string>
+                <string>{{109,33},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -105,7 +105,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{77,1},{10,14}}</string>
+                <string>{{101,17},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -135,7 +135,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,37},{10,16}}</string>
+                <string>{{31,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -150,7 +150,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{12,16}}</string>
+                <string>{{17,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -165,7 +165,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,19},{12,16}}</string>
+                <string>{{17,19},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -180,9 +180,174 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{29,1},{10,16}}</string>
+                <string>{{31,19},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
+            </dict>
+            <key>kool-hash_animation_climbing0.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{14,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{14,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>kool-hash_animation_climbing1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-1}</string>
+                <key>spriteSize</key>
+                <string>{14,14}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{101,1},{14,14}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>kool-hash_animation_climbing2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{14,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,19},{14,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>kool-hash_animation_climbing3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{14,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,37},{14,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>kool-hash_animation_death0.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{8,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,55},{8,16}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>kool-hash_animation_death1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-1}</string>
+                <key>spriteSize</key>
+                <string>{8,14}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{137,17},{8,14}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>kool-hash_animation_death2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-1,-2}</string>
+                <key>spriteSize</key>
+                <string>{10,12}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{153,49},{10,12}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>kool-hash_animation_death3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-1,-2}</string>
+                <key>spriteSize</key>
+                <string>{10,12}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{147,17},{10,12}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>kool-hash_animation_death4.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2,-3}</string>
+                <key>spriteSize</key>
+                <string>{12,10}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{159,15},{12,10}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>kool-hash_animation_death5.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2,-3}</string>
+                <key>spriteSize</key>
+                <string>{12,10}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{163,1},{12,10}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>kool-hash_animation_death6.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2,-4}</string>
+                <key>spriteSize</key>
+                <string>{12,8}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{165,45},{12,8}}</string>
+                <key>textureRotated</key>
+                <true/>
             </dict>
             <key>kool-hash_animation_getdammage0.png</key>
             <dict>
@@ -210,9 +375,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{125,37},{8,14}}</string>
+                <string>{{141,1},{8,14}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>kool-hash_animation_getdammage2.png</key>
             <dict>
@@ -225,7 +390,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{91,49},{8,14}}</string>
+                <string>{{133,49},{8,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -240,9 +405,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{125,37},{8,14}}</string>
+                <string>{{141,1},{8,14}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>kool-hash_animation_getdammage4.png</key>
             <dict>
@@ -285,7 +450,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{113,1},{10,14}}</string>
+                <string>{{117,1},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -300,9 +465,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{125,1},{10,14}}</string>
+                <string>{{109,49},{10,14}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>kool-hash_animation_idle3.png</key>
             <dict>
@@ -345,7 +510,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{113,1},{10,14}}</string>
+                <string>{{117,1},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -360,9 +525,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{125,13},{10,14}}</string>
+                <string>{{121,33},{10,14}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>kool-hash_animation_idle7.png</key>
             <dict>
@@ -390,9 +555,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{63,19},{8,16}}</string>
+                <string>{{73,55},{8,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>kool-hash_animation_infall1.png</key>
             <dict>
@@ -405,7 +570,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,19},{10,16}}</string>
+                <string>{{31,37},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -420,9 +585,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{63,19},{8,16}}</string>
+                <string>{{73,55},{8,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>kool-hash_animation_infall3.png</key>
             <dict>
@@ -435,7 +600,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{13,37},{10,16}}</string>
+                <string>{{43,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -465,7 +630,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{73,19},{8,16}}</string>
+                <string>{{79,37},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -480,7 +645,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,47},{8,14}}</string>
+                <string>{{143,49},{8,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -495,7 +660,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{83,17},{10,14}}</string>
+                <string>{{125,17},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -510,9 +675,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{111,35},{10,12}}</string>
+                <string>{{151,1},{10,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>kool-hash_animation_injump5.png</key>
             <dict>
@@ -525,7 +690,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{111,47},{10,12}}</string>
+                <string>{{155,31},{10,12}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -540,7 +705,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{83,33},{10,14}}</string>
+                <string>{{129,1},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -555,9 +720,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{123,47},{8,14}}</string>
+                <string>{{145,33},{8,14}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>kool-hash_animation_injump8.png</key>
             <dict>
@@ -570,7 +735,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{73,37},{8,16}}</string>
+                <string>{{89,37},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -585,7 +750,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,1},{12,16}}</string>
+                <string>{{17,37},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -600,7 +765,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{25,37},{10,16}}</string>
+                <string>{{43,19},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -615,7 +780,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{27,19},{10,16}}</string>
+                <string>{{43,37},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -630,7 +795,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{41,1},{10,16}}</string>
+                <string>{{55,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -645,9 +810,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{63,19},{8,16}}</string>
+                <string>{{73,55},{8,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>kool-hash_animation_landon1.png</key>
             <dict>
@@ -660,7 +825,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,47},{8,14}}</string>
+                <string>{{143,49},{8,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -675,7 +840,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{83,17},{10,14}}</string>
+                <string>{{125,17},{10,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -690,7 +855,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,47},{8,14}}</string>
+                <string>{{143,49},{8,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -705,9 +870,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{63,19},{8,16}}</string>
+                <string>{{73,55},{8,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>kool-hash_animation_landon5.png</key>
             <dict>
@@ -735,7 +900,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,1},{12,16}}</string>
+                <string>{{17,37},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -750,7 +915,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{39,19},{10,16}}</string>
+                <string>{{55,19},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -765,7 +930,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{37,37},{10,16}}</string>
+                <string>{{55,37},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -780,7 +945,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{39,19},{10,16}}</string>
+                <string>{{55,19},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -795,7 +960,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,1},{12,16}}</string>
+                <string>{{17,37},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -810,7 +975,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{73,55},{8,16}}</string>
+                <string>{{91,55},{8,16}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -825,7 +990,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{95,17},{8,16}}</string>
+                <string>{{91,1},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -840,7 +1005,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{105,17},{8,16}}</string>
+                <string>{{91,19},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -855,7 +1020,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{95,17},{8,16}}</string>
+                <string>{{91,1},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -870,7 +1035,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{115,17},{8,16}}</string>
+                <string>{{99,37},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -885,7 +1050,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{53,1},{10,16}}</string>
+                <string>{{67,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -900,7 +1065,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{51,19},{10,16}}</string>
+                <string>{{67,19},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -915,7 +1080,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{53,1},{10,16}}</string>
+                <string>{{67,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -930,7 +1095,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{49,37},{10,16}}</string>
+                <string>{{67,37},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -945,7 +1110,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{115,17},{8,16}}</string>
+                <string>{{99,37},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -1020,7 +1185,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{115,17},{8,16}}</string>
+                <string>{{99,37},{8,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -1035,7 +1200,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{61,37},{10,16}}</string>
+                <string>{{79,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -1050,9 +1215,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{125,25},{10,14}}</string>
+                <string>{{121,49},{10,14}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>kool-hash_animation_stepsrun2.png</key>
             <dict>
@@ -1065,9 +1230,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{95,35},{10,14}}</string>
+                <string>{{133,33},{10,14}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>kool-hash_animation_stepsrun3.png</key>
             <dict>
@@ -1080,7 +1245,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{65,1},{10,16}}</string>
+                <string>{{79,19},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -1096,9 +1261,9 @@
             <key>realTextureFileName</key>
             <string>animationSheet.png</string>
             <key>size</key>
-            <string>{140,64}</string>
+            <string>{174,64}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:59e804ac6e8073bf6e27f5d5ad87f5c0:c02e64ecd04b64f46a6da6960614ee94:ab537d3f677981f9b864136542960916$</string>
+            <string>$TexturePacker:SmartUpdate:4e7c11733ee08ab9c37b764176aed618:edf37f562b075f678dbdf165f13320ec:ab537d3f677981f9b864136542960916$</string>
             <key>textureFileName</key>
             <string>animationSheet.png</string>
         </dict>

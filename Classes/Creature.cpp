@@ -84,7 +84,7 @@ void Creature::initStats(){
     switch(creature_info.type){
         case CreatureInfo::Type::KITTYMITTY:{
             this->creature_info.animation.animationForWho = "hero";
-            this->creature_info.animation.framesIdleNum   = std::vector<uint>({15,4,7,4,2,7,2,5,5,2,4,4,5,5});
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({15,4,7,4,2,7,2,5,5,2,4,4,5,5,4,8});
 
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
             creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
@@ -106,7 +106,7 @@ void Creature::initStats(){
         }
         case CreatureInfo::Type::KOOL_HASH:{
             this->creature_info.animation.animationForWho = "kool-hash";
-            this->creature_info.animation.framesIdleNum   = std::vector<uint>({8,3,5,3,4,9,4,6,5,4,4,4,8,5});
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({8,3,5,3,4,9,4,6,5,4,4,4,8,5,4,7});
 
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
             creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
@@ -128,7 +128,7 @@ void Creature::initStats(){
         }
         case CreatureInfo::Type::ERENU_DOO:{
             this->creature_info.animation.animationForWho = "erenu-doo";
-            this->creature_info.animation.framesIdleNum   = std::vector<uint>({9,4,5,4,8,0,4,10,0,4,3,0,5,5});
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({9,4,5,4,8,0,4,10,0,4,3,0,5,5,0,10});
 
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
             creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
@@ -150,7 +150,7 @@ void Creature::initStats(){
         }
         case CreatureInfo::Type::GOO_ZOO:{
             this->creature_info.animation.animationForWho = "goo-zoo";
-            this->creature_info.animation.framesIdleNum   = std::vector<uint>({7,5,4,5,4,7,3,7,0,2,4,0,6,5});
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({7,5,4,5,4,7,3,7,0,2,4,0,6,5,0,11});
 
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
             creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
@@ -172,7 +172,7 @@ void Creature::initStats(){
         }
         case CreatureInfo::Type::AVR:{
             this->creature_info.animation.animationForWho = "avr";
-            this->creature_info.animation.framesIdleNum   = std::vector<uint>({12,3,4,3,7,8,8,6,5,2,4,4,6,5});
+            this->creature_info.animation.framesIdleNum   = std::vector<uint>({12,3,4,3,7,8,8,6,5,2,4,4,6,5,4,6});
 
             creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
             creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
@@ -213,6 +213,8 @@ void Creature::initAnimations(){
     addAnimation("_animation_jumpfromwall",creature_info.animation.framesIdleNum[11],0.1,false);
     addAnimation("_animation_attack",creature_info.animation.framesIdleNum[12],0.07,false);
     addAnimation("_animation_getdammage",creature_info.animation.framesIdleNum[13],0.1,false);
+    addAnimation("_animation_climbing",creature_info.animation.framesIdleNum[14],0.2,false);
+    addAnimation("_animation_death",creature_info.animation.framesIdleNum[15],0.2,false);
 
     
 }
@@ -406,6 +408,8 @@ void Creature::setStatistics(DebugStatistics mode){
                           creature_info.state == CreatureInfo::State::LETGO ? "LETGO\n" :
                           creature_info.state == CreatureInfo::State::MOVE_BY_STEPS ? "MOVE_BY_STEPS\n" :
                           creature_info.state == CreatureInfo::State::SOARING ? "SOARING\n" :
+                          creature_info.state == CreatureInfo::State::CLIMBING ? "CLIMBING\n" :
+                          creature_info.state == CreatureInfo::State::DEATH ? "DEATH\n" :
                           "UNDEFIND\n");    
     
     }
@@ -671,37 +675,58 @@ void Creature::updateCurrentState(){
                     lI.second.spr->runAction(WorldProperties::actionPool.find("door_open")->second->clone());//Change on lI.second.typeAction
                     lI.second.spr->getPhysicsBody()->setPositionOffset(cocos2d::Vec2(10,0));
                     lI.second.spr->getPhysicsBody()->setCollisionBitmask(0);
-                    isIntersection = true;
+                    isIntersection = false;
                 }
                 //Door opened
                 else {
                     lI.second.spr->runAction(WorldProperties::actionPool.find("door_open")->second->clone()->reverse());
                     lI.second.spr->getPhysicsBody()->setPositionOffset(cocos2d::Vec2(-10,0));
                     lI.second.spr->getPhysicsBody()->setCollisionBitmask(0x01);
-                    isIntersection = true;
+                    isIntersection = false;
                 }
             }
             //Will activate something
             else if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "lever0.png"){
                 //Execute once
                 if (lI.second.target->getNumberOfRunningActions() == 0){
-                    lI.second.spr->runAction(WorldProperties::actionPool.find(lI.second.typeAction)->second->clone());
-                    lI.second.target->runAction(WorldProperties::actionPool.find(lI.second.targetAction)->second->clone());//Implement targetAction
+                    lI.second.spr->runAction(WorldProperties::actionPool.find("lever")->second->clone());
+                    lI.second.target->runAction(WorldProperties::actionPool.find(lI.second.targetAction)->second->clone());
                 }
-                isIntersection = true;
+                isIntersection = false;
             }
             //Will climbin on stair if creature neer by, it's a stair and buttom E pressed
-            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "empty.png"){//This fix action
+            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "empty.png"){
                 //Here animation for climbing
-                creature_physic_body->setVelocity(cocos2d::Vec2(0,400));
+                setCreatureState(CreatureInfo::State::CLIMBING);
                 isIntersection = true;
+            }
+            else if (creature_sprite->getBoundingBox().intersectsRect(lI.second.rect) && lI.second.frameName == "button_push0.png"){
+                //Execute once
+                if (lI.second.target->getNumberOfRunningActions() == 0){
+                    lI.second.spr->runAction(WorldProperties::actionPool.find("button_push")->second->clone());
+                    lI.second.target->runAction(WorldProperties::actionPool.find(lI.second.targetAction)->second->clone());
+                }
+                isIntersection = false;
             }
         
         }
         //If we not closed to item or buttom not pressed we will reser buttom state
         if (!isIntersection){
             setCreatureState(CreatureInfo::State::IDLE);
+        isNewState = false;
         }
+        break;
+    }
+    case CreatureInfo::State::DEATH:{
+        creature_sprite->stopAllActions();
+        creature_sprite->runAction(animations.find("_animation_death")->second);
+        isNewState = false;
+        break;
+    }
+    case CreatureInfo::State::CLIMBING:{
+        creature_sprite->stopAllActions();
+        creature_sprite->runAction(animations.find("_animation_climbing")->second);
+        creature_physic_body->setVelocity(cocos2d::Vec2(0,400));
         isNewState = false;
         break;
     }

@@ -15,9 +15,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_attack1.png</key>
             <dict>
@@ -30,9 +30,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,37},{12,16}}</string>
+                <string>{{19,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_attack2.png</key>
             <dict>
@@ -45,9 +45,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{31,19},{12,16}}</string>
+                <string>{{37,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_attack3.png</key>
             <dict>
@@ -60,9 +60,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{33,1},{12,16}}</string>
+                <string>{{55,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_attack4.png</key>
             <dict>
@@ -75,9 +75,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{31,19},{12,16}}</string>
+                <string>{{37,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_attack5.png</key>
             <dict>
@@ -90,9 +90,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,37},{12,16}}</string>
+                <string>{{19,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_braking0.png</key>
             <dict>
@@ -105,9 +105,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{31,37},{12,16}}</string>
+                <string>{{73,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_braking1.png</key>
             <dict>
@@ -120,9 +120,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{45,19},{12,16}}</string>
+                <string>{{91,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_braking2.png</key>
             <dict>
@@ -135,9 +135,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{47,1},{12,16}}</string>
+                <string>{{109,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_braking3.png</key>
             <dict>
@@ -150,9 +150,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{45,37},{12,16}}</string>
+                <string>{{127,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_braking4.png</key>
             <dict>
@@ -165,9 +165,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{45,19},{12,16}}</string>
+                <string>{{91,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_braking5.png</key>
             <dict>
@@ -180,7 +180,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{59,19},{12,16}}</string>
+                <string>{{137,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -195,7 +195,157 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{61,1},{12,16}}</string>
+                <string>{{145,19},{12,16}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>avr_animation_climbing0.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>avr_animation_climbing1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{19,1},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>avr_animation_climbing2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{37,1},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>avr_animation_climbing3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{55,1},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>avr_animation_death0.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,19},{12,16}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>avr_animation_death1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-1,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{151,1},{12,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>avr_animation_death2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2,0}</string>
+                <key>spriteSize</key>
+                <string>{12,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{163,19},{12,16}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>avr_animation_death3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2,-1}</string>
+                <key>spriteSize</key>
+                <string>{12,14}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{415,1},{12,14}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>avr_animation_death4.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2,-1}</string>
+                <key>spriteSize</key>
+                <string>{12,14}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{415,17},{12,14}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>avr_animation_death5.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2,-2}</string>
+                <key>spriteSize</key>
+                <string>{12,12}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{429,19},{12,12}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -210,9 +360,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_getdammage1.png</key>
             <dict>
@@ -225,7 +375,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{59,37},{12,16}}</string>
+                <string>{{165,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -240,7 +390,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{73,19},{12,16}}</string>
+                <string>{{179,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -255,7 +405,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{59,37},{12,16}}</string>
+                <string>{{165,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -270,9 +420,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle0.png</key>
             <dict>
@@ -285,9 +435,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle1.png</key>
             <dict>
@@ -300,9 +450,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{75,1},{12,16}}</string>
+                <string>{{181,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle10.png</key>
             <dict>
@@ -315,7 +465,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{73,37},{12,16}}</string>
+                <string>{{193,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -330,9 +480,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle2.png</key>
             <dict>
@@ -345,9 +495,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{87,19},{12,16}}</string>
+                <string>{{199,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle3.png</key>
             <dict>
@@ -360,9 +510,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle4.png</key>
             <dict>
@@ -375,9 +525,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,37},{12,16}}</string>
+                <string>{{19,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle5.png</key>
             <dict>
@@ -390,9 +540,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle6.png</key>
             <dict>
@@ -405,9 +555,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{75,1},{12,16}}</string>
+                <string>{{181,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle7.png</key>
             <dict>
@@ -420,9 +570,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{87,19},{12,16}}</string>
+                <string>{{199,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_idle8.png</key>
             <dict>
@@ -435,7 +585,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{89,1},{12,16}}</string>
+                <string>{{207,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -450,9 +600,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{87,37},{12,16}}</string>
+                <string>{{217,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_infall0.png</key>
             <dict>
@@ -465,7 +615,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,19},{12,16}}</string>
+                <string>{{221,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -480,7 +630,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{103,1},{12,16}}</string>
+                <string>{{235,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -495,9 +645,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{101,37},{12,16}}</string>
+                <string>{{235,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_infall3.png</key>
             <dict>
@@ -510,7 +660,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{103,1},{12,16}}</string>
+                <string>{{235,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -525,7 +675,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{115,19},{12,16}}</string>
+                <string>{{249,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -540,9 +690,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{117,1},{12,16}}</string>
+                <string>{{253,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_infall6.png</key>
             <dict>
@@ -555,7 +705,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{115,37},{12,16}}</string>
+                <string>{{263,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -570,9 +720,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{117,1},{12,16}}</string>
+                <string>{{253,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_injump0.png</key>
             <dict>
@@ -585,9 +735,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_injump1.png</key>
             <dict>
@@ -600,9 +750,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{129,19},{12,16}}</string>
+                <string>{{271,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_injump2.png</key>
             <dict>
@@ -615,7 +765,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{131,1},{12,16}}</string>
+                <string>{{277,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -630,9 +780,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{129,37},{12,16}}</string>
+                <string>{{289,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_injump4.png</key>
             <dict>
@@ -645,7 +795,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{143,19},{12,16}}</string>
+                <string>{{291,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -660,7 +810,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{145,1},{12,16}}</string>
+                <string>{{305,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -675,9 +825,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{143,37},{12,16}}</string>
+                <string>{{307,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_injump7.png</key>
             <dict>
@@ -690,7 +840,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{157,19},{12,16}}</string>
+                <string>{{319,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -705,7 +855,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{199,37},{10,16}}</string>
+                <string>{{403,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -720,9 +870,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{159,1},{12,16}}</string>
+                <string>{{325,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_jumpfromwall2.png</key>
             <dict>
@@ -735,7 +885,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{14,16}}</string>
+                <string>{{73,1},{14,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -750,7 +900,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,19},{14,16}}</string>
+                <string>{{89,1},{14,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -765,7 +915,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{157,37},{12,16}}</string>
+                <string>{{333,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -780,9 +930,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{171,19},{12,16}}</string>
+                <string>{{343,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_landon2.png</key>
             <dict>
@@ -795,7 +945,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{173,1},{12,16}}</string>
+                <string>{{347,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -810,7 +960,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,37},{14,16}}</string>
+                <string>{{105,1},{14,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -825,7 +975,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,1},{14,16}}</string>
+                <string>{{121,1},{14,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -840,9 +990,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_onwall0.png</key>
             <dict>
@@ -855,7 +1005,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{199,37},{10,16}}</string>
+                <string>{{403,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -870,7 +1020,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{211,37},{10,16}}</string>
+                <string>{{429,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -885,7 +1035,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{213,19},{10,16}}</string>
+                <string>{{441,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -900,7 +1050,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{211,37},{10,16}}</string>
+                <string>{{429,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -915,7 +1065,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{199,37},{10,16}}</string>
+                <string>{{403,1},{10,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -930,7 +1080,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{171,37},{12,16}}</string>
+                <string>{{361,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -945,9 +1095,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{185,19},{12,16}}</string>
+                <string>{{361,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_run2.png</key>
             <dict>
@@ -960,7 +1110,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{187,1},{12,16}}</string>
+                <string>{{375,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -975,9 +1125,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{185,19},{12,16}}</string>
+                <string>{{361,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_soaring0.png</key>
             <dict>
@@ -990,9 +1140,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{185,37},{12,16}}</string>
+                <string>{{379,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_soaring1.png</key>
             <dict>
@@ -1005,7 +1155,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{199,19},{12,16}}</string>
+                <string>{{389,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -1020,9 +1170,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{201,1},{12,16}}</string>
+                <string>{{397,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_standup1.png</key>
             <dict>
@@ -1035,9 +1185,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,37},{12,16}}</string>
+                <string>{{19,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_standup2.png</key>
             <dict>
@@ -1050,9 +1200,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_startrun0.png</key>
             <dict>
@@ -1065,9 +1215,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,19},{12,16}}</string>
+                <string>{{1,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_startrun1.png</key>
             <dict>
@@ -1080,9 +1230,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,37},{12,16}}</string>
+                <string>{{19,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_startrun2.png</key>
             <dict>
@@ -1095,9 +1245,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{201,1},{12,16}}</string>
+                <string>{{397,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_stepsrun0.png</key>
             <dict>
@@ -1110,7 +1260,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{171,37},{12,16}}</string>
+                <string>{{361,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -1125,9 +1275,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{185,19},{12,16}}</string>
+                <string>{{361,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>avr_animation_stepsrun2.png</key>
             <dict>
@@ -1140,7 +1290,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{187,1},{12,16}}</string>
+                <string>{{375,1},{12,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -1155,9 +1305,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{185,19},{12,16}}</string>
+                <string>{{361,19},{12,16}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
         </dict>
         <key>metadata</key>
@@ -1171,9 +1321,9 @@
             <key>realTextureFileName</key>
             <string>animationSheet.png</string>
             <key>size</key>
-            <string>{224,54}</string>
+            <string>{452,32}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:5aaec0c5f1fb3a13f86114672878d2d6:f6f90e7e9970fd9740b3beb94ef21986:ab537d3f677981f9b864136542960916$</string>
+            <string>$TexturePacker:SmartUpdate:da6c8c7652b7c5d6cf5c529754c2b649:f0ad004b76a6cca063be8baf055fccbc:ab537d3f677981f9b864136542960916$</string>
             <key>textureFileName</key>
             <string>animationSheet.png</string>
         </dict>

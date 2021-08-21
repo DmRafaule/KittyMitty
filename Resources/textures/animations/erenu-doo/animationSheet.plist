@@ -15,7 +15,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -30,7 +30,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,33},{16,12}}</string>
+                <string>{{19,19},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -45,9 +45,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,35},{16,12}}</string>
+                <string>{{19,37},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_attack3.png</key>
             <dict>
@@ -60,9 +60,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,49},{16,12}}</string>
+                <string>{{19,55},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_attack4.png</key>
             <dict>
@@ -75,9 +75,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,35},{16,12}}</string>
+                <string>{{19,37},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_braking0.png</key>
             <dict>
@@ -90,7 +90,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,51},{16,12}}</string>
+                <string>{{19,73},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -105,9 +105,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,63},{16,12}}</string>
+                <string>{{19,91},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_braking2.png</key>
             <dict>
@@ -120,7 +120,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,203},{16,10}}</string>
+                <string>{{1,61},{16,10}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -135,9 +135,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,213},{16,10}}</string>
+                <string>{{1,73},{16,10}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_braking4.png</key>
             <dict>
@@ -150,7 +150,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,69},{16,12}}</string>
+                <string>{{19,109},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -165,9 +165,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,77},{16,12}}</string>
+                <string>{{19,127},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_braking6.png</key>
             <dict>
@@ -180,7 +180,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,69},{16,12}}</string>
+                <string>{{19,109},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -195,7 +195,157 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,63},{16,12}}</string>
+                <string>{{19,91},{16,12}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>erenu-doo_animation_death0.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-2}</string>
+                <key>spriteSize</key>
+                <string>{16,12}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{19,1},{16,12}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>erenu-doo_animation_death1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-2}</string>
+                <key>spriteSize</key>
+                <string>{16,12}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{19,145},{16,12}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>erenu-doo_animation_death2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-3}</string>
+                <key>spriteSize</key>
+                <string>{16,10}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,85},{16,10}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>erenu-doo_animation_death3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-3}</string>
+                <key>spriteSize</key>
+                <string>{16,10}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,97},{16,10}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>erenu-doo_animation_death4.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-3}</string>
+                <key>spriteSize</key>
+                <string>{16,10}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,109},{16,10}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>erenu-doo_animation_death5.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-3}</string>
+                <key>spriteSize</key>
+                <string>{16,10}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,121},{16,10}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>erenu-doo_animation_death6.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-4}</string>
+                <key>spriteSize</key>
+                <string>{16,8}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{16,8}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>erenu-doo_animation_death7.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-4}</string>
+                <key>spriteSize</key>
+                <string>{16,8}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,11},{16,8}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>erenu-doo_animation_death8.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-4}</string>
+                <key>spriteSize</key>
+                <string>{16,8}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,21},{16,8}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>erenu-doo_animation_death9.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,-4}</string>
+                <key>spriteSize</key>
+                <string>{16,8}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{1,31},{16,8}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -210,7 +360,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -225,7 +375,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,215},{16,10}}</string>
+                <string>{{1,133},{16,10}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -240,7 +390,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,227},{16,10}}</string>
+                <string>{{1,145},{16,10}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -255,9 +405,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,231},{16,10}}</string>
+                <string>{{1,157},{16,10}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_getdammage4.png</key>
             <dict>
@@ -270,7 +420,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -285,7 +435,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -300,7 +450,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,87},{16,12}}</string>
+                <string>{{19,163},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -315,9 +465,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{15,91},{16,12}}</string>
+                <string>{{19,181},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_idle3.png</key>
             <dict>
@@ -330,7 +480,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,87},{16,12}}</string>
+                <string>{{19,163},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -345,7 +495,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -360,7 +510,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,87},{16,12}}</string>
+                <string>{{19,163},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -375,9 +525,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,105},{16,12}}</string>
+                <string>{{19,199},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_idle7.png</key>
             <dict>
@@ -390,7 +540,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,87},{16,12}}</string>
+                <string>{{19,163},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -405,7 +555,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -420,9 +570,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,105},{16,12}}</string>
+                <string>{{1,217},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_infall1.png</key>
             <dict>
@@ -435,9 +585,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,119},{16,12}}</string>
+                <string>{{19,217},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_infall2.png</key>
             <dict>
@@ -450,9 +600,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,105},{16,12}}</string>
+                <string>{{1,217},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_infall3.png</key>
             <dict>
@@ -465,9 +615,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,123},{16,12}}</string>
+                <string>{{1,231},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_landon0.png</key>
             <dict>
@@ -480,9 +630,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,105},{16,12}}</string>
+                <string>{{1,217},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_landon1.png</key>
             <dict>
@@ -495,7 +645,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,239},{16,10}}</string>
+                <string>{{1,169},{16,10}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -510,9 +660,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,249},{16,10}}</string>
+                <string>{{1,181},{16,10}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_landon3.png</key>
             <dict>
@@ -525,9 +675,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,267},{16,8}}</string>
+                <string>{{1,41},{16,8}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_landon4.png</key>
             <dict>
@@ -540,7 +690,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,275},{16,8}}</string>
+                <string>{{1,51},{16,8}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -555,9 +705,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,267},{16,8}}</string>
+                <string>{{1,41},{16,8}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_landon6.png</key>
             <dict>
@@ -570,9 +720,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,249},{16,10}}</string>
+                <string>{{1,181},{16,10}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_landon7.png</key>
             <dict>
@@ -585,7 +735,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,251},{16,10}}</string>
+                <string>{{1,193},{16,10}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -600,7 +750,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,263},{16,10}}</string>
+                <string>{{1,205},{16,10}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -615,7 +765,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -630,9 +780,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,133},{16,12}}</string>
+                <string>{{19,235},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_run1.png</key>
             <dict>
@@ -645,9 +795,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,141},{16,12}}</string>
+                <string>{{1,245},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_run2.png</key>
             <dict>
@@ -660,9 +810,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,147},{16,12}}</string>
+                <string>{{19,253},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_run3.png</key>
             <dict>
@@ -675,9 +825,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,159},{16,12}}</string>
+                <string>{{1,259},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_run4.png</key>
             <dict>
@@ -690,7 +840,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,161},{16,12}}</string>
+                <string>{{1,273},{16,12}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -705,9 +855,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,123},{16,12}}</string>
+                <string>{{1,231},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_soaring1.png</key>
             <dict>
@@ -720,9 +870,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,175},{16,12}}</string>
+                <string>{{19,271},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_soaring2.png</key>
             <dict>
@@ -735,9 +885,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,177},{16,12}}</string>
+                <string>{{1,287},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_soaring3.png</key>
             <dict>
@@ -750,9 +900,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,175},{16,12}}</string>
+                <string>{{19,271},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_standup0.png</key>
             <dict>
@@ -765,9 +915,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,133},{16,12}}</string>
+                <string>{{19,235},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_standup1.png</key>
             <dict>
@@ -780,9 +930,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,189},{16,12}}</string>
+                <string>{{19,289},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_standup2.png</key>
             <dict>
@@ -795,9 +945,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,195},{16,12}}</string>
+                <string>{{1,301},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_standup3.png</key>
             <dict>
@@ -810,7 +960,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -825,7 +975,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,17},{16,12}}</string>
+                <string>{{19,1},{16,12}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -840,9 +990,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{19,195},{16,12}}</string>
+                <string>{{1,301},{16,12}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>erenu-doo_animation_startrun2.png</key>
             <dict>
@@ -855,9 +1005,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,189},{16,12}}</string>
+                <string>{{19,289},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_startrun3.png</key>
             <dict>
@@ -870,9 +1020,9 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,133},{16,12}}</string>
+                <string>{{19,235},{16,12}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>erenu-doo_animation_stepsrun0.png</key>
             <dict>
@@ -885,7 +1035,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{14,14}}</string>
+                <string>{{1,315},{14,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -900,7 +1050,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{17,1},{14,14}}</string>
+                <string>{{17,315},{14,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -915,7 +1065,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,17},{14,14}}</string>
+                <string>{{1,331},{14,14}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -931,9 +1081,9 @@
             <key>realTextureFileName</key>
             <string>animationSheet.png</string>
             <key>size</key>
-            <string>{32,284}</string>
+            <string>{32,346}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:4dd0371941a5ed3ddb60b360f617a6b8:afca0efb2aac615fc47c26d319fcd7b0:ab537d3f677981f9b864136542960916$</string>
+            <string>$TexturePacker:SmartUpdate:d52962ec853ced5b7ab08b90a220379d:bf32a2829f5ebc3bbe79b5b01e715c2e:ab537d3f677981f9b864136542960916$</string>
             <key>textureFileName</key>
             <string>animationSheet.png</string>
         </dict>

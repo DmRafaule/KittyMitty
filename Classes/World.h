@@ -32,6 +32,7 @@ private:
       void parseDynObjects(cocos2d::ValueMap& dict, cocos2d::Rect& rect);//Parse dynamic physical objeccts from .tmx
       void parseStaticNonePhysicalObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect);//Parse static none physical objeccts from .tmx
       void parseStaticPhysicalObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect);//Parse static physical objeccts from .tmx
+      void parseCreatureObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect);//Parse data about creatures on level
    void initDynamicObjects();//Init dynamic obj
    void initPoolActions();//push up to poolActions all needed actions
    void initBackground(std::string chunkBackground);//Init bg image
