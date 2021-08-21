@@ -44,12 +44,12 @@ public:
 
     inline Player* getPlayer(){ return player;};
     inline std::vector<Enemy*>* getEnemy(){ return &enemy;};
-    inline World* getWorld(){ return world;};
+    inline World* getWorld(){ return world;};//MAYBE NOT NEED
 private:
     /**
      * initialize level using tmx file
     */
-    void initLevel(std::string level_path);
+    void initWorld();
     /**
      * initialize user interface(for phones it will be controle ball, screen action and some buttons) for desktop it will be keyboard and mouse
     */
@@ -77,12 +77,11 @@ private:
     ControlTargeting* ctarg;
     ControlKeys*      ckeys;
     ControlAttc*      cattc;
-    cocos2d::Size visibleSize;
-    cocos2d::SpriteBatchNode* spriteSheet;
+
     /*Game entyties*/
-    World*  world;
-    Player* player;
     std::vector<Enemy*> enemy;
+    Player* player;
+    World*  world;
 };
 
 #endif // GAME_LAYER

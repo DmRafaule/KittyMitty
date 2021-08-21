@@ -5,13 +5,10 @@
 #include "Creature.h"
 
 
-std::string SceneEntities::player = "player";
-std::string SceneEntities::ball = "ball";
-std::string SceneEntities::ball_attacke = "ball_attacke";
-std::vector<std::string> SceneEntities::enemy(0);
-std::string SceneEntities::text = "text";
-std::string SceneEntities::ui = "ui";
-std::string SceneEntities::gamesession = "gamesession";
+std::string                 SceneLayer::ui = "ui";
+std::string                 SceneLayer::gamesession = "gamesession";
+std::string                 SceneLayer::bg = "background";
+
 
 
 cocos2d::Scene* GameLayer::createScene(){
@@ -19,8 +16,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -37,9 +34,8 @@ bool GameLayer::init(){
 
     if ( !cocos2d::Scene::init() )
         return false;
-
     initLayers();
-    initLevel("world/area0/level0.tmx");
+    initWorld();
     intCreatures();
     initListeners();
     initUI();
@@ -48,55 +44,58 @@ bool GameLayer::init(){
 }
 void GameLayer::initLayers(){
     cocos2d::Layer* gameSessionLayer = cocos2d::Layer::create();
-    this->addChild(gameSessionLayer,ZLevel::MIDLEGROUND,SceneEntities::gamesession);
+    this->addChild(gameSessionLayer,SceneZOrder::MIDLEGROUND,SceneLayer::gamesession);
     cocos2d::Layer* UILayer = cocos2d::Layer::create();
-    this->addChild(UILayer,ZLevel::USER_INTERFACE,SceneEntities::ui);
+    this->addChild(UILayer,SceneZOrder::USER_INTERFACE,SceneLayer::ui);
+    cocos2d::Layer* BGLayer = cocos2d::Layer::create();
+    this->addChild(BGLayer,SceneZOrder::BACKGROUND,SceneLayer::bg);
 }
-void GameLayer::initLevel(std::string level_path){
-    world = new World(level_path,this);
+void GameLayer::initWorld(){
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/mainSheet.png"));
+
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/worldObj/worldObjSheet.plist");
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/worldObj/worldObjSheet.png"));
+    
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/door/doorSheet.plist");
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/animations/door/doorSheet.png"));
+
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/lever/leverSheet.plist");
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/animations/lever/leverSheet.png"));
+
+    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/button/buttonSheet.plist");
+    this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/animations/button/buttonSheet.png"));
+
+    WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
+
+    world = new World(0,this);
 }
 void GameLayer::intCreatures(){
-    visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+        
+    //Wrong position have to remove creature spawn point
+    player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::creatureObj.find(CreatureInfo::Type::KITTYMITTY)->second.point,this->getChildByName(SceneLayer::gamesession),2);
+    player->setWeapon((WeaponType)WorldProperties::creatureObj.find(CreatureInfo::Type::KITTYMITTY)->second.typeWepon); 
+
     
-    cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
-    spriteSheet = cocos2d::SpriteBatchNode::create("textures/mainSheet.png");
-    this->getChildByName(SceneEntities::gamesession)->addChild(spriteSheet);
-
-    Enemy* e;
-    SceneEntities::enemy.push_back("enemy0");
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(500,160),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
-    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(300,0)),
-                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-300,0)),
-                                                                nullptr)));
-    e->setWeapon(WeaponType::SWORD);
-    enemy.push_back(e);
-
-    SceneEntities::enemy.push_back("enemy1");
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(100,340),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
-    e->getCreatureSprite()->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(5.f,cocos2d::Vec2(200,0)),
-                                                                cocos2d::MoveBy::create(5.f,cocos2d::Vec2(-200,0)),
-                                                                nullptr)));
-    e->setWeapon(WeaponType::AXE);
-    enemy.push_back(e);
-
-
-    SceneEntities::enemy.push_back("enemy2");
-    e = new Enemy("enemy.png",CreatureType::HUMANOID,cocos2d::Vec2(700,160),this,SceneEntities::enemy.at(SceneEntities::enemy.size()-1));
-    e->setWeapon(WeaponType::SPEAR);
-    enemy.push_back(e);
-
-
-    player = new Player("kittymitty.png",CreatureType::HUMANOID,cocos2d::Vec2(100,160),this,SceneEntities::player);
-    player->setWeapon(WeaponType::SWORD); 
     /*Init camera. And set on player*/
-    
-    this->getChildByName(SceneEntities::gamesession)->runAction(cocos2d::Follow::createWithOffset(player->getCreatureSprite(),-100,-100,cocos2d::Rect(0,0,2500,3200)));
+    this->getChildByName(SceneLayer::gamesession)->runAction(
+        cocos2d::Follow::createWithOffset(
+            player->getCreatureSprite(),
+            -100,-100,
+            cocos2d::Rect(
+                0,
+                0,
+                WorldProperties::mapSize.width  - WorldProperties::screenSize.width  - 64,
+                WorldProperties::mapSize.height - WorldProperties::screenSize.height - 64
+            )
+        )
+    );
 }
 void GameLayer::initUI(){
-    ctarg = new ControlTargeting(this);
-    ckeys = new ControlKeys(cocos2d::Vec2(0.15,0.1),this);
-    cattc = new ControlAttc(this);
-    shows = new ShowStats(this);
+    ctarg = new ControlTargeting(player,this->getChildByName(SceneLayer::ui));
+    ckeys = new ControlKeys(player,cocos2d::Vec2(0.15,0.1),this->getChildByName(SceneLayer::ui));
+    cattc = new ControlAttc(player,this->getChildByName(SceneLayer::ui));
+    shows = new ShowStats(player,&enemy,this->getChildByName(SceneLayer::gamesession));
 }
 void GameLayer::initListeners(){
     /*Init listeners*/
@@ -116,10 +115,11 @@ void GameLayer::initListeners(){
     this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
 }
 void GameLayer::update(float dt){
-    shows->update(dt,this);
-    ctarg->update(dt,this);
-    cattc->update(dt,this);
-    ckeys->update(dt,this);
+    shows->update(dt);
+    ctarg->update(dt);
+    cattc->update(dt);
+    ckeys->update(dt);
+
     player->update(dt);
     for (auto &i : enemy){
         i->update(dt);
@@ -129,39 +129,115 @@ void GameLayer::update(float dt){
 
 
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    shows->updateTouchBegan(touch,event,this);
-    ctarg->updateTouchBegan(touch,event,this);
-    cattc->updateTouchBegan(touch,event,this);
-    ckeys->updateTouchBegan(touch,event,this);
+    for (auto& one_touch : touch){
+        shows->updateTouchBegan(one_touch,event);
+        ctarg->updateTouchBegan(one_touch,event);
+        cattc->updateTouchBegan(one_touch,event);
+        ckeys->updateTouchBegan(one_touch,event);
+    }
     return true;
 }
 void GameLayer::touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    shows->updateTouchEnded(touch,event,this);
-    ctarg->updateTouchEnded(touch,event,this);
-    cattc->updateTouchEnded(touch,event,this);
-    ckeys->updateTouchEnded(touch,event,this);
+    for (auto& one_touch : touch){
+        shows->updateTouchEnded(one_touch,event);
+        ctarg->updateTouchEnded(one_touch,event);
+        cattc->updateTouchEnded(one_touch,event);
+        ckeys->updateTouchEnded(one_touch,event);
+    }
 }
 void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    shows->updateTouchMoved(touch,event,this);
-    ctarg->updateTouchMoved(touch,event,this);
-    cattc->updateTouchMoved(touch,event,this);
-    ckeys->updateTouchMoved(touch,event,this);
+    for (auto& one_touch : touch){
+        shows->updateTouchMoved(one_touch,event);
+        ctarg->updateTouchMoved(one_touch,event);
+        cattc->updateTouchMoved(one_touch,event);
+        ckeys->updateTouchMoved(one_touch,event);
+    }
 }
 void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
-    shows->updateTouchCanceled(touch,event,this);
-    ctarg->updateTouchCanceled(touch,event,this);
-    cattc->updateTouchCanceled(touch,event,this);
-    ckeys->updateTouchCanceled(touch,event,this);
+    for (auto& one_touch : touch){
+        shows->updateTouchCanceled(one_touch,event);
+        ctarg->updateTouchCanceled(one_touch,event);
+        cattc->updateTouchCanceled(one_touch,event);
+        ckeys->updateTouchCanceled(one_touch,event);
+    }
 }
 bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
-    //Check if body was collided
-    if (a->getCategoryBitmask() & b->getCollisionBitmask() == 0 ||
-        b->getCategoryBitmask() & a->getCollisionBitmask() == 0){
-        
+    
+    //Collide with floors
+    if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
+        if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+            player->setCreatureState(CreatureInfo::State::LAND_ON);
+            return true;
+        }else{
+            for (auto& e : enemy){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
+                    e->setCreatureState(CreatureInfo::State::LAND_ON);
+                    return true;
+                }
+            }
+        }
+    }
+    //Collide with other enemies
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 2 ){
+        player->setCreatureState(CreatureInfo::State::GET_DAMMAGE);
         return false;
     }
-    
-    return true;
+    /*Collide with walls*/
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
+        if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+            player->setCreatureState(CreatureInfo::State::ON_WALL);
+            return true;
+        }else{
+            for (auto& e : enemy){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
+                    e->setCreatureState(CreatureInfo::State::ON_WALL);
+                    return true;
+                }
+            }
+        }
+    }
+    /*Collide with steps*/
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 4 ){
+        if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+            player->setCreatureState(CreatureInfo::State::ON_STEPS);
+            return true;
+        }else{
+            for (auto& e : enemy){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
+                    e->setCreatureState(CreatureInfo::State::ON_STEPS);
+                    return true;
+                }
+            }
+        }
+    }
+    //Collision with roofs
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 5 ){
+        if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+            player->setCreatureState(CreatureInfo::State::TAKE_ROOF);
+            return true;
+        }else{
+            for (auto& e : enemy){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
+                    e->setCreatureState(CreatureInfo::State::TAKE_ROOF);
+                    return true;
+                }
+            }
+        }
+    }
+    //Collisions with other objects which will not affected on velocity and directions
+    else {
+        return false;
+    }
+    return false;
 }
+
+
+
+
+
+
+
+//Это очень, очень странно. WTF??? Почему при портировании на андроид в ф-ии onContactBegin я должен в каждом if-else стэйтменте возвращать что-либо. 
+//Либо я тупой либо этото движок говно которое хуй пойми что делает :( :( :( :( :( :(

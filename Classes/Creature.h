@@ -3,35 +3,43 @@
 #include <cocos2d.h>
 #include "Weapon.h"
 #include "engEnums.hpp"
-
+#include <map>
 
 class Creature{
 friend class PartCreature;
 public:
-    Creature(std::string texturePath,CreatureType creature_type,cocos2d::Vec2 pos,void* gameLayer,std::string id);
+    Creature(CreatureInfo::Type type ,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual ~Creature();
     virtual void update(float dt) = 0;
     /*Clearers*/
-    void removeSprite();
-    void removeStatistics();
+    void removeCreature();
     /*Getters*/
+    inline const CreatureInfo* getCreatureInfo() { return &creature_info; };
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
-    inline CreatureType getCreatureType() {return creature_type; };
-    inline uint getCreatureSpeed() { return creature_speed; };
-    inline uint getCreatureBlood() {return creature_blood; };
-    inline uint getCreatureStamina() {return creature_stamina; };
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 
-    inline Weapon* getWeapon() { return creature_weapon;}
+    inline Weapon* getWeapon() { return creature_weapon;};
     /*Setters*/
+    void setCreatureState(CreatureInfo::State creature_state);
+    inline CreatureInfo* setCreatureInfo() { return &creature_info; };
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
     void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
-    void setCreatureSpeed(uint creature_speed);
-    void setCreatureBlood(uint creature_blood);
-    void setCreatureStamina(uint creature_stamina);
-    void setStatistics();//Init information about creature node 
+    void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
+protected:
+    /*Initializer*/
+    void initStats();
+    void initAnimations();
+    void initBody(cocos2d::Vec2 pos);
+    
+    void updatePermament();//update stuff permamently
+    void updateCurrentState();//Make some actions depens on which state creature have
+    
+    void showStatistics(DebugStatistics type);
+    void losingStamina();
+    void regeneratingStamina(float dt);
+    void addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr);
 protected:
     /*This is part of body(*/
     class PartCreature{
@@ -54,22 +62,19 @@ protected:
         uint                            part_penetrationDef;
         uint                            part_crushingDef;
     };
-protected:
     /*Properties related to whole creature*/
     std::vector<PartCreature> creature_parts;//Container for holding info about creature_parts of creature 
     cocos2d::PhysicsBody*     creature_physic_body;
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
     Weapon*                   creature_weapon;
-    CreatureType              creature_type;//Type of creature
-    uint                      creature_blood;//How many blood liquid in creature
-    float                     crearure_mass;
-    cocos2d::Vec2             creature_velocity;
-    float                     creature_speed;//Creature speed
-    uint                      creature_stamina;//How long creature can fight efficient
-    float                     creature_stamina_regeneration_counter;//Timer for regenaration stamina
+    CreatureInfo              creature_info;
+    std::multimap<std::string,cocos2d::Animate*> animations;//Animations
+    cocos2d::Node*            currentLayer;//Current playing scene;
+
+    int                       indentificator;
     bool                      isStatisticsShowing;
-    void*                     currentlayer;//Current plaing scene;
+    bool                      isNewState;
 };
 
 
@@ -79,7 +84,7 @@ protected:
 /*INHERITATED CLASSES*/
 class Enemy : public Creature{
 public:
-    Enemy(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
+    Enemy(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual void update(float dt) override;
     /**
      * @return pointer to data of creature_parts of enemy object
@@ -89,14 +94,18 @@ private:
 };
 class Player : public Creature{
 public:
-    Player(std::string texturePath,CreatureType bMap,cocos2d::Vec2 pos,void* gameLayer,std::string id);
+    Player(CreatureInfo::Type Type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual void update(float dt) override;
+    /**
+     * @brief set up positions for creature sprite, and all attachment(weapon,armor, spells ...)
+    */
+    void setPlayerPosition(float x, float y);
     /**
      * @return pointer to data of creature_parts of player object
     */
     inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
     inline int* getCurrentInteractedEnemy(){ return &currentInteractedEnemy; };
 private:
-    std::vector<Enemy*>* enemyNode;//All enemies which player can giveEffect
+    std::vector<Enemy*>* enemyNode;//All enemies which player can giveEffect//MAYBE NOT NEED
     int  currentInteractedEnemy;//current available enemy for giveEffect
 };

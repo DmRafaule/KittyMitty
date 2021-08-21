@@ -1,20 +1,72 @@
 #pragma once
 
-enum CreatureType : uint{
-    HUMANOID,
-    INSECT,
-    ANIMAL,
-    TREE,
-    FISH,
+
+struct CreatureInfo{
+    struct Animation{
+        Animation();
+        Animation(std::vector<uint> framesIdleNum,std::string animationForWho);
+        std::vector<uint> framesIdleNum;
+        std::string animationForWho;
+    };
+    struct Characteristic{
+        uint                      blood;//How many blood liquid in creature
+        float                     mass;
+        float                     velocity_limit;//How fast player can run
+        float                     jump_power;//How hard(heighst) creature can jump
+        uint                      jump_ability;//How many jumps creature can make
+        uint                      current_jump_ability_num;//How many jumps creature did already
+        float                     acceleration_power;//How fast creature will be accelerating to velocity limit
+        int                       stamina;//How long creature can fight efficient
+        int                       stamina_limit;
+        float                     stamina_regeneration_counter;//Timer for regenaration stamina
+    
+    };
+    enum Type : uint{
+        KITTYMITTY,
+        KOOL_HASH,
+        ERENU_DOO,
+        GOO_ZOO,
+        AVR,
+    };
+    enum State{
+        ATTACK,
+        GET_DAMMAGE,
+        IDLE,
+        START_RUN,
+        RUNNING,
+        BRACKING,
+        STAND_UP,
+        SOARING,
+        IN_JUMP,
+        JUMP_FROM_WALL,
+        TAKE_ROOF,
+        IN_FALL,
+        INTERACTING,
+        ON_STEPS,
+        MOVE_BY_STEPS,
+        ON_WALL,
+        LETGO,
+        LAND_ON,
+        CLIMBING,
+        DEATH,
+    };
+    enum DMove{
+        OUT   =  3,
+        DOWN  = -2,
+        LEFT  = -1,
+        RIGHT =  1,
+        TOP   =  2,
+        IN    =  3,
+    };
+    CreatureInfo();
+    CreatureInfo(Type type,Animation animation);
+    Type type;
+    Animation animation;
+    State state;
+    Characteristic characteristic;
+    DMove dmove;
 };
-/*This is current state of creature*/
-enum CreatureState : uint{
-    IDLE,
-    WALK,
-    RUN,
-    JUMP,
-    FIGHT,
-};
+
 enum PartCreatureType : uint{
     HEAD,
     UPPER_TORSE,
@@ -51,27 +103,56 @@ struct PartOrgan {
     PartCreatureStatus status;
 };
 
-enum ZLevel{
+enum SceneZOrder{
     BACKGROUND,
     MIDLEGROUND,
     FOREGROUND,
     USER_INTERFACE,
 };
-struct SceneEntities{
-    static std::vector<std::string> enemy;
-    static std::string player;
-    static std::string ball;
-    static std::string ball_attacke;
-    static std::string text;
-    static std::string player_weapon;
+struct SceneLayer{
     static std::string ui;
     static std::string gamesession;
+    static std::string bg;
 };
 
-enum TypeUI{
-    CONTROL_IN_GAMESESSION,
-    CONTROL_KEYS,
+struct LevelCreatures{
+    LevelCreatures();
+    LevelCreatures(uint,uint,cocos2d::Vec2);
+    uint typeCr;
+    uint typeWepon;
+    cocos2d::Vec2 point;
 };
+struct LevelNonePhysicalObj{
+    LevelNonePhysicalObj();
+    LevelNonePhysicalObj(cocos2d::Rect,std::string,std::string,cocos2d::Vec2,std::string);
+    cocos2d::Rect reqt;
+    cocos2d::Vec2 offset;     
+    std::string   path;
+    std::string   backgroundPath;
+    std::string   name;
+};
+struct LevelPhysicalObj{
+    LevelPhysicalObj();
+    LevelPhysicalObj(std::string frameName,std::string typeAction,cocos2d::Rect rect,std::string nameTarget);
+    std::string frameName;
+    std::string typeAction;
+    uint targetID;
+    std::string targetAction;
+    cocos2d::Rect rect;
+    cocos2d::Sprite* spr;
+    cocos2d::Node* target;
+    uint id;
+    bool isCollided;
+};
+struct WorldProperties{
+    static cocos2d::Size screenSize;
+    static cocos2d::Size mapSize;
+    static std::multimap<CreatureInfo::Type,LevelCreatures> creatureObj;//Contetn data about players, nps, enemies exported from tiled map ed
+    static std::multimap<std::string,LevelPhysicalObj> dynamicObj;//Contetn data about objects with physical body and they are have some animations/actions [door,stair,lever,platform]
+    static std::vector<LevelNonePhysicalObj> staticObj;//Contetn data about objects without physical body [death zones, newLevel]
+    static std::map<std::string,cocos2d::Action*> actionPool;
+};
+
 enum DirectionAttacke{
     TOP_TO_DOWN,
     DOWN_TO_TOP,
@@ -82,16 +163,6 @@ enum DirectionAttacke{
     BOTTOMLEFT_TO_TOPRIGHT,
     BOTTOMRIGHT_TO_TOPLEFT,
 };
-enum DirectionMove{
-    LEFT,
-    RIGHT,
-    TOP,
-    DOWN,
-    IN,
-    OUT,
-};
-
-
 enum WeaponType : uint{
    SWORD,
    SPEAR,
@@ -103,4 +174,9 @@ struct WeaponCaracteristics{
    uint weapon_crushingPower;
    uint weapon_solidity;
    uint weapon_mass;
+};
+
+enum DebugStatistics{
+    GAME_STATS,
+    PHYSICS,
 };
