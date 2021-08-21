@@ -48,7 +48,7 @@ Level::Level(uint level,GameLayer* currentLayer){
    initPoolActions();
    switch (level){
    case 0:{
-      loadLevel("world/area0/level0.tmx","world/area0/backgroundImage.png");
+      loadLevel("world/area0/playground.tmx","world/area0/backgroundImage.png");
       break;
    }
    case 1:{
@@ -199,18 +199,20 @@ void Level::initPoolActions(){
    cocos2d::Action* MoveVertical   = cocos2d::RepeatForever::create(cocos2d::Sequence::create(PhysicMoveBy::create(2,cocos2d::Vec2(0,100)),PhysicMoveBy::create(2,cocos2d::Vec2(0,-100)),nullptr));
    cocos2d::Action* RotateClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,10));//Here is a bug some platform expand their angelSpeed very fast
    cocos2d::Action* RotateOClW = cocos2d::RepeatForever::create(PhysicRotateBy::create(2,-10));
-   
+   cocos2d::Action* HangOuting = cocos2d::RepeatForever::create(cocos2d::EaseInOut::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(0.8,cocos2d::Vec2(0,20)),cocos2d::MoveBy::create(0.5,cocos2d::Vec2(0,-20)),nullptr),1.4));
 
    WorldProperties::actionPool.emplace("moveH",MoveHorisontal);
    WorldProperties::actionPool.emplace("moveV",MoveVertical);
    WorldProperties::actionPool.emplace("rotateClockWise",RotateClW);
    WorldProperties::actionPool.emplace("rotateOpositClockWise",RotateOClW);
+   WorldProperties::actionPool.emplace("hangOuting",HangOuting);
    WorldProperties::actionPool.emplace("nill",cocos2d::MoveBy::create(0,cocos2d::Vec2(0,0)));
-   
+
    MoveHorisontal->retain();
    MoveVertical->retain();
    RotateClW->retain();
    RotateOClW->retain();
+   HangOuting->retain();
    WorldProperties::actionPool.find("nill")->second->retain();
 }
 void Level::initDynamicObjects(){
@@ -226,7 +228,10 @@ void Level::initDynamicObjects(){
       spr_ph->setCollisionBitmask(obj.second.isCollided);
       spr_ph->setContactTestBitmask(0xFF);
       spr->setPhysicsBody(spr_ph);
-      spr->setScale(scaleOffset);
+      if (obj.second.frameName == "swordStock.png" || obj.second.frameName == "spearStock.png" || obj.second.frameName == "axeStock.png" || obj.second.frameName == "longsword.png")
+         spr->setScale(scaleOffset + 3);
+      else
+         spr->setScale(scaleOffset);
       /*This is prevent of bluring my textures*/
       cocos2d::Texture2D::TexParams tpar = {
           cocos2d::backend::SamplerFilter::NEAREST,
