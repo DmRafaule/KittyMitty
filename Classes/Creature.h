@@ -90,7 +90,17 @@ public:
      * @return pointer to data of creature_parts of enemy object
     */
     inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
+    /**
+     * @brief init fields which related to player and cant be assigned in constructor
+    */
+    void initPlayerDependenceFields();
 private:
+    /**
+     * @return state for making new decision
+    */
+    bool makeDecision(float dt);
+
+    cocos2d::Node* player;
 };
 class Player : public Creature{
 public:

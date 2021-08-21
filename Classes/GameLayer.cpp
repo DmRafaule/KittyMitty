@@ -16,8 +16,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     
     return scene;
 }
@@ -49,8 +49,7 @@ void GameLayer::initLayers(){
     this->addChild(UILayer,SceneZOrder::USER_INTERFACE,SceneLayer::ui);
     cocos2d::Layer* BGLayer = cocos2d::Layer::create();
     this->addChild(BGLayer,SceneZOrder::BACKGROUND,SceneLayer::bg);
-}
-void GameLayer::initWorld(){
+
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/mainSheet.plist");
     this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/mainSheet.png"));
 
@@ -65,6 +64,8 @@ void GameLayer::initWorld(){
 
     cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("textures/animations/button/buttonSheet.plist");
     this->getChildByName(SceneLayer::gamesession)->addChild(cocos2d::SpriteBatchNode::create("textures/animations/button/buttonSheet.png"));
+}
+void GameLayer::initWorld(){
 
     WorldProperties::screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 
@@ -90,6 +91,10 @@ void GameLayer::intCreatures(){
             )
         )
     );
+
+    //Init player related fields
+    for (auto & e : enemy)
+        e->initPlayerDependenceFields();
 }
 void GameLayer::initUI(){
     ctarg = new ControlTargeting(player,this->getChildByName(SceneLayer::ui));
@@ -180,7 +185,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
         }
     }
     //Collide with other enemies
-    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 2 ){
+    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 2){
         player->setCreatureState(CreatureInfo::State::GET_DAMMAGE);
         return false;
     }

@@ -102,6 +102,7 @@ void Creature::initStats(){
             creature_info.characteristic.jump_ability = 1;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 10;
+            creature_info.characteristic.vision_radius = 300;
             break;
         }
         case CreatureInfo::Type::KOOL_HASH:{
@@ -124,6 +125,7 @@ void Creature::initStats(){
             creature_info.characteristic.jump_ability = 1;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 15;
+            creature_info.characteristic.vision_radius = 200;
             break;
         }
         case CreatureInfo::Type::ERENU_DOO:{
@@ -146,6 +148,7 @@ void Creature::initStats(){
             creature_info.characteristic.jump_ability = 0;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 25;
+            creature_info.characteristic.vision_radius = 100;
             break;
         }
         case CreatureInfo::Type::GOO_ZOO:{
@@ -168,6 +171,7 @@ void Creature::initStats(){
             creature_info.characteristic.jump_ability = 0;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 50;
+            creature_info.characteristic.vision_radius = 300;
             break;
         }
         case CreatureInfo::Type::AVR:{
@@ -190,6 +194,7 @@ void Creature::initStats(){
             creature_info.characteristic.jump_ability = 2;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 10;
+            creature_info.characteristic.vision_radius = 400;
             break;
         }
     }
@@ -253,6 +258,7 @@ void Creature::initBody(cocos2d::Vec2 pos){
     };
     creature_sprite->getTexture()->setTexParameters(tpar);
     currentLayer->addChild(creature_sprite,SceneZOrder::MIDLEGROUND,indentificator);
+
 }
 Creature::~Creature(){
     
@@ -737,12 +743,22 @@ void Creature::updateCurrentState(){
 Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){
 }
+void Enemy::initPlayerDependenceFields(){
+    player = currentLayer->getChildByTag(2);
+}
 void Enemy::update(float dt){
     showStatistics(DebugStatistics::PHYSICS);
-    if (isNewState){
+    if (isNewState || makeDecision(dt)){
         updateCurrentState();
     }
     updatePermament();
+}
+bool Enemy::makeDecision(float dt){
+    //If creature in vision radius
+    if (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius){
+        
+    }
+    return false;
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////

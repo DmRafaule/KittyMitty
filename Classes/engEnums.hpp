@@ -19,6 +19,7 @@ struct CreatureInfo{
         int                       stamina;//How long creature can fight efficient
         int                       stamina_limit;
         float                     stamina_regeneration_counter;//Timer for regenaration stamina
+        float                     vision_radius;//How far creature can see others creatures
     
     };
     enum Type : uint{
