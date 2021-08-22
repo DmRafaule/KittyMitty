@@ -578,7 +578,7 @@
    </properties>
   </object>
   <object id="208" name="roof" x="1119.28" y="1128.49" width="505.614" height="9.833"/>
-  <object id="219" name="hero" type="creatureObj" x="207.118" y="533.397">
+  <object id="219" name="hero" type="creatureObj" x="189.118" y="533.397">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="2"/>

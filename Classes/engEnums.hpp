@@ -111,8 +111,11 @@ enum BehaviorPattern{
     INTERACTING,
     WAITING,
 };
-struct Memory{
-    bool doIseePlayer;
+struct BehaviorMemory{
+    BehaviorMemory(CreatureInfo::State state, CreatureInfo::DMove dmove,float time);
+    CreatureInfo::DMove dmove;
+    CreatureInfo::State state;
+    float time;
 };
 
 enum SceneZOrder{

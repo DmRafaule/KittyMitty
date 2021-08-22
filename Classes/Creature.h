@@ -101,11 +101,15 @@ private:
     void makeDecision(float dt);
     void defineBehavior();
     void setCreatureBehavior(BehaviorPattern currentBehaviorPattern);
-    void behaviorHandler();
+    
+    void updateBehavior(float dt);
 private:
     cocos2d::Node* player;
+    std::deque<BehaviorMemory> creature_currentBehaviorPattern;
+    
     BehaviorPattern currentBehaviorPattern;
-    Memory mem;
+    int currentBehaviorPatternIndex;
+    float currentTime;
 
 };
 class Player : public Creature{

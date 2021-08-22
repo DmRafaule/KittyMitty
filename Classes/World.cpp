@@ -270,6 +270,7 @@ void Level::initCreatures(){
          Enemy* e;
          e = new Enemy(en.first,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
          e->setWeapon((WeaponType)en.second.typeWepon);
+         e->initPlayerDependenceFields();
          currentLayer->getEnemy()->push_back(e);
       }
    }
