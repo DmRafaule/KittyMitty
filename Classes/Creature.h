@@ -98,9 +98,15 @@ private:
     /**
      * @return state for making new decision
     */
-    bool makeDecision(float dt);
-
+    void makeDecision(float dt);
+    void defineBehavior();
+    void setCreatureBehavior(BehaviorPattern currentBehaviorPattern);
+    void behaviorHandler();
+private:
     cocos2d::Node* player;
+    BehaviorPattern currentBehaviorPattern;
+    Memory mem;
+
 };
 class Player : public Creature{
 public:

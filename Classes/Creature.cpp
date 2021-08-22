@@ -125,7 +125,7 @@ void Creature::initStats(){
             creature_info.characteristic.jump_ability = 1;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 15;
-            creature_info.characteristic.vision_radius = 200;
+            creature_info.characteristic.vision_radius = 300;
             break;
         }
         case CreatureInfo::Type::ERENU_DOO:{
@@ -742,23 +742,95 @@ void Creature::updateCurrentState(){
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){
+    currentBehaviorPattern = BehaviorPattern::WAITING;
 }
 void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
 }
+void Enemy::setCreatureBehavior(BehaviorPattern currentBehaviorPattern){
+    this->currentBehaviorPattern = currentBehaviorPattern;
+}
 void Enemy::update(float dt){
     showStatistics(DebugStatistics::PHYSICS);
-    if (isNewState || makeDecision(dt)){
+    //makeDecision(dt);
+    if (isNewState){
         updateCurrentState();
     }
     updatePermament();
 }
-bool Enemy::makeDecision(float dt){
-    //If creature in vision radius
-    if (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius){
-        
+void Enemy::behaviorHandler(){
+
+}
+
+void Enemy::makeDecision(float dt){
+    defineBehavior();
+    switch(currentBehaviorPattern){
+        case BehaviorPattern::ATTACKING:{
+            OUT("attacking\n");
+            break;
+        }
+        case BehaviorPattern::CHASING:{
+            OUT("chaising\n");
+            //On the ground
+            if (creature_info.state == CreatureInfo::State::IDLE ||
+                creature_info.state == CreatureInfo::State::STAND_UP)
+                if (creature_sprite->getPositionY() < player->getPositionY())
+                    setCreatureState(CreatureInfo::State::IN_JUMP);
+                else 
+                    setCreatureState(CreatureInfo::State::START_RUN);
+            //In air
+            else if (creature_info.state == CreatureInfo::State::IN_FALL ||
+                     creature_info.state == CreatureInfo::State::IN_JUMP)
+                setCreatureState(CreatureInfo::State::SOARING);
+            //On steps
+            else if (creature_info.state == CreatureInfo::State::ON_STEPS)
+                setCreatureState(CreatureInfo::State::MOVE_BY_STEPS);
+            //On wall
+            else if (creature_info.state == CreatureInfo::State::ON_WALL)
+                setCreatureState(CreatureInfo::State::LETGO);
+
+            
+            if (player->getPositionX() > creature_sprite->getPositionX())
+                creature_info.dmove = CreatureInfo::DMove::RIGHT;
+            else 
+                creature_info.dmove = CreatureInfo::DMove::LEFT;
+            break;
+        }
+        case BehaviorPattern::STOP_CHAISING:{
+            OUT("stop chaising\n");
+            if (creature_info.state == CreatureInfo::State::RUNNING)
+                setCreatureState(CreatureInfo::State::BRACKING);
+            else if (creature_info.state == CreatureInfo::State::MOVE_BY_STEPS)
+                setCreatureState(CreatureInfo::State::ON_STEPS);
+            
+            setCreatureBehavior(BehaviorPattern::WAITING);
+            break;
+        }
+        case BehaviorPattern::DEFENDING:{
+            OUT("defending\n");
+            break;
+        }
+        case BehaviorPattern::INTERACTING:{
+            OUT("inter\n");
+            break;
+        }
+        case BehaviorPattern::WAITING:{
+            OUT("waiting\n");
+            break;
+        }
     }
-    return false;
+}
+void Enemy::defineBehavior(){
+    //If creature in vision radius
+    if ((creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius) && 
+        (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) > creature_info.characteristic.vision_radius/1.5)){
+        setCreatureBehavior(BehaviorPattern::CHASING);
+    }
+    else if (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius/1.5){
+        setCreatureBehavior(BehaviorPattern::STOP_CHAISING);
+    }
+    else
+        setCreatureBehavior(BehaviorPattern::WAITING);
 }
 
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////

@@ -103,6 +103,17 @@ struct PartOrgan {
     PartOrganType type;
     PartCreatureStatus status;
 };
+enum BehaviorPattern{
+    CHASING,
+    STOP_CHAISING,
+    ATTACKING,
+    DEFENDING,
+    INTERACTING,
+    WAITING,
+};
+struct Memory{
+    bool doIseePlayer;
+};
 
 enum SceneZOrder{
     BACKGROUND,

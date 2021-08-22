@@ -186,7 +186,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     }
     //Collide with other enemies
     else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 2){
-        player->setCreatureState(CreatureInfo::State::GET_DAMMAGE);
+        //player->setCreatureState(CreatureInfo::State::GET_DAMMAGE);
         return false;
     }
     /*Collide with walls*/

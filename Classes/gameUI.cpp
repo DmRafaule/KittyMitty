@@ -140,11 +140,11 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
     if (button_jump->getBoundingBox().containsPoint(touch->getLocation()) &&
         creature->getCreatureInfo()->characteristic.stamina >= 5 && 
         creature->getCreatureInfo()->characteristic.current_jump_ability_num <= creature->getCreatureInfo()->characteristic.jump_ability){
-        //Jump from ground
+        //Jump from wall
         if (creature->getCreatureInfo()->state == CreatureInfo::State::ON_WALL){
             creature->setCreatureState(CreatureInfo::State::JUMP_FROM_WALL);
         }
-        //Jump from wall
+        //Jump from ground
         else if (creature->getCreatureInfo()->state != CreatureInfo::State::JUMP_FROM_WALL){
             creature->setCreatureState(CreatureInfo::State::IN_JUMP);
             creature->setCreatureInfo()->dmove = CreatureInfo::DMove::TOP;
