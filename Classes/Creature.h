@@ -4,6 +4,7 @@
 #include "Weapon.h"
 #include "engEnums.hpp"
 #include <map>
+#include <queue>
 
 class Creature{
 friend class PartCreature;
@@ -98,18 +99,17 @@ private:
     /**
      * @return state for making new decision
     */
-    void makeDecision(float dt);
-    void defineBehavior();
+    void updateBehavior(float dt);
+    BehaviorPattern defineBehavior();
+    void defineDirection();
     void setCreatureBehavior(BehaviorPattern currentBehaviorPattern);
     
-    void updateBehavior(float dt);
+    void setNewState(float dt);
 private:
     cocos2d::Node* player;
-    std::deque<BehaviorMemory> creature_currentBehaviorPattern;
-    
+    std::queue<BehaviorMemory> creature_behaviorPattern;
     BehaviorPattern currentBehaviorPattern;
-    int currentBehaviorPatternIndex;
-    float currentTime;
+    float behaviorStartTimer;
 
 };
 class Player : public Creature{
