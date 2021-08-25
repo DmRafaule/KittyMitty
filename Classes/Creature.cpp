@@ -66,7 +66,7 @@ CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string a
     this->animationForWho = animationForWho;
 }
 
-BehaviorMemory::BehaviorMemory(CreatureInfo::State state, CreatureInfo::DMove dmove, float time){
+BehaviorState::BehaviorState(CreatureInfo::State state, CreatureInfo::DMove dmove, float time){
     this->state = state;
     this->dmove = dmove;
     this->time  = time;
@@ -745,14 +745,11 @@ void Creature::updateCurrentState(){
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){
-    currentBehaviorPattern = BehaviorPattern::WAITING;
-    behaviorStartTimer = 0;
+    creature_behaviorPattern = BehaviorPattern::WAITING;
+    isVision = false;
 }
 void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
-}
-void Enemy::setCreatureBehavior(BehaviorPattern currentBehaviorPattern){
-    this->currentBehaviorPattern = currentBehaviorPattern;
 }
 void Enemy::update(float dt){
     showStatistics(DebugStatistics::PHYSICS);
@@ -764,9 +761,12 @@ void Enemy::update(float dt){
     updatePermament();
 
 }
-
 void Enemy::updateBehavior(float dt){
-    if (creature_behaviorPattern.empty()){
+    packBehaviorStates(dt);
+    unpackBehaviorState(dt);
+}
+void Enemy::packBehaviorStates(float dt){
+    if (creature_behaviorStates.empty()){
         defineDirection();
         switch(defineBehavior()){
             case BehaviorPattern::ATTACKING:{
@@ -774,41 +774,41 @@ void Enemy::updateBehavior(float dt){
                 break;
             }
             case BehaviorPattern::CHASING:{
-                OUT("chaising\n");
+                //OUT("chaising\n");
                 //On the ground
                 if (creature_info.state == CreatureInfo::State::IDLE ||
                     creature_info.state == CreatureInfo::State::STAND_UP)
                     if (creature_sprite->getPositionY() < player->getPositionY()){
-                        creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::START_RUN,creature_info.dmove,0.1));
-                        creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::IN_JUMP,creature_info.dmove,0.1));
-                        creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::SOARING,creature_info.dmove,0.3));
-                        creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::IN_JUMP,creature_info.dmove,0.1));
-                        creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::SOARING,creature_info.dmove,0.1));    
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,creature_info.dmove,0.1));
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_JUMP,creature_info.dmove,0.1));
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::SOARING,creature_info.dmove,0.3));
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_JUMP,creature_info.dmove,0.1));
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::SOARING,creature_info.dmove,0.1));    
                     }
                     else 
-                        creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::START_RUN,creature_info.dmove,0.1));
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,creature_info.dmove,0.1));
                 //In air
                 else if (creature_info.state == CreatureInfo::State::IN_FALL ||
                          creature_info.state == CreatureInfo::State::IN_JUMP)
-                    creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::SOARING,creature_info.dmove,0.1));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::SOARING,creature_info.dmove,0.1));
                 //On steps
                 else if (creature_info.state == CreatureInfo::State::ON_STEPS)
-                    creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::MOVE_BY_STEPS,creature_info.dmove,0.1));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::MOVE_BY_STEPS,creature_info.dmove,0.1));
                 //On wall
                 else if (creature_info.state == CreatureInfo::State::ON_WALL)
-                    creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::LETGO,creature_info.dmove,0.1));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::LETGO,creature_info.dmove,0.1));
                 
                 break;
             }
             case BehaviorPattern::STOP_CHAISING:{
-                OUT("stop chaising\n");
+                //OUT("stop chaising\n");
                 if (creature_info.state == CreatureInfo::State::RUNNING)
-                    creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::BRACKING,creature_info.dmove,0.1));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::BRACKING,creature_info.dmove,0.1));
                 else if (creature_info.state == CreatureInfo::State::MOVE_BY_STEPS)
-                    creature_behaviorPattern.push(BehaviorMemory(CreatureInfo::ON_STEPS,creature_info.dmove,0.1));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::ON_STEPS,creature_info.dmove,0.1));
                 creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
 
-                setCreatureBehavior(BehaviorPattern::WAITING);
+                creature_behaviorPattern = BehaviorPattern::WAITING;
                 break;
             }
             case BehaviorPattern::DEFENDING:{
@@ -820,12 +820,11 @@ void Enemy::updateBehavior(float dt){
                 break;
             }
             case BehaviorPattern::WAITING:{
-                OUT("waiting\n");
+                //OUT("waiting\n");
                 break;
             }
         }
     }
-    setNewState(dt);
 }
 void Enemy::defineDirection(){
     if (player->getPositionX() > creature_sprite->getPositionX())
@@ -837,27 +836,43 @@ BehaviorPattern Enemy::defineBehavior(){
     //If creature in vision radius
     if ((creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius) && 
         (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) > creature_info.characteristic.vision_radius*0.3)){
-        setCreatureBehavior(BehaviorPattern::CHASING);
+        enableVision();
+        creature_behaviorPattern = BehaviorPattern::CHASING;
     }
     else if (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius*0.3 &&
-        currentBehaviorPattern != BehaviorPattern::WAITING){//HERE too close approach
-        setCreatureBehavior(BehaviorPattern::STOP_CHAISING);
+        creature_behaviorPattern != BehaviorPattern::WAITING){//HERE too close approach
+        creature_behaviorPattern = BehaviorPattern::STOP_CHAISING;
     }
-    else
-        setCreatureBehavior(BehaviorPattern::WAITING);
-    return currentBehaviorPattern;
+    else{
+        creature_behaviorPattern = BehaviorPattern::WAITING;
+    }
+    return creature_behaviorPattern;
 }
-void Enemy::setNewState(float dt){
-    if (!creature_behaviorPattern.empty()){
-        creature_behaviorPattern.front().time -= dt;
-        if (creature_behaviorPattern.front().time <= 0){
-            setCreatureState(creature_behaviorPattern.front().state);
-            creature_info.dmove = creature_behaviorPattern.front().dmove; 
-            creature_behaviorPattern.pop();
+void Enemy::unpackBehaviorState(float dt){
+    if (!creature_behaviorStates.empty()){
+        creature_behaviorStates.front().time -= dt;
+        if (creature_behaviorStates.front().time <= 0){
+            setCreatureState(creature_behaviorStates.front().state);
+            creature_info.dmove = creature_behaviorStates.front().dmove; 
+            creature_behaviorStates.pop();
+            isVision = false;
         }
     }
 }
-
+void Enemy::enableVision(){
+    isVision = true;
+    currentLayer->removeChild(creature_vision);
+    
+    creature_vision = cocos2d::Node::create();
+    cocos2d::PhysicsBody* vision_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(16,16));
+    vision_body->setCollisionBitmask(indentificator + 100);
+    vision_body->setContactTestBitmask(0xFF);
+    vision_body->setDynamic(false);
+    vision_body->setGravityEnable(false);
+    creature_vision->setPhysicsBody(vision_body);
+    creature_vision->setPosition(player->getPosition());
+    currentLayer->addChild(creature_vision);
+}
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
 Player::Player(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){

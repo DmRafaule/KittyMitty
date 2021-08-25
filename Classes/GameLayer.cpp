@@ -170,8 +170,30 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
     
-    //Collide with floors
-    if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 1 ){
+    for (auto &e : enemy){
+        if (e->isVisionEnable())
+            if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 1){
+                    OUT("I see floor\n");
+                }
+                else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
+                    OUT("I see player\n");
+                }
+                else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 3){
+                    OUT("I see wall\n");
+                }
+                else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 4){
+                    OUT("I see stair\n");
+                }
+                else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 5){
+                    OUT("I see roof\n");
+                }
+                return false;
+            }
+    }
+    //Collide with ...
+    switch ((b->getCollisionBitmask() & a->getContactTestBitmask())){
+    case 1:{// floor
         if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
             player->setCreatureState(CreatureInfo::State::LAND_ON);
             return true;
@@ -184,13 +206,11 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
             }
         }
     }
-    //Collide with other enemies
-    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 2){
+    case 2:{// creature
         //player->setCreatureState(CreatureInfo::State::GET_DAMMAGE);
         return false;
     }
-    /*Collide with walls*/
-    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 3 ){
+    case 3:{// wall
         if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
             player->setCreatureState(CreatureInfo::State::ON_WALL);
             return true;
@@ -203,8 +223,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
             }
         }
     }
-    /*Collide with steps*/
-    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 4 ){
+    case 4:{// steps
         if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
             player->setCreatureState(CreatureInfo::State::ON_STEPS);
             return true;
@@ -217,8 +236,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
             }
         }
     }
-    //Collision with roofs
-    else if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == 5 ){
+    case 5:{// roof
         if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
             player->setCreatureState(CreatureInfo::State::TAKE_ROOF);
             return true;
@@ -231,18 +249,9 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
             }
         }
     }
-    //Collisions with other objects which will not affected on velocity and directions
-    else {
+    default:{// other
         return false;
+    }
     }
     return false;
 }
-
-
-
-
-
-
-
-//Это очень, очень странно. WTF??? Почему при портировании на андроид в ф-ии onContactBegin я должен в каждом if-else стэйтменте возвращать что-либо. 
-//Либо я тупой либо этото движок говно которое хуй пойми что делает :( :( :( :( :( :(

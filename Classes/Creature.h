@@ -95,22 +95,32 @@ public:
      * @brief init fields which related to player and cant be assigned in constructor
     */
     void initPlayerDependenceFields();
-private:
     /**
-     * @return state for making new decision
+     * @return vision object
     */
-    void updateBehavior(float dt);
-    BehaviorPattern defineBehavior();
-    void defineDirection();
-    void setCreatureBehavior(BehaviorPattern currentBehaviorPattern);
-    
-    void setNewState(float dt);
+    inline const cocos2d::Node* getCreatureVisions() { return creature_vision; };
+    /**
+     * @return state of vision object(active or passive)
+    */
+    inline const bool isVisionEnable() { return isVision; };
 private:
-    cocos2d::Node* player;
-    std::queue<BehaviorMemory> creature_behaviorPattern;
-    BehaviorPattern currentBehaviorPattern;
-    float behaviorStartTimer;
+    /* First pack States into Behavior pattern then unpack them in to creature_state*/
+    void updateBehavior(float dt);
+        void packBehaviorStates(float dt);
+            void defineDirection();
+            /* Define state for making new decision*/
+            BehaviorPattern defineBehavior();
+        /* Set up new state for creature_state*/
+        void unpackBehaviorState(float dt);
+    
+    void enableVision();
+private:
+    cocos2d::Node* player;//Date about player node
+    cocos2d::Node* creature_vision;//Node for Image recognition
+    std::queue<BehaviorState> creature_behaviorStates;//pack of expanded states
+    BehaviorPattern creature_behaviorPattern;//pattern witch define how to pack states 
 
+    bool isVision;// For optimaing collision updates
 };
 class Player : public Creature{
 public:

@@ -111,8 +111,8 @@ enum BehaviorPattern{
     INTERACTING,
     WAITING,
 };
-struct BehaviorMemory{
-    BehaviorMemory(CreatureInfo::State state, CreatureInfo::DMove dmove,float time);
+struct BehaviorState{
+    BehaviorState(CreatureInfo::State state, CreatureInfo::DMove dmove,float time);
     CreatureInfo::DMove dmove;
     CreatureInfo::State state;
     float time;
