@@ -125,6 +125,7 @@ private:
     std::queue<BehaviorState> creature_behaviorStates;//pack of expanded states
     std::queue<LookInfo> creature_lookPattern;//pattern witch define how and where to look
     BehaviorPattern creature_behaviorPattern;//pattern witch define how to pack states 
+    BehaviorPattern creature_previosBehaviorPattern;//previose behavior pattern
 
     bool isVision;// For optimaing collision updates
     uint8_t memoryMask;//bitmask of memory what creature saw

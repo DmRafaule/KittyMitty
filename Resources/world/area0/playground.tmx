@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="24">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="25">
  <tileset firstgid="1" source="tilesetMidlegr.tsx"/>
  <layer id="4" name="background" width="100" height="100">
   <data encoding="csv">
@@ -418,14 +418,14 @@
 </data>
  </layer>
  <objectgroup id="5" name="objectsLayer">
-  <object id="1" name="hero" type="creatureObj" x="595.903" y="767.361">
+  <object id="1" name="hero" type="creatureObj" x="305.403" y="779.361">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="0"/>
    </properties>
    <point/>
   </object>
-  <object id="3" name="floor" x="232.569" y="784.28" width="1141.68" height="15.1061"/>
+  <object id="3" name="floor" x="565.902" y="784.28" width="339.013" height="15.1061"/>
   <object id="4" name="DeathZone" type="staticObj" x="-71.9775" y="1156.35" width="1713.95" height="19.3034">
    <properties>
     <property name="nextLevelOffsetX" type="float" value="-1"/>
@@ -433,14 +433,13 @@
    </properties>
   </object>
   <object id="12" name="wall" x="1374.14" y="533.269" width="5.75" height="281.5"/>
-  <object id="13" name="wall" x="102.618" y="522.454" width="132.75" height="281.5"/>
-  <object id="15" name="floor" x="723.026" y="741.827" width="95.2775" height="55.7645"/>
-  <object id="16" name="kool-hash" type="creatureObj" x="445.083" y="754.833">
+  <object id="16" name="kool-hash" type="creatureObj" x="250.083" y="777.833">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>
+  <object id="24" name="floor" x="161.994" y="785.947" width="339.013" height="15.1061"/>
  </objectgroup>
 </map>

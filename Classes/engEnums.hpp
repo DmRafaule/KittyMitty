@@ -105,11 +105,13 @@ struct PartOrgan {
 };
 enum BehaviorPattern{
     CHASING,
+    JUMP_OVER_PIT,
     STOP_CHAISING,
     ATTACKING,
     DEFENDING,
     INTERACTING,
-    WAITING,
+    PATRULE,
+    WAITING_NEW_BEHAVIORPATTERN,
 };
 struct BehaviorState{
     BehaviorState(CreatureInfo::State state, CreatureInfo::DMove dmove,float time);
