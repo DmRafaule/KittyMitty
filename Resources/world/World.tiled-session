@@ -22,11 +22,11 @@
             }
         },
         "area0/level0.tmx": {
-            "scale": 1.5,
+            "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 207.66666666666666,
-                "y": 533
+                "x": 490.5,
+                "y": 862.5
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -58,7 +58,7 @@
         },
         "area0/playground.tmx": {
             "scale": 3,
-            "selectedLayer": 3,
+            "selectedLayer": 4,
             "viewCenter": {
                 "x": 791.8333333333333,
                 "y": 799.8333333333333

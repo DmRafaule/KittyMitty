@@ -117,6 +117,11 @@ struct BehaviorState{
     CreatureInfo::State state;
     float time;
 };
+struct LookInfo{
+    LookInfo(cocos2d::Vec2 whereTo, cocos2d::Vec2 howTo);
+    cocos2d::Vec2 whereTo;
+    cocos2d::Vec2 howTo;
+};
 
 enum SceneZOrder{
     BACKGROUND,

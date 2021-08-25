@@ -71,6 +71,10 @@ BehaviorState::BehaviorState(CreatureInfo::State state, CreatureInfo::DMove dmov
     this->dmove = dmove;
     this->time  = time;
 }
+LookInfo::LookInfo(cocos2d::Vec2 whereTo, cocos2d::Vec2 howTo){
+    this->whereTo = whereTo;
+    this->howTo   = howTo;
+}
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
 Creature::Creature(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
     this->currentLayer = gameLayer;
@@ -747,6 +751,11 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
     Creature(type,pos,gameLayer,id){
     creature_behaviorPattern = BehaviorPattern::WAITING;
     isVision = false;
+
+    creature_lookPattern.push(LookInfo(cocos2d::Vec2(32,0),cocos2d::Vec2(100,100)));
+    creature_lookPattern.push(LookInfo(cocos2d::Vec2(-132,0),cocos2d::Vec2(100,100)));
+    creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,132),cocos2d::Vec2(100,100)));
+    creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,-132),cocos2d::Vec2(100,100)));
 }
 void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
@@ -764,6 +773,7 @@ void Enemy::update(float dt){
 void Enemy::updateBehavior(float dt){
     packBehaviorStates(dt);
     unpackBehaviorState(dt);
+    unpackLookInfo();
 }
 void Enemy::packBehaviorStates(float dt){
     if (creature_behaviorStates.empty()){
@@ -783,10 +793,21 @@ void Enemy::packBehaviorStates(float dt){
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_JUMP,creature_info.dmove,0.1));
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::SOARING,creature_info.dmove,0.3));
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_JUMP,creature_info.dmove,0.1));
-                        creature_behaviorStates.push(BehaviorState(CreatureInfo::SOARING,creature_info.dmove,0.1));    
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::SOARING,creature_info.dmove,0.1));
+
+                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(32,0),cocos2d::Vec2(100,100)));
+                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(-132,0),cocos2d::Vec2(100,100)));
+                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,132),cocos2d::Vec2(100,100)));
+                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,-132),cocos2d::Vec2(100,100)));
                     }
-                    else 
+                    else{ 
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,creature_info.dmove,0.1));
+                            
+                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(32,0),cocos2d::Vec2(100,100)));
+                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(-132,0),cocos2d::Vec2(100,100)));
+                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,132),cocos2d::Vec2(100,100)));
+                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,-132),cocos2d::Vec2(100,100)));
+                    }
                 //In air
                 else if (creature_info.state == CreatureInfo::State::IN_FALL ||
                          creature_info.state == CreatureInfo::State::IN_JUMP)
@@ -836,7 +857,6 @@ BehaviorPattern Enemy::defineBehavior(){
     //If creature in vision radius
     if ((creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius) && 
         (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) > creature_info.characteristic.vision_radius*0.3)){
-        enableVision();
         creature_behaviorPattern = BehaviorPattern::CHASING;
     }
     else if (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius*0.3 &&
@@ -859,18 +879,25 @@ void Enemy::unpackBehaviorState(float dt){
         }
     }
 }
-void Enemy::enableVision(){
+
+void Enemy::unpackLookInfo(){
+    if (!creature_lookPattern.empty()){
+        updateLookAt(creature_lookPattern.front());
+        creature_lookPattern.pop();
+    }
+}
+void Enemy::updateLookAt(const LookInfo& look){
     isVision = true;
     currentLayer->removeChild(creature_vision);
-    
-    creature_vision = cocos2d::Node::create();
-    cocos2d::PhysicsBody* vision_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(16,16));
+    cocos2d::PhysicsBody* vision_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(look.howTo));
     vision_body->setCollisionBitmask(indentificator + 100);
     vision_body->setContactTestBitmask(0xFF);
     vision_body->setDynamic(false);
     vision_body->setGravityEnable(false);
+
+    creature_vision = cocos2d::Node::create();
     creature_vision->setPhysicsBody(vision_body);
-    creature_vision->setPosition(player->getPosition());
+    creature_vision->setPosition(creature_sprite->getPositionX() + look.whereTo.x,creature_sprite->getPositionY() + look.whereTo.y );
     currentLayer->addChild(creature_vision);
 }
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////

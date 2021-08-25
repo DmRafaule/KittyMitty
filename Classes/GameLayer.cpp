@@ -170,27 +170,6 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     cocos2d::PhysicsBody *a = contact.getShapeA()->getBody();
     cocos2d::PhysicsBody *b = contact.getShapeB()->getBody();
     
-    for (auto &e : enemy){
-        if (e->isVisionEnable())
-            if ((b->getCollisionBitmask() & a->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
-                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 1){
-                    OUT("I see floor\n");
-                }
-                else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 2){
-                    OUT("I see player\n");
-                }
-                else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 3){
-                    OUT("I see wall\n");
-                }
-                else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 4){
-                    OUT("I see stair\n");
-                }
-                else if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == 5){
-                    OUT("I see roof\n");
-                }
-                return false;
-            }
-    }
     //Collide with ...
     switch ((b->getCollisionBitmask() & a->getContactTestBitmask())){
     case 1:{// floor
@@ -202,6 +181,11 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
                     e->setCreatureState(CreatureInfo::State::LAND_ON);
                     return true;
+                }
+                else if (e->isVisionEnable())
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
+                        OUT("I see floor\n");
+                        return false;
                 }
             }
         }
@@ -220,6 +204,11 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                     e->setCreatureState(CreatureInfo::State::ON_WALL);
                     return true;
                 }
+                else if (e->isVisionEnable())
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
+                        OUT("I see wall\n");
+                        return false;
+                }
             }
         }
     }
@@ -233,6 +222,11 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                     e->setCreatureState(CreatureInfo::State::ON_STEPS);
                     return true;
                 }
+                else if (e->isVisionEnable())
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
+                        OUT("I see steps\n");
+                        return false;
+                }
             }
         }
     }
@@ -245,6 +239,11 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureSprite()->getPhysicsBody()->getCollisionBitmask()){
                     e->setCreatureState(CreatureInfo::State::TAKE_ROOF);
                     return true;
+                }
+                else if (e->isVisionEnable())
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
+                        OUT("I see roof\n");
+                        return false;
                 }
             }
         }

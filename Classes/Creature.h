@@ -112,12 +112,17 @@ private:
             BehaviorPattern defineBehavior();
         /* Set up new state for creature_state*/
         void unpackBehaviorState(float dt);
-    
-    void enableVision();
+    /**
+     @param  whereTo point to look at
+     @param howTo how width and height it's look will be 
+    */
+    void unpackLookInfo();
+    void updateLookAt(const LookInfo& look);
 private:
     cocos2d::Node* player;//Date about player node
     cocos2d::Node* creature_vision;//Node for Image recognition
     std::queue<BehaviorState> creature_behaviorStates;//pack of expanded states
+    std::queue<LookInfo> creature_lookPattern;//pattern witch define how and where to look
     BehaviorPattern creature_behaviorPattern;//pattern witch define how to pack states 
 
     bool isVision;// For optimaing collision updates
