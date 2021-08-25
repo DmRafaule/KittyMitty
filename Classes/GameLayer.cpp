@@ -185,6 +185,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 else if (e->isVisionEnable())
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
                         OUT("I see floor\n");
+                        e->getMemoryMask() |= FLOOR;
                         return false;
                 }
             }
@@ -207,6 +208,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 else if (e->isVisionEnable())
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
                         OUT("I see wall\n");
+                        e->getMemoryMask() |= WALL;
                         return false;
                 }
             }

@@ -2,6 +2,8 @@
 #include "GameLayer.h"
 #include <dirent.h>
 
+#include <bits/stdc++.h>
+#include <iostream>
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
 PartOrgan::PartOrgan(PartOrganType type){
     this->type = type;
@@ -751,11 +753,7 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
     Creature(type,pos,gameLayer,id){
     creature_behaviorPattern = BehaviorPattern::WAITING;
     isVision = false;
-
-    creature_lookPattern.push(LookInfo(cocos2d::Vec2(32,0),cocos2d::Vec2(100,100)));
-    creature_lookPattern.push(LookInfo(cocos2d::Vec2(-132,0),cocos2d::Vec2(100,100)));
-    creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,132),cocos2d::Vec2(100,100)));
-    creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,-132),cocos2d::Vec2(100,100)));
+    memoryMask = false;
 }
 void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
@@ -763,6 +761,7 @@ void Enemy::initPlayerDependenceFields(){
 void Enemy::update(float dt){
     showStatistics(DebugStatistics::PHYSICS);
     
+    updateVision();
     updateBehavior(dt);
     if (isNewState){
         updateCurrentState();
@@ -773,7 +772,6 @@ void Enemy::update(float dt){
 void Enemy::updateBehavior(float dt){
     packBehaviorStates(dt);
     unpackBehaviorState(dt);
-    unpackLookInfo();
 }
 void Enemy::packBehaviorStates(float dt){
     if (creature_behaviorStates.empty()){
@@ -797,16 +795,11 @@ void Enemy::packBehaviorStates(float dt){
 
                         creature_lookPattern.push(LookInfo(cocos2d::Vec2(32,0),cocos2d::Vec2(100,100)));
                         creature_lookPattern.push(LookInfo(cocos2d::Vec2(-132,0),cocos2d::Vec2(100,100)));
-                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,132),cocos2d::Vec2(100,100)));
-                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,-132),cocos2d::Vec2(100,100)));
                     }
                     else{ 
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,creature_info.dmove,0.1));
-                            
                         creature_lookPattern.push(LookInfo(cocos2d::Vec2(32,0),cocos2d::Vec2(100,100)));
                         creature_lookPattern.push(LookInfo(cocos2d::Vec2(-132,0),cocos2d::Vec2(100,100)));
-                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,132),cocos2d::Vec2(100,100)));
-                        creature_lookPattern.push(LookInfo(cocos2d::Vec2(0,-132),cocos2d::Vec2(100,100)));
                     }
                 //In air
                 else if (creature_info.state == CreatureInfo::State::IN_FALL ||
@@ -845,6 +838,7 @@ void Enemy::packBehaviorStates(float dt){
                 break;
             }
         }
+        memoryMask = 0;
     }
 }
 void Enemy::defineDirection(){
@@ -853,7 +847,7 @@ void Enemy::defineDirection(){
     else 
         creature_info.dmove = CreatureInfo::LEFT;
 }
-BehaviorPattern Enemy::defineBehavior(){
+BehaviorPattern Enemy::defineBehavior(){//Here define behavior patterns and states
     //If creature in vision radius
     if ((creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) <= creature_info.characteristic.vision_radius) && 
         (creature_sprite->getBoundingBox().origin.getDistance(player->getPosition()) > creature_info.characteristic.vision_radius*0.3)){
@@ -880,13 +874,13 @@ void Enemy::unpackBehaviorState(float dt){
     }
 }
 
-void Enemy::unpackLookInfo(){
+void Enemy::updateVision(){
     if (!creature_lookPattern.empty()){
-        updateLookAt(creature_lookPattern.front());
-        creature_lookPattern.pop();
+        setLookAt(creature_lookPattern.front());
+        creature_lookPattern.pop();//Here maybe you need add some clean up for creature_vision
     }
 }
-void Enemy::updateLookAt(const LookInfo& look){
+void Enemy::setLookAt(const LookInfo& look){
     isVision = true;
     currentLayer->removeChild(creature_vision);
     cocos2d::PhysicsBody* vision_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(look.howTo));

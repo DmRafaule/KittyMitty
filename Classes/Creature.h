@@ -103,6 +103,7 @@ public:
      * @return state of vision object(active or passive)
     */
     inline const bool isVisionEnable() { return isVision; };
+    inline uint8_t& getMemoryMask() { return memoryMask; };
 private:
     /* First pack States into Behavior pattern then unpack them in to creature_state*/
     void updateBehavior(float dt);
@@ -116,8 +117,8 @@ private:
      @param  whereTo point to look at
      @param howTo how width and height it's look will be 
     */
-    void unpackLookInfo();
-    void updateLookAt(const LookInfo& look);
+    void updateVision();
+    void setLookAt(const LookInfo& look);
 private:
     cocos2d::Node* player;//Date about player node
     cocos2d::Node* creature_vision;//Node for Image recognition
@@ -126,6 +127,7 @@ private:
     BehaviorPattern creature_behaviorPattern;//pattern witch define how to pack states 
 
     bool isVision;// For optimaing collision updates
+    uint8_t memoryMask;//bitmask of memory what creature saw
 };
 class Player : public Creature{
 public:
