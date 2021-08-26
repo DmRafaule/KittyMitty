@@ -96,8 +96,22 @@ Sensor::Sensor(Sensor::TypeSensor type){
         case TypeSensor::NEAR_BY_BOTTOM:{
             this->whereTo.x = 0;
             this->whereTo.y = -32;
-            this->howTo.x   = 28;
-            this->howTo.y   = 10;
+            this->howTo.x   = 5;
+            this->howTo.y   = 5;
+            break;
+        }
+        case TypeSensor::NEAR_BY_BOTTOM_LEFT:{
+            this->whereTo.x = -48;
+            this->whereTo.y = -32;
+            this->howTo.x   = 5;
+            this->howTo.y   = 5;
+            break;
+        }
+        case TypeSensor::NEAR_BY_BOTTOM_RIGHT:{
+            this->whereTo.x = 48;
+            this->whereTo.y = -32;
+            this->howTo.x   = 5;
+            this->howTo.y   = 5;
             break;
         }
         case TypeSensor::NEAR_BY_TOP:{
@@ -105,6 +119,34 @@ Sensor::Sensor(Sensor::TypeSensor type){
             this->whereTo.y = 32;
             this->howTo.x   = 28;
             this->howTo.y   = 10;
+            break;
+        }
+        case TypeSensor::MIDLE_TO_RIGHT:{
+            this->whereTo.x = 106;
+            this->whereTo.y = 0;
+            this->howTo.x   = 100;
+            this->howTo.y   = 100;
+            break;
+        }
+        case TypeSensor::MIDLE_TO_LEFT:{
+            this->whereTo.x = -106;
+            this->whereTo.y = 0;
+            this->howTo.x   = 100;
+            this->howTo.y   = 100;
+            break;
+        }
+        case TypeSensor::MIDLE_TO_TOP:{
+            this->whereTo.x = 0;
+            this->whereTo.y = 82;
+            this->howTo.x   = 100;
+            this->howTo.y   = 100;
+            break;
+        }
+        case TypeSensor::MIDLE_TO_BOTTOM:{
+            this->whereTo.x = 0;
+            this->whereTo.y = -82;
+            this->howTo.x   = 100;
+            this->howTo.y   = 100;
             break;
         }
     }
@@ -783,12 +825,9 @@ void Creature::updateCurrentState(){
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){
-    creature_behaviorPattern = BehaviorPattern::CHASING;
+    creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
+    creature_memorySensors = 0;
     isVision = false;
-    creature_lookPattern.push(Sensor(Sensor::TypeSensor::NEAR_BY_BOTTOM));
-    creature_lookPattern.push(Sensor(Sensor::TypeSensor::NEAR_BY_TOP));
-    creature_lookPattern.push(Sensor(Sensor::TypeSensor::NEAR_BY_LEFT));
-    creature_lookPattern.push(Sensor(Sensor::TypeSensor::NEAR_BY_RIGHT));
 }
 void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
@@ -804,65 +843,28 @@ void Enemy::update(float dt){
     updatePermament();
 
 }
+void Enemy::updateVision(){
+    if (creature_lookPattern.empty()){
+        //Clear memory before load new one
+        creature_memorySensors = 0;
+        //Brain modules(for future)
+        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
+        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
+        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
+        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
+        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
+        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
+        creature_lookPattern.push(Sensor(Sensor::EMPTY));//This is need because last lookPattern not updated, so ...
+    }
+    else {
+        setLookAt(creature_lookPattern.front());//Extract from queue lookPattern
+        creature_lookPattern.pop();//Remove extracted lookPattern
+        //Here maybe you need add some clean up for creature_vision
+    }
+}
 void Enemy::updateBehavior(float dt){
     packBehaviorStates(dt);
     unpackBehaviorState(dt);
-}
-void Enemy::packBehaviorStates(float dt){
-    if (creature_behaviorStates.empty()){
-        //defineDirection();
-        std::cout << "0x" << std::bitset<64>(creature_memorySensors) << std::endl;
-        switch(defineBehavior()){
-            case BehaviorPattern::ATTACKING:{
-                OUT("attacking\n");
-                break;
-            }
-            case BehaviorPattern::JUMP_OVER_PIT:{
-                OUT("jump over pit\n");
-                creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_JUMP,CreatureInfo::RIGHT,0.5));
-                creature_behaviorStates.push(BehaviorState(CreatureInfo::SOARING,CreatureInfo::RIGHT,0.3));
-
-                
-                setBehaviorPattern(BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN);
-                break;
-            }
-            case BehaviorPattern::PATRULE:{
-                OUT("pattrule\n");
-                creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::LEFT,1));
-                creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::RIGHT,1));
-
-                setBehaviorPattern(BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN);
-                break;
-            }
-            case BehaviorPattern::CHASING:{
-                OUT("chasing\n");
-                creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::RIGHT,0.3));
-
-
-                setBehaviorPattern(BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN);
-                break;
-            }
-            case BehaviorPattern::STOP_CHAISING:{
-                OUT("stop ch\n");
-                break;
-            }
-            case BehaviorPattern::DEFENDING:{
-                OUT("defending\n");
-                break;
-            }
-            case BehaviorPattern::INTERACTING:{
-                OUT("inter\n");
-                break;
-            }
-            case BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN:{
-                OUT("waiting\n");
-
-                setBehaviorPattern(BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN);
-                break;
-            }
-        }
-        creature_memorySensors = 0;
-    }
 }
 void Enemy::defineDirection(){
     if (player->getPositionX() > creature_sprite->getPositionX())
@@ -871,19 +873,68 @@ void Enemy::defineDirection(){
         creature_info.dmove = CreatureInfo::LEFT;
 }
 BehaviorPattern Enemy::defineBehavior(){//Here define behavior patterns and states
-    creature_lookPattern.push(Sensor(Sensor::NEAR_BY_B OTTOM));
-    creature_lookPattern.push(Sensor(Sensor::NEAR_BY_TOP));
-    creature_lookPattern.push(Sensor(Sensor::NEAR_BY_LEFT));
-    creature_lookPattern.push(Sensor(Sensor::NEAR_BY_RIGHT));
+    /*Depends on which sensors are active will produce related behavior*/
+    switch(creature_memorySensors){
+        case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_RIGHT:{
+            setBehaviorPattern(BehaviorPattern::RUN);
+            break;
+        }
+        case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_RIGHT | Sensor::NEAR_BY_BOTTOM_LEFT:{
+            setBehaviorPattern(BehaviorPattern::RUN);
+            break;
+        }
+        case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_LEFT:{
+            setBehaviorPattern(BehaviorPattern::BEFORE_JUMP);
+            break;
+        }
+        case Sensor::NEAR_BY_BOTTOM_RIGHT:{
+            setBehaviorPattern(BehaviorPattern::BEFORE_JUMP);
+            break;
+        }
+        case Sensor::NEAR_BY_BOTTOM_LEFT:{
+            setBehaviorPattern(BehaviorPattern::BEFORE_JUMP);
+            break;
+        }
+        case 0:{
+            setBehaviorPattern(BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN);
+            break;
+        }
+        default:{
+            OUT("undefind behavior\n");
+            setBehaviorPattern(BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN);
+            break;
+        }
+    }
 
-    if (creature_memorySensors == Sensor::NEAR_BY_BOTTOM ){
-        setBehaviorPattern(BehaviorPattern::CHASING);
-    }
-    else if (creature_memorySensors == 0 && creature_previosBehaviorPattern == BehaviorPattern::CHASING){
-        setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
-    }
     return creature_behaviorPattern;
 }
+void Enemy::packBehaviorStates(float dt){
+    /*Will pack behavior states queue only if behaviorStates queue is empty and look pattern also empty*/
+    if (creature_behaviorStates.empty() && creature_lookPattern.empty()){
+        //defineDirection();
+        std::cout << "0x" << std::bitset<64>(creature_memorySensors) << std::endl;//Remove
+        switch(defineBehavior()){
+            case BehaviorPattern::RUN:{
+                OUT("run\n");
+                creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::RIGHT,0));
+                break;
+            }
+            case BehaviorPattern::BEFORE_JUMP:{
+                OUT("jump\n");
+                if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,CreatureInfo::RIGHT,0.1));
+                creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,CreatureInfo::RIGHT,0.2));
+
+                break;
+            }
+            case BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN:{
+                OUT("waiting\n");
+                break;
+            }
+        }
+    }
+}
+
 void Enemy::setBehaviorPattern(BehaviorPattern newBP){
     creature_previosBehaviorPattern = creature_behaviorPattern;
     creature_behaviorPattern = newBP;
@@ -900,16 +951,6 @@ void Enemy::unpackBehaviorState(float dt){
     }
 }
 
-void Enemy::updateVision(){
-    if (!creature_lookPattern.empty()){
-        setLookAt(creature_lookPattern.front());
-        creature_lookPattern.pop();//Here maybe you need add some clean up for creature_vision
-        if (creature_lookPattern.empty()){
-            isVision = false;
-            currentLayer->removeChild(creature_vision);
-        }
-    }
-}
 void Enemy::setLookAt(const Sensor& look){
     isVision = true;
     currentLayer->removeChild(creature_vision);

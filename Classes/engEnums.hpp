@@ -104,13 +104,8 @@ struct PartOrgan {
     PartCreatureStatus status;
 };
 enum BehaviorPattern{
-    CHASING,
-    JUMP_OVER_PIT,
-    STOP_CHAISING,
-    ATTACKING,
-    DEFENDING,
-    INTERACTING,
-    PATRULE,
+    RUN,
+    BEFORE_JUMP,
     WAITING_NEW_BEHAVIORPATTERN,
 };
 struct BehaviorState{
@@ -121,10 +116,17 @@ struct BehaviorState{
 };
 struct Sensor{
     enum TypeSensor{
+        EMPTY       = 0,
         NEAR_BY_RIGHT  = 1,
         NEAR_BY_LEFT   = 2,
         NEAR_BY_TOP    = 4,
         NEAR_BY_BOTTOM = 8,
+        NEAR_BY_BOTTOM_LEFT  = 256,
+        NEAR_BY_BOTTOM_RIGHT = 512,
+        MIDLE_TO_RIGHT = 16,
+        MIDLE_TO_LEFT  = 32,
+        MIDLE_TO_TOP   = 64,
+        MIDLE_TO_BOTTOM = 128,
     };
     Sensor();
     Sensor(TypeSensor type);
