@@ -103,7 +103,8 @@ public:
      * @return state of vision object(active or passive)
     */
     inline const bool isVisionEnable() { return isVision; };
-    inline uint8_t& getMemoryMask() { return memoryMask; };
+    inline uint64_t& getMemory() { return creature_memorySensors; };
+    inline Sensor::TypeSensor getActiveSensor() { return creature_currentSensor; };
 private:
     /* First pack States into Behavior pattern then unpack them in to creature_state*/
     void updateBehavior(float dt);
@@ -111,6 +112,8 @@ private:
             void defineDirection();
             /* Define state for making new decision*/
             BehaviorPattern defineBehavior();
+            /* Assign new behavior pattern and previose BP*/
+            void setBehaviorPattern(BehaviorPattern newBP);
         /* Set up new state for creature_state*/
         void unpackBehaviorState(float dt);
     /**
@@ -118,17 +121,18 @@ private:
      @param howTo how width and height it's look will be 
     */
     void updateVision();
-    void setLookAt(const LookInfo& look);
+    void setLookAt(const Sensor& look);
 private:
     cocos2d::Node* player;//Date about player node
     cocos2d::Node* creature_vision;//Node for Image recognition
     std::queue<BehaviorState> creature_behaviorStates;//pack of expanded states
-    std::queue<LookInfo> creature_lookPattern;//pattern witch define how and where to look
+    std::queue<Sensor> creature_lookPattern;//pattern witch define how and where to look
     BehaviorPattern creature_behaviorPattern;//pattern witch define how to pack states 
     BehaviorPattern creature_previosBehaviorPattern;//previose behavior pattern
 
     bool isVision;// For optimaing collision updates
-    uint8_t memoryMask;//bitmask of memory what creature saw
+    uint64_t creature_memorySensors;//Bit field for remember wich sensors are active
+    Sensor::TypeSensor creature_currentSensor;
 };
 class Player : public Creature{
 public:

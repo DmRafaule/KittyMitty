@@ -184,7 +184,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 }
                 else if (e->isVisionEnable())
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
-                        e->getMemoryMask() |= FLOOR;
+                        e->getMemory()  |= e->getActiveSensor();
                         return false;
                 }
             }
@@ -206,7 +206,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 }
                 else if (e->isVisionEnable())
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
-                        e->getMemoryMask() |= WALL;
+                        e->getMemory()  |= e->getActiveSensor();
                         return false;
                 }
             }
@@ -224,7 +224,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 }
                 else if (e->isVisionEnable())
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
-                        e->getMemoryMask() |= STEPS;
+                        e->getMemory()  |= e->getActiveSensor();
                         return false;
                 }
             }
@@ -242,7 +242,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 }
                 else if (e->isVisionEnable())
                 if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getCreatureVisions()->getPhysicsBody()->getCollisionBitmask()){
-                        e->getMemoryMask() |= ROOF;
+                        e->getMemory()  |= e->getActiveSensor();
                         return false;
                 }
             }

@@ -119,10 +119,19 @@ struct BehaviorState{
     CreatureInfo::State state;
     float time;
 };
-struct LookInfo{
-    LookInfo(cocos2d::Vec2 whereTo, cocos2d::Vec2 howTo);
+struct Sensor{
+    enum TypeSensor{
+        NEAR_BY_RIGHT  = 1,
+        NEAR_BY_LEFT   = 2,
+        NEAR_BY_TOP    = 4,
+        NEAR_BY_BOTTOM = 8,
+    };
+    Sensor();
+    Sensor(TypeSensor type);
     cocos2d::Vec2 whereTo;
     cocos2d::Vec2 howTo;
+    
+    TypeSensor type;
 };
 
 enum SceneZOrder{
@@ -201,4 +210,5 @@ struct WeaponCaracteristics{
 enum DebugStatistics{
     GAME_STATS,
     PHYSICS,
+    LOGIC,
 };

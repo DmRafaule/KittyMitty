@@ -26,7 +26,7 @@
             "selectedLayer": 4,
             "viewCenter": {
                 "x": 490.5,
-                "y": 862.5
+                "y": 1426.5
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -57,11 +57,11 @@
             "scaleInDock": 1
         },
         "area0/playground.tmx": {
-            "scale": 3,
+            "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 791.8333333333333,
-                "y": 799.8333333333333
+                "x": 791.75,
+                "y": 799.75
             }
         },
         "area0/tilesetMidlegr.tsx": {
