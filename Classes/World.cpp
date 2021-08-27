@@ -173,6 +173,8 @@ void Level::parseCreatureObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
    LevelCreatures obj;
    obj.typeCr     = dict["typeCreature"].asInt();
    obj.typeWepon  = dict["typeWeapon"].asInt();
+   obj.typeAI     = dict["typeAI"].asInt();
+   obj.typeBehavior = dict["typeBehavior"].asString();
    obj.point      = rect.origin;
 
    WorldProperties::creatureObj.emplace(static_cast<CreatureInfo::Type>(obj.typeCr),obj);
@@ -270,6 +272,7 @@ void Level::initCreatures(){
          Enemy* e;
          e = new Enemy(en.first,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
          e->setWeapon((WeaponType)en.second.typeWepon);
+         e->setAI(en.second.typeAI,en.second.typeBehavior);
          e->initPlayerDependenceFields();
          currentLayer->getEnemy()->push_back(e);
       }
@@ -346,7 +349,7 @@ void Level::unloadLevel(){
    level_dynamic_obj.clear();
    //Remove all creatures(not hero)
    for (auto & enemy : *(currentLayer->getEnemy()))
-      enemy->removeCreature();
+      enemy->remove();
    //Clean arr of enemies
    currentLayer->getEnemy()->clear();
    //Clean spawn points for new enemies

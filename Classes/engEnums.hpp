@@ -104,29 +104,31 @@ struct PartOrgan {
     PartCreatureStatus status;
 };
 enum BehaviorPattern{
+    //HERE you can add some patterns for I level AI 
     RUN,
-    BEFORE_JUMP,
+    JUMP_OVER_PIT,
     WAITING_NEW_BEHAVIORPATTERN,
 };
 struct BehaviorState{
-    BehaviorState(CreatureInfo::State state, CreatureInfo::DMove dmove,float time);
+    BehaviorState(CreatureInfo::State state, CreatureInfo::DMove dmove,float time = 0);
     CreatureInfo::DMove dmove;
     CreatureInfo::State state;
     float time;
 };
 struct Sensor{
     enum TypeSensor{
-        EMPTY       = 0,
-        NEAR_BY_RIGHT  = 1,
-        NEAR_BY_LEFT   = 2,
-        NEAR_BY_TOP    = 4,
-        NEAR_BY_BOTTOM = 8,
+        EMPTY                = 0,
+        CUSTOM               = -1,
+        NEAR_BY_RIGHT        = 1,
+        NEAR_BY_LEFT         = 2,
+        NEAR_BY_TOP          = 4,
+        NEAR_BY_BOTTOM       = 8,
         NEAR_BY_BOTTOM_LEFT  = 256,
         NEAR_BY_BOTTOM_RIGHT = 512,
-        MIDLE_TO_RIGHT = 16,
-        MIDLE_TO_LEFT  = 32,
-        MIDLE_TO_TOP   = 64,
-        MIDLE_TO_BOTTOM = 128,
+        MIDLE_TO_RIGHT       = 16,
+        MIDLE_TO_LEFT        = 32,
+        MIDLE_TO_TOP         = 64,
+        MIDLE_TO_BOTTOM      = 128,
     };
     Sensor();
     Sensor(TypeSensor type);
@@ -153,6 +155,8 @@ struct LevelCreatures{
     LevelCreatures(uint,uint,cocos2d::Vec2);
     uint typeCr;
     uint typeWepon;
+    int typeAI;
+    std::string typeBehavior;
     cocos2d::Vec2 point;
 };
 struct LevelNonePhysicalObj{

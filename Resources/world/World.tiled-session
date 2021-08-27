@@ -26,7 +26,7 @@
             "selectedLayer": 4,
             "viewCenter": {
                 "x": 490.5,
-                "y": 1426.5
+                "y": 580.5
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -80,6 +80,7 @@
         "area0/playground.tmx"
     ],
     "project": "World.tiled-project",
+    "property.type": "int",
     "recentFiles": [
         "area0/playground.tmx",
         "area0/level1.tmx",

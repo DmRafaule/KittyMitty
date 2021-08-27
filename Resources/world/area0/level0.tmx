@@ -578,21 +578,21 @@
    </properties>
   </object>
   <object id="208" name="roof" x="1119.28" y="1128.49" width="505.614" height="9.833"/>
-  <object id="219" name="hero" type="creatureObj" x="189.118" y="533.397">
+  <object id="219" name="hero" type="creatureObj" x="984.118" y="506.397">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="233" name="kool-hash" type="creatureObj" x="611" y="424">
+  <object id="233" name="kool-hash" type="creatureObj" x="712" y="526">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="234" name="kool-hash" type="creatureObj" x="361.5" y="493">
+  <object id="234" name="kool-hash" type="creatureObj" x="343.5" y="533">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="0"/>

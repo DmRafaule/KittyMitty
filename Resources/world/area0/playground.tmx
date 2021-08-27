@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="33">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="34">
  <tileset firstgid="1" source="tilesetMidlegr.tsx"/>
  <layer id="4" name="background" width="100" height="100">
   <data encoding="csv">
@@ -418,7 +418,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="objectsLayer">
-  <object id="1" name="hero" type="creatureObj" x="76.403" y="836.028">
+  <object id="1" name="hero" type="creatureObj" x="279.403" y="766.528">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="0"/>
@@ -433,18 +433,29 @@
    </properties>
   </object>
   <object id="12" name="wall" x="1374.14" y="533.269" width="5.75" height="281.5"/>
-  <object id="16" name="kool-hash" type="creatureObj" x="79.522" y="760.969">
+  <object id="16" name="kool-hash" type="creatureObj" x="64.522" y="771.469">
    <properties>
+    <property name="typeAI" type="int" value="1"/>
+    <property name="typeBehavior" value="wait"/>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="2"/>
    </properties>
    <point/>
   </object>
   <object id="24" name="floor" x="453.994" y="775.614" width="273.013" height="15.1061"/>
-  <object id="25" name="floor" x="219.993" y="776.114" width="165.013" height="15.1061"/>
+  <object id="25" name="floor" x="164.993" y="775.614" width="165.013" height="15.1061"/>
   <object id="26" name="floor" x="783.66" y="775.947" width="165.013" height="15.1061"/>
   <object id="27" name="floor" x="983.494" y="774.447" width="165.013" height="15.1061"/>
   <object id="28" name="floor" x="1192.83" y="767.114" width="165.013" height="15.1061"/>
   <object id="32" name="floor" x="-119.84" y="847.114" width="1845.68" height="15.1061"/>
+  <object id="33" name="kool-hash" type="creatureObj" x="493.5" y="764">
+   <properties>
+    <property name="typeAI" type="int" value="1"/>
+    <property name="typeBehavior" value="patrol"/>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
 </map>

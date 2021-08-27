@@ -346,16 +346,7 @@ void Creature::initBody(cocos2d::Vec2 pos){
 
 }
 Creature::~Creature(){
-    
-}
-void Creature::removeCreature(){
-    creature_parts.clear();
-    currentLayer->removeChild(creature_sprite);
-    currentLayer->removeChild(creature_weapon->getSprite());
-
-    if (isStatisticsShowing)
-        currentLayer->removeChild(creature_statistics);
-    isStatisticsShowing = false;
+    OUT("call\n");
 }
 void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef){
     for (auto& part: creature_parts){
@@ -825,12 +816,38 @@ void Creature::updateCurrentState(){
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){
-    creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
     creature_memorySensors = 0;
-    isVision = false;
+    isVision  = false;
+    sawPlayer = false;
+}
+void Enemy::remove(){
+    creature_parts.clear();
+    currentLayer->removeChild(creature_sprite);
+    currentLayer->removeChild(creature_weapon->getSprite());
+    currentLayer->removeChild(creature_vision);
+    while (!creature_behaviorStates.empty()){
+        creature_behaviorStates.pop();
+    }
+    while (!creature_lookPattern.empty()){
+        creature_lookPattern.pop();
+    }
+
+    if (isStatisticsShowing)
+        currentLayer->removeChild(creature_statistics);
+    isStatisticsShowing = false;
 }
 void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
+}
+void Enemy::setAI(int typeAI, std::string typeBehaviorPattern){
+    OUT("%s\n",typeBehaviorPattern.c_str());
+    creature_memorySensors = Sensor::CUSTOM;
+    if (typeBehaviorPattern == "wait")
+        creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
+    else if (typeBehaviorPattern == "patrol")
+        creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;//HERE make patroling
+    else 
+        creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
 }
 void Enemy::update(float dt){
     //showStatistics(DebugStatistics::PHYSICS);
@@ -844,22 +861,27 @@ void Enemy::update(float dt){
 
 }
 void Enemy::updateVision(){
-    if (creature_lookPattern.empty()){
-        //Clear memory before load new one
-        creature_memorySensors = 0;
-        //Brain modules(for future)
-        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
-        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
-        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
-        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
-        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
-        creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
-        creature_lookPattern.push(Sensor(Sensor::EMPTY));//This is need because last lookPattern not updated, so ...
-    }
-    else {
-        setLookAt(creature_lookPattern.front());//Extract from queue lookPattern
-        creature_lookPattern.pop();//Remove extracted lookPattern
-        //Here maybe you need add some clean up for creature_vision
+    //If player in vision radius
+    if (creature_sprite->getBoundingBox().origin.distance(player->getPosition()) < creature_info.characteristic.vision_radius || 
+        sawPlayer){//Maybe here you should add some height statement, for detection
+        sawPlayer = true;
+        if (creature_lookPattern.empty()){
+            //Clear memory before load new one
+            creature_memorySensors = 0;
+            //Brain modules(for future)
+            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
+            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
+            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
+            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
+            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
+            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
+            creature_lookPattern.push(Sensor(Sensor::EMPTY));//This is need because last lookPattern not updated, so ...
+        }
+        else {
+            setLookAt(creature_lookPattern.front());//Extract from queue lookPattern
+            creature_lookPattern.pop();//Remove extracted lookPattern
+            //Here maybe you need add some clean up for creature_vision
+        }
     }
 }
 void Enemy::updateBehavior(float dt){
@@ -884,19 +906,27 @@ BehaviorPattern Enemy::defineBehavior(){//Here define behavior patterns and stat
             break;
         }
         case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_LEFT:{
-            setBehaviorPattern(BehaviorPattern::BEFORE_JUMP);
+            setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
             break;
         }
         case Sensor::NEAR_BY_BOTTOM_RIGHT:{
-            setBehaviorPattern(BehaviorPattern::BEFORE_JUMP);
+            setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
             break;
         }
         case Sensor::NEAR_BY_BOTTOM_LEFT:{
-            setBehaviorPattern(BehaviorPattern::BEFORE_JUMP);
+            setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
             break;
         }
-        case 0:{
+        case Sensor::NEAR_BY_BOTTOM_LEFT | Sensor::NEAR_BY_BOTTOM_RIGHT:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
+            break;
+        }
+        case Sensor::EMPTY:{//If creature have not active sensors it will whait outcome interuption(in my game it player)
             setBehaviorPattern(BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN);
+            break;
+        }
+        case Sensor::CUSTOM:{//Defind on loadLevel World.cpp
+            setBehaviorPattern(creature_behaviorPattern);
             break;
         }
         default:{
@@ -911,19 +941,20 @@ BehaviorPattern Enemy::defineBehavior(){//Here define behavior patterns and stat
 void Enemy::packBehaviorStates(float dt){
     /*Will pack behavior states queue only if behaviorStates queue is empty and look pattern also empty*/
     if (creature_behaviorStates.empty() && creature_lookPattern.empty()){
-        //defineDirection();
+        defineDirection();
         std::cout << "0x" << std::bitset<64>(creature_memorySensors) << std::endl;//Remove
         switch(defineBehavior()){
             case BehaviorPattern::RUN:{
                 OUT("run\n");
-                creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::RIGHT,0));
+                //if (creature_previosBehaviorPattern == BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN)
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,creature_info.dmove));
                 break;
             }
-            case BehaviorPattern::BEFORE_JUMP:{
+            case BehaviorPattern::JUMP_OVER_PIT:{
                 OUT("jump\n");
                 if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
-                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,CreatureInfo::RIGHT,0.1));
-                creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,CreatureInfo::RIGHT,0.2));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
+                creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,0.2));
 
                 break;
             }
@@ -934,14 +965,15 @@ void Enemy::packBehaviorStates(float dt){
         }
     }
 }
-
 void Enemy::setBehaviorPattern(BehaviorPattern newBP){
     creature_previosBehaviorPattern = creature_behaviorPattern;
     creature_behaviorPattern = newBP;
 }
 void Enemy::unpackBehaviorState(float dt){
+    /* If our queue of behaviorPatterns contain some patterns*/
     if (!creature_behaviorStates.empty()){
         creature_behaviorStates.front().time -= dt;
+        /*Will execute pattern only after some time, for those patterns*/
         if (creature_behaviorStates.front().time <= 0){
             setCreatureState(creature_behaviorStates.front().state);
             creature_info.dmove = creature_behaviorStates.front().dmove; 
@@ -950,11 +982,13 @@ void Enemy::unpackBehaviorState(float dt){
         }
     }
 }
-
 void Enemy::setLookAt(const Sensor& look){
+    //Enable vision 
     isVision = true;
+    //Remove previos vision node
     currentLayer->removeChild(creature_vision);
-    cocos2d::PhysicsBody* vision_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(look.howTo));
+    //Create physic body for vision
+    cocos2d::PhysicsBody* vision_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(look.howTo));//Define size of vision
     vision_body->setCollisionBitmask(indentificator + 100);
     vision_body->setContactTestBitmask(0xFF);
     vision_body->setDynamic(false);
@@ -962,9 +996,9 @@ void Enemy::setLookAt(const Sensor& look){
 
     creature_vision = cocos2d::Node::create();
     creature_vision->setPhysicsBody(vision_body);
-    creature_vision->setPosition(creature_sprite->getPositionX() + look.whereTo.x,creature_sprite->getPositionY() + look.whereTo.y );
+    creature_vision->setPosition(creature_sprite->getPositionX() + look.whereTo.x,creature_sprite->getPositionY() + look.whereTo.y );//Define where to look
     currentLayer->addChild(creature_vision);
-
+    //Set up current sensor type (for memorize what it will see)
     creature_currentSensor = look.type;
 }
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
@@ -985,4 +1019,7 @@ void Player::update(float dt){
         updateCurrentState();
     }
     updatePermament();
+}
+void Player::remove(){
+    
 }

@@ -13,7 +13,7 @@ public:
     virtual ~Creature();
     virtual void update(float dt) = 0;
     /*Clearers*/
-    void removeCreature();
+    virtual void remove() = 0;
     /*Getters*/
     inline const CreatureInfo* getCreatureInfo() { return &creature_info; };
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
@@ -78,15 +78,12 @@ protected:
     bool                      isNewState;
 };
 
-
-
-
-
 /*INHERITATED CLASSES*/
 class Enemy : public Creature{
 public:
     Enemy(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual void update(float dt) override;
+    virtual void remove() override;
     /**
      * @return pointer to data of creature_parts of enemy object
     */
@@ -95,19 +92,14 @@ public:
      * @brief init fields which related to player and cant be assigned in constructor
     */
     void initPlayerDependenceFields();
-    /**
-     * @return vision object
-    */
+    void setAI(int typeAI, std::string typeBehaviorPattern);
     inline const cocos2d::Node* getCreatureVisions() { return creature_vision; };
-    /**
-     * @return state of vision object(active or passive)
-    */
     inline const bool isVisionEnable() { return isVision; };
     inline uint64_t& getMemory() { return creature_memorySensors; };
-    inline Sensor::TypeSensor getActiveSensor() { return creature_currentSensor; };
+    inline const Sensor::TypeSensor getActiveSensor() { return creature_currentSensor; };
 private:
-    /* First pack States into Behavior pattern then unpack them in to creature_state*/
     void updateBehavior(float dt);
+        /* First pack States into Behavior pattern then unpack them in to creature_state*/
         void packBehaviorStates(float dt);
             void defineDirection();
             /* Define state for making new decision*/
@@ -116,10 +108,7 @@ private:
             void setBehaviorPattern(BehaviorPattern newBP);
         /* Set up new state for creature_state*/
         void unpackBehaviorState(float dt);
-    /**
-     @param  whereTo point to look at
-     @param howTo how width and height it's look will be 
-    */
+    /*Define brain structure and extract data from sensors*/
     void updateVision();
     void setLookAt(const Sensor& look);
 private:
@@ -130,14 +119,17 @@ private:
     BehaviorPattern creature_behaviorPattern;//pattern witch define how to pack states 
     BehaviorPattern creature_previosBehaviorPattern;//previose behavior pattern
 
-    bool isVision;// For optimaing collision updates
     uint64_t creature_memorySensors;//Bit field for remember wich sensors are active
     Sensor::TypeSensor creature_currentSensor;
+    bool isVision;// For optimaing collision updates
+    bool sawPlayer;//If it saw creature it will never stop
 };
+
 class Player : public Creature{
 public:
     Player(CreatureInfo::Type Type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual void update(float dt) override;
+    virtual void remove() override;
     /**
      * @brief set up positions for creature sprite, and all attachment(weapon,armor, spells ...)
     */
