@@ -210,7 +210,7 @@ void Creature::initStats(){
             creature_info.characteristic.jump_ability = 1;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 15;
-            creature_info.characteristic.vision_radius = 300;
+            creature_info.characteristic.vision_radius = 200;
             break;
         }
         case CreatureInfo::Type::ERENU_DOO:{
@@ -840,17 +840,19 @@ void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
 }
 void Enemy::setAI(int typeAI, std::string typeBehaviorPattern){
-    OUT("%s\n",typeBehaviorPattern.c_str());
+    //Set sensors to custom activity
     creature_memorySensors = Sensor::CUSTOM;
+    creature_sensorPattern = SensorPattern::CHECK_FOR_GROUND;
+    //Define custom behavior patterns
     if (typeBehaviorPattern == "wait")
         creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
     else if (typeBehaviorPattern == "patrol")
-        creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;//HERE make patroling
+        creature_behaviorPattern = BehaviorPattern::PATROL;//HERE make patroling
     else 
         creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
 }
 void Enemy::update(float dt){
-    //showStatistics(DebugStatistics::PHYSICS);
+    showStatistics(DebugStatistics::PHYSICS);
     
     updateVision();
     updateBehavior(dt);
@@ -868,13 +870,22 @@ void Enemy::updateVision(){
         if (creature_lookPattern.empty()){
             //Clear memory before load new one
             creature_memorySensors = 0;
-            //Brain modules(for future)
-            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
-            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
-            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
-            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
-            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
-            creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
+            //Brain modules
+            switch(creature_sensorPattern){
+            case SensorPattern::CHECK_FOR_GROUND:{
+                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
+                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
+                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
+                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
+                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
+                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
+                break;
+            }
+            case SensorPattern::CHECK_FOR_WALL:{
+                break;
+            }
+            }
+            
             creature_lookPattern.push(Sensor(Sensor::EMPTY));//This is need because last lookPattern not updated, so ...
         }
         else {
@@ -894,7 +905,7 @@ void Enemy::defineDirection(){
     else 
         creature_info.dmove = CreatureInfo::LEFT;
 }
-BehaviorPattern Enemy::defineBehavior(){//Here define behavior patterns and states
+BehaviorPattern Enemy::defineBehavior(){
     /*Depends on which sensors are active will produce related behavior*/
     switch(creature_memorySensors){
         case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_RIGHT:{
@@ -960,6 +971,13 @@ void Enemy::packBehaviorStates(float dt){
             }
             case BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN:{
                 OUT("waiting\n");
+                break;
+            }
+            case BehaviorPattern::PATROL:{
+                OUT("patroling\n");
+                //creature_behaviorStates.push(CreatureInfo::START_RUN,CreatureInfo::RIGHT);
+                creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::RIGHT,3));
+                creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::LEFT,3));
                 break;
             }
         }

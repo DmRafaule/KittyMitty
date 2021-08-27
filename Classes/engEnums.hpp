@@ -103,11 +103,13 @@ struct PartOrgan {
     PartOrganType type;
     PartCreatureStatus status;
 };
+
 enum BehaviorPattern{
     //HERE you can add some patterns for I level AI 
     RUN,
     JUMP_OVER_PIT,
     WAITING_NEW_BEHAVIORPATTERN,
+    PATROL,
 };
 struct BehaviorState{
     BehaviorState(CreatureInfo::State state, CreatureInfo::DMove dmove,float time = 0);
@@ -136,6 +138,10 @@ struct Sensor{
     cocos2d::Vec2 howTo;
     
     TypeSensor type;
+};
+enum SensorPattern{
+    CHECK_FOR_GROUND,
+    CHECK_FOR_WALL,
 };
 
 enum SceneZOrder{

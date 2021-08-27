@@ -22,11 +22,11 @@
             }
         },
         "area0/level0.tmx": {
-            "scale": 1,
+            "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 490.5,
-                "y": 580.5
+                "x": 541,
+                "y": 557.6666666666667
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -41,7 +41,7 @@
             "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 791.5,
+                "x": 296.5,
                 "y": 799.5
             }
         },
@@ -57,11 +57,11 @@
             "scaleInDock": 1
         },
         "area0/playground.tmx": {
-            "scale": 2,
+            "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 791.75,
-                "y": 799.75
+                "x": 153.5,
+                "y": 793.5
             }
         },
         "area0/tilesetMidlegr.tsx": {

@@ -116,6 +116,7 @@ private:
     cocos2d::Node* creature_vision;//Node for Image recognition
     std::queue<BehaviorState> creature_behaviorStates;//pack of expanded states
     std::queue<Sensor> creature_lookPattern;//pattern witch define how and where to look
+    SensorPattern creature_sensorPattern;
     BehaviorPattern creature_behaviorPattern;//pattern witch define how to pack states 
     BehaviorPattern creature_previosBehaviorPattern;//previose behavior pattern
 
