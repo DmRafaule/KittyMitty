@@ -107,7 +107,10 @@ struct PartOrgan {
 enum BehaviorPattern{
     //HERE you can add some patterns for I level AI 
     RUN,
+    RUN_LEFT,
+    RUN_RIGHT,
     JUMP_OVER_PIT,
+    JUMP_OVER_WALL,
     WAITING_NEW_BEHAVIORPATTERN,
     PATROL,
 };
@@ -122,7 +125,11 @@ struct Sensor{
         EMPTY                = 0,
         CUSTOM               = -1,
         NEAR_BY_RIGHT        = 1,
+        NEAR_BY_RIGHTTOP2X   = 1024,
+        NEAR_BY_RIGHTTOP4X   = 2048,
         NEAR_BY_LEFT         = 2,
+        NEAR_BY_LEFTTOP2X    = 1025,
+        NEAR_BY_LEFTTOP4X    = 2049,
         NEAR_BY_TOP          = 4,
         NEAR_BY_BOTTOM       = 8,
         NEAR_BY_BOTTOM_LEFT  = 256,
@@ -138,10 +145,6 @@ struct Sensor{
     cocos2d::Vec2 howTo;
     
     TypeSensor type;
-};
-enum SensorPattern{
-    CHECK_FOR_GROUND,
-    CHECK_FOR_WALL,
 };
 
 enum SceneZOrder{

@@ -86,6 +86,20 @@ Sensor::Sensor(Sensor::TypeSensor type){
             this->howTo.y   = 28;
             break;
         }
+        case TypeSensor::NEAR_BY_RIGHTTOP2X:{
+            this->whereTo.x = 16;
+            this->whereTo.y = 75;
+            this->howTo.x   = 10;
+            this->howTo.y   = 28;
+            break;
+        }
+        case TypeSensor::NEAR_BY_RIGHTTOP4X:{
+            this->whereTo.x = 16;
+            this->whereTo.y = 150;
+            this->howTo.x   = 10;
+            this->howTo.y   = 28;
+            break;
+        }
         case TypeSensor::NEAR_BY_LEFT:{
             this->whereTo.x = -16;
             this->whereTo.y = 0;
@@ -93,6 +107,21 @@ Sensor::Sensor(Sensor::TypeSensor type){
             this->howTo.y   = 28;
             break;
         }
+        case TypeSensor::NEAR_BY_LEFTTOP2X:{
+            this->whereTo.x = -16;
+            this->whereTo.y = 75;
+            this->howTo.x   = 10;
+            this->howTo.y   = 28;
+            break;
+        }
+        case TypeSensor::NEAR_BY_LEFTTOP4X:{
+            this->whereTo.x = -16;
+            this->whereTo.y = 150;
+            this->howTo.x   = 10;
+            this->howTo.y   = 28;
+            break;
+        }
+        
         case TypeSensor::NEAR_BY_BOTTOM:{
             this->whereTo.x = 0;
             this->whereTo.y = -32;
@@ -828,8 +857,8 @@ void Enemy::remove(){
     while (!creature_behaviorStates.empty()){
         creature_behaviorStates.pop();
     }
-    while (!creature_lookPattern.empty()){
-        creature_lookPattern.pop();
+    while (!creature_visionPattern.empty()){
+        creature_visionPattern.pop();
     }
 
     if (isStatisticsShowing)
@@ -842,7 +871,6 @@ void Enemy::initPlayerDependenceFields(){
 void Enemy::setAI(int typeAI, std::string typeBehaviorPattern){
     //Set sensors to custom activity
     creature_memorySensors = Sensor::CUSTOM;
-    creature_sensorPattern = SensorPattern::CHECK_FOR_GROUND;
     //Define custom behavior patterns
     if (typeBehaviorPattern == "wait")
         creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
@@ -867,30 +895,17 @@ void Enemy::updateVision(){
     if (creature_sprite->getBoundingBox().origin.distance(player->getPosition()) < creature_info.characteristic.vision_radius || 
         sawPlayer){//Maybe here you should add some height statement, for detection
         sawPlayer = true;
-        if (creature_lookPattern.empty()){
-            //Clear memory before load new one
-            creature_memorySensors = 0;
-            //Brain modules
-            switch(creature_sensorPattern){
-            case SensorPattern::CHECK_FOR_GROUND:{
-                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
-                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
-                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
-                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM));
-                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT));
-                creature_lookPattern.push(Sensor(Sensor::NEAR_BY_BOTTOM_LEFT));
-                break;
-            }
-            case SensorPattern::CHECK_FOR_WALL:{
-                break;
-            }
-            }
-            
-            creature_lookPattern.push(Sensor(Sensor::EMPTY));//This is need because last lookPattern not updated, so ...
+        if (creature_visionPattern.empty()){
+            setVisionPattern(std::queue<Sensor>({Sensor(Sensor::NEAR_BY_BOTTOM),
+                                                 Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT),
+                                                 Sensor(Sensor::NEAR_BY_BOTTOM_LEFT),
+                                                 Sensor(Sensor::NEAR_BY_BOTTOM),
+                                                 Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT),
+                                                 Sensor(Sensor::NEAR_BY_BOTTOM_LEFT)}));
         }
         else {
-            setLookAt(creature_lookPattern.front());//Extract from queue lookPattern
-            creature_lookPattern.pop();//Remove extracted lookPattern
+            setLookAt(creature_visionPattern.front());//Extract from queue lookPattern
+            creature_visionPattern.pop();//Remove extracted lookPattern
             //Here maybe you need add some clean up for creature_vision
         }
     }
@@ -914,6 +929,22 @@ BehaviorPattern Enemy::defineBehavior(){
         }
         case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_RIGHT | Sensor::NEAR_BY_BOTTOM_LEFT:{
             setBehaviorPattern(BehaviorPattern::RUN);
+            if (creature_physic_body->getVelocity().x == 0 && creature_info.state ==CreatureInfo::ON_WALL){
+                if (creature_info.dmove == CreatureInfo::RIGHT)
+                    setVisionPattern(std::queue<Sensor>({Sensor(Sensor::NEAR_BY_RIGHT),
+                                                         Sensor(Sensor::NEAR_BY_RIGHTTOP2X),
+                                                         Sensor(Sensor::NEAR_BY_RIGHTTOP4X),
+                                                         Sensor(Sensor::NEAR_BY_RIGHT),
+                                                         Sensor(Sensor::NEAR_BY_RIGHTTOP2X),
+                                                         Sensor(Sensor::NEAR_BY_RIGHTTOP4X)}));
+                else
+                    setVisionPattern(std::queue<Sensor>({Sensor(Sensor::NEAR_BY_LEFT),
+                                                         Sensor(Sensor::NEAR_BY_LEFTTOP2X),
+                                                         Sensor(Sensor::NEAR_BY_LEFTTOP4X),
+                                                         Sensor(Sensor::NEAR_BY_LEFT),
+                                                         Sensor(Sensor::NEAR_BY_LEFTTOP2X),
+                                                         Sensor(Sensor::NEAR_BY_LEFTTOP4X)}));
+            }
             break;
         }
         case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_LEFT:{
@@ -930,6 +961,36 @@ BehaviorPattern Enemy::defineBehavior(){
         }
         case Sensor::NEAR_BY_BOTTOM_LEFT | Sensor::NEAR_BY_BOTTOM_RIGHT:{
             setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
+            break;
+        }
+        case Sensor::NEAR_BY_RIGHT | Sensor::NEAR_BY_RIGHTTOP2X | Sensor::NEAR_BY_RIGHTTOP4X:{
+            if (creature_info.dmove == CreatureInfo::RIGHT)
+                setBehaviorPattern(BehaviorPattern::RUN_LEFT);
+            else 
+                setBehaviorPattern(BehaviorPattern::RUN_RIGHT);
+            break;
+        }
+        case Sensor::NEAR_BY_RIGHT | Sensor::NEAR_BY_RIGHTTOP2X:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OVER_WALL);
+            break;
+        }
+        case Sensor::NEAR_BY_RIGHT:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OVER_WALL);
+            break;
+        }
+        case Sensor::NEAR_BY_LEFT | Sensor::NEAR_BY_LEFTTOP2X | Sensor::NEAR_BY_LEFTTOP4X:{
+            if (creature_info.dmove == CreatureInfo::RIGHT)
+                setBehaviorPattern(BehaviorPattern::RUN_LEFT);
+            else 
+                setBehaviorPattern(BehaviorPattern::RUN_RIGHT);
+            break;
+        }
+        case Sensor::NEAR_BY_LEFT | Sensor::NEAR_BY_LEFTTOP2X:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OVER_WALL);
+            break;
+        }
+        case Sensor::NEAR_BY_LEFT:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OVER_WALL);
             break;
         }
         case Sensor::EMPTY:{//If creature have not active sensors it will whait outcome interuption(in my game it player)
@@ -951,20 +1012,43 @@ BehaviorPattern Enemy::defineBehavior(){
 }
 void Enemy::packBehaviorStates(float dt){
     /*Will pack behavior states queue only if behaviorStates queue is empty and look pattern also empty*/
-    if (creature_behaviorStates.empty() && creature_lookPattern.empty()){
+    if (creature_behaviorStates.empty() && creature_visionPattern.empty()){
         defineDirection();
         std::cout << "0x" << std::bitset<64>(creature_memorySensors) << std::endl;//Remove
         switch(defineBehavior()){
             case BehaviorPattern::RUN:{
                 OUT("run\n");
-                //if (creature_previosBehaviorPattern == BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN)
+                if (creature_previosBehaviorPattern == BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN)
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,creature_info.dmove));
+                break;
+            }
+            case BehaviorPattern::RUN_LEFT:{
+                OUT("run left\n");
+                if (creature_previosBehaviorPattern == BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN)
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::LEFT));
+                break;
+            }
+            case BehaviorPattern::RUN_RIGHT:{
+                OUT("run right\n");
+                if (creature_previosBehaviorPattern == BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN)
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::RIGHT));
                 break;
             }
             case BehaviorPattern::JUMP_OVER_PIT:{
                 OUT("jump\n");
                 if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
+                creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,0.2));
+
+                break;
+            }
+            case BehaviorPattern::JUMP_OVER_WALL:{
+                OUT("jump_over wall\n");
+                if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability){
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,1));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,1));
+                }
                 creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,0.2));
 
                 break;
@@ -999,6 +1083,17 @@ void Enemy::unpackBehaviorState(float dt){
             isVision = false;
         }
     }
+}
+void Enemy::setVisionPattern(std::queue<Sensor> pattern){
+    //Clear memory of sensors before load new one
+    creature_memorySensors = 0;
+    //Assigning new patterns
+    while (!pattern.empty()){
+        creature_visionPattern.push(pattern.front());
+        pattern.pop();    
+    }
+    /*This is need because last lookPattern not updated, so */
+    creature_visionPattern.push(Sensor(Sensor::EMPTY));
 }
 void Enemy::setLookAt(const Sensor& look){
     //Enable vision 

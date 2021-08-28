@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="35">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="36">
  <tileset firstgid="1" source="tilesetMidlegr.tsx"/>
  <layer id="4" name="background" width="100" height="100">
   <data encoding="csv">
@@ -425,7 +425,7 @@
    </properties>
    <point/>
   </object>
-  <object id="3" name="floor" x="-176.765" y="776.613" width="313.68" height="15.1061"/>
+  <object id="3" name="floor" x="-176.765" y="776.613" width="570.68" height="15.1061"/>
   <object id="4" name="DeathZone" type="staticObj" x="-71.9775" y="1156.35" width="1713.95" height="19.3034">
    <properties>
     <property name="nextLevelOffsetX" type="float" value="-1"/>
@@ -443,11 +443,9 @@
    <point/>
   </object>
   <object id="24" name="floor" x="453.994" y="775.614" width="273.013" height="15.1061"/>
-  <object id="25" name="floor" x="164.993" y="775.614" width="165.013" height="15.1061"/>
   <object id="26" name="floor" x="783.66" y="775.947" width="165.013" height="15.1061"/>
   <object id="27" name="floor" x="983.494" y="774.447" width="165.013" height="15.1061"/>
   <object id="28" name="floor" x="1192.83" y="767.114" width="165.013" height="15.1061"/>
-  <object id="32" name="floor" x="-119.84" y="847.114" width="1845.68" height="15.1061"/>
-  <object id="34" name="wall" x="115.966" y="738.25" width="22.25" height="43.4997"/>
+  <object id="34" name="wall" x="113.737" y="710.381" width="22.25" height="71.3683"/>
  </objectgroup>
 </map>

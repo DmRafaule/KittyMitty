@@ -98,30 +98,33 @@ public:
     inline uint64_t& getMemory() { return creature_memorySensors; };
     inline const Sensor::TypeSensor getActiveSensor() { return creature_currentSensor; };
 private:
+    /* Define init vison pattern and set upd looking obj for Image recognition*/
+    void updateVision();
+        /* Set up queue for looking some objects in vision*/
+        void setVisionPattern(std::queue<Sensor> pattern);
+        /* Create vision obj 'creature vision' for future detecting in updateTouchBegan*/
+        void setLookAt(const Sensor& look);
+    /* Pack states into queue and then extract them from it*/
     void updateBehavior(float dt);
         /* First pack States into Behavior pattern then unpack them in to creature_state*/
         void packBehaviorStates(float dt);
+            /* Define which direction creature will be use*/
             void defineDirection();
             /* Define state for making new decision*/
             BehaviorPattern defineBehavior();
             /* Assign new behavior pattern and previose BP*/
             void setBehaviorPattern(BehaviorPattern newBP);
-        /* Set up new state for creature_state*/
+        /* Set up new state for creature_state from queue*/
         void unpackBehaviorState(float dt);
-    /*Define brain structure and extract data from sensors*/
-    void updateVision();
-    void setLookAt(const Sensor& look);
 private:
-    cocos2d::Node* player;//Date about player node
-    cocos2d::Node* creature_vision;//Node for Image recognition
-    std::queue<BehaviorState> creature_behaviorStates;//pack of expanded states
-    std::queue<Sensor> creature_lookPattern;//pattern witch define how and where to look
-    SensorPattern creature_sensorPattern;
-    BehaviorPattern creature_behaviorPattern;//pattern witch define how to pack states 
-    BehaviorPattern creature_previosBehaviorPattern;//previose behavior pattern
-
+    cocos2d::Node* player;          //Date about player node
+    cocos2d::Node* creature_vision; //Represent vision object for interacting with other world obj 
+    std::queue<BehaviorState> creature_behaviorStates;  //Pack of expanded states for update them in updateCurrentState one by one
+    std::queue<Sensor> creature_visionPattern;          //Pack of where vision object will be and which size it can be
+    BehaviorPattern creature_behaviorPattern;           //Pattern represent in witch queue and what kind of state will be in creature_behaviorStates
+    BehaviorPattern creature_previosBehaviorPattern;    //Previose behavior pattern
+    Sensor::TypeSensor creature_currentSensor;          //Represent current poping sensors from queue
     uint64_t creature_memorySensors;//Bit field for remember wich sensors are active
-    Sensor::TypeSensor creature_currentSensor;
     bool isVision;// For optimaing collision updates
     bool sawPlayer;//If it saw creature it will never stop
 };
