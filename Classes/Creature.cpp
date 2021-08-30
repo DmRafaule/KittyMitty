@@ -837,7 +837,7 @@ void Creature::updateCurrentState(){
         creature_sprite->runAction(cocos2d::RepeatForever::create(animations.find("_animation_idle")->second));
         isNewState = false;
 
-        creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
+        creature_physic_body->setVelocity(cocos2d::Vec2(0,creature_physic_body->getVelocity().y));
         break;
     }
     }
@@ -946,12 +946,19 @@ void Enemy::updateVision(){
                 break;
             }
             case CreatureInfo::State::JUMP_FROM_WALL:{
+                setVisionPattern(std::queue<Sensor>({Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,0)),
+                                                     Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,20)),
+                                                     Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,-20)),
+                                                     Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,-40)),
+                                                     Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,-60)),
+                                                     Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,-80)),}));
                 break;
             }
             case CreatureInfo::State::IN_FALL:{
                 break;
             }
             case CreatureInfo::State::SOARING:{
+                
                 break;
             }
             case CreatureInfo::State::LAND_ON:{
@@ -964,6 +971,8 @@ void Enemy::updateVision(){
                 break;
             }
             case CreatureInfo::State::ON_WALL:{
+                if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::JUMP_FROM_WALL,creature_info.dmove));
                 break;
             }
             case CreatureInfo::State::LETGO:{
@@ -1019,6 +1028,15 @@ BehaviorPattern Enemy::defineBehavior(){
     switch(creature_memorySensors){
         case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_RIGHT:{
             creature_behaviorPattern = BehaviorPattern::STOP_BEFORE_SOMETHING;
+            break;
+        }
+        /* If enemy detect wall*/
+        case Sensor::NEAR_BY_BOTTOM_LEFT | Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_RIGHT | Sensor::NEAR_BY_MIDLLE_SIDE:{
+            creature_behaviorPattern = BehaviorPattern::JUMP_ON_WALL;
+            break;
+        }
+        case Sensor::NEAR_BY_MIDLLE_SIDE:{
+            creature_behaviorPattern = BehaviorPattern::WALL_JUMP;
             break;
         }
         case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_LEFT:{
@@ -1113,7 +1131,7 @@ void Enemy::packBehaviorStates(float dt){
                 else if (creature_info.state == CreatureInfo::State::ON_STEPS)
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::MOVE_BY_STEPS,creature_info.dmove));
 
-                switchToBattleAI();//Enter point to battle fase, for enemy
+                switchToBattleAI();//Enter point to battle fase, for enemy(Maybe you should add oporunity enemy attack in aire)
                 break;
             }
             case BehaviorPattern::JUMP_OR_FALL:{
@@ -1140,17 +1158,18 @@ void Enemy::packBehaviorStates(float dt){
                 }
                 break;
             }
-            case BehaviorPattern::JUMP_OVER_WALL:{
-                OUT("jump_over wall\n");
-                if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability){
-                    //Jump from wall
-                    if (creature_info.state == CreatureInfo::State::ON_WALL){
-                        creature_behaviorStates.push(BehaviorState(CreatureInfo::State::JUMP_FROM_WALL,creature_info.dmove));
-                    }
-                    //Jump from ground
-                    else if (creature_info.state != CreatureInfo::State::JUMP_FROM_WALL){
+            case BehaviorPattern::JUMP_ON_WALL:{
+                OUT("jump on wall\n");
+                if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
+                    if (creature_info.state != CreatureInfo::ON_WALL)
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove));
-                    }
+                break;
+            }
+            case BehaviorPattern::WALL_JUMP:{
+                if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability){
+                    OUT("wall jump\n");
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove));
                 }
                 break;
             }
