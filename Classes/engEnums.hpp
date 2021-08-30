@@ -218,6 +218,7 @@ struct WeaponCaracteristics{
    uint weapon_crushingPower;
    uint weapon_solidity;
    uint weapon_mass;
+   uint weapon_range;
 };
 
 enum DebugStatistics{

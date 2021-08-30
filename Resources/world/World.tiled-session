@@ -1,8 +1,8 @@
 {
     "activeFile": "area0/level0.tmx",
     "expandedProjectPaths": [
-        "area0",
-        "."
+        ".",
+        "area0"
     ],
     "fileStates": {
         "": {
@@ -82,9 +82,9 @@
     "project": "World.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "area0/level0.tmx",
         "area0/playground.tmx",
         "area0/level1.tmx",
+        "area0/level0.tmx",
         "area0/im.tmx",
         "area0/level2.tmx",
         "area0/tilesetMidlegr.tsx",

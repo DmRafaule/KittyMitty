@@ -608,6 +608,7 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite
    weapon_caracteristics.weapon_crushingPower =  1;
    weapon_caracteristics.weapon_solidity = 30;
    weapon_caracteristics.weapon_mass = 20;
+   weapon_caracteristics.weapon_range = 110;
    //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
@@ -620,6 +621,7 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, vo
    weapon_caracteristics.weapon_crushingPower =  15;
    weapon_caracteristics.weapon_solidity = 10;
    weapon_caracteristics.weapon_mass = 20;
+   weapon_caracteristics.weapon_range = 90;
    //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
@@ -633,5 +635,6 @@ Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite
    weapon_caracteristics.weapon_crushingPower =  10;
    weapon_caracteristics.weapon_solidity = 12;
    weapon_caracteristics.weapon_mass = 20;
+   weapon_caracteristics.weapon_range = 110;
    //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
