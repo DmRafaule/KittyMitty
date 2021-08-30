@@ -125,7 +125,6 @@ private:
     BehaviorPattern creature_previosBehaviorPattern;    //Previose behavior pattern
     Sensor::TypeSensor creature_currentSensor;          //Represent current poping sensors from queue
     uint64_t creature_memorySensors;//Bit field for remember wich sensors are active
-    bool isOnceAnimation = true;
     bool isVision;// For optimaing collision updates
     bool sawPlayer;//If it saw creature it will never stop
 };

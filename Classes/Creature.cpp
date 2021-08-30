@@ -128,6 +128,34 @@ Sensor::Sensor(Sensor::TypeSensor type, cocos2d::Vec2 offset){
             this->howTo.y   = 10;
             break;
         }
+        case TypeSensor::NEAR_BY_MIDLLE_SIDE:{
+            this->whereTo.x = 110;
+            this->whereTo.y = 32;
+            this->howTo.x   = 50;
+            this->howTo.y   = 20;
+            break;
+        }
+        case TypeSensor::FAR_BY_MIDLE_SIDE:{
+            this->whereTo.x = 200;
+            this->whereTo.y = 0;
+            this->howTo.x   = 150;
+            this->howTo.y   = 150;
+            break;
+        }
+        case TypeSensor::FAR_BY_TOP_SIDE:{
+            this->whereTo.x = 200;
+            this->whereTo.y = 200;
+            this->howTo.x   = 150;
+            this->howTo.y   = 150;
+            break;
+        }
+        case TypeSensor::FAR_BY_BOTTOM_SIDE:{
+            this->whereTo.x = 200;
+            this->whereTo.y = -200;
+            this->howTo.x   = 150;
+            this->howTo.y   = 150;
+            break;
+        }
     }
     this->whereTo.x += offset.x;
     this->whereTo.y += offset.y;
@@ -473,6 +501,8 @@ void Creature::setStatistics(DebugStatistics mode){
                           creature_info.state == CreatureInfo::State::SOARING ? "SOARING\n" :
                           creature_info.state == CreatureInfo::State::CLIMBING ? "CLIMBING\n" :
                           creature_info.state == CreatureInfo::State::DEATH ? "DEATH\n" :
+                          creature_info.state == CreatureInfo::State::STOP ? "STOP\n" :
+                          creature_info.state == CreatureInfo::State::IN_BATTLE ? "IN_BATTLE\n" :
                           "UNDEFIND\n");    
     }
 
@@ -795,7 +825,17 @@ void Creature::updateCurrentState(){
         creature_sprite->stopAllActions();
         setCreatureState(CreatureInfo::State::IDLE);
         creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
-        isNewState = false;
+        break;
+    }
+    case CreatureInfo::State::IN_BATTLE:{
+        if (creature_sprite->getNumberOfRunningActions() == 0){
+            creature_sprite->stopAllActions();
+            creature_sprite->runAction(cocos2d::RepeatForever::create(animations.find("_animation_idle")->second));
+            isNewState = false;
+        }
+        else
+            creature_sprite->stopAllActions();
+        creature_physic_body->setVelocity(cocos2d::Vec2(0,0));
         break;
     }
     }
@@ -883,11 +923,17 @@ void Enemy::updateVision(){
             case CreatureInfo::State::RUNNING:{
                 setVisionPattern(std::queue<Sensor>({Sensor(Sensor::NEAR_BY_BOTTOM,cocos2d::Vec2(0,0)),
                                                      Sensor(Sensor::NEAR_BY_BOTTOM,cocos2d::Vec2(0,-10)),
+                                                     Sensor(Sensor::NEAR_BY_BOTTOM,cocos2d::Vec2(25,0)),
+                                                     Sensor(Sensor::NEAR_BY_BOTTOM,cocos2d::Vec2(-25,0)),
                                                      Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT,cocos2d::Vec2(0,0)),
                                                      Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT,cocos2d::Vec2(10,0)),
                                                      Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT,cocos2d::Vec2(-10,0)),
-                                                     Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT,cocos2d::Vec2(0,10)),
-                                                     Sensor(Sensor::NEAR_BY_BOTTOM_RIGHT,cocos2d::Vec2(0,-10))}));
+                                                     Sensor(Sensor::NEAR_BY_BOTTOM_LEFT,cocos2d::Vec2(0,0)),
+                                                     Sensor(Sensor::NEAR_BY_BOTTOM_LEFT,cocos2d::Vec2(10,0)),
+                                                     Sensor(Sensor::NEAR_BY_BOTTOM_LEFT,cocos2d::Vec2(-10,0)),
+                                                     Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,0)),
+                                                     Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,20)),
+                                                     Sensor(Sensor::NEAR_BY_MIDLLE_SIDE,cocos2d::Vec2(0,-20))}));
                 break;
             }
             case CreatureInfo::State::STAND_UP:{
@@ -936,6 +982,17 @@ void Enemy::updateVision(){
                 break;
             }
             case CreatureInfo::State::STOP:{
+                setVisionPattern(std::queue<Sensor>({Sensor(Sensor::FAR_BY_MIDLE_SIDE,cocos2d::Vec2(0,0)),
+                                                     Sensor(Sensor::FAR_BY_TOP_SIDE,cocos2d::Vec2(0,0)),
+                                                     Sensor(Sensor::FAR_BY_TOP_SIDE,cocos2d::Vec2(0,50)),
+                                                     Sensor(Sensor::FAR_BY_TOP_SIDE,cocos2d::Vec2(0,-50)),
+                                                     Sensor(Sensor::FAR_BY_BOTTOM_SIDE,cocos2d::Vec2(0,0)),
+                                                     Sensor(Sensor::FAR_BY_BOTTOM_SIDE,cocos2d::Vec2(0,50)),
+                                                     Sensor(Sensor::FAR_BY_BOTTOM_SIDE,cocos2d::Vec2(0,-50))}));
+                break;
+            }
+            case CreatureInfo::State::IN_BATTLE:{
+                
                 break;
             }
             }
@@ -964,50 +1021,59 @@ BehaviorPattern Enemy::defineBehavior(){
             setBehaviorPattern(BehaviorPattern::STOP_BEFORE_SOMETHING);
             break;
         }
-        case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_RIGHT | Sensor::NEAR_BY_BOTTOM_LEFT:{
-            setBehaviorPattern(BehaviorPattern::RUN_TO_TARGET);
-            if ((creature_physic_body->getVelocity().x > -1 && creature_physic_body->getVelocity().x < 1) && 
-                 creature_info.state ==CreatureInfo::ON_WALL){
-                    setVisionPattern(std::queue<Sensor>({Sensor(Sensor::NEAR_BY_SIDE,cocos2d::Vec2(0,0)),
-                                                         Sensor(Sensor::NEAR_BY_SIDETOP2X,cocos2d::Vec2(0,0)),
-                                                         Sensor(Sensor::NEAR_BY_SIDETOP4X,cocos2d::Vec2(0,0))}));
-            }
+        case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_LEFT:{
+            setBehaviorPattern(BehaviorPattern::STOP_BEFORE_SOMETHING);
             break;
         }
-        case Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_LEFT:{
+        case Sensor::NEAR_BY_BOTTOM_LEFT | Sensor::NEAR_BY_BOTTOM | Sensor::NEAR_BY_BOTTOM_RIGHT:{
             setBehaviorPattern(BehaviorPattern::RUN_TO_TARGET);
-            if ((creature_physic_body->getVelocity().x > -1 && creature_physic_body->getVelocity().x < 1) && 
-                 creature_info.state ==CreatureInfo::ON_WALL){
-                    setVisionPattern(std::queue<Sensor>({Sensor(Sensor::NEAR_BY_SIDE,cocos2d::Vec2(0,0)),
-                                                         Sensor(Sensor::NEAR_BY_SIDETOP2X,cocos2d::Vec2(0,0)),
-                                                         Sensor(Sensor::NEAR_BY_SIDETOP4X,cocos2d::Vec2(0,0))}));
-            }
-            else
-                setBehaviorPattern(BehaviorPattern::STOP_BEFORE_SOMETHING);
             break;
         }
         case Sensor::NEAR_BY_BOTTOM:{
-            setBehaviorPattern(BehaviorPattern::JUMP_OVER_WALL);
-            break;
-        }
-        case Sensor::NEAR_BY_BOTTOM_RIGHT:{
-            setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
+            setBehaviorPattern(BehaviorPattern::STOP_BEFORE_SOMETHING);
             break;
         }
         case Sensor::NEAR_BY_BOTTOM_LEFT:{
-            setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
             break;
         }
-        case Sensor::NEAR_BY_BOTTOM_LEFT | Sensor::NEAR_BY_BOTTOM_RIGHT:{
-            setBehaviorPattern(BehaviorPattern::JUMP_OVER_PIT);
+        case Sensor::NEAR_BY_BOTTOM_RIGHT:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
             break;
         }
-        case Sensor::NEAR_BY_SIDE | Sensor::NEAR_BY_SIDETOP2X:{
-            setBehaviorPattern(BehaviorPattern::JUMP_OVER_WALL);
+        //There is one vertical surfface, above
+        case Sensor::FAR_BY_TOP_SIDE:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
             break;
         }
-        case Sensor::NEAR_BY_SIDE:{
-            setBehaviorPattern(BehaviorPattern::JUMP_OVER_WALL);
+        //There is one vertical surfface, on the same level
+        case Sensor::FAR_BY_MIDLE_SIDE:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
+            break;
+        }
+        //There is one vertical surfface, bellow
+        case Sensor::FAR_BY_BOTTOM_SIDE:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
+            break;
+        }
+        //There is two vertical surface ahead(on the creature level, and below)
+        case Sensor::FAR_BY_MIDLE_SIDE | Sensor::FAR_BY_BOTTOM_SIDE:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
+            break;
+        }
+        //There is two vertical surface ahead(below, and above)
+        case Sensor::FAR_BY_BOTTOM_SIDE | Sensor::FAR_BY_TOP_SIDE:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
+            break;
+        }
+        //There is two vertical surface ahead(on the creature level, and above)
+        case Sensor::FAR_BY_MIDLE_SIDE | Sensor::FAR_BY_TOP_SIDE:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
+            break;
+        }
+        //There is three vertical surface ahead
+        case Sensor::FAR_BY_BOTTOM_SIDE | Sensor::FAR_BY_MIDLE_SIDE | Sensor::FAR_BY_TOP_SIDE:{
+            setBehaviorPattern(BehaviorPattern::JUMP_OR_FALL);
             break;
         }
         case Sensor::EMPTY:{//If creature have not active sensors it will whait outcome interuption(in my game it player)
@@ -1046,14 +1112,37 @@ void Enemy::packBehaviorStates(float dt){
                 //On steps
                 else if (creature_info.state == CreatureInfo::State::ON_STEPS)
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::MOVE_BY_STEPS,creature_info.dmove));
+
+                if (creature_sprite->getBoundingBox().origin.distance(player->getPosition()) < creature_info.characteristic.vision_radius/2 && sawPlayer){
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));
+                }
+                else if (creature_sprite->getBoundingBox().origin.distance(player->getPosition()) > creature_info.characteristic.vision_radius/2 && creature_info.state == CreatureInfo::IN_BATTLE){
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::IDLE,creature_info.dmove));
+                }
                 break;
             }
-            case BehaviorPattern::JUMP_OVER_PIT:{
-                OUT("jump\n");
-                if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
-                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
-                creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,0.2));
-
+            case BehaviorPattern::JUMP_OR_FALL:{
+                if (player->getPositionY() > (creature_sprite->getPositionY() + 20)){
+                    OUT("jump to above\n");
+                    if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability){
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
+                    }
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,0.2));
+                }
+                else if (player->getPositionY() < (creature_sprite->getPositionY() - 20)){
+                    OUT("fall to bottom\n");
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::START_RUN,creature_info.dmove));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,CreatureInfo::DMove(int(creature_info.dmove) * -1)));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_FALL,creature_info.dmove,0.1));
+                }
+                else{             
+                    OUT("jump over pit\n");
+                    if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
+                        creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,0.2));
+                }
                 break;
             }
             case BehaviorPattern::JUMP_OVER_WALL:{
@@ -1072,10 +1161,7 @@ void Enemy::packBehaviorStates(float dt){
             }
             case BehaviorPattern::STOP_BEFORE_SOMETHING:{
                 OUT("stop and think\n");
-                if (isOnceAnimation){
-                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::STOP,creature_info.dmove));
-                    isOnceAnimation = false;
-                }
+                creature_behaviorStates.push(BehaviorState(CreatureInfo::State::STOP,creature_info.dmove));
                 break;
             }
             case BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN:{

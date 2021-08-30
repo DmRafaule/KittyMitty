@@ -51,6 +51,7 @@ struct CreatureInfo{
         CLIMBING,
         DEATH,
         STOP,
+        IN_BATTLE,
     };
     enum DMove{
         OUT   =  3,
@@ -109,7 +110,7 @@ enum BehaviorPattern{
     //HERE you can add some patterns for I level AI 
     RUN_TO_TARGET,
     STOP_BEFORE_SOMETHING,
-    JUMP_OVER_PIT,
+    JUMP_OR_FALL,
     JUMP_OVER_WALL,
     WAITING_NEW_BEHAVIORPATTERN,
     PATROL,
@@ -131,7 +132,10 @@ struct Sensor{
         NEAR_BY_BOTTOM       = 8,
         NEAR_BY_BOTTOM_LEFT  = 256,
         NEAR_BY_BOTTOM_RIGHT = 512,
-        NEAR_BY_MIDLLE       = 16,
+        NEAR_BY_MIDLLE_SIDE  = 16,
+        FAR_BY_MIDLE_SIDE    = 32,
+        FAR_BY_TOP_SIDE      = 64,
+        FAR_BY_BOTTOM_SIDE   = 128,
     };
     Sensor();
     Sensor(TypeSensor type, cocos2d::Vec2 offset);//Make offset
