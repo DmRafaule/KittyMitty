@@ -50,6 +50,7 @@ struct CreatureInfo{
         LAND_ON,
         CLIMBING,
         DEATH,
+        STOP,
     };
     enum DMove{
         OUT   =  3,
@@ -106,9 +107,8 @@ struct PartOrgan {
 
 enum BehaviorPattern{
     //HERE you can add some patterns for I level AI 
-    RUN,
-    RUN_LEFT,
-    RUN_RIGHT,
+    RUN_TO_TARGET,
+    STOP_BEFORE_SOMETHING,
     JUMP_OVER_PIT,
     JUMP_OVER_WALL,
     WAITING_NEW_BEHAVIORPATTERN,
@@ -123,24 +123,18 @@ struct BehaviorState{
 struct Sensor{
     enum TypeSensor{
         EMPTY                = 0,
-        CUSTOM               = -1,
-        NEAR_BY_RIGHT        = 1,
-        NEAR_BY_RIGHTTOP2X   = 1024,
-        NEAR_BY_RIGHTTOP4X   = 2048,
-        NEAR_BY_LEFT         = 2,
-        NEAR_BY_LEFTTOP2X    = 1025,
-        NEAR_BY_LEFTTOP4X    = 2049,
+        CUSTOM               = 666,
+        NEAR_BY_SIDE         = 1,
+        NEAR_BY_SIDETOP2X    = 1024,
+        NEAR_BY_SIDETOP4X    = 2048,
         NEAR_BY_TOP          = 4,
         NEAR_BY_BOTTOM       = 8,
         NEAR_BY_BOTTOM_LEFT  = 256,
         NEAR_BY_BOTTOM_RIGHT = 512,
-        MIDLE_TO_RIGHT       = 16,
-        MIDLE_TO_LEFT        = 32,
-        MIDLE_TO_TOP         = 64,
-        MIDLE_TO_BOTTOM      = 128,
+        NEAR_BY_MIDLLE       = 16,
     };
     Sensor();
-    Sensor(TypeSensor type);
+    Sensor(TypeSensor type, cocos2d::Vec2 offset);//Make offset
     cocos2d::Vec2 whereTo;
     cocos2d::Vec2 howTo;
     

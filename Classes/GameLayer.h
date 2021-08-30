@@ -68,8 +68,8 @@ private:
     /* Init scenes layers gamesession and ui*/
     void initLayers();
     /* Update all entyties*/
-    void update(float dt);
-    
+    void updateSlow(float dt);
+    void updateFast(float dt);
 
 private:
     //UI

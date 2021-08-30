@@ -117,9 +117,10 @@ void GameLayer::initListeners(){
     ph_listener->onContactBegin = CC_CALLBACK_1(GameLayer::contactBegan,this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(ph_listener,this);
     /*Start update this layer*/
-    this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::update),0.1f,CC_REPEAT_FOREVER,0);
+    this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::updateFast),0,CC_REPEAT_FOREVER,0);
+    this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::updateSlow),0.1f,CC_REPEAT_FOREVER,0);
 }
-void GameLayer::update(float dt){
+void GameLayer::updateSlow(float dt){
     shows->update(dt);
     ctarg->update(dt);
     cattc->update(dt);
@@ -130,6 +131,12 @@ void GameLayer::update(float dt){
         i->update(dt);
     }
     world->update(dt);
+}
+void GameLayer::updateFast(float dt){
+    for (auto &i : enemy){
+        i->updateVision();
+        i->updateBehavior(dt);
+    }
 }
 
 

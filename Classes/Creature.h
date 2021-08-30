@@ -82,6 +82,10 @@ protected:
 class Enemy : public Creature{
 public:
     Enemy(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
+    /* Define init vison pattern and set upd looking obj for Image recognition*/
+    void updateVision();
+    /* Pack states into queue and then extract them from it*/
+    void updateBehavior(float dt);
     virtual void update(float dt) override;
     virtual void remove() override;
     /**
@@ -98,14 +102,10 @@ public:
     inline uint64_t& getMemory() { return creature_memorySensors; };
     inline const Sensor::TypeSensor getActiveSensor() { return creature_currentSensor; };
 private:
-    /* Define init vison pattern and set upd looking obj for Image recognition*/
-    void updateVision();
         /* Set up queue for looking some objects in vision*/
         void setVisionPattern(std::queue<Sensor> pattern);
         /* Create vision obj 'creature vision' for future detecting in updateTouchBegan*/
         void setLookAt(const Sensor& look);
-    /* Pack states into queue and then extract them from it*/
-    void updateBehavior(float dt);
         /* First pack States into Behavior pattern then unpack them in to creature_state*/
         void packBehaviorStates(float dt);
             /* Define which direction creature will be use*/
@@ -125,6 +125,7 @@ private:
     BehaviorPattern creature_previosBehaviorPattern;    //Previose behavior pattern
     Sensor::TypeSensor creature_currentSensor;          //Represent current poping sensors from queue
     uint64_t creature_memorySensors;//Bit field for remember wich sensors are active
+    bool isOnceAnimation = true;
     bool isVision;// For optimaing collision updates
     bool sawPlayer;//If it saw creature it will never stop
 };

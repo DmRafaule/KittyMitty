@@ -446,6 +446,5 @@
   <object id="26" name="floor" x="783.66" y="775.947" width="165.013" height="15.1061"/>
   <object id="27" name="floor" x="983.494" y="774.447" width="165.013" height="15.1061"/>
   <object id="28" name="floor" x="1192.83" y="767.114" width="165.013" height="15.1061"/>
-  <object id="34" name="wall" x="113.737" y="710.381" width="22.25" height="71.3683"/>
  </objectgroup>
 </map>

@@ -22,11 +22,11 @@
             }
         },
         "area0/level0.tmx": {
-            "scale": 1.5,
+            "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 541,
-                "y": 557.6666666666667
+                "x": 468.5,
+                "y": 747.5
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -57,11 +57,11 @@
             "scaleInDock": 1
         },
         "area0/playground.tmx": {
-            "scale": 1,
+            "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 791.5,
-                "y": 799.5
+                "x": 791.3333333333333,
+                "y": 799.3333333333333
             }
         },
         "area0/tilesetMidlegr.tsx": {
@@ -82,9 +82,9 @@
     "project": "World.tiled-project",
     "property.type": "int",
     "recentFiles": [
+        "area0/level0.tmx",
         "area0/playground.tmx",
         "area0/level1.tmx",
-        "area0/level0.tmx",
         "area0/im.tmx",
         "area0/level2.tmx",
         "area0/tilesetMidlegr.tsx",
