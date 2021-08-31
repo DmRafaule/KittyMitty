@@ -1108,13 +1108,13 @@ BehaviorPattern Enemy::defineBehavior(){
             break;
         }
     }
-
     return creature_behaviorPattern;
 }
 void Enemy::packBehaviorStates(float dt){
     /*Will pack behavior states queue only if behaviorStates queue is empty and look pattern also empty*/
     if (creature_behaviorStates.empty() && creature_visionPattern.empty()){
         defineDirection();
+        defineBattleAI();//Enter point to battle fase, for enemy(Maybe you should add oporunity enemy attack in aire)
         std::cout << "0x" << std::bitset<64>(creature_memorySensors) << std::endl;//Remove
         switch(defineBehavior()){
             case BehaviorPattern::RUN_TO_TARGET:{
@@ -1131,7 +1131,6 @@ void Enemy::packBehaviorStates(float dt){
                 else if (creature_info.state == CreatureInfo::State::ON_STEPS)
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::MOVE_BY_STEPS,creature_info.dmove));
 
-                switchToBattleAI();//Enter point to battle fase, for enemy(Maybe you should add oporunity enemy attack in aire)
                 break;
             }
             case BehaviorPattern::JUMP_OR_FALL:{
@@ -1160,9 +1159,11 @@ void Enemy::packBehaviorStates(float dt){
             }
             case BehaviorPattern::JUMP_ON_WALL:{
                 OUT("jump on wall\n");
-                if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
-                    if (creature_info.state != CreatureInfo::ON_WALL)
-                        creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove));
+                //if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
+                //    if (creature_info.state == CreatureInfo::ON_WALL)
+                //        creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove));
+                if (creature_info.state == CreatureInfo::ON_STEPS)    
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::MOVE_BY_STEPS,creature_info.dmove));
                 break;
             }
             case BehaviorPattern::WALL_JUMP:{
@@ -1234,12 +1235,12 @@ void Enemy::setLookAt(const Sensor& look){
     //Set up current sensor type (for memorize what it will see)
     creature_currentSensor = look.type;
 }
-void Enemy::switchToBattleAI(){
+void Enemy::defineBattleAI(){
     if (getDistanceTo(player->getPosition()) < creature_weapon->getCaracteristics().weapon_range && creature_info.state != CreatureInfo::IN_BATTLE){
         creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));
     }
     else if (getDistanceTo(player->getPosition()) > creature_weapon->getCaracteristics().weapon_range && creature_info.state == CreatureInfo::IN_BATTLE){
-        creature_behaviorStates.push(BehaviorState(CreatureInfo::IDLE,creature_info.dmove));
+        creature_behaviorStates.push(BehaviorState(CreatureInfo::ON_STEPS,creature_info.dmove));//HERE
     }
 }
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////

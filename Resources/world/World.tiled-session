@@ -57,11 +57,11 @@
             "scaleInDock": 1
         },
         "area0/playground.tmx": {
-            "scale": 2,
+            "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 791.75,
-                "y": 799.75
+                "x": 273,
+                "y": 611.6666666666667
             }
         },
         "area0/tilesetMidlegr.tsx": {

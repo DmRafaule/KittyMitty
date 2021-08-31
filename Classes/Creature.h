@@ -116,7 +116,7 @@ private:
     /* Set up new state for creature_state from queue*/
     void unpackBehaviorState(float dt);
     /* Turn on or turn off Battle AI, depends on range of weapon*/
-    void switchToBattleAI();
+    void defineBattleAI();
 private:
     cocos2d::Node* player;          //Date about player node
     cocos2d::Node* creature_vision; //Represent vision object for interacting with other world obj 
