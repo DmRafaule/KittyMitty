@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="50">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="53">
  <tileset firstgid="1" source="tilesetMidlegr.tsx"/>
  <layer id="4" name="background" width="100" height="100">
   <data encoding="csv">
@@ -418,7 +418,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="objectsLayer">
-  <object id="1" name="hero" type="creatureObj" x="253.571" y="702.361">
+  <object id="1" name="hero" type="creatureObj" x="227.571" y="765.694">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="0"/>
@@ -447,21 +447,12 @@
   <object id="27" name="floor" x="983.494" y="774.447" width="165.013" height="15.1061"/>
   <object id="28" name="floor" x="1192.83" y="767.114" width="165.013" height="15.1061"/>
   <object id="36" name="floor" x="323.493" y="880.447" width="754.346" height="15.1061"/>
-  <object id="44" name="steps" x="192.667" y="776" rotation="1.25736">
+  <object id="52" name="door" type="dynamicObj" x="157.75" y="718.167" width="23.1667" height="57">
    <properties>
-    <property name="heightInTiles" type="int" value="7"/>
-    <property name="toRightMod" type="int" value="1"/>
-    <property name="widthInTiles" type="int" value="7"/>
+    <property name="frameName" value="door_open0.png"/>
+    <property name="isCollided" type="bool" value="true"/>
+    <property name="typeAction" value="nill"/>
    </properties>
-   <polygon points="0.0441858,2.05399 108.592,-109.085 110.028,-0.864281"/>
-  </object>
-  <object id="46" name="steps" x="304.667" y="670" rotation="1.25736">
-   <properties>
-    <property name="heightInTiles" type="int" value="7"/>
-    <property name="toRightMod" type="int" value="1"/>
-    <property name="widthInTiles" type="int" value="7"/>
-   </properties>
-   <polygon points="0.0441858,2.05399 108.592,-109.085 110.028,-0.864281"/>
   </object>
  </objectgroup>
 </map>

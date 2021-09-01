@@ -108,10 +108,10 @@ struct PartOrgan {
 
 enum BehaviorPattern{
     //HERE you can add some patterns for I level AI 
-    RUN_TO_TARGET,
+    CHAISING,
+    CHANGE_VERTICAL,
+    USING_ITEM,
     STOP_BEFORE_SOMETHING,
-    JUMP_OR_FALL,
-    JUMP_ON_WALL,
     WALL_JUMP,
     WAITING_NEW_BEHAVIORPATTERN,
     PATROL,
@@ -124,19 +124,18 @@ struct BehaviorState{
 };
 struct Sensor{
     enum TypeSensor{
-        EMPTY                = 0,
-        CUSTOM               = 666,
-        NEAR_BY_SIDE         = 1,
-        NEAR_BY_SIDETOP2X    = 1024,
-        NEAR_BY_SIDETOP4X    = 2048,
-        NEAR_BY_TOP          = 4,
-        NEAR_BY_BOTTOM       = 8,
-        NEAR_BY_BOTTOM_LEFT  = 256,
-        NEAR_BY_BOTTOM_RIGHT = 512,
-        NEAR_BY_MIDLLE_SIDE  = 16,
-        FAR_BY_MIDLE_SIDE    = 32,
-        FAR_BY_TOP_SIDE      = 64,
-        FAR_BY_BOTTOM_SIDE   = 128,
+        EMPTY                           = 0,
+        CUSTOM                          = 666,
+        NEAR_BY_SIDE                    = 1,
+        NEAR_BY_SIDETOP2X               = 1024,
+        NEAR_BY_TOP                     = 4,
+        GROUND_UNDER_ME                 = 8,
+        GROUND_LEFTWARD_IS              = 256,
+        GROUND_RIGHTWARD_IS             = 512,
+        SOMETHING_IN_VISION_R           = 16,
+        SOMETHING_ON_THE_SAME_LEVEL     = 32,
+        SOMETHING_ABOVE                 = 64,
+        SOMETHING_BELOW                 = 128,
     };
     Sensor();
     Sensor(TypeSensor type, cocos2d::Vec2 offset);//Make offset
