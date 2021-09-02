@@ -29,6 +29,14 @@ struct CreatureInfo{
         GOO_ZOO,
         AVR,
     };
+    enum InteractedSurface{
+        FLOOR,
+        ROOF,
+        WALL,
+        STEPS,
+        OTHER_CREATURE,
+        OTHER,
+    };
     enum State{
         ATTACK,
         GET_DAMMAGE,
@@ -68,6 +76,7 @@ struct CreatureInfo{
     State state;
     Characteristic characteristic;
     DMove dmove;
+    InteractedSurface surface;
 };
 
 enum PartCreatureType : uint{
@@ -112,7 +121,8 @@ enum BehaviorPattern{
     CHANGE_VERTICAL,
     USING_ITEM,
     STOP_BEFORE_SOMETHING,
-    WALL_JUMP,
+    WALL_JUMP_TO,
+    WALL_JUMP_FROM,
     WAITING_NEW_BEHAVIORPATTERN,
     PATROL,
 };

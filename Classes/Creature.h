@@ -101,6 +101,7 @@ public:
     inline const cocos2d::Node* getCreatureVisions() { return creature_vision; };
     inline const bool isVisionEnable() { return isVision; };
     inline uint64_t& getMemory() { return creature_memorySensors; };
+    inline CreatureInfo::InteractedSurface& getSurface() {return creature_info.surface; };
     inline const Sensor::TypeSensor getActiveSensor() { return creature_currentSensor; };
 private:
     /* Set up queue for looking some objects in vision*/
