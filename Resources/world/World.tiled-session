@@ -1,5 +1,5 @@
 {
-    "activeFile": "area0/level0.tmx",
+    "activeFile": "area0/playground.tmx",
     "expandedProjectPaths": [
         ".",
         "area0"
@@ -25,8 +25,8 @@
             "scale": 0.75,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 830,
-                "y": 518
+                "x": 799.3333333333333,
+                "y": 799.3333333333333
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -38,11 +38,11 @@
             "scaleInEditor": 3
         },
         "area0/level1.tmx": {
-            "scale": 3,
+            "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 839.4999999999999,
-                "y": 569.5
+                "x": 699.6666666666667,
+                "y": 637.6666666666667
             }
         },
         "area0/level2.tmx": {
@@ -60,8 +60,8 @@
             "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 296.25,
-                "y": 799.25
+                "x": 225.25,
+                "y": 799.75
             }
         },
         "area0/tilesetMidlegr.tsx": {
@@ -82,9 +82,9 @@
     "project": "World.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "area0/playground.tmx",
-        "area0/level1.tmx",
         "area0/level0.tmx",
+        "area0/level1.tmx",
+        "area0/playground.tmx",
         "area0/im.tmx",
         "area0/level2.tmx",
         "area0/tilesetMidlegr.tsx",

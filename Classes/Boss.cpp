@@ -96,4 +96,18 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
 
    initAnimations();
    initBody(pos);
+   creature_sprite->setScale(7);
+}
+void Boss::update(float dt){
+   showStatistics(DebugStatistics::PHYSICS);
+
+   updateBossFight(dt);
+
+   if (isNewState){
+      updateCurrentState();
+   }
+   updatePermament();
+}
+void Boss::updateBossFight(float dt){
+   
 }

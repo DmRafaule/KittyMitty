@@ -214,11 +214,18 @@ void Enemy::defineDirection(){
         creature_info.dmove = CreatureInfo::LEFT;
 }
 void Enemy::defineBattleAI(){
-    if (getDistanceTo(player->getPosition()) < creature_weapon->getCaracteristics().weapon_range && creature_info.state != CreatureInfo::IN_BATTLE){
+    if (getDistanceTo(player->getPosition()) < creature_weapon->getCaracteristics().weapon_range && 
+        creature_info.state != CreatureInfo::IN_BATTLE){
         creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));
     }
-    else if (getDistanceTo(player->getPosition()) > creature_weapon->getCaracteristics().weapon_range && creature_info.state == CreatureInfo::IN_BATTLE){
+    else if (getDistanceTo(player->getPosition()) > creature_weapon->getCaracteristics().weapon_range && 
+            creature_info.state == CreatureInfo::IN_BATTLE){
         creature_behaviorStates.push(BehaviorState(CreatureInfo::IDLE,creature_info.dmove));
+    }
+    //Try to keep distance between him and player
+    if (getDistanceTo(player->getPosition()) <= creature_weapon->getCaracteristics().weapon_range/2 && 
+        creature_info.state == CreatureInfo::IN_BATTLE){
+        creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::DMove(creature_info.dmove * -1)));
     }
 }
 BehaviorPattern Enemy::defineBehavior(){

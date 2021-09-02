@@ -418,7 +418,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="objectsLayer">
-  <object id="1" name="hero" type="creatureObj" x="198.071" y="773.694">
+  <object id="1" name="hero" type="creatureObj" x="94.571" y="771.194">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="0"/>
@@ -433,12 +433,12 @@
    </properties>
   </object>
   <object id="12" name="wall" x="1374.14" y="533.269" width="5.75" height="281.5"/>
-  <object id="16" name="erenu-doo" type="creatureObj" x="96.855" y="773.636">
+  <object id="16" name="kool-hash" type="creatureObj" x="167.355" y="772.136">
    <properties>
     <property name="typeAI" type="int" value="1"/>
     <property name="typeBehavior" value="wait"/>
-    <property name="typeCreature" type="int" value="5"/>
-    <property name="typeWeapon" type="int" value="2"/>
+    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeWeapon" type="int" value="0"/>
    </properties>
    <point/>
   </object>
