@@ -2,6 +2,8 @@
 #include "engEnums.hpp"
 #include "engMacros.hpp"
 #include "GameActions.hpp"
+#include "Enemy.h"
+#include "Boss.h"
 
 cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
 cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
@@ -48,7 +50,7 @@ Level::Level(uint level,GameLayer* currentLayer){
    initPoolActions();
    switch (level){
    case 0:{
-      loadLevel("world/area0/level0.tmx","world/area0/backgroundImage.png");
+      loadLevel("world/area0/playground.tmx","world/area0/backgroundImage.png");
       break;
    }
    case 1:{
@@ -175,6 +177,7 @@ void Level::parseCreatureObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
    obj.typeWepon  = dict["typeWeapon"].asInt();
    obj.typeAI     = dict["typeAI"].asInt();
    obj.typeBehavior = dict["typeBehavior"].asString();
+   obj.name       = dict["name"].asString();
    obj.point      = rect.origin;
 
    WorldProperties::creatureObj.emplace(static_cast<CreatureInfo::Type>(obj.typeCr),obj);
@@ -268,9 +271,16 @@ void Level::initBackground(std::string chunkBackground){
 }
 void Level::initCreatures(){
    for (auto& en : WorldProperties::creatureObj){
-      if (en.first != CreatureInfo::Type::KITTYMITTY){
-         Enemy* e;
+      Enemy* e;
+      if (en.first != CreatureInfo::Type::KITTYMITTY && en.first != CreatureInfo::Type::BOSS){
          e = new Enemy(en.first,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
+         e->setWeapon((WeaponType)en.second.typeWepon);
+         e->setAI(en.second.typeAI,en.second.typeBehavior);
+         e->initPlayerDependenceFields();
+         currentLayer->getEnemy()->push_back(e);
+      }
+      else if (en.first == CreatureInfo::Type::BOSS){
+         e = new Boss(en.first,en.second.name,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
          e->setWeapon((WeaponType)en.second.typeWepon);
          e->setAI(en.second.typeAI,en.second.typeBehavior);
          e->initPlayerDependenceFields();

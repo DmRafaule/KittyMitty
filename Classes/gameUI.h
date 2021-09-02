@@ -3,7 +3,9 @@
 #include <cocos2d.h>
 #include <cocos/ui/CocosGUI.h>
 #include "engEnums.hpp"
-#include "Creature.h"
+
+class Enemy;
+class Creature;
 
 class GameUIPhone{
 public:

@@ -2,7 +2,8 @@
 
 #include "GameLayer.h"
 #include "gameUI.h"
-#include "Creature.h"
+#include "Enemy.h"
+#include "Player.h"
 
 
 std::string                 SceneLayer::ui = "ui";

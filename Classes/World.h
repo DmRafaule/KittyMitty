@@ -6,7 +6,6 @@ class Level;
 class Chunk;
 class GameLayer;
 
-
 class World {
 public:
    World();

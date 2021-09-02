@@ -28,6 +28,7 @@ struct CreatureInfo{
         ERENU_DOO,
         GOO_ZOO,
         AVR,
+        BOSS,
     };
     enum InteractedSurface{
         FLOOR,
@@ -174,6 +175,7 @@ struct LevelCreatures{
     uint typeWepon;
     int typeAI;
     std::string typeBehavior;
+    std::string name;
     cocos2d::Vec2 point;
 };
 struct LevelNonePhysicalObj{

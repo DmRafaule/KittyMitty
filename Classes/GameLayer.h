@@ -28,7 +28,7 @@
 #include <cocos2d.h>
 #include "gameUI.h"
 #include "World.h"
-#include "Creature.h"
+#include "Player.h"
 #include "engMacros.hpp"
 #include "engEnums.hpp"
 

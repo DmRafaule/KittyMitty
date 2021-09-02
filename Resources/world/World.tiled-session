@@ -38,11 +38,11 @@
             "scaleInEditor": 3
         },
         "area0/level1.tmx": {
-            "scale": 0.75,
+            "scale": 3,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 791.3333333333333,
-                "y": 799.3333333333333
+                "x": 839.4999999999999,
+                "y": 569.5
             }
         },
         "area0/level2.tmx": {
@@ -60,8 +60,8 @@
             "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 791.75,
-                "y": 799.75
+                "x": 296.25,
+                "y": 799.25
             }
         },
         "area0/tilesetMidlegr.tsx": {

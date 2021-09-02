@@ -473,7 +473,7 @@
    </properties>
    <point/>
   </object>
-  <object id="23" name="erene-doo" type="creatureObj" x="874.666" y="512">
+  <object id="23" name="erenu-doo" type="creatureObj" x="874.666" y="512">
    <properties>
     <property name="typeCreature" type="int" value="2"/>
     <property name="typeWeapon" type="int" value="2"/>
