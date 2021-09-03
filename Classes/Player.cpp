@@ -8,7 +8,8 @@ Player::Player(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLaye
 }
 void Player::setPlayerPosition(float x, float y){
     creature_sprite->setPosition(x,y);
-    creature_weapon->getSprite()->setPosition(x,y);
+    if (isWeaponSet)
+        creature_weapon->getSprite()->setPosition(x,y);
     if (isStatisticsShowing)
         creature_statistics->setPosition(x,y);
 }

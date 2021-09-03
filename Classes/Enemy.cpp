@@ -1,6 +1,94 @@
 #include "Enemy.h"
 #include "engMacros.hpp"
 
+
+BehaviorState::BehaviorState(CreatureInfo::State state, CreatureInfo::DMove dmove, float time){
+    this->state = state;
+    this->dmove = dmove;
+    this->time  = time;
+}
+Sensor::Sensor(){
+
+}
+Sensor::Sensor(Sensor::TypeSensor type, cocos2d::Vec2 offset){
+    this->type = type;
+    switch(type){
+        case TypeSensor::NEAR_BY_SIDE:{
+            this->whereTo.x = 16;
+            this->whereTo.y = 0;
+            this->howTo.x   = 20;
+            this->howTo.y   = 28;
+            break;
+        }
+        case TypeSensor::NEAR_BY_SIDETOP2X:{
+            this->whereTo.x = 16;
+            this->whereTo.y = 75;
+            this->howTo.x   = 10;
+            this->howTo.y   = 28;
+            break;
+        }
+        case TypeSensor::GROUND_UNDER_ME:{
+            this->whereTo.x = 0;
+            this->whereTo.y = -20;
+            this->howTo.x   = 15;
+            this->howTo.y   = 15;
+            break;
+        }
+        case TypeSensor::GROUND_LEFTWARD_IS:{
+            this->whereTo.x = -50;
+            this->whereTo.y = -40;
+            this->howTo.x   = 15;
+            this->howTo.y   = 15;
+            break;
+        }
+        case TypeSensor::GROUND_RIGHTWARD_IS:{
+            this->whereTo.x = 50;
+            this->whereTo.y = -40;
+            this->howTo.x   = 15;
+            this->howTo.y   = 15;
+            break;
+        }
+        case TypeSensor::NEAR_BY_TOP:{
+            this->whereTo.x = 0;
+            this->whereTo.y = 32;
+            this->howTo.x   = 28;
+            this->howTo.y   = 10;
+            break;
+        }
+        case TypeSensor::SOMETHING_IN_VISION_R:{
+            this->whereTo.x = 110;
+            this->whereTo.y = 32;
+            this->howTo.x   = 50;
+            this->howTo.y   = 20;
+            break;
+        }
+        case TypeSensor::SOMETHING_ON_THE_SAME_LEVEL:{
+            this->whereTo.x = 200;
+            this->whereTo.y = 0;
+            this->howTo.x   = 150;
+            this->howTo.y   = 150;
+            break;
+        }
+        case TypeSensor::SOMETHING_ABOVE:{
+            this->whereTo.x = 200;
+            this->whereTo.y = 200;
+            this->howTo.x   = 150;
+            this->howTo.y   = 150;
+            break;
+        }
+        case TypeSensor::SOMETHING_BELOW:{
+            this->whereTo.x = 200;
+            this->whereTo.y = -200;
+            this->howTo.x   = 150;
+            this->howTo.y   = 150;
+            break;
+        }
+    }
+    this->whereTo.x += offset.x;
+    this->whereTo.y += offset.y;
+}
+
+
 ///////////////////////////////////////////////////////*Enemy class*///////////////////////////////////////////////////////
 Enemy::Enemy(){
 
@@ -334,7 +422,6 @@ void Enemy::packBehaviorStates(float dt){
     if (creature_behaviorStates.empty() && creature_visionPattern.empty()){
         defineDirection();
         defineBattleAI();//Enter point to battle fase, for enemy(Maybe you should add oporunity enemy attack in aire)
-        //std::cout << "0x" << std::bitset<64>(creature_memorySensors) << std::endl;//Remove
         //Here define what kind of actions creature should do /AI/
         switch(defineBehavior()){
             case BehaviorPattern::CHAISING:{

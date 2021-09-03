@@ -12,13 +12,9 @@ public:
    virtual void updateVision();
    /* Pack states into queue and then extract them from it*/
    virtual void updateBehavior(float dt);
-   /**
-    * @return pointer to data of creature_parts of enemy object
-   */
+   /* Return pointer to data of creature_parts of enemy object*/
    inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
-   /**
-    * @brief init fields which related to player and cant be assigned in constructor
-   */
+   /* Init fields which related to player and cant be assigned in constructor*/
    void initPlayerDependenceFields();
    void setAI(std::string typeBehaviorPattern);
    inline const cocos2d::Node* getCreatureVisions() { return creature_vision; };
@@ -42,14 +38,13 @@ private:
    /* Set up new state for creature_state from queue*/
    void unpackBehaviorState(float dt);
 protected:
-   cocos2d::Node* player;          //Date about player node
-   cocos2d::Node* creature_vision; //Represent vision object for interacting with other world obj 
-   std::queue<BehaviorState> creature_behaviorStates;  //Pack of expanded states for update them in updateCurrentState one by one
-   std::queue<Sensor> creature_visionPattern;          //Pack of where vision object will be and which size it can be
-   BehaviorPattern creature_behaviorPattern;           //Pattern represent in witch queue and what kind of state will be in creature_behaviorStates
-   Sensor::TypeSensor creature_currentSensor;          //Represent current poping sensors from queue
-   uint64_t creature_memorySensors;//Bit field for remember wich sensors are active
-   float deltaTime;
-   bool isVision;// For optimaing collision updates
-   bool sawPlayer;//If it saw creature it will never stop(Untill he die)
+   cocos2d::Node*             player;          //Date about player node
+   cocos2d::Node*             creature_vision; //Represent vision object for interacting with other world obj 
+   std::queue<BehaviorState>  creature_behaviorStates;  //Pack of expanded states for update them in updateCurrentState one by one
+   std::queue<Sensor>         creature_visionPattern;          //Pack of where vision object will be and which size it can be
+   BehaviorPattern            creature_behaviorPattern;           //Pattern represent in witch queue and what kind of state will be in creature_behaviorStates
+   Sensor::TypeSensor         creature_currentSensor;          //Represent current poping sensors from queue
+   uint64_t                   creature_memorySensors;//Bit field for remember wich sensors are active
+   bool                       isVision;// For optimaing collision updates
+   bool                       sawPlayer;//If it saw creature it will never stop(Untill he die)
 };

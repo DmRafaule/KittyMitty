@@ -418,7 +418,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="objectsLayer">
-  <object id="1" name="hero" type="creatureObj" x="94.571" y="771.194">
+  <object id="1" name="hero" type="creatureObj" x="138.071" y="767.194">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="0"/>
@@ -433,10 +433,10 @@
    </properties>
   </object>
   <object id="12" name="wall" x="1374.14" y="533.269" width="5.75" height="281.5"/>
-  <object id="16" name="kool-hash" type="creatureObj" x="319.355" y="766.136">
+  <object id="16" name="kool-hash" type="creatureObj" x="259.355" y="770.136">
    <properties>
     <property name="typeBehavior" value="wait"/>
-    <property name="typeCreature" type="int" value="6"/>
+    <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="0"/>
    </properties>
    <point/>
@@ -447,13 +447,5 @@
   <object id="28" name="floor" x="1192.83" y="767.114" width="165.013" height="15.1061"/>
   <object id="36" name="floor" x="323.493" y="880.447" width="754.346" height="15.1061"/>
   <object id="55" name="wall" x="1223.61" y="500.875" width="28.7727" height="278.25"/>
-  <object id="69" name="kool-hash" type="creatureObj" x="196.5" y="768">
-   <properties>
-    <property name="typeBehavior" value="wait"/>
-    <property name="typeCreature" type="int" value="6"/>
-    <property name="typeWeapon" type="int" value="0"/>
-   </properties>
-   <point/>
-  </object>
  </objectgroup>
 </map>

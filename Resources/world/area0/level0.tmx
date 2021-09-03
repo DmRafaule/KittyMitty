@@ -570,7 +570,7 @@
    </properties>
   </object>
   <object id="208" name="roof" x="1119.28" y="1128.49" width="505.614" height="9.833"/>
-  <object id="219" name="hero" type="creatureObj" x="1139.78" y="510.893">
+  <object id="219" name="hero" type="creatureObj" x="117.113" y="1493.56">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="2"/>

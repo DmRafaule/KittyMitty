@@ -107,10 +107,10 @@ void GameLayer::initListeners(){
     /*Init listeners*/
     /*Init listeners for graphycs*/
     auto listener = cocos2d::EventListenerTouchAllAtOnce::create();
-    listener->onTouchesBegan = CC_CALLBACK_2(GameLayer::touchBegan,this);
-    listener->onTouchesEnded = CC_CALLBACK_2(GameLayer::touchEnded,this);
-    listener->onTouchesMoved = CC_CALLBACK_2(GameLayer::touchMoved,this);
-    listener->onTouchesCancelled = CC_CALLBACK_2(GameLayer::touchCanceled,this);
+    listener->onTouchesBegan        = CC_CALLBACK_2(GameLayer::touchBegan,this);
+    listener->onTouchesEnded        = CC_CALLBACK_2(GameLayer::touchEnded,this);
+    listener->onTouchesMoved        = CC_CALLBACK_2(GameLayer::touchMoved,this);
+    listener->onTouchesCancelled    = CC_CALLBACK_2(GameLayer::touchCanceled,this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener,this);
 
     /*Init listeners for physics*/

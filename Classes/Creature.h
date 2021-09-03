@@ -71,7 +71,7 @@ protected:
     cocos2d::PhysicsBody*     creature_physic_body;
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
-    Weapon*                   creature_weapon;
+    Weapon*                   creature_weapon; //Using weapon
     CreatureInfo              creature_info;
     std::multimap<std::string,cocos2d::Animate*> animations;//Animations
     cocos2d::Node*            currentLayer;//Current playing scene;
