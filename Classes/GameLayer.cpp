@@ -96,6 +96,7 @@ void GameLayer::intCreatures(){
     //Init player related fields
     for (auto & e : enemy)
         e->initPlayerDependenceFields();
+    player->initEnemyContainer(enemy);
 }
 void GameLayer::initUI(){
     //ctarg = new ControlTargeting(player,this->getChildByName(SceneLayer::ui));

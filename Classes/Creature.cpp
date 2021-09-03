@@ -525,6 +525,7 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::ATTACK:{
         creature_sprite->stopAllActions();
         creature_sprite->runAction(animations.find("_animation_attack")->second);
+        creature_weapon->attacke();
         setCreatureState(CreatureInfo::State::IDLE);
         break;
     }

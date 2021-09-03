@@ -23,3 +23,6 @@ void Player::update(float dt){
 void Player::remove(){
     
 }
+void Player::initEnemyContainer(std::vector<Enemy*> enemies){
+    this->enemyNode = &enemies;
+}

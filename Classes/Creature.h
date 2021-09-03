@@ -67,13 +67,13 @@ protected:
         uint                            part_crushingDef;
     };
     /*Properties related to whole creature*/
+    std::multimap<std::string,cocos2d::Animate*> animations;//Animations
     std::vector<PartCreature> creature_parts;//Container for holding info about creature_parts of creature 
     cocos2d::PhysicsBody*     creature_physic_body;
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
     Weapon*                   creature_weapon; //Using weapon
     CreatureInfo              creature_info;
-    std::multimap<std::string,cocos2d::Animate*> animations;//Animations
     cocos2d::Node*            currentLayer;//Current playing scene;
 
     int                       indentificator;
