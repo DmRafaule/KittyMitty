@@ -11,7 +11,7 @@ public:
    /* Define init vison pattern and set upd looking obj for Image recognition*/
    virtual void updateVision();
    /* Pack states into queue and then extract them from it*/
-   void updateBehavior(float dt);
+   virtual void updateBehavior(float dt);
    /**
     * @return pointer to data of creature_parts of enemy object
    */
@@ -20,7 +20,7 @@ public:
     * @brief init fields which related to player and cant be assigned in constructor
    */
    void initPlayerDependenceFields();
-   void setAI(int typeAI, std::string typeBehaviorPattern);
+   void setAI(std::string typeBehaviorPattern);
    inline const cocos2d::Node* getCreatureVisions() { return creature_vision; };
    inline const bool isVisionEnable() { return isVision; };
    inline uint64_t& getMemory() { return creature_memorySensors; };
@@ -31,16 +31,16 @@ private:
    void setVisionPattern(std::queue<Sensor> pattern);
    /* Create vision obj 'creature vision' for future detecting in updateTouchBegan*/
    void setLookAt(const Sensor& look);
-   /* First pack States into Behavior pattern then unpack them in to creature_state*/
-   void packBehaviorStates(float dt);
    /* Define which direction creature will be use*/
    void defineDirection();
    /* Define state for making new decision*/
    BehaviorPattern defineBehavior();
-   /* Set up new state for creature_state from queue*/
-   void unpackBehaviorState(float dt);
    /* Turn on or turn off Battle AI, depends on range of weapon*/
    void defineBattleAI();
+   /* First pack States into Behavior pattern then unpack them in to creature_state*/
+   void packBehaviorStates(float dt);
+   /* Set up new state for creature_state from queue*/
+   void unpackBehaviorState(float dt);
 protected:
    cocos2d::Node* player;          //Date about player node
    cocos2d::Node* creature_vision; //Represent vision object for interacting with other world obj 

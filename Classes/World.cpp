@@ -176,7 +176,6 @@ void Level::parseCreatureObj(cocos2d::ValueMap& dict, cocos2d::Rect& rect){
    LevelCreatures obj;
    obj.typeCr     = dict["typeCreature"].asInt();
    obj.typeWepon  = dict["typeWeapon"].asInt();
-   obj.typeAI     = dict["typeAI"].asInt();
    obj.typeBehavior = dict["typeBehavior"].asString();
    obj.name       = dict["name"].asString();
    obj.point      = rect.origin;
@@ -276,21 +275,21 @@ void Level::initCreatures(){
       if (en.first != CreatureInfo::Type::KITTYMITTY && en.first != CreatureInfo::Type::BOSS && en.first != CreatureInfo::Type::NPC){
          e = new Enemy(en.first,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
          e->setWeapon((WeaponType)en.second.typeWepon);
-         e->setAI(en.second.typeAI,en.second.typeBehavior);
+         e->setAI(en.second.typeBehavior);
          e->initPlayerDependenceFields();
          currentLayer->getEnemy()->push_back(e);
       }
       else if (en.first == CreatureInfo::Type::BOSS){
          e = new Boss(en.first,en.second.name,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
          e->setWeapon((WeaponType)en.second.typeWepon);
-         e->setAI(en.second.typeAI,en.second.typeBehavior);
+         e->setAI(en.second.typeBehavior);
          e->initPlayerDependenceFields();
          currentLayer->getEnemy()->push_back(e);
       }
       else if (en.first == CreatureInfo::Type::NPC){
          e = new NPC(en.first,en.second.name,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
          //e->setWeapon((WeaponType)en.second.typeWepon);
-         e->setAI(en.second.typeAI,en.second.typeBehavior);
+         e->setAI(en.second.typeBehavior);
          e->initPlayerDependenceFields();
          currentLayer->getEnemy()->push_back(e);
       }

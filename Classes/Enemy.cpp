@@ -31,7 +31,7 @@ void Enemy::remove(){
 void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
 }
-void Enemy::setAI(int typeAI, std::string typeBehaviorPattern){
+void Enemy::setAI(std::string typeBehaviorPattern){
     //Set sensors to custom activity
     creature_memorySensors = Sensor::CUSTOM;
     //Define custom behavior patterns

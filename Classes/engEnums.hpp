@@ -174,7 +174,6 @@ struct LevelCreatures{
     LevelCreatures(uint,uint,cocos2d::Vec2);
     uint typeCr;
     uint typeWepon;
-    int typeAI;
     std::string typeBehavior;
     std::string name;
     cocos2d::Vec2 point;

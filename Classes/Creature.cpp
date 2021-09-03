@@ -155,6 +155,7 @@ Sensor::Sensor(Sensor::TypeSensor type, cocos2d::Vec2 offset){
 }
 
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
+bool    Creature::isInInteraction = false;
 Creature::Creature(){
 }
 Creature::Creature(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
@@ -797,6 +798,7 @@ void Creature::updateCurrentState(){
     }
     case CreatureInfo::State::INTERACTING:{
         creature_sprite->stopAllActions();
+        Creature::isInInteraction = true;
         bool isIntersection = false;
         for (const auto& lI : WorldProperties::dynamicObj){
             //Will open door if creature neer by, it's a door and buttom E pressed
@@ -845,7 +847,6 @@ void Creature::updateCurrentState(){
         //If we not closed to item or buttom not pressed we will reser buttom state
         if (!isIntersection){
             setCreatureState(CreatureInfo::State::IDLE);
-        isNewState = false;
         }
         break;
     }

@@ -9,4 +9,5 @@ public:
    NPC(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
    virtual void update(float dt) override;
    virtual void updateVision() override;
+   virtual void updateBehavior(float dt) override;
 };

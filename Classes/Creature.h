@@ -80,4 +80,5 @@ protected:
     bool                      isStatisticsShowing;
     bool                      isNewState;
     bool                      isWeaponSet;
+    static bool               isInInteraction;
 };
