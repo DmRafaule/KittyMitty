@@ -598,13 +598,6 @@
    </properties>
    <point/>
   </object>
-  <object id="236" name="kool-hash" type="creatureObj" x="447" y="1490">
-   <properties>
-    <property name="typeCreature" type="int" value="1"/>
-    <property name="typeWeapon" type="int" value="2"/>
-   </properties>
-   <point/>
-  </object>
   <object id="237" name="kool-hash" type="creatureObj" x="209" y="1265">
    <properties>
     <property name="typeCreature" type="int" value="1"/>

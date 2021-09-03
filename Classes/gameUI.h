@@ -38,7 +38,6 @@ protected:
     std::vector<cocos2d::DrawNode*> pathEffect;
     cocos2d::Node*  currentLayer;
     Creature*       creature;
-    cocos2d::Vec2   touchPoint;
 };
 
 /**
@@ -158,4 +157,19 @@ private:
     static DirectionAttacke direction_of_attacke;       //Which direction of attacke player made
     static bool  isAttacke;                             //Is this UI object activated
     bool   isRightPlaceForControle;                     //Detect is player finger on right half of screen
+};
+class ControlJump : public GameUIPhone{
+public:
+    /*Inherite func*/    
+    ControlJump(Creature* target, cocos2d::Node* layer);
+    virtual ~ControlJump();
+    virtual void update(float dt) override;
+        virtual void updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event) override;
+        virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
+    virtual void createEffect() override;
+    virtual void removeEffect() override;
+private:
+    bool isRightPlaceForControle;
 };

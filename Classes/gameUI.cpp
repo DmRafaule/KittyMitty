@@ -90,7 +90,7 @@ ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* 
     button_interact = cocos2d::Sprite::createWithSpriteFrameName("interactB.png");
     button_interact->getTexture()->setTexParameters(tpar);
     button_interact->setScale(3);
-    button_interact->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_interact->getBoundingBox().size.width,
+    button_interact->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width*offset.x,
                                                cocos2d::Director::getInstance()->getVisibleSize().height*offset.y + button_interact->getBoundingBox().size.height * 1.5));
     currentLayer->addChild(button_interact);
 }
@@ -203,32 +203,29 @@ ControlAttc::ControlAttc(Creature* target, cocos2d::Node* layer){
 ControlAttc::~ControlAttc(){}
 void ControlAttc::update(float dt){}
 void ControlAttc::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
-     
     /*On right part of screen*/
     if ( touch->getLocation().x > cocos2d::Director::getInstance()->getVisibleSize().width/2){
         isRightPlaceForControle = true;
         //Find start position of touch
         touchPointStart = touch->getLocation();
+        touchPointEnd = touch->getLocation();
     }
 }
 void ControlAttc::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
     //If we realy was on right half of screen
     if (isRightPlaceForControle){
         isRightPlaceForControle = false;
-        //Find end position of touch
-        touchPointEnd = touchPoint;
         //Calulate attacke direction Only if lenght of touch line more than ...
-        if (std::abs(touchPointEnd.x - touchPointStart.x) > cocos2d::Director::getInstance()->getVisibleSize().width/6 ||
-            std::abs(touchPointEnd.y - touchPointStart.y) > cocos2d::Director::getInstance()->getVisibleSize().height/4){
+        if (std::abs(touchPointEnd.x - touchPointStart.x) > WorldProperties::screenSize.width/5 ||
+            std::abs(touchPointEnd.y - touchPointStart.y) > WorldProperties::screenSize.height/4){
             setDirectionAttacke();
+            creature->setCreatureState(CreatureInfo::State::ATTACK);
         }
     }
-
 }
 void ControlAttc::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){
-     
     if (isRightPlaceForControle){
-        touchPoint = touch->getLocation();
+        touchPointEnd = touch->getLocation();
     }
 }
 void ControlAttc::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
@@ -414,3 +411,18 @@ void ControlTargeting::unsetTarget(){
     currentLayer->removeChildByName("tLegR");
     currentLayer->removeChildByName("tLegL");
 }
+
+
+ControlJump::ControlJump(Creature* target, cocos2d::Node* layer){
+    this->creature = target;
+    this->currentLayer = layer;
+    this->isRightPlaceForControle = false;
+}
+ControlJump::~ControlJump(){}
+void ControlJump::update(float dt){}
+void ControlJump::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ControlJump::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ControlJump::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ControlJump::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
+void ControlJump::createEffect(){}
+void ControlJump::removeEffect(){}
