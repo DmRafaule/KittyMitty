@@ -447,14 +447,14 @@
   </object>
   <object id="13" name="kool-hash" type="creatureObj" x="799.333" y="518.333">
    <properties>
-    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeCreature" type="int" value="6"/>
     <property name="typeWeapon" type="int" value="1"/>
    </properties>
    <point/>
   </object>
   <object id="20" name="avr" type="creatureObj" x="652" y="520">
    <properties>
-    <property name="typeCreature" type="int" value="4"/>
+    <property name="typeCreature" type="int" value="5"/>
     <property name="typeWeapon" type="int" value="0"/>
    </properties>
    <point/>

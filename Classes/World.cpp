@@ -4,6 +4,7 @@
 #include "GameActions.hpp"
 #include "Enemy.h"
 #include "Boss.h"
+#include "NPC.h"
 
 cocos2d::Size               WorldProperties::screenSize = cocos2d::Size();
 cocos2d::Size               WorldProperties::mapSize = cocos2d::Size();
@@ -272,7 +273,7 @@ void Level::initBackground(std::string chunkBackground){
 void Level::initCreatures(){
    for (auto& en : WorldProperties::creatureObj){
       Enemy* e;
-      if (en.first != CreatureInfo::Type::KITTYMITTY && en.first != CreatureInfo::Type::BOSS){
+      if (en.first != CreatureInfo::Type::KITTYMITTY && en.first != CreatureInfo::Type::BOSS && en.first != CreatureInfo::Type::NPC){
          e = new Enemy(en.first,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
          e->setWeapon((WeaponType)en.second.typeWepon);
          e->setAI(en.second.typeAI,en.second.typeBehavior);
@@ -282,6 +283,13 @@ void Level::initCreatures(){
       else if (en.first == CreatureInfo::Type::BOSS){
          e = new Boss(en.first,en.second.name,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
          e->setWeapon((WeaponType)en.second.typeWepon);
+         e->setAI(en.second.typeAI,en.second.typeBehavior);
+         e->initPlayerDependenceFields();
+         currentLayer->getEnemy()->push_back(e);
+      }
+      else if (en.first == CreatureInfo::Type::NPC){
+         e = new NPC(en.first,en.second.name,en.second.point,currentLayer->getChildByName(SceneLayer::gamesession),currentLayer->getEnemy()->size()+6);
+         //e->setWeapon((WeaponType)en.second.typeWepon);
          e->setAI(en.second.typeAI,en.second.typeBehavior);
          e->initPlayerDependenceFields();
          currentLayer->getEnemy()->push_back(e);

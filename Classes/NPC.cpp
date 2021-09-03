@@ -1,7 +1,6 @@
-#include "Boss.h"
-#include "engMacros.hpp"
+#include "NPC.h"
 
-Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
+NPC::NPC(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
    this->currentLayer = gameLayer;
    this->isStatisticsShowing = false;
    this->isNewState = false;
@@ -97,18 +96,15 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
 
    initAnimations();
    initBody(pos);
-   creature_sprite->setScale(7);
 }
-void Boss::update(float dt){
-   showStatistics(DebugStatistics::PHYSICS);
+void NPC::update(float dt){
 
-   updateBossFight(dt);
 
    if (isNewState){
       updateCurrentState();
    }
    updatePermament();
 }
-void Boss::updateBossFight(float dt){
-   
+void NPC::updateVision(){
+
 }

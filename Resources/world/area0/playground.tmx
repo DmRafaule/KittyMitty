@@ -437,7 +437,7 @@
    <properties>
     <property name="typeAI" type="int" value="1"/>
     <property name="typeBehavior" value="wait"/>
-    <property name="typeCreature" type="int" value="1"/>
+    <property name="typeCreature" type="int" value="6"/>
     <property name="typeWeapon" type="int" value="0"/>
    </properties>
    <point/>

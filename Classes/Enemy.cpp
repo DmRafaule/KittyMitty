@@ -14,7 +14,8 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
 void Enemy::remove(){
     creature_parts.clear();
     currentLayer->removeChild(creature_sprite);
-    currentLayer->removeChild(creature_weapon->getSprite());
+    if (isWeaponSet)
+        currentLayer->removeChild(creature_weapon->getSprite());
     currentLayer->removeChild(creature_vision);
     while (!creature_behaviorStates.empty()){
         creature_behaviorStates.pop();
@@ -52,7 +53,7 @@ void Enemy::update(float dt){
 }
 void Enemy::updateVision(){
     //If player in vision radius
-    if (creature_sprite->getBoundingBox().origin.distance(player->getPosition()) < creature_info.characteristic.vision_radius || 
+    if (getDistanceTo(player->getPosition()) < creature_info.characteristic.vision_radius || 
         sawPlayer){//Maybe here you should add some height statement, for detection
         sawPlayer = true;
         if (creature_visionPattern.empty()){
@@ -201,7 +202,7 @@ void Enemy::updateVision(){
     }
 }
 void Enemy::updateBehavior(float dt){
-    if (creature_sprite->getBoundingBox().origin.distance(player->getPosition()) < creature_info.characteristic.vision_radius || 
+    if (getDistanceTo(player->getPosition()) < creature_info.characteristic.vision_radius || 
         sawPlayer){
         packBehaviorStates(dt);
         unpackBehaviorState(dt);
@@ -214,18 +215,20 @@ void Enemy::defineDirection(){
         creature_info.dmove = CreatureInfo::LEFT;
 }
 void Enemy::defineBattleAI(){
-    if (getDistanceTo(player->getPosition()) < creature_weapon->getCaracteristics().weapon_range && 
-        creature_info.state != CreatureInfo::IN_BATTLE){
-        creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));
-    }
-    else if (getDistanceTo(player->getPosition()) > creature_weapon->getCaracteristics().weapon_range && 
+    if (isWeaponSet){
+        if (getDistanceTo(player->getPosition()) < creature_weapon->getCaracteristics().weapon_range && 
+            creature_info.state != CreatureInfo::IN_BATTLE){
+            creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));
+        }
+        else if (getDistanceTo(player->getPosition()) > creature_weapon->getCaracteristics().weapon_range && 
+                creature_info.state == CreatureInfo::IN_BATTLE){
+            creature_behaviorStates.push(BehaviorState(CreatureInfo::IDLE,creature_info.dmove));
+        }
+        //Try to keep distance between him and player
+        if (getDistanceTo(player->getPosition()) <= creature_weapon->getCaracteristics().weapon_range/2 && 
             creature_info.state == CreatureInfo::IN_BATTLE){
-        creature_behaviorStates.push(BehaviorState(CreatureInfo::IDLE,creature_info.dmove));
-    }
-    //Try to keep distance between him and player
-    if (getDistanceTo(player->getPosition()) <= creature_weapon->getCaracteristics().weapon_range/2 && 
-        creature_info.state == CreatureInfo::IN_BATTLE){
-        creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::DMove(creature_info.dmove * -1)));
+            creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::DMove(creature_info.dmove * -1)));
+        }
     }
 }
 BehaviorPattern Enemy::defineBehavior(){
@@ -362,9 +365,7 @@ void Enemy::packBehaviorStates(float dt){
                 else if (player->getPositionY() < (creature_sprite->getPositionY() - 20)){
                     OUT("fall to bottom\n");
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::State::START_RUN,creature_info.dmove));
-                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,CreatureInfo::DMove(int(creature_info.dmove) * -1)));
-                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove));
-                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_FALL,creature_info.dmove,0.1));
+                    creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,1));
                 }
                 else{             
                     OUT("jump over pit\n");

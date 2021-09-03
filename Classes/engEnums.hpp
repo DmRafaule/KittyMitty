@@ -29,6 +29,7 @@ struct CreatureInfo{
         GOO_ZOO,
         AVR,
         BOSS,
+        NPC,
     };
     enum InteractedSurface{
         FLOOR,

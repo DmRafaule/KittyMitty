@@ -79,4 +79,5 @@ protected:
     int                       indentificator;
     bool                      isStatisticsShowing;
     bool                      isNewState;
+    bool                      isWeaponSet;
 };

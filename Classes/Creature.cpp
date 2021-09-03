@@ -161,9 +161,11 @@ Creature::Creature(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gam
     this->currentLayer = gameLayer;
     this->isStatisticsShowing = false;
     this->isNewState = false;
+    this->isWeaponSet = false;
     this->indentificator = id;
     this->creature_info.type = type;
     this->creature_info.state = CreatureInfo::State::IN_FALL;
+
 
     initStats();
     initAnimations();
@@ -547,15 +549,23 @@ void Creature::setCreatureState(CreatureInfo::State creature_state){
 void Creature::setWeapon(WeaponType wMap ){
     switch (wMap){
     case WeaponType::SWORD:{
+        isWeaponSet = true;
         creature_weapon = new Sword("swordStock.png",creature_sprite,this);
         break;
     }
     case WeaponType::AXE:{
+        isWeaponSet = true;
         creature_weapon = new Axe("axeStock.png",creature_sprite,this);
         break;
     }
     case WeaponType::SPEAR:{
+        isWeaponSet = true;
         creature_weapon = new Spear("spearStock.png",creature_sprite,this);
+        break;
+    }
+    default:{
+        isWeaponSet = false;
+        OUT("Weapon not set\n");
         break;
     }
     }
@@ -584,7 +594,8 @@ void Creature::regeneratingStamina(float dt){
         creature_info.characteristic.stamina = 0;
 }
 void Creature::updatePermament(){
-    creature_weapon->update();
+    if (isWeaponSet)
+        creature_weapon->update();
     if (creature_physic_body->getVelocity().y < -5 && creature_info.state != CreatureInfo::State::IN_FALL &&
         creature_info.state != CreatureInfo::State::ON_STEPS){
         setCreatureState(CreatureInfo::State::IN_FALL);
@@ -648,7 +659,8 @@ void Creature::updateCurrentState(){
             isFlipped = false;
             creature_sprite->setFlippedX(false);
         }
-        creature_weapon->getSprite()->setFlippedX(isFlipped);
+        if(isWeaponSet)
+            creature_weapon->getSprite()->setFlippedX(isFlipped);
         newVelocity = cocos2d::Vec2(creature_info.characteristic.acceleration_power * creature_info.dmove, 0);
         creature_physic_body->setVelocity(cocos2d::Vec2(creature_physic_body->getVelocity().x + newVelocity.x,
                                                         creature_physic_body->getVelocity().y));
@@ -714,7 +726,8 @@ void Creature::updateCurrentState(){
             isFlipped = false;
             creature_sprite->setFlippedX(false);
         }
-        creature_weapon->getSprite()->setFlippedX(isFlipped);
+        if(isWeaponSet)
+            creature_weapon->getSprite()->setFlippedX(isFlipped);
         newVelocity = cocos2d::Vec2(creature_info.characteristic.acceleration_power * creature_info.dmove, 0);
         creature_physic_body->setVelocity(cocos2d::Vec2(creature_physic_body->getVelocity().x + newVelocity.x,
                                                         creature_physic_body->getVelocity().y));

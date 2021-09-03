@@ -9,7 +9,7 @@ public:
    virtual void update(float dt) override;
    virtual void remove() override;
    /* Define init vison pattern and set upd looking obj for Image recognition*/
-   void updateVision();
+   virtual void updateVision();
    /* Pack states into queue and then extract them from it*/
    void updateBehavior(float dt);
    /**
@@ -49,6 +49,7 @@ protected:
    BehaviorPattern creature_behaviorPattern;           //Pattern represent in witch queue and what kind of state will be in creature_behaviorStates
    Sensor::TypeSensor creature_currentSensor;          //Represent current poping sensors from queue
    uint64_t creature_memorySensors;//Bit field for remember wich sensors are active
+   float deltaTime;
    bool isVision;// For optimaing collision updates
    bool sawPlayer;//If it saw creature it will never stop(Untill he die)
 };
