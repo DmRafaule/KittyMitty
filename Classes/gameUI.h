@@ -171,5 +171,8 @@ public:
     virtual void createEffect() override;
     virtual void removeEffect() override;
 private:
+    float touchDelay;
+    float touchTimer;
+    uint touchCount;
     bool isRightPlaceForControle;
 };

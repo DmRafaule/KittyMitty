@@ -145,8 +145,8 @@ void GameLayer::updateFast(float dt){
 
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
     for (auto& one_touch : touch){
-        shows->updateTouchBegan(one_touch,event);
         //ctarg->updateTouchBegan(one_touch,event);
+        shows->updateTouchBegan(one_touch,event);   
         cjump->updateTouchBegan(one_touch,event);
         cattc->updateTouchBegan(one_touch,event);
         ckeys->updateTouchBegan(one_touch,event);
