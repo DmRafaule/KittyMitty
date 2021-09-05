@@ -131,7 +131,7 @@ void Enemy::setAI(std::string typeBehaviorPattern){
         creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
 }
 void Enemy::update(float dt){
-    showStatistics(DebugStatistics::PHYSICS);
+    showStatistics(DebugStatistics::GAME_STATS);
     
     if (isNewState){
         updateCurrentState();

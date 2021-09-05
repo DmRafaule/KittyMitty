@@ -6,11 +6,13 @@
 Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite){
    weapon_mass = 10;
    weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
-   //weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size);
-   //weapon_physic_body->setMass(weapon_mass);
-   //weapon_physic_body->setDynamic(false);
-   //weapon_physic_body->setGravityEnable(true);
-   //weapon_sprite->setPhysicsBody(weapon_physic_body);
+   weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size/2);
+   weapon_physic_body->setMass(weapon_mass);
+   weapon_physic_body->setDynamic(false);
+   weapon_physic_body->setGravityEnable(false);
+   weapon_physic_body->setCollisionBitmask(weapon_owner_sprite->getPhysicsBody()->getCollisionBitmask());
+   weapon_physic_body->setContactTestBitmask(0xFF);
+   weapon_sprite->setPhysicsBody(weapon_physic_body);
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
    weapon_sprite->setScale(5);
    cocos2d::Texture2D::TexParams tpar = {
@@ -20,12 +22,6 @@ Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_spri
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
     };
    weapon_sprite->getTexture()->setTexParameters(tpar);
-   /*Set up "hit box" for this weapon(for detect a collision with creatures and others thin*/
-   weapon_damage_hitbox = cocos2d::Sprite::create();
-   weapon_damage_hitbox->setTexture("textures/player.png");
-   weapon_damage_hitbox->setVisible(false);//After all debug shit set false
-   weapon_damage_hitbox->setScale(MAX(weapon_sprite->getBoundingBox().size.width/weapon_damage_hitbox->getBoundingBox().size.width,
-                                      weapon_sprite->getBoundingBox().size.height/weapon_damage_hitbox->getBoundingBox().size.height));
 }
 Weapon::~Weapon(){}
 void Weapon::attacke(){
@@ -42,14 +38,10 @@ void Weapon::attacke(){
          weapon_sprite->setRotation(0);
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
             weapon_sprite->setFlippedX(false);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 180;
          }
          else if (dirctionMove == CreatureInfo::DMove::LEFT){
             weapon_sprite->setFlippedX(true);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = -180;
          }
          weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),
@@ -61,14 +53,10 @@ void Weapon::attacke(){
          weapon_sprite->setRotation(180);
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
             weapon_sprite->setFlippedX(false);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 0;
          }
          else if (dirctionMove == CreatureInfo::DMove::LEFT){
             weapon_sprite->setFlippedX(true);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 360;
          }
          weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),
@@ -81,8 +69,7 @@ void Weapon::attacke(){
          float forMoveBack;
          float forMoveForward;
          weapon_sprite->setRotation(90);
-         weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + weapon_sprite->getBoundingBox().size.width/2 + 40,
-                                           weapon_sprite->getPosition().y);
+
          forMoveBack = -50;
          forMoveForward = 100;
          weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(0.3,cocos2d::Vec2(forMoveBack,0)),cocos2d::MoveBy::create(0.1,cocos2d::Vec2(forMoveForward,0)),nullptr),
@@ -95,8 +82,6 @@ void Weapon::attacke(){
          float forMoveForward;
          weapon_sprite->setFlippedX(true);
          weapon_sprite->setRotation(270);
-         weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - weapon_sprite->getBoundingBox().size.width/2 - 40,
-                                           weapon_sprite->getPosition().y);
          forMoveBack = 50;
          forMoveForward = -100;
          weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(0.3,cocos2d::Vec2(forMoveBack,0)),cocos2d::MoveBy::create(0.1,cocos2d::Vec2(forMoveForward,0)),nullptr),
@@ -109,15 +94,11 @@ void Weapon::attacke(){
          float sckewF;
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
             weapon_sprite->setFlippedX(false);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 90;
             sckewF = 40;
          }
          else if (dirctionMove == CreatureInfo::DMove::LEFT){
             weapon_sprite->setFlippedX(true);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 330;
             sckewF = -40;
          }
@@ -131,15 +112,11 @@ void Weapon::attacke(){
          float sckewF;
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
             weapon_sprite->setFlippedX(false);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 90;
             sckewF = 40;
          }
          else if (dirctionMove == CreatureInfo::DMove::LEFT){
             weapon_sprite->setFlippedX(true);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 330;
             sckewF = -40;
          }
@@ -153,15 +130,11 @@ void Weapon::attacke(){
          float sckewF;
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
             weapon_sprite->setFlippedX(false);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 90;
             sckewF = 40;
          }
          else if (dirctionMove == CreatureInfo::DMove::LEFT){
             weapon_sprite->setFlippedX(true);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = -90;
             sckewF = -40;
          }
@@ -175,15 +148,11 @@ void Weapon::attacke(){
          float sckewF;
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
             weapon_sprite->setFlippedX(false);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x + 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = 90;
             sckewF = 40;
          }
          else if (dirctionMove == CreatureInfo::DMove::LEFT){
             weapon_sprite->setFlippedX(true);
-            weapon_damage_hitbox->setPosition(weapon_sprite->getPosition().x - 40,
-                                              weapon_sprite->getPosition().y);
             angleOfAttacke = -90;
             sckewF = -40;
          }

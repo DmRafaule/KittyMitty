@@ -483,9 +483,9 @@ void Creature::setWeapon(WeaponType wMap ){
     }
     }
     creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
-    creature_weapon->getDammageSprite()->setPosition(creature_weapon->getSprite()->getPosition());
+    //creature_weapon->getDammageSprite()->setPosition(creature_weapon->getSprite()->getPosition());
     currentLayer->addChild(creature_weapon->getSprite(),SceneZOrder::MIDLEGROUND);
-    currentLayer->addChild(creature_weapon->getDammageSprite(),SceneZOrder::MIDLEGROUND);
+    //currentLayer->addChild(creature_weapon->getDammageSprite(),SceneZOrder::MIDLEGROUND);
 }
 
 void Creature::losingStamina(){

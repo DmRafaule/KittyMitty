@@ -207,7 +207,13 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
         }
     }
     case 2:{// creature
-        //player->setCreatureState(CreatureInfo::State::GET_DAMMAGE);
+        // Collision for enemies's weapon
+        for (auto& e : enemy){
+            if (e->getWeaponsetStatus() && (a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){
+                OUT("attc by enemy\n");
+                return false;
+            }
+        }
         return false;
     }
     case 3:{// wall
@@ -268,6 +274,12 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
         }
     }
     default:{// other
+        // Collision for player's weapon
+        if ((b->getCollisionBitmask() & a->getContactTestBitmask()) >= 6){//All creatures start indexing from 6(exept player he is 2)
+            if (player->getWeaponsetStatus() && (a->getCollisionBitmask() & b->getContactTestBitmask()) == player->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){
+                OUT("attc by player\n");
+            }
+        }
         return false;
     }
     }

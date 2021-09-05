@@ -59,6 +59,7 @@ protected:
    CreatureInfo::DMove*    weapon_owner_dirmove;
    cocos2d::PhysicsBody* weapon_physic_body;
    WeaponCaracteristics weapon_caracteristics;  //Weapon characteristics, look at structure
+   cocos2d::Node* creature_vision;
    float weapon_mass; 
 };
 
