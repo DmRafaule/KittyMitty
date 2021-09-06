@@ -19,7 +19,7 @@ public:
     /*Getters*/
     inline const CreatureInfo* getCreatureInfo() { return &creature_info; };
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
-    inline bool getWeaponsetStatus() { return isWeaponSet; }; 
+    inline bool getWeaponSetupStatus() { return isWeaponSet; }; 
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
     PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 

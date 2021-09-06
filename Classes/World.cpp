@@ -51,7 +51,7 @@ Level::Level(uint level,GameLayer* currentLayer){
    initPoolActions();
    switch (level){
    case 0:{
-      loadLevel("world/area0/level0.tmx","world/area0/backgroundImage.png");
+      loadLevel("world/area0/playground.tmx","world/area0/backgroundImage.png");
       break;
    }
    case 1:{

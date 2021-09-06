@@ -22,10 +22,12 @@ Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_spri
         cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
     };
    weapon_sprite->getTexture()->setTexParameters(tpar);
+   isAttack = false;
 }
 Weapon::~Weapon(){}
 void Weapon::attacke(){
-    /*Get weapon owner's direction of movement */
+   isAttack = true;
+   /*Get weapon owner's direction of movement */
    CreatureInfo::DMove dirctionMove = *(weapon_owner_dirmove);
    /*For running action*/
    float angleOfAttacke;
@@ -171,6 +173,7 @@ void Weapon::parry(){
 }
 void Weapon::update(){
    weapon_sprite->runAction(cocos2d::MoveTo::create(0.1,weapon_owner_sprite->getPosition()));
+   weapon_sprite->getPhysicsBody()->setVelocity(weapon_owner_sprite->getPhysicsBody()->getVelocity());
 }
 
 void Weapon::giveEffect(void* target_creature){

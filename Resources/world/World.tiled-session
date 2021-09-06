@@ -22,11 +22,11 @@
             }
         },
         "area0/level0.tmx": {
-            "scale": 0.75,
+            "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 799.3333333333333,
-                "y": 799.3333333333333
+                "x": 279.25,
+                "y": 1414.25
             }
         },
         "area0/level0.tmx#midlegr": {

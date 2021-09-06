@@ -209,9 +209,13 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     case 2:{// creature
         // Collision for enemies's weapon
         for (auto& e : enemy){
-            if (e->getWeaponsetStatus() && (a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){
-                OUT("attc by enemy\n");
-                return false;
+            if (e->getWeaponSetupStatus() && //Weapon set
+                e->getWeapon()->getAttackStatus() && //Start attack
+                (a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){//Collide with enemy weapon
+                // Stop attacking method
+                e->getWeapon()->getAttackStatus() = false;
+                // Give effect to player
+                e->getWeapon()->giveEffect(player);
             }
         }
         return false;
@@ -276,8 +280,13 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     default:{// other
         // Collision for player's weapon
         if ((b->getCollisionBitmask() & a->getContactTestBitmask()) >= 6){//All creatures start indexing from 6(exept player he is 2)
-            if (player->getWeaponsetStatus() && (a->getCollisionBitmask() & b->getContactTestBitmask()) == player->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){
-                OUT("attc by player\n");
+            if (player->getWeaponSetupStatus() && // Weapon set
+                player->getWeapon()->getAttackStatus() && // Start attack
+                (a->getCollisionBitmask() & b->getContactTestBitmask()) == player->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){ //Collide with player weapon
+                // Stop attacking method
+                player->getWeapon()->getAttackStatus() = false;
+                // Set new stats for enemy body(-6 because all creatures start indexin from 6)
+                player->getWeapon()->giveEffect(enemy.at(b->getCollisionBitmask() - 6));
             }
         }
         return false;

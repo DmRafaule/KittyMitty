@@ -43,6 +43,7 @@ public:
     * @return struct of characteristics
    */
    inline const WeaponCaracteristics getCaracteristics(){ return weapon_caracteristics; };
+   inline bool& getAttackStatus(){ return isAttack; };
    /*Setters*/
    /**
     * Set characteristics for weapon
@@ -61,6 +62,7 @@ protected:
    WeaponCaracteristics weapon_caracteristics;  //Weapon characteristics, look at structure
    cocos2d::Node* creature_vision;
    float weapon_mass; 
+   bool isAttack;
 };
 
 /**
