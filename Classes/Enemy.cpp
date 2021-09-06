@@ -131,7 +131,7 @@ void Enemy::setAI(std::string typeBehaviorPattern){
         creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
 }
 void Enemy::update(float dt){
-    showStatistics(DebugStatistics::GAME_STATS);
+    showStatistics(DebugStatistics::PHYSICS);
     
     if (isNewState){
         updateCurrentState();
@@ -303,7 +303,8 @@ void Enemy::defineDirection(){
         creature_info.dmove = CreatureInfo::LEFT;
 }
 void Enemy::defineBattleAI(){
-    if (isWeaponSet){
+    // Update only if weapon set and in current moment dont taking dammage
+    if (isWeaponSet && creature_info.state != CreatureInfo::GET_DAMMAGE){
         if (getDistanceTo(player->getPosition()) < creature_weapon->getCaracteristics().weapon_range && 
             creature_info.state != CreatureInfo::IN_BATTLE){
             creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));

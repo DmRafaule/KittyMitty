@@ -104,18 +104,6 @@ enum PartCreatureField : uint{
     CRUSHING,
 };
 
-enum PartOrganType : uint{
-    NONE,
-    BRAIN,
-    LUNGS,
-    HEART,
-    GUT,
-};
-struct PartOrgan {
-    PartOrgan(PartOrganType type);
-    PartOrganType type;
-    PartCreatureStatus status;
-};
 
 enum BehaviorPattern{
     //HERE you can add some patterns for I level AI 

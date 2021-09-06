@@ -4,10 +4,8 @@
 #include "gameUI.h"
 
 Weapon::Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite){
-   weapon_mass = 10;
    weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
    weapon_physic_body = cocos2d::PhysicsBody::createEdgeBox(weapon_sprite->getBoundingBox().size/2);
-   weapon_physic_body->setMass(weapon_mass);
    weapon_physic_body->setDynamic(false);
    weapon_physic_body->setGravityEnable(false);
    weapon_physic_body->setCollisionBitmask(weapon_owner_sprite->getPhysicsBody()->getCollisionBitmask());
@@ -165,12 +163,6 @@ void Weapon::attacke(){
       }
    }
 }
-void Weapon::defend(){
-
-}
-void Weapon::parry(){
-
-}
 void Weapon::update(){
    weapon_sprite->runAction(cocos2d::MoveTo::create(0.1,weapon_owner_sprite->getPosition()));
    weapon_sprite->getPhysicsBody()->setVelocity(weapon_owner_sprite->getPhysicsBody()->getVelocity());
@@ -188,13 +180,11 @@ void Weapon::giveEffect(void* target_creature){
                int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
                if (newDensity < 0) newDensity = 0;
                target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
-               target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
             }
             else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)){
                int newCrushing   =  target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                if (newCrushing < 0) newCrushing = 0;
                target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING));
-               target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
             }
             else{
                //Some miss debuffs
@@ -212,8 +202,6 @@ void Weapon::giveEffect(void* target_creature){
                int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                if (newCrushing < 0) newCrushing = 0;
                target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
-               target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
-               target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
             }
             else{
                //Some miss debuffs
@@ -260,7 +248,6 @@ void Weapon::giveEffect(void* target_creature){
                   int newCrushing   =  target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -278,13 +265,11 @@ void Weapon::giveEffect(void* target_creature){
                   int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
                   if (newDensity < 0) newDensity = 0;
                   target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
-                  target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
                }
                else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)){
                   int newCrushing   =  target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -302,8 +287,6 @@ void Weapon::giveEffect(void* target_creature){
                   int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
-                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -321,7 +304,6 @@ void Weapon::giveEffect(void* target_creature){
                   int newCrushing   =  target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -344,8 +326,6 @@ void Weapon::giveEffect(void* target_creature){
                   int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
-                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -363,7 +343,6 @@ void Weapon::giveEffect(void* target_creature){
                   int newCrushing   =  target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -399,7 +378,6 @@ void Weapon::giveEffect(void* target_creature){
                }
                else if (weapon_caracteristics.weapon_crushingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)){
                   target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -435,7 +413,6 @@ void Weapon::giveEffect(void* target_creature){
                }
                else if (weapon_caracteristics.weapon_crushingPower > target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING)){
                   target->setPart(PartCreatureType::BUTTOM_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::BUTTOM_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -452,13 +429,11 @@ void Weapon::giveEffect(void* target_creature){
                int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
                if (newDensity < 0) newDensity = 0;
                target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
-               target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
             }
             else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)){
                int newCrushing   =  target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                if (newCrushing < 0) newCrushing = 0;
                target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING));
-               target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
             }
             else{
                //Some miss debuffs
@@ -475,8 +450,6 @@ void Weapon::giveEffect(void* target_creature){
                   int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
-                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -507,13 +480,11 @@ void Weapon::giveEffect(void* target_creature){
                   int newDensity     = target->getPart(PartCreatureType::HEAD,PartCreatureField::DENSITY)     - weapon_caracteristics.weapon_cuttinPower;
                   if (newDensity < 0) newDensity = 0;
                   target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,newDensity);
-                  target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
                }
                else if (weapon_caracteristics.weapon_cuttinPower > target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)){
                   int newCrushing   =  target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::HEAD,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::HEAD,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -530,8 +501,6 @@ void Weapon::giveEffect(void* target_creature){
                   int newCrushing   =  target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING)     - weapon_caracteristics.weapon_crushingPower;
                   if (newCrushing < 0) newCrushing = 0;
                   target->setPart(PartCreatureType::UPPER_TORSE,PartCreatureStatus::WONDED,target->getPart(PartCreatureType::UPPER_TORSE,PartCreatureField::CRUSHING));
-                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS,PartCreatureStatus::WONDED);
-                  target->setOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART,PartCreatureStatus::WONDED);
                }
                else{
                   //Some miss debuffs
@@ -559,7 +528,7 @@ void Weapon::giveEffect(void* target_creature){
 }
 void Weapon::takeEffect(void* owner){
    static_cast<Creature*>(owner)->setCreatureInfo()->characteristic.stamina = static_cast<Creature*>(owner)->getCreatureInfo()->characteristic.stamina;
-   //static_cast<Creature*>(owner)->setCreatureStamina(static_cast<Creature*>(owner)->getCreatureInfo()->characteristic.stamina-10);//Here make some effects
+   static_cast<Creature*>(owner)->setCreatureStamina(static_cast<Creature*>(owner)->getCreatureInfo()->characteristic.stamina-10);//Here make some effects
 }
 void Weapon::setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol,uint w_mass = 10){
    this->weapon_caracteristics.weapon_crushingPower = w_crushP;
@@ -574,14 +543,13 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite
    Weapon(weapon_sprite_path,weapon_owner_sprite){
    this->weapon_owner_sprite = weapon_owner_sprite;
    this->weapon_owner_dirmove = &static_cast<Creature*>(owner_obj)->setCreatureInfo()->dmove;
-   weapon_mass = 10;
    weapon_caracteristics.weapon_cuttinPower = 10;
    weapon_caracteristics.weapon_penetratingPower = 5;
    weapon_caracteristics.weapon_crushingPower =  1;
    weapon_caracteristics.weapon_solidity = 30;
    weapon_caracteristics.weapon_mass = 20;
    weapon_caracteristics.weapon_range = 110;
-   //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
+   weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
 Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj):
@@ -594,19 +562,18 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, vo
    weapon_caracteristics.weapon_solidity = 10;
    weapon_caracteristics.weapon_mass = 20;
    weapon_caracteristics.weapon_range = 90;
-   //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
+   weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
 Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj) :
    Weapon(weapon_sprite_path,weapon_owner_sprite){
    this->weapon_owner_sprite = weapon_owner_sprite;
    this->weapon_owner_dirmove = &static_cast<Creature*>(owner_obj)->setCreatureInfo()->dmove;
-   weapon_mass = 10;
    weapon_caracteristics.weapon_cuttinPower = 5;
    weapon_caracteristics.weapon_penetratingPower = 20;
    weapon_caracteristics.weapon_crushingPower =  10;
    weapon_caracteristics.weapon_solidity = 12;
    weapon_caracteristics.weapon_mass = 20;
    weapon_caracteristics.weapon_range = 110;
-   //weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
+   weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }

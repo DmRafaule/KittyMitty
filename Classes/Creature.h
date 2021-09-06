@@ -21,14 +21,12 @@ public:
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline bool getWeaponSetupStatus() { return isWeaponSet; }; 
     uint getPart(PartCreatureType part_type, PartCreatureField part_field);
-    PartOrgan& getOrgan(PartCreatureType part_type, PartOrganType part_organ_type);
     void getStatistics();//Display information about creature node 
     inline Weapon* getWeapon() { return creature_weapon;};
     /*Setters*/
     void setCreatureState(CreatureInfo::State creature_state);
     inline CreatureInfo* setCreatureInfo() { return &creature_info; };
     void setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef);
-    void setOrgan(PartCreatureType part_type,PartOrganType part_organ_type,PartCreatureStatus status);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
     float getDistanceTo(cocos2d::Vec2 target);// Define distance to target
@@ -54,13 +52,11 @@ protected:
         /*Getters*/
         inline PartCreatureStatus getStatus(){ return part_status; };
         inline PartCreatureType getType(){ return part_type; };
-        inline std::vector<PartOrgan> getPartOrgan(){ return part_organs;}
         inline uint getDensity(){ return part_densityDef; };
         inline uint getPenetration(){ return part_penetrationDef; };
         inline uint getCrushing(){ return part_crushingDef; };
     private:
         /*Property related to part of creature*/
-        std::vector<PartOrgan>          part_organs;
         PartCreatureStatus              part_status;
         PartCreatureType                part_type;
         uint                            part_densityDef;//Can be concatenated (for exm armor,shild etc.)

@@ -279,7 +279,8 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
     }
     default:{// other
         // Collision for player's weapon
-        if ((b->getCollisionBitmask() & a->getContactTestBitmask()) >= 6){//All creatures start indexing from 6(exept player he is 2)
+        if ((b->getCollisionBitmask() & a->getContactTestBitmask()) >= 6 &&
+            (b->getCollisionBitmask() & a->getContactTestBitmask()) < 106){//All creatures start indexing from 6(exept player he is 2)
             if (player->getWeaponSetupStatus() && // Weapon set
                 player->getWeapon()->getAttackStatus() && // Start attack
                 (a->getCollisionBitmask() & b->getContactTestBitmask()) == player->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){ //Collide with player weapon
@@ -287,6 +288,8 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 player->getWeapon()->getAttackStatus() = false;
                 // Set new stats for enemy body(-6 because all creatures start indexin from 6)
                 player->getWeapon()->giveEffect(enemy.at(b->getCollisionBitmask() - 6));
+                // Set new state (dammaged)
+                enemy.at(b->getCollisionBitmask() - 6)->setCreatureState(CreatureInfo::GET_DAMMAGE);
             }
         }
         return false;

@@ -10,7 +10,7 @@
 class Weapon{
 public:   
    /**
-    * @param type set up weapon characteristics and sprite and sprite_hitbox
+    * @param type set up weapon characteristics and sprite
    */
    Weapon(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite);
    virtual ~Weapon();
@@ -19,8 +19,6 @@ public:
     * Depends on direction attack ..
    */
    virtual void attacke();
-   virtual void defend();
-   virtual void parry();
    virtual void update();
    /**
     * @brief How some kind of attack will make some change on target
@@ -35,10 +33,6 @@ public:
     * @return weapon sprite
    */
    inline cocos2d::Sprite* getSprite(){ return weapon_sprite; };
-   /**
-    * @return damage sprite(invisible)
-   */
-   inline cocos2d::Sprite* getDammageSprite(){ return weapon_damage_hitbox; };
    /**
     * @return struct of characteristics
    */
@@ -55,13 +49,10 @@ public:
    void setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol,uint w_mass);
 protected:
    cocos2d::Sprite* weapon_sprite;              //What player can see
-   cocos2d::Sprite* weapon_damage_hitbox;       //What detect collision between weapon and enemies
    cocos2d::Sprite* weapon_owner_sprite;        //Who have this weapon(used methos setWeapon)
    CreatureInfo::DMove*    weapon_owner_dirmove;
    cocos2d::PhysicsBody* weapon_physic_body;
    WeaponCaracteristics weapon_caracteristics;  //Weapon characteristics, look at structure
-   cocos2d::Node* creature_vision;
-   float weapon_mass; 
    bool isAttack;
 };
 

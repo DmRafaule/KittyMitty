@@ -1,8 +1,8 @@
 {
     "activeFile": "area0/playground.tmx",
     "expandedProjectPaths": [
-        ".",
-        "area0"
+        "area0",
+        "."
     ],
     "fileStates": {
         "": {
@@ -25,8 +25,8 @@
             "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 279.25,
-                "y": 1414.25
+                "x": 799.75,
+                "y": 799.75
             }
         },
         "area0/level0.tmx#midlegr": {

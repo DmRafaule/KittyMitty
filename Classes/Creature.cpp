@@ -3,10 +3,6 @@
 #include <dirent.h>
 
 ///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
-PartOrgan::PartOrgan(PartOrganType type){
-    this->type = type;
-    this->status = PartCreatureStatus::NORMAL;
-}
 Creature::PartCreature::PartCreature(PartCreatureType part_type){
     this->part_status      = PartCreatureStatus::NORMAL;
     this->part_type        = part_type;
@@ -15,38 +11,30 @@ Creature::PartCreature::PartCreature(PartCreatureType part_type){
     switch (part_type){
     case PartCreatureType::HEAD:{
         this->part_densityDef = 10;
-        this->part_organs.push_back(PartOrgan(PartOrganType::BRAIN));
         break;
     }
     case PartCreatureType::UPPER_TORSE:{
         this->part_densityDef = 30;
-        this->part_organs.push_back(PartOrgan(PartOrganType::LUNGS));
-        this->part_organs.push_back(PartOrgan(PartOrganType::HEART));     
         break;
     }
     case PartCreatureType::HAND_LEFT:{
         this->part_densityDef = 10;
-        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::HAND_RIGHT:{
         this->part_densityDef = 10;
-        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::BUTTOM_TORSE:{
         this->part_densityDef = 20;
-        this->part_organs.push_back(PartOrgan(PartOrganType::GUT));
         break;
     }
     case PartCreatureType::LEG_LEFT:{
         this->part_densityDef = 15;
-        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     case PartCreatureType::LEG_RIGHT:{
         this->part_densityDef = 15;
-        this->part_organs.push_back(PartOrgan(PartOrganType::NONE));
         break;
     }
     }
@@ -287,9 +275,7 @@ void Creature::initBody(cocos2d::Vec2 pos){
     currentLayer->addChild(creature_sprite,SceneZOrder::MIDLEGROUND,indentificator);
 
 }
-Creature::~Creature(){
-    OUT("call\n");
-}
+Creature::~Creature(){}
 void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef){
     for (auto& part: creature_parts){
         if (part.part_type == part_type){
@@ -309,30 +295,10 @@ uint Creature::getPart(PartCreatureType part_type, PartCreatureField part_field)
         }
     }
 }
-PartOrgan& Creature::getOrgan(PartCreatureType part_type,PartOrganType part_organ_type){
-    for (auto& part : creature_parts){
-        if (part.part_type == part_type){
-            for (auto& organ : part.part_organs){
-                if (organ.type == part_organ_type)
-                    return organ;
-            }
-        }
-    }
-}
 float Creature::getDistanceTo(cocos2d::Vec2 target){
     float cat1 = std::fabs(creature_sprite->getPositionX() - target.x);
     float cat2 = std::fabs(creature_sprite->getPositionY() - target.y);
     return std::sqrt((std::pow(cat1,2)+std::pow(cat2,2)));
-}
-void Creature::setOrgan(PartCreatureType part_type, PartOrganType part_organ_type,PartCreatureStatus status){
-    for (auto& part : creature_parts){
-        if (part.part_type == part_type){
-            for (auto& organ : part.part_organs){
-                if (organ.type == part_organ_type)
-                    organ.status = status;
-            }
-        }
-    }
 }
 void Creature::getStatistics(){
     if (!isStatisticsShowing){
@@ -389,26 +355,6 @@ void Creature::setStatistics(DebugStatistics mode){
             partStatus.append(std::to_string(part.part_densityDef) + "-" + std::to_string(part.part_penetrationDef) + "-" + std::to_string(part.part_crushingDef) + "\n");
 
         }
-        partStatus.append("brain:");
-        partStatus.append(getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::NORMAL ? "norm\n" :
-                          getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::WONDED ? "wonded\n" :
-                          getOrgan(PartCreatureType::HEAD,PartOrganType::BRAIN).status == PartCreatureStatus::CUTTED ? "cutted\n" :
-                          "killed\n");
-        partStatus.append("lungs:");
-        partStatus.append(getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::NORMAL ? "norm\n" :
-                          getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::WONDED ? "wonded\n" :
-                          getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::LUNGS).status == PartCreatureStatus::CUTTED ? "cutted\n" :
-                          "killed\n");
-        partStatus.append("heart:");
-        partStatus.append(getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::NORMAL ? "norm\n" :
-                          getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::WONDED ? "wonded\n" :
-                          getOrgan(PartCreatureType::UPPER_TORSE,PartOrganType::HEART).status == PartCreatureStatus::CUTTED ? "cutted\n" :
-                          "killed\n");
-        partStatus.append("gut:");
-        partStatus.append(getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::NORMAL ? "norm\n" :
-                          getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::WONDED ? "wonded\n" :
-                          getOrgan(PartCreatureType::BUTTOM_TORSE,PartOrganType::GUT).status == PartCreatureStatus::CUTTED ? "cutted\n" :
-                          "killed\n");
         /*Set strings about body*/
         partStatus.append("blood:" + std::to_string(creature_info.characteristic.blood) + "l\n");    
         partStatus.append("stamina:" + std::to_string(creature_info.characteristic.stamina) + "\n");
@@ -483,9 +429,7 @@ void Creature::setWeapon(WeaponType wMap ){
     }
     }
     creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
-    //creature_weapon->getDammageSprite()->setPosition(creature_weapon->getSprite()->getPosition());
     currentLayer->addChild(creature_weapon->getSprite(),SceneZOrder::MIDLEGROUND);
-    //currentLayer->addChild(creature_weapon->getDammageSprite(),SceneZOrder::MIDLEGROUND);
 }
 
 void Creature::losingStamina(){
