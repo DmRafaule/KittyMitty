@@ -1,6 +1,16 @@
 #pragma once
 
 
+enum DirectionAttacke{
+    TOP_TO_DOWN,
+    DOWN_TO_TOP,
+    LEFT_TO_RIGHT,
+    RIGHT_TO_LEFT,
+    TOPLEFT_TO_BOTTOMRIGHT,
+    TOPRIGHT_TO_BOTTOMLEFT,
+    BOTTOMLEFT_TO_TOPRIGHT,
+    BOTTOMRIGHT_TO_TOPLEFT,
+};
 enum PartCreatureType : uint{
     TOP,
     MIDDLE,
@@ -106,6 +116,7 @@ struct CreatureInfo{
     State state;
     Characteristic characteristic;
     DMove dmove;
+    DirectionAttacke dattack;
     InteractedSurface surface;
 };
 
@@ -202,16 +213,6 @@ struct WorldProperties{
     static std::map<std::string,cocos2d::Action*> actionPool;
 };
 
-enum DirectionAttacke{
-    TOP_TO_DOWN,
-    DOWN_TO_TOP,
-    LEFT_TO_RIGHT,
-    RIGHT_TO_LEFT,
-    TOPLEFT_TO_BOTTOMRIGHT,
-    TOPRIGHT_TO_BOTTOMLEFT,
-    BOTTOMLEFT_TO_TOPRIGHT,
-    BOTTOMRIGHT_TO_TOPLEFT,
-};
 enum WeaponType : uint{
    SWORD,
    SPEAR,

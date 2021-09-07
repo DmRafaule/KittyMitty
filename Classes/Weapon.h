@@ -28,7 +28,7 @@ public:
    /**
     * @brief How some kind of attack will make some change on owner
    */
-   virtual void takeEffect(Creature* owner);
+   virtual void takeEffect();
    /*Getters*/
    /**
     * @return weapon sprite
@@ -52,6 +52,7 @@ protected:
    cocos2d::Sprite* weapon_sprite;              //What player can see
    cocos2d::Sprite* weapon_owner_sprite;        //Who have this weapon(used methos setWeapon)
    CreatureInfo::DMove*    weapon_owner_dirmove;
+   Creature* weapon_owner;
    cocos2d::PhysicsBody* weapon_physic_body;
    WeaponCaracteristics weapon_caracteristics;  //Weapon characteristics, look at structure
    bool isAttack;
@@ -62,19 +63,19 @@ protected:
 */
 class Sword : public Weapon{
 public:
-   Sword(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj);
+   Sword(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, Creature* owner_obj);
 };
 /**
  * @brief Implement stock axe
 */
 class Axe : public Weapon{
 public:
-   Axe(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj);
+   Axe(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, Creature* owner_obj);
 };
 /**
  * @brief Implement stock spear
 */
 class Spear : public Weapon{
 public:
-   Spear(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj);
+   Spear(std::string weapon_sprite,cocos2d::Sprite* weapon_owner_sprite, Creature* owner_obj);
 };

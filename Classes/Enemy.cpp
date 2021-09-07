@@ -304,7 +304,7 @@ void Enemy::defineDirection(){
 }
 void Enemy::defineBattleAI(){
     // Update only if weapon set and in current moment dont taking dammage
-    if (isWeaponSet && creature_info.state != CreatureInfo::GET_DAMMAGE){
+    if (isWeaponSet && creature_info.state != CreatureInfo::GET_DAMMAGE && creature_info.state != CreatureInfo::ATTACK ){
         if (getDistanceTo(player->getPosition()) < creature_weapon->getCaracteristics().weapon_range && 
             creature_info.state != CreatureInfo::IN_BATTLE){
             creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));

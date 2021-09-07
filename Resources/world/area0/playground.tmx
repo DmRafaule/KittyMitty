@@ -433,7 +433,7 @@
    </properties>
   </object>
   <object id="12" name="wall" x="1374.14" y="533.269" width="5.75" height="281.5"/>
-  <object id="16" name="kool-hash" type="creatureObj" x="182.855" y="768.636">
+  <object id="16" name="kool-hash" type="creatureObj" x="320.355" y="770.136">
    <properties>
     <property name="typeBehavior" value="wait"/>
     <property name="typeCreature" type="int" value="1"/>

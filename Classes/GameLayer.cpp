@@ -209,7 +209,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 e->getWeapon()->getAttackStatus() = false;
                 // Give effect to player
                 e->getWeapon()->giveEffect(player);
-                e->getWeapon()->takeEffect(e);
+                e->getWeapon()->takeEffect();
             }
         }
         return false;
@@ -282,7 +282,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 player->getWeapon()->getAttackStatus() = false;
                 // Set new stats for enemy body(-6 because all creatures start indexin from 6)
                 player->getWeapon()->giveEffect(enemy.at(b->getCollisionBitmask() - 6));
-                player->getWeapon()->takeEffect(player);
+                player->getWeapon()->takeEffect();
                 // Set new state (dammaged)
                 enemy.at(b->getCollisionBitmask() - 6)->setCreatureState(CreatureInfo::GET_DAMMAGE);
             }

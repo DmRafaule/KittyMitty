@@ -79,7 +79,6 @@ private:
     cocos2d::Sprite* button_left;
     cocos2d::Sprite* button_right;
     cocos2d::Sprite* button_jump;
-    cocos2d::Sprite* button_attack;
     cocos2d::Sprite* button_interact;
     cocos2d::Vec2 offset;
 };
@@ -99,19 +98,6 @@ public:
         virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
     virtual void createEffect() override;
     virtual void removeEffect() override;
-public:
-    /**
-     * @return status of attack
-    */
-    inline static const bool getAttacke() { return isAttacke; };
-    /**
-     * set up status of attack
-    */
-    inline static void setAttacke(bool statusAttacke) { isAttacke = statusAttacke; };
-    /**
-     * @return direction of attack
-    */
-    inline static const DirectionAttacke getDirectionAttacke(){ return direction_of_attacke; };
 private:
     void setDirectionAttacke();
 private:
@@ -119,8 +105,6 @@ private:
     static cocos2d::Vec2  trembling;                    //This is a  diffrance bettween touchPointStart and toucPointEnd
     static cocos2d::Vec2  touchPointStart;              //Where player start touch on screen
     static cocos2d::Vec2  touchPointEnd;                //Where player stop touch screen
-    static DirectionAttacke direction_of_attacke;       //Which direction of attacke player made
-    static bool  isAttacke;                             //Is this UI object activated
     bool   isRightPlaceForControle;                     //Detect is player finger on right half of screen
 };
 class ControlJump : public GameUIPhone{
@@ -138,6 +122,6 @@ public:
 private:
     float touchDelay;
     float touchTimer;
-    uint touchCount;
-    bool isRightPlaceForControle;
+    uint  touchCount;
+    bool  isRightPlaceForControle;
 };

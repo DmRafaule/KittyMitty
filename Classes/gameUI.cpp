@@ -153,8 +153,6 @@ void ControlKeys::removeEffect(){}
 cocos2d::Vec2 ControlAttc::trembling(0,0);
 cocos2d::Vec2  ControlAttc::touchPointStart(0,0);
 cocos2d::Vec2  ControlAttc::touchPointEnd(0,0);
-DirectionAttacke ControlAttc::direction_of_attacke = DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT;
-bool  ControlAttc::isAttacke(false);
 
 ControlAttc::ControlAttc(Creature* target, cocos2d::Node* layer){
     this->creature = target;
@@ -199,27 +197,26 @@ void ControlAttc::setDirectionAttacke(){
     /*Implement middle attacke left/right*/
     if (trembling.y < 50){
         if (touchPointStart.x > touchPointEnd.x)
-            direction_of_attacke = DirectionAttacke::RIGHT_TO_LEFT;
+            creature->getCreatureInfo()->dattack = DirectionAttacke::RIGHT_TO_LEFT;
         else if (touchPointStart.x < touchPointEnd.x)
-            direction_of_attacke = DirectionAttacke::LEFT_TO_RIGHT;
+            creature->getCreatureInfo()->dattack = DirectionAttacke::LEFT_TO_RIGHT;
     }
     if (trembling.x < 50){
         if (touchPointStart.y < touchPointEnd.y)
-            direction_of_attacke = DirectionAttacke::DOWN_TO_TOP;
+            creature->getCreatureInfo()->dattack = DirectionAttacke::DOWN_TO_TOP;
         else if (touchPointStart.y > touchPointEnd.y)
-            direction_of_attacke = DirectionAttacke::TOP_TO_DOWN;
+            creature->getCreatureInfo()->dattack = DirectionAttacke::TOP_TO_DOWN;
     }
     if (trembling.x >= 50 && trembling.y >= 50){
          if (touchPointStart.x < touchPointEnd.x && touchPointStart.y < touchPointEnd.y)
-            direction_of_attacke = DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT;
+            creature->getCreatureInfo()->dattack = DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT;
         else if (touchPointStart.x > touchPointEnd.x && touchPointStart.y > touchPointEnd.y)
-            direction_of_attacke = DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT;
+            creature->getCreatureInfo()->dattack = DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT;
         else if (touchPointStart.x < touchPointEnd.x && touchPointStart.y > touchPointEnd.y)
-            direction_of_attacke = DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT;
+            creature->getCreatureInfo()->dattack = DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT;
         else 
-            direction_of_attacke = DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT;
+            creature->getCreatureInfo()->dattack = DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT;
     }
-    isAttacke = true;
 }
 
 

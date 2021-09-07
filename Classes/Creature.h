@@ -47,9 +47,9 @@ protected:
     cocos2d::PhysicsBody*     creature_physic_body;
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
     cocos2d::Label*           creature_statistics;
-    Weapon*                   creature_weapon; //Using weapon
-    CreatureInfo              creature_info;
     cocos2d::Node*            currentLayer;//Current playing scene;
+    CreatureInfo              creature_info;
+    Weapon*                   creature_weapon; //Using weapon
 
     int                       indentificator;
     bool                      isStatisticsShowing;

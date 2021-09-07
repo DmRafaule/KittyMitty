@@ -34,7 +34,7 @@ void Weapon::attacke(){
    weapon_sprite->setPosition(weapon_owner_sprite->getPosition());
 
    /*Here make some animations/actions and calculate hit box of weapon*/ 
-   switch(ControlAttc::getDirectionAttacke()){
+   switch(weapon_owner->getCreatureInfo()->dattack){
       case DirectionAttacke::TOP_TO_DOWN:{
          weapon_sprite->setRotation(0);
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
@@ -90,78 +90,6 @@ void Weapon::attacke(){
                                                             nullptr));
          break;
       }
-      case DirectionAttacke::BOTTOMLEFT_TO_TOPRIGHT:{
-         weapon_sprite->setRotation(180);
-         float sckewF;
-         if (dirctionMove == CreatureInfo::DMove::RIGHT){
-            weapon_sprite->setFlippedX(false);
-            angleOfAttacke = 90;
-            sckewF = 40;
-         }
-         else if (dirctionMove == CreatureInfo::DMove::LEFT){
-            weapon_sprite->setFlippedX(true);
-            angleOfAttacke = 330;
-            sckewF = -40;
-         }
-         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Spawn::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),cocos2d::SkewBy::create(0.2,sckewF,0),nullptr),
-                                                            cocos2d::Spawn::create(cocos2d::RotateTo::create(0.5,360),cocos2d::SkewBy::create(0.2,sckewF*-1,0),nullptr),
-                                                            nullptr));
-         break;
-      }
-      case DirectionAttacke::BOTTOMRIGHT_TO_TOPLEFT:{
-         weapon_sprite->setRotation(180);
-         float sckewF;
-         if (dirctionMove == CreatureInfo::DMove::RIGHT){
-            weapon_sprite->setFlippedX(false);
-            angleOfAttacke = 90;
-            sckewF = 40;
-         }
-         else if (dirctionMove == CreatureInfo::DMove::LEFT){
-            weapon_sprite->setFlippedX(true);
-            angleOfAttacke = 330;
-            sckewF = -40;
-         }
-         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Spawn::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),cocos2d::SkewBy::create(0.2,sckewF,0),nullptr),
-                                                            cocos2d::Spawn::create(cocos2d::RotateTo::create(0.5,360),cocos2d::SkewBy::create(0.2,sckewF*-1,0),nullptr),
-                                                            nullptr));
-         break;
-      }
-      case DirectionAttacke::TOPLEFT_TO_BOTTOMRIGHT:{
-         weapon_sprite->setRotation(0);
-         float sckewF;
-         if (dirctionMove == CreatureInfo::DMove::RIGHT){
-            weapon_sprite->setFlippedX(false);
-            angleOfAttacke = 90;
-            sckewF = 40;
-         }
-         else if (dirctionMove == CreatureInfo::DMove::LEFT){
-            weapon_sprite->setFlippedX(true);
-            angleOfAttacke = -90;
-            sckewF = -40;
-         }
-         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Spawn::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),cocos2d::SkewBy::create(0.2,sckewF,0),nullptr),
-                                                            cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::SkewBy::create(0.2,sckewF*-1,0),nullptr),
-                                                            nullptr));
-         break;
-      }
-      case DirectionAttacke::TOPRIGHT_TO_BOTTOMLEFT:{
-         weapon_sprite->setRotation(0);
-         float sckewF;
-         if (dirctionMove == CreatureInfo::DMove::RIGHT){
-            weapon_sprite->setFlippedX(false);
-            angleOfAttacke = 90;
-            sckewF = 40;
-         }
-         else if (dirctionMove == CreatureInfo::DMove::LEFT){
-            weapon_sprite->setFlippedX(true);
-            angleOfAttacke = -90;
-            sckewF = -40;
-         }
-         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Spawn::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),cocos2d::SkewBy::create(0.2,sckewF,0),nullptr),
-                                                            cocos2d::Spawn::create(cocos2d::RotateTo::create(0,0),cocos2d::SkewBy::create(0.2,sckewF*-1,0),nullptr),
-                                                            nullptr));
-         break;
-      }
    }
 }
 void Weapon::update(){
@@ -169,10 +97,8 @@ void Weapon::update(){
    weapon_sprite->getPhysicsBody()->setVelocity(weapon_owner_sprite->getPhysicsBody()->getVelocity());
 }
 
-void Weapon::giveEffect(Creature* target_creature){
-   Creature* target = target_creature;
-   /*Instead of this you have to put here attack commbo, not just direction of attack*/
-   switch (ControlAttc::getDirectionAttacke()){
+void Weapon::giveEffect(Creature* target){
+   switch (weapon_owner->getCreatureInfo()->dattack){
       case DirectionAttacke::TOP_TO_DOWN:{
          if (weapon_caracteristics.weapon_penetratingPower > target->getPartCreature()->find(PartCreatureType::TOP)->second->penetrationDef){
             int newDensity = target->getPartCreature()->find(PartCreatureType::TOP)->second->densityDef - weapon_caracteristics.weapon_cuttinPower;
@@ -247,9 +173,9 @@ void Weapon::giveEffect(Creature* target_creature){
       }
    }
 }
-void Weapon::takeEffect(Creature* owner){
-   owner->getCreatureInfo()->characteristic.stamina = owner->getCreatureInfo()->characteristic.stamina;
-   owner->getCreatureInfo()->characteristic.stamina -= 10;//Here make some effects
+void Weapon::takeEffect(){
+   weapon_owner->getCreatureInfo()->characteristic.stamina = weapon_owner->getCreatureInfo()->characteristic.stamina;
+   weapon_owner->getCreatureInfo()->characteristic.stamina -= 10;//Here make some effects
 }
 void Weapon::setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol,uint w_mass = 10){
    this->weapon_caracteristics.weapon_crushingPower = w_crushP;
@@ -260,10 +186,11 @@ void Weapon::setCaracteristics(uint w_cutP,uint w_penP,uint w_crushP,uint w_sol,
 }
 
 
-Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj):
+Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, Creature* owner_obj):
    Weapon(weapon_sprite_path,weapon_owner_sprite){
+   this->weapon_owner = owner_obj;
    this->weapon_owner_sprite = weapon_owner_sprite;
-   this->weapon_owner_dirmove = &static_cast<Creature*>(owner_obj)->getCreatureInfo()->dmove;
+   this->weapon_owner_dirmove = &(owner_obj->getCreatureInfo()->dmove);
    weapon_caracteristics.weapon_cuttinPower = 10;
    weapon_caracteristics.weapon_penetratingPower = 5;
    weapon_caracteristics.weapon_crushingPower =  1;
@@ -273,10 +200,11 @@ Sword::Sword(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite
    weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
-Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj):
+Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, Creature* owner_obj):
    Weapon(weapon_sprite_path,weapon_owner_sprite){
+   this->weapon_owner = owner_obj;
    this->weapon_owner_sprite = weapon_owner_sprite;
-   this->weapon_owner_dirmove = &static_cast<Creature*>(owner_obj)->getCreatureInfo()->dmove;
+   this->weapon_owner_dirmove = &(owner_obj->getCreatureInfo()->dmove);
    weapon_caracteristics.weapon_cuttinPower = 10;
    weapon_caracteristics.weapon_penetratingPower = 10;
    weapon_caracteristics.weapon_crushingPower =  15;
@@ -286,10 +214,11 @@ Axe::Axe(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, vo
    weapon_physic_body->setMass(weapon_caracteristics.weapon_mass);
 }
 
-Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, void* owner_obj) :
+Spear::Spear(std::string weapon_sprite_path,cocos2d::Sprite* weapon_owner_sprite, Creature* owner_obj) :
    Weapon(weapon_sprite_path,weapon_owner_sprite){
+   this->weapon_owner = owner_obj;
    this->weapon_owner_sprite = weapon_owner_sprite;
-   this->weapon_owner_dirmove = &static_cast<Creature*>(owner_obj)->getCreatureInfo()->dmove;
+   this->weapon_owner_dirmove = &(owner_obj->getCreatureInfo()->dmove);
    weapon_caracteristics.weapon_cuttinPower = 5;
    weapon_caracteristics.weapon_penetratingPower = 20;
    weapon_caracteristics.weapon_crushingPower =  10;

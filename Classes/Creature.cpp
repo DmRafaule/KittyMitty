@@ -632,7 +632,8 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::IN_BATTLE:{
         creature_sprite->stopAllActions();
         creature_sprite->runAction(cocos2d::RepeatForever::create(animations.find("_animation_idle")->second));
-        isNewState = false;
+        setCreatureState(CreatureInfo::State::ATTACK);
+        creature_info.dattack = DirectionAttacke::DOWN_TO_TOP;
 
         creature_physic_body->setVelocity(cocos2d::Vec2(0,creature_physic_body->getVelocity().y));
         break;
