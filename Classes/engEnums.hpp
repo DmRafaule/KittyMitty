@@ -1,6 +1,24 @@
 #pragma once
 
 
+enum PartCreatureType : uint{
+    TOP,
+    MIDDLE,
+    BOTTOM,
+    SIZE,
+};
+enum PartCreatureStatus : uint{
+    NORMAL,
+    CUTTED,
+    WONDED,
+    KILLED,
+};
+enum PartCreatureField : uint{
+    STATUS,
+    DENSITY,
+    PENETRATION,
+    CRUSHING,
+};
 struct CreatureInfo{
     struct Animation{
         Animation();
@@ -21,6 +39,16 @@ struct CreatureInfo{
         float                     stamina_regeneration_counter;//Timer for regenaration stamina
         float                     vision_radius;//How far creature can see others creatures
     
+    };
+    struct Part{
+        Part();
+        Part(PartCreatureType type, PartCreatureStatus status, uint densityDef, uint penetration, uint crushing);
+        /*Property related to part of creature*/
+        PartCreatureStatus              status;
+        PartCreatureType                type;
+        uint                            densityDef;//Can be concatenated (for exm armor,shild etc.)
+        uint                            penetrationDef;
+        uint                            crushingDef;
     };
     enum Type : uint{
         KITTYMITTY,
@@ -79,29 +107,6 @@ struct CreatureInfo{
     Characteristic characteristic;
     DMove dmove;
     InteractedSurface surface;
-};
-
-enum PartCreatureType : uint{
-    HEAD,
-    UPPER_TORSE,
-    BUTTOM_TORSE,
-    HAND_LEFT,
-    HAND_RIGHT,
-    LEG_LEFT,
-    LEG_RIGHT,
-    SIZE,
-};
-enum PartCreatureStatus : uint{
-    NORMAL,
-    CUTTED,
-    WONDED,
-    KILLED,
-};
-enum PartCreatureField : uint{
-    STATUS,
-    DENSITY,
-    PENETRATION,
-    CRUSHING,
 };
 
 

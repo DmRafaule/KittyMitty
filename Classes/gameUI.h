@@ -61,41 +61,6 @@ private:
 
 };
 /**
- * @brief
- * For make a decition of which part of body player can attack
-*/
-class ControlTargeting : public GameUIPhone{
-public:
-    ControlTargeting(Creature* target,cocos2d::Node* layer);
-    virtual ~ControlTargeting();
-    virtual void update(float dt) override;
-        virtual void updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event) override;
-        virtual void updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event) override;
-        virtual void updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event) override;
-        virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
-    virtual void createEffect() override;
-    virtual void removeEffect() override;
-
-    /**
-     * @return chosen target by player
-    */
-    static inline PartCreatureType getTarget(){ return target; };
-    /**
-     * @brief set some ui(one buttom for each part of body) for choosing target
-    */
-    void setTarget(DirectionAttacke direction);
-private:
-    /**
-     * @brief unset all created buttons (created by setTarget)
-    */
-    void unsetTarget();
-private:
-    static PartCreatureType target;//Which target(part of body) will be attacked
-    static cocos2d::Vec2 offset;
-    cocos2d::Sprite* targetingB;
-    bool clickForOpen;
-};
-/**
  * @brief for controling player by some graphycs buttons
  * jumps moves run here(for android)
 */

@@ -11,8 +11,6 @@ public:
     void initEnemyContainer(std::vector<Enemy*> enemies);
     /*set up positions for creature sprite, and all attachment(weapon,armor, spells ...)*/
     void setPlayerPosition(float x, float y);
-    /*pointer to data of creature_parts of player object*/
-    inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
     inline int* getCurrentInteractedEnemy(){ return &currentInteractedEnemy; };
 private:
     std::vector<Enemy*>* enemyNode;//All enemies which player can giveEffect//MAYBE NOT NEED

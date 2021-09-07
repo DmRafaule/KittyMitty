@@ -100,7 +100,7 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
     sawPlayer = false;
 }
 void Enemy::remove(){
-    creature_parts.clear();
+    creature_part.clear();
     currentLayer->removeChild(creature_sprite);
     if (isWeaponSet)
         currentLayer->removeChild(creature_weapon->getSprite());
@@ -131,7 +131,7 @@ void Enemy::setAI(std::string typeBehaviorPattern){
         creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
 }
 void Enemy::update(float dt){
-    showStatistics(DebugStatistics::PHYSICS);
+    showStatistics(DebugStatistics::GAME_STATS);
     
     if (isNewState){
         updateCurrentState();
@@ -533,6 +533,7 @@ void Enemy::setLookAt(const Sensor& look){
     cocos2d::PhysicsBody* vision_body = cocos2d::PhysicsBody::createBox(cocos2d::Size(look.howTo));//Define size of vision
     vision_body->setCollisionBitmask(indentificator + 100);
     vision_body->setContactTestBitmask(0xFF);
+    vision_body->setMass(10);
     vision_body->setDynamic(false);
     vision_body->setGravityEnable(false);
 

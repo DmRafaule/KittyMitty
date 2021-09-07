@@ -74,7 +74,6 @@ private:
 private:
     //UI
     ShowStats*        shows;
-    ControlTargeting* ctarg;
     ControlKeys*      ckeys;
     ControlAttc*      cattc;
     ControlJump*      cjump;

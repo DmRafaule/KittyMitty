@@ -12,8 +12,6 @@ public:
    virtual void updateVision();
    /* Pack states into queue and then extract them from it*/
    virtual void updateBehavior(float dt);
-   /* Return pointer to data of creature_parts of enemy object*/
-   inline std::vector<PartCreature> getPartsOfCreature() {return creature_parts;};
    /* Init fields which related to player and cant be assigned in constructor*/
    void initPlayerDependenceFields();
    void setAI(std::string typeBehaviorPattern);

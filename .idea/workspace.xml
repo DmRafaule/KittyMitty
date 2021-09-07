@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b256dcad-d5a3-4464-adc8-f054bc4e3a40" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Classes/Boss.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Boss.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/Creature.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Creature.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/Creature.h" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Creature.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/Enemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Enemy.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/GameLayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/GameLayer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/GameLayer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/GameLayer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/NPC.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/NPC.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/Player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Player.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/Weapon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Weapon.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/Weapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Weapon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/World.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/World.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/engEnums.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/engEnums.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/gameUI.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/gameUI.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/gameUI.h" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/gameUI.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1xoJZ2JkllTxNP8GKTeBHOQsnRL" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b256dcad-d5a3-4464-adc8-f054bc4e3a40" name="Default Changelist" comment="" />
+      <created>1631015559473</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1631015559473</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.bat" />
+  </component>
+</project>

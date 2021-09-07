@@ -7,6 +7,7 @@
 /**
  * @brief Parrent class for all weapons
 */
+class Creature;
 class Weapon{
 public:   
    /**
@@ -23,11 +24,11 @@ public:
    /**
     * @brief How some kind of attack will make some change on target
    */
-   virtual void giveEffect(void* target_creature);
+   virtual void giveEffect(Creature* target_creature);
    /**
     * @brief How some kind of attack will make some change on owner
    */
-   virtual void takeEffect(void* owner);
+   virtual void takeEffect(Creature* owner);
    /*Getters*/
    /**
     * @return weapon sprite

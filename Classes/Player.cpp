@@ -3,6 +3,7 @@
 ///////////////////////////////////////////////////////*Player class*///////////////////////////////////////////////////////
 Player::Player(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){
+    
     currentInteractedEnemy = -1;
     creature_info.characteristic.stamina_regeneration_counter = 0;
 }
@@ -14,7 +15,7 @@ void Player::setPlayerPosition(float x, float y){
         creature_statistics->setPosition(x,y);
 }
 void Player::update(float dt){
-    showStatistics(DebugStatistics::PHYSICS);
+    showStatistics(DebugStatistics::GAME_STATS);
     if (isNewState){
         updateCurrentState();
     }

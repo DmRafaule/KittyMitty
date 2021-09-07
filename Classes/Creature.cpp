@@ -2,43 +2,6 @@
 #include "GameLayer.h"
 #include <dirent.h>
 
-///////////////////////////////////////////////////////*PartCreature class*///////////////////////////////////////////////////////
-Creature::PartCreature::PartCreature(PartCreatureType part_type){
-    this->part_status      = PartCreatureStatus::NORMAL;
-    this->part_type        = part_type;
-    this->part_penetrationDef = 1;
-    this->part_crushingDef    = 5;
-    switch (part_type){
-    case PartCreatureType::HEAD:{
-        this->part_densityDef = 10;
-        break;
-    }
-    case PartCreatureType::UPPER_TORSE:{
-        this->part_densityDef = 30;
-        break;
-    }
-    case PartCreatureType::HAND_LEFT:{
-        this->part_densityDef = 10;
-        break;
-    }
-    case PartCreatureType::HAND_RIGHT:{
-        this->part_densityDef = 10;
-        break;
-    }
-    case PartCreatureType::BUTTOM_TORSE:{
-        this->part_densityDef = 20;
-        break;
-    }
-    case PartCreatureType::LEG_LEFT:{
-        this->part_densityDef = 15;
-        break;
-    }
-    case PartCreatureType::LEG_RIGHT:{
-        this->part_densityDef = 15;
-        break;
-    }
-    }
-}
 CreatureInfo::CreatureInfo(){}
 CreatureInfo::CreatureInfo(Type type,CreatureInfo::Animation animation){
     this->type = type;
@@ -52,6 +15,11 @@ CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string a
         this->framesIdleNum.push_back(framesIdleNum[i]);
     }
     this->animationForWho = animationForWho;
+}
+CreatureInfo::Part::Part(){}
+CreatureInfo::Part::Part(PartCreatureType type, PartCreatureStatus status, uint densityDef, uint penetration, uint crushing) : 
+    type(type), status(status), densityDef(densityDef), penetrationDef(penetration), crushingDef(crushing){
+
 }
 
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
@@ -77,14 +45,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::KITTYMITTY:{
             this->creature_info.animation.animationForWho = "hero";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({15,4,7,4,2,7,2,5,5,2,4,4,5,5,4,8});
-
-            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
-            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
-            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
             creature_info.characteristic.velocity_limit  = 200;
             creature_info.characteristic.jump_power = 120;
             creature_info.characteristic.acceleration_power = 45;
@@ -100,14 +63,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::KOOL_HASH:{
             this->creature_info.animation.animationForWho = "kool-hash";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({8,3,5,3,4,9,4,6,5,4,4,4,8,5,4,7});
-
-            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
-            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
-            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
             creature_info.characteristic.velocity_limit  = 180;
             creature_info.characteristic.jump_power = 120;
             creature_info.characteristic.acceleration_power = 55;
@@ -123,14 +81,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::ERENU_DOO:{
             this->creature_info.animation.animationForWho = "erenu-doo";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({9,4,5,4,8,0,4,10,0,4,3,0,5,5,0,10});
-
-            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
-            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
-            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
             creature_info.characteristic.velocity_limit  = 50;
             creature_info.characteristic.jump_power = 0;
             creature_info.characteristic.acceleration_power = 15;
@@ -146,14 +99,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::GOO_ZOO:{
             this->creature_info.animation.animationForWho = "goo-zoo";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({7,5,4,5,4,7,3,7,0,2,4,0,6,5,0,11});
-
-            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
-            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
-            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
             creature_info.characteristic.velocity_limit  = 120;
             creature_info.characteristic.jump_power = 80;
             creature_info.characteristic.acceleration_power = 15;
@@ -169,14 +117,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::AVR:{
             this->creature_info.animation.animationForWho = "avr";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({12,3,4,3,7,8,8,6,5,2,4,4,6,5,4,6});
-
-            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
-            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
-            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
             creature_info.characteristic.velocity_limit  = 300;
             creature_info.characteristic.jump_power = 180;
             creature_info.characteristic.acceleration_power = 45;
@@ -192,14 +135,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::BOSS:{
             this->creature_info.animation.animationForWho = "kool-hash";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({8,3,5,3,4,9,4,6,5,4,4,4,8,5,4,7});
-
-            creature_parts.push_back(PartCreature(PartCreatureType::HEAD));
-            creature_parts.push_back(PartCreature(PartCreatureType::UPPER_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::HAND_RIGHT));
-            creature_parts.push_back(PartCreature(PartCreatureType::BUTTOM_TORSE));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_LEFT));
-            creature_parts.push_back(PartCreature(PartCreatureType::LEG_RIGHT));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
             creature_info.characteristic.velocity_limit  = 300;
             creature_info.characteristic.jump_power = 180;
             creature_info.characteristic.acceleration_power = 45;
@@ -276,25 +214,6 @@ void Creature::initBody(cocos2d::Vec2 pos){
 
 }
 Creature::~Creature(){}
-void Creature::setPart(PartCreatureType part_type, PartCreatureStatus part_status, uint part_densityDef){
-    for (auto& part: creature_parts){
-        if (part.part_type == part_type){
-            part.part_status  = part_status;
-            part.part_densityDef = part_densityDef;
-        }
-    }
-}
-uint Creature::getPart(PartCreatureType part_type, PartCreatureField part_field){
-    for (auto& part : creature_parts){
-        if (part.part_type == part_type){
-            if (PartCreatureField::STATUS == part_field) return part.part_status;
-            else if (PartCreatureField::DENSITY == part_field) return part.part_densityDef;
-            else if (PartCreatureField::PENETRATION == part_field) return part.part_penetrationDef;
-            else if (PartCreatureField::CRUSHING == part_field) return part.part_crushingDef;
-
-        }
-    }
-}
 float Creature::getDistanceTo(cocos2d::Vec2 target){
     float cat1 = std::fabs(creature_sprite->getPositionX() - target.x);
     float cat2 = std::fabs(creature_sprite->getPositionY() - target.y);
@@ -317,42 +236,26 @@ void Creature::setStatistics(DebugStatistics mode){
     /*Set strings about part of body*/
     partStatus.append("Status:\n");
     if (mode == DebugStatistics::GAME_STATS){
-        for (PartCreature &part : creature_parts){
-            switch(part.part_type){
-                case PartCreatureType::HEAD:{
-                    partStatus.append("\thead:");
+        for (auto &part : creature_part){
+            switch(part.second->type){
+                case PartCreatureType::TOP:{
+                    partStatus.append("\ttop:");
                     break;
                 }
-                case PartCreatureType::UPPER_TORSE:{
-                    partStatus.append("\tupTorse:");
+                case PartCreatureType::MIDDLE:{
+                    partStatus.append("\tmidle:");
                     break;
                 }
-                case PartCreatureType::HAND_LEFT:{
-                    partStatus.append("\thand left:");
-                    break;
-                }
-                case PartCreatureType::HAND_RIGHT:{
-                    partStatus.append("\thand right:");
-                    break;
-                }
-                case PartCreatureType::BUTTOM_TORSE:{
-                    partStatus.append("\tbotTorse:");
-                    break;
-                }
-                case PartCreatureType::LEG_LEFT:{
-                    partStatus.append("\tleg left:");
-                    break;
-                }
-                case PartCreatureType::LEG_RIGHT:{
-                    partStatus.append("\tleg right:");
+                case PartCreatureType::BOTTOM:{
+                    partStatus.append("\tbottom:");
                     break;
                 }
             }
-            partStatus.append(part.part_status == PartCreatureStatus::NORMAL ? "norm-" :
-                              part.part_status == PartCreatureStatus::WONDED ? "wonded-" :
-                              part.part_status == PartCreatureStatus::CUTTED ? "cutted-" :
+            partStatus.append(part.second->status == PartCreatureStatus::NORMAL ? "norm-" :
+                              part.second->status == PartCreatureStatus::WONDED ? "wonded-" :
+                              part.second->status == PartCreatureStatus::CUTTED ? "cutted-" :
                               "killed");
-            partStatus.append(std::to_string(part.part_densityDef) + "-" + std::to_string(part.part_penetrationDef) + "-" + std::to_string(part.part_crushingDef) + "\n");
+            partStatus.append(std::to_string(part.second->densityDef) + "-" + std::to_string(part.second->penetrationDef) + "-" + std::to_string(part.second->crushingDef) + "\n");
 
         }
         /*Set strings about body*/
