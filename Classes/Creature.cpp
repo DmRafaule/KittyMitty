@@ -17,8 +17,8 @@ CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string a
     this->animationForWho = animationForWho;
 }
 CreatureInfo::Part::Part(){}
-CreatureInfo::Part::Part(PartCreatureType type, PartCreatureStatus status, uint densityDef, uint penetration, uint crushing) : 
-    type(type), status(status), densityDef(densityDef), penetrationDef(penetration), crushingDef(crushing){
+CreatureInfo::Part::Part(PartCreatureType type, PartCreatureStatus status, uint integrality) : 
+    type(type), status(status), integrality(integrality), maxIntegrality(integrality){
 
 }
 
@@ -45,9 +45,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::KITTYMITTY:{
             this->creature_info.animation.animationForWho = "hero";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({15,4,7,4,2,7,2,5,5,2,4,4,5,5,4,8});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,2)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,3)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,2)));
             creature_info.characteristic.velocity_limit  = 200;
             creature_info.characteristic.jump_power = 120;
             creature_info.characteristic.acceleration_power = 45;
@@ -63,9 +63,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::KOOL_HASH:{
             this->creature_info.animation.animationForWho = "kool-hash";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({8,3,5,3,4,9,4,6,5,4,4,4,8,5,4,7});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,2)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,3)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,2)));
             creature_info.characteristic.velocity_limit  = 180;
             creature_info.characteristic.jump_power = 120;
             creature_info.characteristic.acceleration_power = 55;
@@ -81,9 +81,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::ERENU_DOO:{
             this->creature_info.animation.animationForWho = "erenu-doo";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({9,4,5,4,8,0,4,10,0,4,3,0,5,5,0,10});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,5)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,5)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,4)));
             creature_info.characteristic.velocity_limit  = 50;
             creature_info.characteristic.jump_power = 0;
             creature_info.characteristic.acceleration_power = 15;
@@ -99,9 +99,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::GOO_ZOO:{
             this->creature_info.animation.animationForWho = "goo-zoo";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({7,5,4,5,4,7,3,7,0,2,4,0,6,5,0,11});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,4)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,6)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,3)));
             creature_info.characteristic.velocity_limit  = 120;
             creature_info.characteristic.jump_power = 80;
             creature_info.characteristic.acceleration_power = 15;
@@ -111,42 +111,6 @@ void Creature::initStats(){
             creature_info.characteristic.jump_ability = 0;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 50;
-            creature_info.characteristic.vision_radius = 300;
-            break;
-        }
-        case CreatureInfo::Type::AVR:{
-            this->creature_info.animation.animationForWho = "avr";
-            this->creature_info.animation.framesIdleNum   = std::vector<uint>({12,3,4,3,7,8,8,6,5,2,4,4,6,5,4,6});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
-            creature_info.characteristic.velocity_limit  = 300;
-            creature_info.characteristic.jump_power = 180;
-            creature_info.characteristic.acceleration_power = 45;
-            creature_info.characteristic.stamina = 500;
-            creature_info.characteristic.stamina_limit = 500;
-            creature_info.characteristic.blood   = 30;
-            creature_info.characteristic.jump_ability = 2;
-            creature_info.characteristic.current_jump_ability_num = 0;
-            creature_info.characteristic.mass = 10;
-            creature_info.characteristic.vision_radius = 300;
-            break;
-        }
-        case CreatureInfo::Type::BOSS:{
-            this->creature_info.animation.animationForWho = "kool-hash";
-            this->creature_info.animation.framesIdleNum   = std::vector<uint>({8,3,5,3,4,9,4,6,5,4,4,4,8,5,4,7});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10,1,5)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,30,1,5)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,15,1,5)));
-            creature_info.characteristic.velocity_limit  = 300;
-            creature_info.characteristic.jump_power = 180;
-            creature_info.characteristic.acceleration_power = 45;
-            creature_info.characteristic.stamina = 500;
-            creature_info.characteristic.stamina_limit = 500;
-            creature_info.characteristic.blood   = 30;
-            creature_info.characteristic.jump_ability = 2;
-            creature_info.characteristic.current_jump_ability_num = 0;
-            creature_info.characteristic.mass = 10;
             creature_info.characteristic.vision_radius = 300;
             break;
         }
@@ -255,7 +219,7 @@ void Creature::setStatistics(DebugStatistics mode){
                               part.second->status == PartCreatureStatus::WONDED ? "wonded-" :
                               part.second->status == PartCreatureStatus::CUTTED ? "cutted-" :
                               "killed");
-            partStatus.append(std::to_string(part.second->densityDef) + "-" + std::to_string(part.second->penetrationDef) + "-" + std::to_string(part.second->crushingDef) + "\n");
+            partStatus.append(std::to_string(part.second->integrality) + "\n");
 
         }
         /*Set strings about body*/
@@ -312,22 +276,22 @@ void Creature::setWeapon(WeaponType wMap ){
     switch (wMap){
     case WeaponType::SWORD:{
         isWeaponSet = true;
-        creature_weapon = new Sword("swordStock.png",creature_sprite,this);
+        creature_weapon = new Sword("swordStock.png",this);
         break;
     }
     case WeaponType::AXE:{
         isWeaponSet = true;
-        creature_weapon = new Axe("axeStock.png",creature_sprite,this);
+        creature_weapon = new Axe("axeStock.png",this);
         break;
     }
     case WeaponType::SPEAR:{
         isWeaponSet = true;
-        creature_weapon = new Spear("spearStock.png",creature_sprite,this);
+        creature_weapon = new Spear("spearStock.png",this);
         break;
     }
     default:{
         isWeaponSet = false;
-        OUT("Weapon not set\n");
+        CCLOG("Weapon not set\n");
         break;
     }
     }
@@ -372,21 +336,13 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::ATTACK:{
         creature_sprite->stopAllActions();
         creature_sprite->runAction(animations.find("_animation_attack")->second);
-        creature_weapon->attacke();
+        creature_weapon->updateAttackAnimation();
         setCreatureState(CreatureInfo::State::IDLE);
         break;
     }
     case CreatureInfo::State::GET_DAMMAGE:{
         creature_sprite->stopAllActions();
         creature_sprite->runAction(animations.find("_animation_getdammage")->second);
-        if (creature_info.dmove == CreatureInfo::DMove::RIGHT)
-            creature_physic_body->setVelocity(cocos2d::Vec2(-50,50));
-        else if (creature_info.dmove == CreatureInfo::DMove::LEFT)
-            creature_physic_body->setVelocity(cocos2d::Vec2(50,50));
-        else if (creature_info.dmove == CreatureInfo::DMove::TOP)
-            creature_physic_body->setVelocity(cocos2d::Vec2(0,-50));
-        else if (creature_info.dmove == CreatureInfo::DMove::DOWN)
-            creature_physic_body->setVelocity(cocos2d::Vec2(0,50));
         setCreatureState(CreatureInfo::State::IDLE);
         break;
     }
@@ -439,6 +395,7 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::BRACKING:{
         creature_sprite->stopAllActions();
         creature_sprite->runAction(cocos2d::RepeatForever::create(animations.find("_animation_braking")->second));
+        creature_physic_body->setVelocity(cocos2d::Vec2(0,creature_physic_body->getVelocity().y));
         setCreatureState(CreatureInfo::State::STAND_UP);
         break;
     }
@@ -492,10 +449,10 @@ void Creature::updateCurrentState(){
         newVelocity = cocos2d::Vec2(creature_info.characteristic.acceleration_power * creature_info.dmove, 0);
         creature_physic_body->setVelocity(cocos2d::Vec2(creature_physic_body->getVelocity().x + newVelocity.x,
                                                         creature_physic_body->getVelocity().y));
-        /*I add this because I wont let creatures soaring when they are on the ground*/
-        if (creature_physic_body->getVelocity().y > -1 && creature_physic_body->getVelocity().y < 1){
-            setCreatureState(CreatureInfo::LAND_ON);
-        }
+        ///*I add this because I wont let creatures soaring when they are on the ground*/
+        //if (creature_physic_body->getVelocity().y > -1 && creature_physic_body->getVelocity().y < 1){
+        //    setCreatureState(CreatureInfo::LAND_ON);
+        //}
         break;
     }
     case CreatureInfo::State::LAND_ON:{
@@ -632,9 +589,7 @@ void Creature::updateCurrentState(){
     case CreatureInfo::State::IN_BATTLE:{
         creature_sprite->stopAllActions();
         creature_sprite->runAction(cocos2d::RepeatForever::create(animations.find("_animation_idle")->second));
-        setCreatureState(CreatureInfo::State::ATTACK);
-        creature_info.dattack = DirectionAttacke::DOWN_TO_TOP;
-
+        isNewState = false;
         creature_physic_body->setVelocity(cocos2d::Vec2(0,creature_physic_body->getVelocity().y));
         break;
     }

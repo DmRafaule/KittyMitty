@@ -80,6 +80,13 @@ ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* 
     button_interact->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width*offset.x,
                                                cocos2d::Director::getInstance()->getVisibleSize().height*offset.y + button_interact->getBoundingBox().size.height * 1.5));
     currentLayer->addChild(button_interact);
+
+    button_jump = cocos2d::Sprite::createWithSpriteFrameName("controlBJump.png");
+    button_jump->getTexture()->setTexParameters(tpar);
+    button_jump->setScale(3);
+    button_jump->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_jump->getBoundingBox().size.width,
+                                           cocos2d::Director::getInstance()->getVisibleSize().height*offset.y));
+    currentLayer->addChild(button_jump);
 }
 ControlKeys::~ControlKeys(){}
 
@@ -87,7 +94,9 @@ void ControlKeys::update(float dt){}
 void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
      
     if (button_left->getBoundingBox().containsPoint(touch->getLocation())){
-         //On the ground
+        //Here add action when touch and change frame on pushed
+        //button_left->setSpriteFrame("controlBJump.png");
+        //On the ground
         if (creature->getCreatureInfo()->state == CreatureInfo::State::IDLE ||
             creature->getCreatureInfo()->state == CreatureInfo::State::STAND_UP)
             creature->setCreatureState(CreatureInfo::State::START_RUN);
@@ -122,6 +131,19 @@ void ControlKeys::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
     }
     if (button_interact->getBoundingBox().containsPoint(touch->getLocation())){
         creature->setCreatureState(CreatureInfo::State::INTERACTING);
+    }
+    if (button_jump->getBoundingBox().containsPoint(touch->getLocation()) &&
+        creature->getCreatureInfo()->characteristic.stamina >= 5 && 
+        creature->getCreatureInfo()->characteristic.current_jump_ability_num <= creature->getCreatureInfo()->characteristic.jump_ability){
+        //Jump from wall
+        if (creature->getCreatureInfo()->state == CreatureInfo::State::ON_WALL){
+            creature->setCreatureState(CreatureInfo::State::JUMP_FROM_WALL);
+        }
+        //Jump from ground
+        else if (creature->getCreatureInfo()->state != CreatureInfo::State::JUMP_FROM_WALL){
+            creature->setCreatureState(CreatureInfo::State::IN_JUMP);
+            creature->getCreatureInfo()->dmove = CreatureInfo::DMove::TOP;
+        }
     }    
 }
 void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){ 
@@ -139,6 +161,9 @@ void ControlKeys::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
     }
     if (button_interact->getBoundingBox().containsPoint(touch->getLocation())){
         
+    }
+    if (button_jump->getBoundingBox().containsPoint(touch->getLocation())){
+    
     }
 }
 void ControlKeys::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
@@ -222,46 +247,3 @@ void ControlAttc::setDirectionAttacke(){
 
 void ControlAttc::createEffect(){}
 void ControlAttc::removeEffect(){}
-
-ControlJump::ControlJump(Creature* target, cocos2d::Node* layer){
-    this->creature = target;
-    this->currentLayer = layer;
-    this->isRightPlaceForControle = false;
-    this->touchCount = 0;
-    this->touchDelay = 0.2;
-    this->touchTimer = 0;
-}
-ControlJump::~ControlJump(){}
-void ControlJump::update(float dt){
-    touchTimer += dt;
-    if (touchTimer >= touchDelay){
-        touchTimer = 0;
-        touchCount = 0;
-    }
-}
-void ControlJump::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
-    //On the right side of screen
-    //Make jump if player have stamina and he is do not make more than 2 jumps
-    if (touch->getLocation().x > WorldProperties::screenSize.width/2 && touchCount >= 2 &&
-        creature->getCreatureInfo()->characteristic.stamina >= 5 && 
-        creature->getCreatureInfo()->characteristic.current_jump_ability_num <= creature->getCreatureInfo()->characteristic.jump_ability){
-        touchCount = 0;
-        //Jump from wall
-        if (creature->getCreatureInfo()->state == CreatureInfo::State::ON_WALL){
-            creature->setCreatureState(CreatureInfo::State::JUMP_FROM_WALL);
-        }
-        //Jump from ground
-        else if (creature->getCreatureInfo()->state != CreatureInfo::State::JUMP_FROM_WALL){
-            creature->setCreatureState(CreatureInfo::State::IN_JUMP);
-            creature->getCreatureInfo()->dmove = CreatureInfo::DMove::TOP;
-        }
-    }
-}
-void ControlJump::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){
-    if (touchTimer < touchDelay)
-        touchCount++;
-}
-void ControlJump::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
-void ControlJump::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
-void ControlJump::createEffect(){}
-void ControlJump::removeEffect(){}

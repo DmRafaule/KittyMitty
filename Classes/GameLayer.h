@@ -76,7 +76,6 @@ private:
     ShowStats*        shows;
     ControlKeys*      ckeys;
     ControlAttc*      cattc;
-    ControlJump*      cjump;
 
     /*Game entyties*/
     std::vector<Enemy*> enemy;

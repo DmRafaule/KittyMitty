@@ -304,7 +304,7 @@ void Level::update(float dt){
          }
          /*Will execute if hero in NewLocation reqt*/
          else if (lvl.name == "DeathZone"){
-            OUT("death zone\n");
+            CCLOG("death zone\n");
          }
       }
    }

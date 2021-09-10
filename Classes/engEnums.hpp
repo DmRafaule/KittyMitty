@@ -52,13 +52,12 @@ struct CreatureInfo{
     };
     struct Part{
         Part();
-        Part(PartCreatureType type, PartCreatureStatus status, uint densityDef, uint penetration, uint crushing);
+        Part(PartCreatureType type, PartCreatureStatus status, uint integrality);
         /*Property related to part of creature*/
         PartCreatureStatus              status;
         PartCreatureType                type;
-        uint                            densityDef;//Can be concatenated (for exm armor,shild etc.)
-        uint                            penetrationDef;
-        uint                            crushingDef;
+        uint                            integrality;
+        uint                            maxIntegrality;
     };
     enum Type : uint{
         KITTYMITTY,
@@ -219,10 +218,7 @@ enum WeaponType : uint{
    AXE,
 };
 struct WeaponCaracteristics{
-   uint weapon_cuttinPower;
-   uint weapon_penetratingPower;
-   uint weapon_crushingPower;
-   uint weapon_solidity;
+   uint weapon_power;
    uint weapon_mass;
    uint weapon_range;
 };
@@ -230,5 +226,4 @@ struct WeaponCaracteristics{
 enum DebugStatistics{
     GAME_STATS,
     PHYSICS,
-    LOGIC,
 };

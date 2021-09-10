@@ -98,7 +98,6 @@ void GameLayer::intCreatures(){
     player->initEnemyContainer(enemy);
 }
 void GameLayer::initUI(){
-    cjump = new ControlJump(player,this->getChildByName(SceneLayer::ui));;
     ckeys = new ControlKeys(player,cocos2d::Vec2(0.08,0.1),this->getChildByName(SceneLayer::ui));
     cattc = new ControlAttc(player,this->getChildByName(SceneLayer::ui));
     shows = new ShowStats(player,&enemy,this->getChildByName(SceneLayer::gamesession));
@@ -122,11 +121,6 @@ void GameLayer::initListeners(){
     this->schedule(CC_SCHEDULE_SELECTOR(GameLayer::updateSlow),0.1f,CC_REPEAT_FOREVER,0);
 }
 void GameLayer::updateSlow(float dt){
-    shows->update(dt);
-    cjump->update(dt);
-    cattc->update(dt);
-    ckeys->update(dt);
-
     player->update(dt);
     for (auto &i : enemy){
         i->update(dt);
@@ -134,6 +128,10 @@ void GameLayer::updateSlow(float dt){
     world->update(dt);
 }
 void GameLayer::updateFast(float dt){
+    shows->update(dt);
+    cattc->update(dt);
+    ckeys->update(dt);
+
     for (auto &i : enemy){
         i->updateVision();
         i->updateBehavior(dt);
@@ -144,7 +142,6 @@ void GameLayer::updateFast(float dt){
 bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
     for (auto& one_touch : touch){
         shows->updateTouchBegan(one_touch,event);   
-        cjump->updateTouchBegan(one_touch,event);
         cattc->updateTouchBegan(one_touch,event);
         ckeys->updateTouchBegan(one_touch,event);
     }
@@ -153,7 +150,6 @@ bool GameLayer::touchBegan(std::vector<cocos2d::Touch*> touch,cocos2d::Event* ev
 void GameLayer::touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
     for (auto& one_touch : touch){
         shows->updateTouchEnded(one_touch,event);
-        cjump->updateTouchEnded(one_touch,event);
         cattc->updateTouchEnded(one_touch,event);
         ckeys->updateTouchEnded(one_touch,event);
     }
@@ -161,7 +157,6 @@ void GameLayer::touchEnded(std::vector<cocos2d::Touch*> touch,cocos2d::Event* ev
 void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
     for (auto& one_touch : touch){
         shows->updateTouchMoved(one_touch,event);
-        cjump->updateTouchMoved(one_touch,event);
         cattc->updateTouchMoved(one_touch,event);
         ckeys->updateTouchMoved(one_touch,event);
     }
@@ -169,7 +164,6 @@ void GameLayer::touchMoved(std::vector<cocos2d::Touch*> touch,cocos2d::Event* ev
 void GameLayer::touchCanceled(std::vector<cocos2d::Touch*> touch,cocos2d::Event* event){
     for (auto& one_touch : touch){
         shows->updateTouchCanceled(one_touch,event);
-        cjump->updateTouchCanceled(one_touch,event);
         cattc->updateTouchCanceled(one_touch,event);
         ckeys->updateTouchCanceled(one_touch,event);
     }
@@ -210,6 +204,7 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                 // Give effect to player
                 e->getWeapon()->giveEffect(player);
                 e->getWeapon()->takeEffect();
+                player->setCreatureState(CreatureInfo::GET_DAMMAGE);
             }
         }
         return false;

@@ -107,21 +107,3 @@ private:
     static cocos2d::Vec2  touchPointEnd;                //Where player stop touch screen
     bool   isRightPlaceForControle;                     //Detect is player finger on right half of screen
 };
-class ControlJump : public GameUIPhone{
-public:
-    /*Inherite func*/    
-    ControlJump(Creature* target, cocos2d::Node* layer);
-    virtual ~ControlJump();
-    virtual void update(float dt) override;
-        virtual void updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event) override;
-        virtual void updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event) override;
-        virtual void updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event) override;
-        virtual void updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event) override;
-    virtual void createEffect() override;
-    virtual void removeEffect() override;
-private:
-    float touchDelay;
-    float touchTimer;
-    uint  touchCount;
-    bool  isRightPlaceForControle;
-};
