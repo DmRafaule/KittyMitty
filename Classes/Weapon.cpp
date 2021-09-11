@@ -156,6 +156,23 @@ void Weapon::update(){
 void Weapon::giveEffect(Creature* target){
    PartCreatureType type;
    switch (weapon_owner->getCreatureInfo()->dattack){
+      case TypeAttacke::PLAYER_TOP_TO_DOWN:{
+         type = PartCreatureType::TOP;
+         break;
+      }
+      case TypeAttacke::PLAYER_DOWN_TO_TOP:{
+         type = PartCreatureType::BOTTOM;
+         break;
+      }
+      case TypeAttacke::PLAYER_LEFT_TO_RIGHT:{
+         type = PartCreatureType::MIDDLE;
+         break;
+      }
+      case TypeAttacke::PLAYER_RIGHT_TO_LEFT:{
+         type = PartCreatureType::MIDDLE;
+         break;
+      }
+   
       case TypeAttacke::TOP_TO_DOWN:{
          type = PartCreatureType::TOP;
          break;
@@ -172,6 +189,7 @@ void Weapon::giveEffect(Creature* target){
          type = PartCreatureType::MIDDLE;
          break;
       }
+      
    }
    int newIntegrality = target->getPartCreature()->find(type)->second->integrality - weapon_caracteristics.weapon_power;
    if (newIntegrality < 0) 

@@ -15,29 +15,45 @@ ShowStats::ShowStats(Creature* target,std::vector<Enemy*>* targetE, cocos2d::Nod
     this->creatureE = targetE;
     this->currentLayer = layer;
     this->clickForOpen = false;
+    this->clickForCloseStatistics = false;
 }
 ShowStats::~ShowStats(){}
 void ShowStats::update(float dt){}
 void ShowStats::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
-     
+    //This is will execute twice so ...     
+    if (!clickForOpen){
+        clickForOpen = true;
         /*This is converting coordinates (expand them to global)*/
-        if (!clickForOpen){
-            clickForOpen = true;
-            cocos2d::Vec2 pos = currentLayer->convertTouchToNodeSpace(touch);
-            /*Double tap for player*/
+        cocos2d::Vec2 pos = currentLayer->convertTouchToNodeSpace(touch);
+        //Clear before draw new one
+        if (clickForCloseStatistics){
+            clickForCloseStatistics = false;
             if (creature->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
-                    creature->getStatistics();
+                creature->removeStatistics();
+                for (Enemy*& enemy : *(creatureE))
+                    enemy->removeStatistics();
+            }
+            for (Enemy*& enemy : *(creatureE))
+                if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
+                    enemy->removeStatistics();
+                    creature->removeStatistics();
+                }
+        }
+        else{
+            clickForCloseStatistics = true;
+            if (creature->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
+                creature->getStatistics();
             }
             for (Enemy*& enemy : *(creatureE)){
-                /*Double tap for enemies*/
                 if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
                     enemy->getStatistics();
                 }
             }
         }
-        else{
-            clickForOpen = false;
-        }
+    }
+    else{
+        clickForOpen = false;
+    }
 }
 void ShowStats::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){}
 void ShowStats::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}

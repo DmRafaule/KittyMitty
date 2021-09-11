@@ -58,6 +58,7 @@ public:
 private:
     std::vector<Enemy*>* creatureE;
     bool clickForOpen;
+    bool clickForCloseStatistics;
 
 };
 /**

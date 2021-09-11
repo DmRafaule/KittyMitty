@@ -418,7 +418,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="objectsLayer">
-  <object id="1" name="hero" type="creatureObj" x="245.071" y="759.194">
+  <object id="1" name="hero" type="creatureObj" x="147.071" y="759.194">
    <properties>
     <property name="typeCreature" type="int" value="0"/>
     <property name="typeWeapon" type="int" value="0"/>

@@ -195,6 +195,12 @@ void Creature::getStatistics(){
         currentLayer->removeChild(creature_statistics);
     }
 }
+void Creature::removeStatistics(){
+    if (isStatisticsShowing){
+        isStatisticsShowing = false;
+        currentLayer->removeChild(creature_statistics);
+    }
+}
 void Creature::setStatistics(DebugStatistics mode){
     std::string partStatus;
     /*Set strings about part of body*/
