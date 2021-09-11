@@ -2,6 +2,7 @@
 
 #include <cocos2d.h>
 #include "Weapon.h"
+#include "Armor.h"
 #include "engEnums.hpp"
 #include <map>
 #include <queue>
@@ -26,6 +27,7 @@ public:
     void setCreatureState(CreatureInfo::State creature_state);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
+    void setArmor(ArmorType aType);//Set armor for creature
     float getDistanceTo(cocos2d::Vec2 target);// Define distance to target
 protected:
     /*Initializer*/

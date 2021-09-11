@@ -75,7 +75,8 @@ void GameLayer::intCreatures(){
         
     //Wrong position have to remove creature spawn point
     player = new Player(CreatureInfo::Type::KITTYMITTY,WorldProperties::creatureObj.find(CreatureInfo::Type::KITTYMITTY)->second.point,this->getChildByName(SceneLayer::gamesession),2);
-    player->setWeapon((WeaponType)WorldProperties::creatureObj.find(CreatureInfo::Type::KITTYMITTY)->second.typeWepon); 
+    player->setWeapon((WeaponType)WorldProperties::creatureObj.find(CreatureInfo::Type::KITTYMITTY)->second.typeWepon);
+    
 
     
     /*Init camera. And set on player*/

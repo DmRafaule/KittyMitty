@@ -28,6 +28,64 @@ void Weapon::updateAttackAnimation(){
 
    /*Here make some animations/actions and calculate hit box of weapon*/ 
    switch(weapon_owner->getCreatureInfo()->dattack){
+      case TypeAttacke::PLAYER_TOP_TO_DOWN:{
+         weapon_sprite->setRotation(0);
+         if (dirctionMove == CreatureInfo::DMove::RIGHT){
+            weapon_sprite->setFlippedX(false);
+            angleOfAttacke = 180;
+         }
+         else if (dirctionMove == CreatureInfo::DMove::LEFT){
+            weapon_sprite->setFlippedX(true);
+            angleOfAttacke = -180;
+         }
+         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::RotateTo::create(0.3,angleOfAttacke),
+                                                            cocos2d::RotateTo::create(0,0),
+                                                            nullptr));
+         break;
+      }
+      case TypeAttacke::PLAYER_DOWN_TO_TOP:{
+         weapon_sprite->setRotation(180);
+         if (dirctionMove == CreatureInfo::DMove::RIGHT){
+            weapon_sprite->setFlippedX(true);
+            angleOfAttacke = 0;
+         }
+         else if (dirctionMove == CreatureInfo::DMove::LEFT){
+            weapon_sprite->setFlippedX(false);
+            angleOfAttacke = 360;
+         }
+         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::RotateTo::create(0.1,angleOfAttacke),
+                                                            cocos2d::RotateTo::create(0,0),
+                                                            nullptr));
+         break;
+      }
+      case TypeAttacke::PLAYER_LEFT_TO_RIGHT:{
+         weapon_sprite->setFlippedX(false);
+         float forMoveBack;
+         float forMoveForward;
+         weapon_sprite->setRotation(90);
+
+         forMoveBack = -25;
+         forMoveForward = 50;
+         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(0.1,cocos2d::Vec2(forMoveBack,0)),cocos2d::MoveBy::create(0.1,cocos2d::Vec2(forMoveForward,0)),nullptr),
+                                                            cocos2d::MoveTo::create(0,weapon_owner->getCreatureSprite()->getPosition()),
+                                                            cocos2d::RotateTo::create(0,0),
+                                                            nullptr));
+         break;
+      }
+      case TypeAttacke::PLAYER_RIGHT_TO_LEFT:{
+         weapon_sprite->setFlippedX(true);
+         float forMoveBack;
+         float forMoveForward;
+         weapon_sprite->setRotation(270);
+
+         forMoveBack = 25;
+         forMoveForward = -50;
+         weapon_sprite->runAction(cocos2d::Sequence::create(cocos2d::Sequence::create(cocos2d::MoveBy::create(0.1,cocos2d::Vec2(forMoveBack,0)),cocos2d::MoveBy::create(0.1,cocos2d::Vec2(forMoveForward,0)),nullptr),
+                                                            cocos2d::MoveTo::create(0,weapon_owner->getCreatureSprite()->getPosition()),
+                                                            cocos2d::RotateTo::create(0,0),
+                                                            nullptr));
+         break;
+      }
       case TypeAttacke::TOP_TO_DOWN:{
          weapon_sprite->setRotation(0);
          if (dirctionMove == CreatureInfo::DMove::RIGHT){

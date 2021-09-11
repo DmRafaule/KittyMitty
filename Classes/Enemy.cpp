@@ -181,6 +181,8 @@ void Enemy::updateVision(){
                 break;
             }
             case CreatureInfo::State::GET_DAMMAGE:{
+                if (isWeaponSet)
+                    getWeapon()->getSprite()->stopAllActions();
                 break;
             }
             case CreatureInfo::State::START_RUN:{

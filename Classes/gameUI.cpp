@@ -222,15 +222,15 @@ void ControlAttc::setDirectionAttacke(){
     /*Implement middle attacke left/right*/
     if (trembling.y < 50){
         if (touchPointStart.x > touchPointEnd.x)
-            creature->getCreatureInfo()->dattack = TypeAttacke::RIGHT_TO_LEFT;
+            creature->getCreatureInfo()->dattack = TypeAttacke::PLAYER_RIGHT_TO_LEFT;
         else if (touchPointStart.x < touchPointEnd.x)
-            creature->getCreatureInfo()->dattack = TypeAttacke::LEFT_TO_RIGHT;
+            creature->getCreatureInfo()->dattack = TypeAttacke::PLAYER_LEFT_TO_RIGHT;
     }
     if (trembling.x < 50){
         if (touchPointStart.y < touchPointEnd.y)
-            creature->getCreatureInfo()->dattack = TypeAttacke::DOWN_TO_TOP;
+            creature->getCreatureInfo()->dattack = TypeAttacke::PLAYER_DOWN_TO_TOP;
         else if (touchPointStart.y > touchPointEnd.y)
-            creature->getCreatureInfo()->dattack = TypeAttacke::TOP_TO_DOWN;
+            creature->getCreatureInfo()->dattack = TypeAttacke::PLAYER_TOP_TO_DOWN;
     }
 }
 

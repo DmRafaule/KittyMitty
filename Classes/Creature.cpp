@@ -29,7 +29,7 @@ Creature::Creature(){
 Creature::Creature(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
     this->currentLayer = gameLayer;
     this->isStatisticsShowing = false;
-    this->isNewState = false;
+    this->isNewState  = false;
     this->isWeaponSet = false;
     this->indentificator = id;
     this->creature_info.type = type;
@@ -298,7 +298,9 @@ void Creature::setWeapon(WeaponType wMap ){
     creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
     currentLayer->addChild(creature_weapon->getSprite(),SceneZOrder::MIDLEGROUND);
 }
-
+void Creature::setArmor(ArmorType aType){
+    
+}
 void Creature::losingStamina(){
     if ((creature_physic_body->getVelocity().x > 100 || creature_physic_body->getVelocity().x < -100) &&
         creature_physic_body->getVelocity().y == 0){

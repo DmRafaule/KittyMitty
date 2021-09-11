@@ -6,6 +6,10 @@ enum TypeAttacke{
     DOWN_TO_TOP,
     LEFT_TO_RIGHT,
     RIGHT_TO_LEFT,
+    PLAYER_TOP_TO_DOWN,
+    PLAYER_DOWN_TO_TOP,
+    PLAYER_LEFT_TO_RIGHT,
+    PLAYER_RIGHT_TO_LEFT,
 };
 enum PartCreatureType : uint{
     TOP,
@@ -213,10 +217,18 @@ enum WeaponType : uint{
    SPEAR,
    AXE,
 };
+enum ArmorType : uint{
+    KOOL_HASH_HELMET,
+    KOOL_HASH_KIRASSA,
+};
 struct WeaponCaracteristics{
    uint weapon_power;
    uint weapon_mass;
    uint weapon_range;
+};
+struct ArmorCaracteristics{
+    uint armor_unity;
+    uint armor_mass;
 };
 
 enum DebugStatistics{
