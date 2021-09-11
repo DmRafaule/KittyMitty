@@ -1,15 +1,11 @@
 #pragma once
 
 
-enum DirectionAttacke{
+enum TypeAttacke{
     TOP_TO_DOWN,
     DOWN_TO_TOP,
     LEFT_TO_RIGHT,
     RIGHT_TO_LEFT,
-    TOPLEFT_TO_BOTTOMRIGHT,
-    TOPRIGHT_TO_BOTTOMLEFT,
-    BOTTOMLEFT_TO_TOPRIGHT,
-    BOTTOMRIGHT_TO_TOPLEFT,
 };
 enum PartCreatureType : uint{
     TOP,
@@ -115,7 +111,7 @@ struct CreatureInfo{
     State state;
     Characteristic characteristic;
     DMove dmove;
-    DirectionAttacke dattack;
+    TypeAttacke dattack;
     InteractedSurface surface;
 };
 

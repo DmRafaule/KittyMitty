@@ -96,6 +96,21 @@ Enemy::Enemy(){
 Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id) :
     Creature(type,pos,gameLayer,id){
     creature_memorySensors = 0;
+    creature_currentAttackPattern = 0;
+    if (type == CreatureInfo::Type::KOOL_HASH){
+        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+        creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
+    }
+    else if (type == CreatureInfo::Type::ERENU_DOO){
+        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+    }
+    else if (type == CreatureInfo::Type::GOO_ZOO){
+        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+        creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
+    }
     isVision  = false;
     sawPlayer = false;
 }
@@ -124,11 +139,11 @@ void Enemy::setAI(std::string typeBehaviorPattern){
     creature_memorySensors = Sensor::CUSTOM;
     //Define custom behavior patterns
     if (typeBehaviorPattern == "wait")
-        creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
+        creature_currentBehaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
     else if (typeBehaviorPattern == "patrol")
-        creature_behaviorPattern = BehaviorPattern::PATROL;
+        creature_currentBehaviorPattern = BehaviorPattern::PATROL;
     else 
-        creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
+        creature_currentBehaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
 }
 void Enemy::update(float dt){
     showStatistics(DebugStatistics::GAME_STATS);
@@ -309,17 +324,25 @@ void Enemy::defineBattleAI(){
             creature_info.state != CreatureInfo::IN_BATTLE){
             creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));
             // Here some logic for attacking
-            creature_info.dattack = DirectionAttacke::TOP_TO_DOWN;
+            creature_info.dattack = creature_attackPattern[creature_currentAttackPattern];
             creature_behaviorStates.push(BehaviorState(CreatureInfo::ATTACK,creature_info.dmove,2));
+            
+            // Update current type of attack
+            creature_currentAttackPattern++;
+            if (creature_attackPattern.size() == creature_currentAttackPattern){
+                creature_currentAttackPattern = 0;
+            }
         }
         else if (getDistanceTo(player->getPosition()) > creature_weapon->getCaracteristics().weapon_range && 
                 creature_info.state == CreatureInfo::IN_BATTLE){
             creature_behaviorStates.push(BehaviorState(CreatureInfo::IDLE,creature_info.dmove));
+            creature_currentAttackPattern = 0;
         }
         //Try to keep distance between him and player
         if (getDistanceTo(player->getPosition()) <= creature_weapon->getCaracteristics().weapon_range/2 && 
             creature_info.state == CreatureInfo::IN_BATTLE){
             creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::DMove(creature_info.dmove * -1)));
+            creature_currentAttackPattern = 0;
         }
     }
 }
@@ -327,99 +350,99 @@ BehaviorPattern Enemy::defineBehavior(){
     /*Depends on which sensors are active will produce related behavior /AI/ */
     switch(creature_memorySensors){
         case Sensor::GROUND_UNDER_ME | Sensor::GROUND_RIGHTWARD_IS:{
-            creature_behaviorPattern = BehaviorPattern::STOP_BEFORE_SOMETHING;
+            creature_currentBehaviorPattern = BehaviorPattern::STOP_BEFORE_SOMETHING;
             break;
         }
         case Sensor::GROUND_UNDER_ME | Sensor::GROUND_LEFTWARD_IS:{
-            creature_behaviorPattern = BehaviorPattern::STOP_BEFORE_SOMETHING;
+            creature_currentBehaviorPattern = BehaviorPattern::STOP_BEFORE_SOMETHING;
             break;
         }
         /* On the ground, and something right before face of creature*/
         case Sensor::GROUND_LEFTWARD_IS | Sensor::GROUND_UNDER_ME | Sensor::GROUND_RIGHTWARD_IS | Sensor::NEAR_BY_SIDE:{
             if (creature_info.surface == CreatureInfo::InteractedSurface::WALL)
-                creature_behaviorPattern = BehaviorPattern::WALL_JUMP_FROM;
+                creature_currentBehaviorPattern = BehaviorPattern::WALL_JUMP_FROM;
             else if (creature_info.surface == CreatureInfo::InteractedSurface::FLOOR)//In this case it's game crutch for detecting stairs and other physicly invisible obj
-                creature_behaviorPattern = BehaviorPattern::USING_ITEM;
+                creature_currentBehaviorPattern = BehaviorPattern::USING_ITEM;
             break;
         }
         /* In fall or in falling, he strike something by it's face*/
         case Sensor::NEAR_BY_SIDE:{
             if (creature_info.surface == CreatureInfo::InteractedSurface::WALL)
-                creature_behaviorPattern = BehaviorPattern::WALL_JUMP_FROM;
+                creature_currentBehaviorPattern = BehaviorPattern::WALL_JUMP_FROM;
             else if (creature_info.surface == CreatureInfo::InteractedSurface::FLOOR)//In this case it's game crutch for detecting stairs and other physicly invisible obj
-                creature_behaviorPattern = BehaviorPattern::USING_ITEM;
+                creature_currentBehaviorPattern = BehaviorPattern::USING_ITEM;
             break;
         }
         case Sensor::SOMETHING_IN_VISION_R:{
-                creature_behaviorPattern = BehaviorPattern::WALL_JUMP_TO;
+                creature_currentBehaviorPattern = BehaviorPattern::WALL_JUMP_TO;
             break;
         }
         case Sensor::GROUND_LEFTWARD_IS | Sensor::GROUND_UNDER_ME | Sensor::GROUND_RIGHTWARD_IS:{
-            creature_behaviorPattern = BehaviorPattern::CHAISING;
+            creature_currentBehaviorPattern = BehaviorPattern::CHAISING;
             break;
         }
         case Sensor::GROUND_UNDER_ME:{
-            creature_behaviorPattern = BehaviorPattern::STOP_BEFORE_SOMETHING;
+            creature_currentBehaviorPattern = BehaviorPattern::STOP_BEFORE_SOMETHING;
             break;
         }
         case Sensor::GROUND_LEFTWARD_IS:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         case Sensor::GROUND_RIGHTWARD_IS:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         //There is one vertical surfface, above
         case Sensor::SOMETHING_ABOVE:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         //There is one vertical surfface, on the same level
         case Sensor::SOMETHING_ON_THE_SAME_LEVEL:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         //There is one vertical surfface, bellow
         case Sensor::SOMETHING_BELOW:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         //There is two vertical surface ahead(on the creature level, and below)
         case Sensor::SOMETHING_ON_THE_SAME_LEVEL | Sensor::SOMETHING_BELOW:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         //There is two vertical surface ahead(below, and above)
         case Sensor::SOMETHING_BELOW | Sensor::SOMETHING_ABOVE:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         //There is two vertical surface ahead(on the creature level, and above)
         case Sensor::SOMETHING_ON_THE_SAME_LEVEL | Sensor::SOMETHING_ABOVE:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         //There is three vertical surface ahead
         case Sensor::SOMETHING_BELOW | Sensor::SOMETHING_ON_THE_SAME_LEVEL | Sensor::SOMETHING_ABOVE:{
-            creature_behaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
+            creature_currentBehaviorPattern = BehaviorPattern::CHANGE_VERTICAL;
             break;
         }
         case Sensor::EMPTY:{//If creature have not active sensors it will whait outcome interuption(in my game it player)
-            creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
+            creature_currentBehaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
             break;
         }
         case Sensor::CUSTOM:{//Defind on loadLevel World.cpp
-            creature_behaviorPattern = creature_behaviorPattern;
+            creature_currentBehaviorPattern = creature_currentBehaviorPattern;
             break;
         }
         default:{
             CCLOG("undefind behavior\n");
-            creature_behaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
+            creature_currentBehaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
             break;
         }
     }
-    return creature_behaviorPattern;
+    return creature_currentBehaviorPattern;
 }
 void Enemy::packBehaviorStates(float dt){
     /*Will pack behavior states queue only if behaviorStates queue is empty and look pattern also empty*/

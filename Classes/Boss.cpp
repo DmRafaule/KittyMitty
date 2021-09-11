@@ -10,6 +10,7 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
    this->creature_info.type = type;
    this->creature_info.state = CreatureInfo::State::IN_FALL;
    this->creature_memorySensors = 0;
+   creature_currentAttackPattern = 0;
    this->isVision  = false;
    this->sawPlayer = false;
    this->creature_info.animation.animationForWho = for_who;
@@ -19,6 +20,9 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
       creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,4)));
       creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,6)));
       creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,4)));
+      creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+      creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+      creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
       creature_info.characteristic.velocity_limit  = 180;
       creature_info.characteristic.jump_power = 120;
       creature_info.characteristic.acceleration_power = 55;
@@ -35,6 +39,9 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
       creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,10)));
       creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,10)));
       creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,8)));
+      creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+      creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+      creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
       creature_info.characteristic.velocity_limit  = 50;
       creature_info.characteristic.jump_power = 0;
       creature_info.characteristic.acceleration_power = 15;
@@ -51,6 +58,9 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
       creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,8)));
       creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,12)));
       creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,6)));
+      creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+      creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+      creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
       creature_info.characteristic.velocity_limit  = 120;
       creature_info.characteristic.jump_power = 80;
       creature_info.characteristic.acceleration_power = 15;
@@ -67,6 +77,9 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
       creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,2)));
       creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,3)));
       creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,2)));
+      creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+      creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+      creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
       creature_info.characteristic.velocity_limit  = 300;
       creature_info.characteristic.jump_power = 180;
       creature_info.characteristic.acceleration_power = 45;

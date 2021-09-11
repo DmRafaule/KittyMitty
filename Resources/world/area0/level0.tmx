@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="17" nextobjectid="280">
+ <properties>
+  <property name="typeCreature" type="int" value="5"/>
+ </properties>
  <tileset firstgid="1" name="tilesetMidlegr" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
   <image source="tilesetMidlegr.png" width="1600" height="1600"/>
   <tile id="0">
@@ -598,7 +601,7 @@
    </properties>
    <point/>
   </object>
-  <object id="237" name="kool-hash" type="creatureObj" x="209" y="1265">
+  <object id="237" name="kool-hash" type="creatureObj" x="207" y="1283">
    <properties>
     <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="1"/>
@@ -649,7 +652,7 @@
   </object>
   <object id="270" name="spearStock" type="dynamicObj" x="207.083" y="864.5" width="23.1667" height="27">
    <properties>
-    <property name="frameName" value="swordStock.png"/>
+    <property name="frameName" value="spearStock.png"/>
     <property name="isCollided" type="bool" value="false"/>
     <property name="typeAction" value="hangOuting"/>
    </properties>
@@ -671,7 +674,7 @@
   </object>
   <object id="278" name="kool-hash" type="creatureObj" x="281.167" y="1497.17">
    <properties>
-    <property name="typeCreature" type="int" value="6"/>
+    <property name="typeCreature" type="int" value="1"/>
     <property name="typeWeapon" type="int" value="1"/>
    </properties>
    <point/>

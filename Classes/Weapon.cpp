@@ -28,7 +28,7 @@ void Weapon::updateAttackAnimation(){
 
    /*Here make some animations/actions and calculate hit box of weapon*/ 
    switch(weapon_owner->getCreatureInfo()->dattack){
-      case DirectionAttacke::TOP_TO_DOWN:{
+      case TypeAttacke::TOP_TO_DOWN:{
          weapon_sprite->setRotation(0);
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
             weapon_sprite->setFlippedX(false);
@@ -44,7 +44,7 @@ void Weapon::updateAttackAnimation(){
                                                             nullptr));
          break;
       }
-      case DirectionAttacke::DOWN_TO_TOP:{
+      case TypeAttacke::DOWN_TO_TOP:{
          weapon_sprite->setRotation(180);
          if (dirctionMove == CreatureInfo::DMove::RIGHT){
             weapon_sprite->setFlippedX(true);
@@ -60,7 +60,7 @@ void Weapon::updateAttackAnimation(){
                                                             nullptr));
          break;
       }
-      case DirectionAttacke::LEFT_TO_RIGHT:{
+      case TypeAttacke::LEFT_TO_RIGHT:{
          weapon_sprite->setFlippedX(false);
          float forMoveBack;
          float forMoveForward;
@@ -74,7 +74,7 @@ void Weapon::updateAttackAnimation(){
                                                             nullptr));
          break;
       }
-      case DirectionAttacke::RIGHT_TO_LEFT:{
+      case TypeAttacke::RIGHT_TO_LEFT:{
          weapon_sprite->setFlippedX(true);
          float forMoveBack;
          float forMoveForward;
@@ -98,19 +98,19 @@ void Weapon::update(){
 void Weapon::giveEffect(Creature* target){
    PartCreatureType type;
    switch (weapon_owner->getCreatureInfo()->dattack){
-      case DirectionAttacke::TOP_TO_DOWN:{
+      case TypeAttacke::TOP_TO_DOWN:{
          type = PartCreatureType::TOP;
          break;
       }
-      case DirectionAttacke::DOWN_TO_TOP:{
+      case TypeAttacke::DOWN_TO_TOP:{
          type = PartCreatureType::BOTTOM;
          break;
       }
-      case DirectionAttacke::LEFT_TO_RIGHT:{
+      case TypeAttacke::LEFT_TO_RIGHT:{
          type = PartCreatureType::MIDDLE;
          break;
       }
-      case DirectionAttacke::RIGHT_TO_LEFT:{
+      case TypeAttacke::RIGHT_TO_LEFT:{
          type = PartCreatureType::MIDDLE;
          break;
       }

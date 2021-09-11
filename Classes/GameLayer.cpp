@@ -6,9 +6,9 @@
 #include "Player.h"
 
 
-std::string                 SceneLayer::ui = "ui";
-std::string                 SceneLayer::gamesession = "gamesession";
-std::string                 SceneLayer::bg = "background";
+std::string SceneLayer::ui = "ui";
+std::string SceneLayer::gamesession = "gamesession";
+std::string SceneLayer::bg = "background";
 
 
 
@@ -197,15 +197,21 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
         // Collision for enemies's weapon
         for (auto& e : enemy){
             if (e->getWeaponSetupStatus() && //Weapon set
-                e->getWeapon()->getAttackStatus() && //Start attack
-                (a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){//Collide with enemy weapon
-                // Stop attacking method
-                e->getWeapon()->getAttackStatus() = false;
-                // Give effect to player
-                e->getWeapon()->giveEffect(player);
-                e->getWeapon()->takeEffect();
-                player->setCreatureState(CreatureInfo::GET_DAMMAGE);
+                e->getWeapon()->getAttackStatus()){ //Start attack
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == e->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){//Collide with enemy weapon
+                    // Stop attacking method
+                    e->getWeapon()->getAttackStatus() = false;
+                    // Give effect to player
+                    e->getWeapon()->giveEffect(player);
+                    e->getWeapon()->takeEffect();
+                    player->setCreatureState(CreatureInfo::GET_DAMMAGE);
+                }
+                else {
+                    // Stop attacking method
+                    e->getWeapon()->getAttackStatus() = false;
+                }
             }
+
         }
         return false;
     }
@@ -271,15 +277,20 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
         if ((b->getCollisionBitmask() & a->getContactTestBitmask()) >= 6 &&
             (b->getCollisionBitmask() & a->getContactTestBitmask()) < 106){//All creatures start indexing from 6(exept player he is 2)
             if (player->getWeaponSetupStatus() && // Weapon set
-                player->getWeapon()->getAttackStatus() && // Start attack
-                (a->getCollisionBitmask() & b->getContactTestBitmask()) == player->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){ //Collide with player weapon
-                // Stop attacking method
-                player->getWeapon()->getAttackStatus() = false;
-                // Set new stats for enemy body(-6 because all creatures start indexin from 6)
-                player->getWeapon()->giveEffect(enemy.at(b->getCollisionBitmask() - 6));
-                player->getWeapon()->takeEffect();
-                // Set new state (dammaged)
-                enemy.at(b->getCollisionBitmask() - 6)->setCreatureState(CreatureInfo::GET_DAMMAGE);
+                player->getWeapon()->getAttackStatus()){ // Start attack
+                if ((a->getCollisionBitmask() & b->getContactTestBitmask()) == player->getWeapon()->getSprite()->getPhysicsBody()->getCollisionBitmask()){ //Collide with player weapon
+                    // Stop attacking method
+                    player->getWeapon()->getAttackStatus() = false;
+                    // Set new stats for enemy body(-6 because all creatures start indexin from 6)
+                    player->getWeapon()->giveEffect(enemy.at(b->getCollisionBitmask() - 6));
+                    player->getWeapon()->takeEffect();
+                    // Set new state (dammaged)
+                    enemy.at(b->getCollisionBitmask() - 6)->setCreatureState(CreatureInfo::GET_DAMMAGE);
+                }
+                else {
+                    // Stop attacking method
+                    player->getWeapon()->getAttackStatus() = false;
+                }
             }
         }
         return false;

@@ -1,8 +1,8 @@
 {
     "activeFile": "area0/playground.tmx",
     "expandedProjectPaths": [
-        "area0",
-        "."
+        ".",
+        "area0"
     ],
     "fileStates": {
         "": {
@@ -22,11 +22,11 @@
             }
         },
         "area0/level0.tmx": {
-            "scale": 2,
+            "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 799.75,
-                "y": 799.75
+                "x": 799.6666666666667,
+                "y": 799.6666666666667
             }
         },
         "area0/level0.tmx#midlegr": {
@@ -57,11 +57,11 @@
             "scaleInDock": 1
         },
         "area0/playground.tmx": {
-            "scale": 2,
+            "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 225.25,
-                "y": 799.75
+                "x": 523.5,
+                "y": 653.5
             }
         },
         "area0/tilesetMidlegr.tsx": {
