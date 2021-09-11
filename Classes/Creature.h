@@ -22,7 +22,6 @@ public:
     inline bool getWeaponSetupStatus() { return isWeaponSet; }; 
     inline std::map<PartCreatureType,CreatureInfo::Part*>* getPartCreature() { return &creature_part; };
     inline Weapon* getWeapon() { return creature_weapon;};
-    inline const bool getShowingStatisticsStatus() const { return isStatisticsShowing; };
     void getStatistics();//Display information about creature node
     /*Setters*/
     void setCreatureState(CreatureInfo::State creature_state);
