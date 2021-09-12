@@ -101,7 +101,7 @@ void GameLayer::intCreatures(){
 void GameLayer::initUI(){
     ckeys = new ControlKeys(player,cocos2d::Vec2(0.08,0.1),this->getChildByName(SceneLayer::ui));
     cattc = new ControlAttc(player,this->getChildByName(SceneLayer::ui));
-    shows = new ShowStats(player,&enemy,this->getChildByName(SceneLayer::gamesession));//Make diffrent position for statistics (player and enemies)
+    shows = new ShowStats(player,&enemy,this);
 }
 void GameLayer::initListeners(){
     /*Init listeners*/

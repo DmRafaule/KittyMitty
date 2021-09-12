@@ -57,6 +57,7 @@ public:
     virtual void removeEffect() override;
 private:
     std::vector<Enemy*>* creatureE;
+    std::vector<cocos2d::Sprite*> logos_sprites;
     bool clickForOpen;
     bool clickForCloseStatistics;
 

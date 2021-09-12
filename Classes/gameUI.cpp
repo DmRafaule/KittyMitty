@@ -24,29 +24,31 @@ void ShowStats::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
     if (!clickForOpen){
         clickForOpen = true;
         /*This is converting coordinates (expand them to global)*/
-        cocos2d::Vec2 pos = currentLayer->convertTouchToNodeSpace(touch);
+        cocos2d::Vec2 pos = currentLayer->getChildByName(SceneLayer::gamesession)->convertTouchToNodeSpace(touch);
         //Clear before draw new one
         if (clickForCloseStatistics){
-            clickForCloseStatistics = false;
             if (creature->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
-                creature->removeStatistics();
+                clickForCloseStatistics = false;
+                creature->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
                 for (Enemy*& enemy : *(creatureE))
-                    enemy->removeStatistics();
+                    enemy->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
             }
             for (Enemy*& enemy : *(creatureE))
                 if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
-                    enemy->removeStatistics();
-                    creature->removeStatistics();
+                    clickForCloseStatistics = false;
+                    enemy->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
+                    creature->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
                 }
         }
         else{
-            clickForCloseStatistics = true;
             if (creature->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
-                creature->getStatistics();
+                clickForCloseStatistics = true;
+                creature->initStatistics(currentLayer->getChildByName(SceneLayer::ui));
             }
             for (Enemy*& enemy : *(creatureE)){
                 if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
-                    enemy->getStatistics();
+                    clickForCloseStatistics = true;
+                    enemy->initStatistics(currentLayer->getChildByName(SceneLayer::ui));
                 }
             }
         }
@@ -58,7 +60,11 @@ void ShowStats::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
 void ShowStats::updateTouchEnded(cocos2d::Touch* touch,cocos2d::Event* event){}
 void ShowStats::updateTouchMoved(cocos2d::Touch* touch,cocos2d::Event* event){}
 void ShowStats::updateTouchCanceled(cocos2d::Touch* touch,cocos2d::Event* event){}
-void ShowStats::createEffect(){}
+void ShowStats::createEffect(){
+    logos_sprites.resize(11);
+    logos_sprites.shrink_to_fit();
+    logos_sprites.at(0) = cocos2d::Sprite::createWithSpriteFrameName("");
+}
 void ShowStats::removeEffect(){}
 
 ///////////////////////////////////////////////////////////////*ControlKey class*////////////////////////////////////////////////////////////

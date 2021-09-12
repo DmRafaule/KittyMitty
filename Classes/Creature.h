@@ -22,11 +22,11 @@ public:
     inline bool getWeaponSetupStatus() { return isWeaponSet; }; 
     inline std::map<PartCreatureType,CreatureInfo::Part*>* getPartCreature() { return &creature_part; };
     inline Weapon* getWeapon() { return creature_weapon;};
-    void getStatistics();//Display information about creature node
+    void initStatistics(cocos2d::Node* layer);//Display information about creature node
     /*Setters*/
     void setCreatureState(CreatureInfo::State creature_state);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
-    void removeStatistics();// Remove statistics
+    void removeStatistics(cocos2d::Node* layer);// Remove statistics
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
     void setArmor(ArmorType aType);//Set armor for creature
     float getDistanceTo(cocos2d::Vec2 target);// Define distance to target
