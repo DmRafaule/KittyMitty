@@ -145,6 +145,26 @@ void Enemy::setAI(std::string typeBehaviorPattern){
     else 
         creature_currentBehaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
 }
+void Enemy::initStatistics(cocos2d::Node* layer){
+    if (!isStatisticsShowing){
+        isStatisticsShowing = true;
+        creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
+        creature_statistics->setPosition(creature_sprite->getPosition());
+        layer->addChild(creature_statistics,SceneZOrder::USER_INTERFACE);
+    }
+    else{
+        isStatisticsShowing = false;
+        layer->removeChild(creature_statistics);
+    }
+}
+void Enemy::showStatistics(DebugStatistics type){
+    /*For statistics*/
+    if (isStatisticsShowing){
+        setStatistics(type);
+        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
+                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
+    }
+}
 void Enemy::update(float dt){
     showStatistics(DebugStatistics::GAME_STATS);
     

@@ -31,12 +31,12 @@ void ShowStats::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
                 clickForCloseStatistics = false;
                 creature->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
                 for (Enemy*& enemy : *(creatureE))
-                    enemy->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
+                    enemy->removeStatistics(currentLayer->getChildByName(SceneLayer::gamesession));
             }
             for (Enemy*& enemy : *(creatureE))
                 if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
                     clickForCloseStatistics = false;
-                    enemy->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
+                    enemy->removeStatistics(currentLayer->getChildByName(SceneLayer::gamesession));
                     creature->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
                 }
         }
@@ -48,7 +48,7 @@ void ShowStats::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
             for (Enemy*& enemy : *(creatureE)){
                 if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
                     clickForCloseStatistics = true;
-                    enemy->initStatistics(currentLayer->getChildByName(SceneLayer::ui));
+                    enemy->initStatistics(currentLayer->getChildByName(SceneLayer::gamesession));
                 }
             }
         }

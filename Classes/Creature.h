@@ -16,13 +16,14 @@ public:
     virtual void update(float dt) = 0;
     /*Clearers*/
     virtual void remove() = 0;
+    virtual void initStatistics(cocos2d::Node* layer) = 0;//Display information about creature node
+    virtual void showStatistics(DebugStatistics type) = 0;
     /*Getters*/
     inline CreatureInfo* getCreatureInfo() { return &creature_info; };
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
     inline bool getWeaponSetupStatus() { return isWeaponSet; }; 
     inline std::map<PartCreatureType,CreatureInfo::Part*>* getPartCreature() { return &creature_part; };
     inline Weapon* getWeapon() { return creature_weapon;};
-    void initStatistics(cocos2d::Node* layer);//Display information about creature node
     /*Setters*/
     void setCreatureState(CreatureInfo::State creature_state);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
@@ -39,7 +40,6 @@ protected:
     void updatePermament();//update stuff permamently
     void updateCurrentState();//Make some actions depens on which state creature have
     
-    void showStatistics(DebugStatistics type);
     void losingStamina();
     void regeneratingStamina(float dt);
     void addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr);

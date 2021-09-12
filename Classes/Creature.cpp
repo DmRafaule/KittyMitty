@@ -183,26 +183,6 @@ float Creature::getDistanceTo(cocos2d::Vec2 target){
     float cat2 = std::fabs(creature_sprite->getPositionY() - target.y);
     return std::sqrt((std::pow(cat1,2)+std::pow(cat2,2)));
 }
-void Creature::initStatistics(cocos2d::Node* layer){
-    if (!isStatisticsShowing){
-        isStatisticsShowing = true;
-        creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
-        creature_statistics->setPosition(WorldProperties::screenSize.width * 0.1,WorldProperties::screenSize.height * 0.75);
-        creature_statistics->runAction(cocos2d::RepeatForever::create(cocos2d::Sequence::create(//Here make good  floating action
-                                                                      cocos2d::EaseInOut::create(cocos2d::MoveBy::create(2,cocos2d::Vec2(5,2.5)),0.2),
-                                                                      cocos2d::EaseInOut::create(cocos2d::MoveBy::create(2,cocos2d::Vec2(0,-5)),0.2),
-                                                                      cocos2d::EaseInOut::create(cocos2d::MoveBy::create(2,cocos2d::Vec2(-5,2.5)),0.2),
-                                                                      cocos2d::EaseInOut::create(cocos2d::MoveBy::create(2,cocos2d::Vec2(-5,2.5)),0.2),
-                                                                      cocos2d::EaseInOut::create(cocos2d::MoveBy::create(2,cocos2d::Vec2(0,-5)),0.2),
-                                                                      cocos2d::EaseInOut::create(cocos2d::MoveBy::create(2,cocos2d::Vec2(5,2.5)),0.2),
-                                                                      nullptr)));
-        layer->addChild(creature_statistics,SceneZOrder::USER_INTERFACE);
-    }
-    else{
-        isStatisticsShowing = false;
-        layer->removeChild(creature_statistics);
-    }
-}
 void Creature::removeStatistics(cocos2d::Node* layer){
     if (isStatisticsShowing){
         isStatisticsShowing = false;
@@ -272,14 +252,6 @@ void Creature::setStatistics(DebugStatistics mode){
     }
 
     creature_statistics->setString(partStatus);
-}
-void Creature::showStatistics(DebugStatistics type){
-    /*For statistics*/
-    if (isStatisticsShowing){
-        setStatistics(type);
-        //creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
-        //                                                                         creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
-    }
 }
 
 void Creature::setCreatureState(CreatureInfo::State creature_state){

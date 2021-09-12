@@ -8,6 +8,8 @@ public:
     Player(CreatureInfo::Type Type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
     virtual void update(float dt) override;
     virtual void remove() override;
+    virtual void initStatistics(cocos2d::Node* layer) override;//Display information about creature node
+    virtual void showStatistics(DebugStatistics type) override;
     void initEnemyContainer(std::vector<Enemy*> enemies);
     /*set up positions for creature sprite, and all attachment(weapon,armor, spells ...)*/
     void setPlayerPosition(float x, float y);
