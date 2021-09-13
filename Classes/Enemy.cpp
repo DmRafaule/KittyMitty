@@ -148,7 +148,11 @@ void Enemy::setAI(std::string typeBehaviorPattern){
 void Enemy::initStatistics(cocos2d::Node* layer){
     if (!isStatisticsShowing){
         isStatisticsShowing = true;
-        creature_statistics = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
+        creature_statistics = cocos2d::Node::create(); 
+        auto lable = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
+        auto icon = cocos2d::Sprite::createWithSpriteFrameName("TopPart.png");
+        creature_statistics->addChild(icon,SceneZOrder::USER_INTERFACE,"icon");
+        creature_statistics->addChild(lable,SceneZOrder::USER_INTERFACE,"lable");
         creature_statistics->setPosition(creature_sprite->getPosition());
         layer->addChild(creature_statistics,SceneZOrder::USER_INTERFACE);
     }
@@ -166,7 +170,7 @@ void Enemy::showStatistics(DebugStatistics type){
     }
 }
 void Enemy::update(float dt){
-    showStatistics(DebugStatistics::GAME_STATS);
+    showStatistics(DebugStatistics::ACTUAL_GAME);
     
     if (isNewState){
         updateCurrentState();

@@ -27,12 +27,14 @@ void ShowStats::updateTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event){
         cocos2d::Vec2 pos = currentLayer->getChildByName(SceneLayer::gamesession)->convertTouchToNodeSpace(touch);
         //Clear before draw new one
         if (clickForCloseStatistics){
+            // Click on player
             if (creature->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
                 clickForCloseStatistics = false;
                 creature->removeStatistics(currentLayer->getChildByName(SceneLayer::ui));
                 for (Enemy*& enemy : *(creatureE))
                     enemy->removeStatistics(currentLayer->getChildByName(SceneLayer::gamesession));
             }
+            //Click on enemies
             for (Enemy*& enemy : *(creatureE))
                 if (enemy->getCreatureSprite()->getBoundingBox().containsPoint(pos)){
                     clickForCloseStatistics = false;

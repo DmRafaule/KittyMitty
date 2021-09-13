@@ -19,7 +19,7 @@ CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string a
 CreatureInfo::Part::Part(){}
 CreatureInfo::Part::Part(PartCreatureType type, PartCreatureStatus status, uint integrality) : 
     type(type), status(status), integrality(integrality), maxIntegrality(integrality){
-
+    armor = 0;
 }
 
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
@@ -250,8 +250,14 @@ void Creature::setStatistics(DebugStatistics mode){
                           creature_info.state == CreatureInfo::State::IN_BATTLE ? "IN_BATTLE\n" :
                           "UNDEFIND\n");    
     }
-
-    creature_statistics->setString(partStatus);
+    else {
+        for (auto &part : creature_part){
+            partStatus.append("\t\t" + std::to_string(part.second->armor) + "\n");
+        }
+        partStatus.append("\t\t" + std::to_string(creature_info.characteristic.blood) + "\n");    
+        partStatus.append("\t\t" + std::to_string(creature_info.characteristic.stamina) + "\n");
+    }
+    static_cast<cocos2d::Label*>(creature_statistics->getChildByName("lable"))->setString(partStatus);//here
 }
 
 void Creature::setCreatureState(CreatureInfo::State creature_state){

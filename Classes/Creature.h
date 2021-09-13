@@ -49,7 +49,7 @@ protected:
     std::map<PartCreatureType,CreatureInfo::Part*> creature_part;//Parts of creature
     cocos2d::PhysicsBody*     creature_physic_body;
     cocos2d::Sprite*          creature_sprite;//Container for holding sprite creature
-    cocos2d::Label*           creature_statistics;
+    cocos2d::Node*            creature_statistics;
     cocos2d::Node*            currentLayer;//Current playing scene;
     CreatureInfo              creature_info;
     Weapon*                   creature_weapon; //Using weapon

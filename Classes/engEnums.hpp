@@ -57,6 +57,7 @@ struct CreatureInfo{
         PartCreatureStatus              status;
         PartCreatureType                type;
         uint                            integrality;
+        uint                            armor;
         uint                            maxIntegrality;
     };
     enum Type : uint{
@@ -234,4 +235,5 @@ struct ArmorCaracteristics{
 enum DebugStatistics{
     GAME_STATS,
     PHYSICS,
+    ACTUAL_GAME,
 };
