@@ -9,6 +9,7 @@ public:
     virtual void update(float dt) override;
     virtual void remove() override;
     virtual void showStatistics(DebugStatistics type) override;
+    virtual void removeStatistics(cocos2d::Node* layer) override;
     void initEnemyContainer(std::vector<Enemy*> enemies);
     /*set up positions for creature sprite, and all attachment(weapon,armor, spells ...)*/
     void setPlayerPosition(float x, float y);

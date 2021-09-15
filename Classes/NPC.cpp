@@ -56,3 +56,5 @@ void NPC::updateBehavior(float dt){
       //Some dialogs and trade logic when developing GUI for game
    }
 }
+void NPC::removeStatistics(cocos2d::Node* layer){}
+void NPC::initStatistics(cocos2d::Node* layer){}

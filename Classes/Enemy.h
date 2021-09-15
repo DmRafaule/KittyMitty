@@ -9,6 +9,7 @@ public:
    virtual void update(float dt) override;
    virtual void remove() override;
    virtual void showStatistics(DebugStatistics type) override;
+   virtual void removeStatistics(cocos2d::Node* layer) override;
    /* Define init vison pattern and set upd looking obj for Image recognition*/
    virtual void updateVision();
    /* Pack states into queue and then extract them from it*/

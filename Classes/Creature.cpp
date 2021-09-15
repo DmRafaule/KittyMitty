@@ -278,12 +278,6 @@ void Creature::initStatistics(cocos2d::Node* layer){
         layer->removeChild(creature_statistics);
     }
 }
-void Creature::removeStatistics(cocos2d::Node* layer){
-    if (creature_info.isStatisticsShowing){
-        creature_info.isStatisticsShowing = false;
-        layer->removeChild(creature_statistics);
-    }
-}
 void Creature::setStatistics(DebugStatistics mode){
     std::string partStatus;
     this->mode = mode;

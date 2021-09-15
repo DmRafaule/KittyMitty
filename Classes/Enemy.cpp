@@ -98,7 +98,7 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
     creature_memorySensors = 0;
     creature_currentAttackPattern = 0;
     if (type == CreatureInfo::Type::KOOL_HASH){
-        //BC  function defineBattleAI call twice we push Type attack twice(stupid solution),
+        //BC function defineBattleAI call twice we push Type attack twice(stupid solution),
         //first for animation, second for stats changing
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
@@ -106,14 +106,21 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
         creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
         creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
         creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+        creature_attackPattern.push_back(TypeAttacke::RIGHT_TO_LEFT);
+        creature_attackPattern.push_back(TypeAttacke::RIGHT_TO_LEFT);
     }
     else if (type == CreatureInfo::Type::ERENU_DOO){
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
         creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
     }
     else if (type == CreatureInfo::Type::GOO_ZOO){
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
+        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
         creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+
     }
     isVision  = false;
     sawPlayer = false;
@@ -155,6 +162,12 @@ void Enemy::showStatistics(DebugStatistics type){
         setStatistics(type);
         creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
                                                                                  creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
+    }
+}
+void Enemy::removeStatistics(cocos2d::Node* layer){
+    if (creature_info.isStatisticsShowing){
+        creature_info.isStatisticsShowing = false;
+        layer->removeChild(creature_statistics);
     }
 }
 void Enemy::update(float dt){

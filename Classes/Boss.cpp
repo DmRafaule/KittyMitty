@@ -109,3 +109,5 @@ void Boss::update(float dt){
 void Boss::updateBossFight(float dt){
    
 }
+void Boss::removeStatistics(cocos2d::Node* layer){}
+void Boss::initStatistics(cocos2d::Node* layer){}

@@ -31,6 +31,12 @@ void Player::showStatistics(DebugStatistics type){
         setStatistics(type);
     }
 }
+void Player::removeStatistics(cocos2d::Node* layer){
+    if (creature_info.isStatisticsShowing){
+        creature_info.isStatisticsShowing = false;
+        layer->removeChild(creature_statistics);
+    }
+}
 void Player::initEnemyContainer(std::vector<Enemy*> enemies){
     this->enemyNode = &enemies;
 }
