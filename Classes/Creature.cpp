@@ -286,6 +286,7 @@ void Creature::removeStatistics(cocos2d::Node* layer){
 }
 void Creature::setStatistics(DebugStatistics mode){
     std::string partStatus;
+    this->mode = mode;
     /*Set strings about part of body*/
     partStatus.append("Status:\n");
     if (mode == DebugStatistics::GAME_STATS){
@@ -349,7 +350,12 @@ void Creature::setStatistics(DebugStatistics mode){
                           creature_info.state == CreatureInfo::State::DEATH ? "DEATH\n" :
                           creature_info.state == CreatureInfo::State::STOP ? "STOP\n" :
                           creature_info.state == CreatureInfo::State::IN_BATTLE ? "IN_BATTLE\n" :
-                          "UNDEFIND\n");    
+                          "UNDEFIND\n");  
+          partStatus.append("DAttack==");
+          partStatus.append(creature_info.dattack == TypeAttacke::TOP_TO_DOWN ? "TOP_TO_DOWN\n" :
+                            creature_info.dattack == TypeAttacke::DOWN_TO_TOP ? "DOWN_TO_TOP\n" :
+                            creature_info.dattack == TypeAttacke::LEFT_TO_RIGHT ? "LEFT_TO_RIGHT\n" :
+                            "RIGHT_TO_LEFT\n");
     }
     else {
         partStatus = "";

@@ -32,6 +32,7 @@ public:
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
     void setArmor(ArmorType aType);//Set armor for creature
     float getDistanceTo(cocos2d::Vec2 target);// Define distance to target
+    DebugStatistics mode;//Remove this after debugin showStatistics
 protected:
     /*Initializer*/
     void initStats();

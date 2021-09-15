@@ -98,9 +98,14 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
     creature_memorySensors = 0;
     creature_currentAttackPattern = 0;
     if (type == CreatureInfo::Type::KOOL_HASH){
+        //BC  function defineBattleAI call twice we push Type attack twice(stupid solution),
+        //first for animation, second for stats changing
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
-        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
         creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
+        creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
+        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
+        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
     }
     else if (type == CreatureInfo::Type::ERENU_DOO){
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
@@ -109,7 +114,6 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
     else if (type == CreatureInfo::Type::GOO_ZOO){
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
         creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
-        creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
     }
     isVision  = false;
     sawPlayer = false;
@@ -334,14 +338,12 @@ void Enemy::defineBattleAI(){
             creature_info.state != CreatureInfo::IN_BATTLE){
             creature_behaviorStates.push(BehaviorState(CreatureInfo::IN_BATTLE,creature_info.dmove));
             // Here some logic for attacking
-            creature_info.dattack = creature_attackPattern[creature_currentAttackPattern];
-            creature_behaviorStates.push(BehaviorState(CreatureInfo::ATTACK,creature_info.dmove,2));
-            
-            // Update current type of attack
-            creature_currentAttackPattern++;
-            if (creature_attackPattern.size() == creature_currentAttackPattern){
+            if (creature_attackPattern.size() <= creature_currentAttackPattern){
                 creature_currentAttackPattern = 0;
             }
+            creature_info.dattack = creature_attackPattern.at(creature_currentAttackPattern);
+            creature_behaviorStates.push(BehaviorState(CreatureInfo::ATTACK,creature_info.dmove,2));
+            creature_currentAttackPattern++;
         }
         else if (getDistanceTo(player->getPosition()) > creature_weapon->getCaracteristics().weapon_range && 
                 creature_info.state == CreatureInfo::IN_BATTLE){
@@ -447,7 +449,7 @@ BehaviorPattern Enemy::defineBehavior(){
             break;
         }
         default:{
-            CCLOG("undefind behavior\n");
+            //CCLOG("undefind behavior\n");
             creature_currentBehaviorPattern = BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN;
             break;
         }
@@ -462,7 +464,7 @@ void Enemy::packBehaviorStates(float dt){
         //Here define what kind of actions creature should do /AI/
         switch(defineBehavior()){
             case BehaviorPattern::CHAISING:{
-                CCLOG("chaising\n");
+                //CCLOG("chaising\n");
                 //On the ground
                 if (creature_info.state == CreatureInfo::State::IDLE ||
                     creature_info.state == CreatureInfo::State::STAND_UP)
@@ -479,7 +481,7 @@ void Enemy::packBehaviorStates(float dt){
             }
             case BehaviorPattern::CHANGE_VERTICAL:{
                 if (player->getPositionY() > (creature_sprite->getPositionY() + 20)){
-                    CCLOG("jump to above\n");
+                    //CCLOG("jump to above\n");
                     if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability){
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
@@ -487,12 +489,12 @@ void Enemy::packBehaviorStates(float dt){
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,0.2));
                 }
                 else if (player->getPositionY() < (creature_sprite->getPositionY() - 20)){
-                    CCLOG("fall to bottom\n");
+                    //CCLOG("fall to bottom\n");
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::State::START_RUN,creature_info.dmove));
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,1));
                 }
                 else{             
-                    CCLOG("jump over pit\n");
+                    //CCLOG("jump over pit\n");
                     if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability)
                         creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.1));
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove,0.2));
@@ -500,12 +502,12 @@ void Enemy::packBehaviorStates(float dt){
                 break;
             }
             case BehaviorPattern::USING_ITEM:{
-                CCLOG("using item\n");
+                //CCLOG("using item\n");
                 creature_behaviorStates.push(BehaviorState(CreatureInfo::INTERACTING,creature_info.dmove));
             }
             case BehaviorPattern::WALL_JUMP_TO:{
                 if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability){
-                    CCLOG("jump to wall\n");
+                    //CCLOG("jump to wall\n");
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::State::IN_JUMP,creature_info.dmove,0.3));//Time delay is important here, if it's 0 interacting will not happend
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::State::SOARING,creature_info.dmove));
                 }
@@ -513,22 +515,22 @@ void Enemy::packBehaviorStates(float dt){
             }
             case BehaviorPattern::WALL_JUMP_FROM:{
                 if (creature_info.characteristic.stamina >= 5 && creature_info.characteristic.current_jump_ability_num <= creature_info.characteristic.jump_ability){
-                    CCLOG("jump from wall\n");
+                    //CCLOG("jump from wall\n");
                     creature_behaviorStates.push(BehaviorState(CreatureInfo::JUMP_FROM_WALL,creature_info.dmove,0.3));//Time delay is important here, if it's 0 interacting will not happend
                 }
                 break;
             }
             case BehaviorPattern::STOP_BEFORE_SOMETHING:{
-                CCLOG("stop and think\n");
+                //CCLOG("stop and think\n");
                 creature_behaviorStates.push(BehaviorState(CreatureInfo::State::STOP,creature_info.dmove));
                 break;
             }
             case BehaviorPattern::WAITING_NEW_BEHAVIORPATTERN:{
-                CCLOG("waiting\n");
+                //CCLOG("waiting\n");
                 break;
             }
             case BehaviorPattern::PATROL:{
-                CCLOG("patroling\n");
+                //CCLOG("patroling\n");
                 creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::RIGHT,3));
                 creature_behaviorStates.push(BehaviorState(CreatureInfo::START_RUN,CreatureInfo::LEFT,3));
                 break;

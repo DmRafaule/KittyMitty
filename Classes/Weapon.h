@@ -8,6 +8,7 @@
  * @brief Parrent class for all weapons
 */
 class Creature;
+class Enemy;
 class Weapon{
 public:   
    /**

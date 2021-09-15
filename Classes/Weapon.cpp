@@ -1,4 +1,5 @@
 #include "Weapon.h"
+#include "Enemy.h"
 #include "Creature.h"
 #include "engMacros.hpp"
 #include "gameUI.h"
@@ -233,7 +234,7 @@ void Weapon::setIntergralityTo(Creature* target, const PartCreatureType& part_ty
    else 
       target->getCreatureInfo()->frameNameForBottomPart = target_part + target_status + ".png";
 
-   if (target->getCreatureInfo()->isStatisticsShowing)//For avoiding mem corruption when statistics obj not created
+   if (target->getCreatureInfo()->isStatisticsShowing && target->mode == DebugStatistics::ACTUAL_GAME)//For avoiding mem corruption when statistics obj not created
       static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByTag((int)part_type))->setSpriteFrame(target_part + target_status + ".png");
    target->getPartCreature()->find(part_type)->second->integrality = newIntegrality;
 }
