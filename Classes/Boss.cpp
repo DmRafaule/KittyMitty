@@ -3,11 +3,11 @@
 
 Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
    this->currentLayer = gameLayer;
-   this->isStatisticsShowing = false;
    this->isNewState = false;
    this->isWeaponSet = false;
    this->indentificator = id;
    this->creature_info.type = type;
+   this->creature_info.isStatisticsShowing = false;
    this->creature_info.state = CreatureInfo::State::IN_FALL;
    this->creature_memorySensors = 0;
    creature_currentAttackPattern = 0;

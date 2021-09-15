@@ -16,17 +16,18 @@ public:
     virtual void update(float dt) = 0;
     /*Clearers*/
     virtual void remove() = 0;
-    virtual void initStatistics(cocos2d::Node* layer) = 0;//Display information about creature node
     virtual void showStatistics(DebugStatistics type) = 0;
     /*Getters*/
     inline CreatureInfo* getCreatureInfo() { return &creature_info; };
     inline cocos2d::Sprite* getCreatureSprite() { return creature_sprite; };
+    inline cocos2d::Node*   getCreatureStatistics() { return creature_statistics; };
     inline bool getWeaponSetupStatus() { return isWeaponSet; }; 
     inline std::map<PartCreatureType,CreatureInfo::Part*>* getPartCreature() { return &creature_part; };
     inline Weapon* getWeapon() { return creature_weapon;};
     /*Setters*/
     void setCreatureState(CreatureInfo::State creature_state);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
+    void initStatistics(cocos2d::Node* layer);//Display information about creature node
     void removeStatistics(cocos2d::Node* layer);// Remove statistics
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
     void setArmor(ArmorType aType);//Set armor for creature
@@ -55,7 +56,6 @@ protected:
     Weapon*                   creature_weapon; //Using weapon
 
     int                       indentificator;
-    bool                      isStatisticsShowing;
     bool                      isNewState;
     bool                      isWeaponSet;
     static bool               isInInteraction;

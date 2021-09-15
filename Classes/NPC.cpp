@@ -3,7 +3,7 @@
 
 NPC::NPC(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
    this->currentLayer = gameLayer;
-   this->isStatisticsShowing = false;
+   this->creature_info.isStatisticsShowing = false;
    this->isNewState = false;
    this->isWeaponSet = false;
    this->indentificator = id;

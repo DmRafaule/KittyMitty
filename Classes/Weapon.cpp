@@ -7,6 +7,7 @@ Weapon::Weapon(std::string weapon_sprite_path,Creature* weapon_owner){
    weapon_sprite = cocos2d::Sprite::createWithSpriteFrameName(weapon_sprite_path);
    this->weapon_owner = weapon_owner;
    weapon_sprite->setAnchorPoint(weapon_sprite->getPosition().ANCHOR_MIDDLE_BOTTOM);
+   target_status = "";
    cocos2d::Texture2D::TexParams tpar = {
         cocos2d::backend::SamplerFilter::NEAREST,
         cocos2d::backend::SamplerFilter::NEAREST,
@@ -154,49 +155,7 @@ void Weapon::update(){
 }
 
 void Weapon::giveEffect(Creature* target){
-   PartCreatureType type;
-   switch (weapon_owner->getCreatureInfo()->dattack){
-      case TypeAttacke::PLAYER_TOP_TO_DOWN:{
-         type = PartCreatureType::TOP;
-         break;
-      }
-      case TypeAttacke::PLAYER_DOWN_TO_TOP:{
-         type = PartCreatureType::BOTTOM;
-         break;
-      }
-      case TypeAttacke::PLAYER_LEFT_TO_RIGHT:{
-         type = PartCreatureType::MIDDLE;
-         break;
-      }
-      case TypeAttacke::PLAYER_RIGHT_TO_LEFT:{
-         type = PartCreatureType::MIDDLE;
-         break;
-      }
-   
-      case TypeAttacke::TOP_TO_DOWN:{
-         type = PartCreatureType::TOP;
-         break;
-      }
-      case TypeAttacke::DOWN_TO_TOP:{
-         type = PartCreatureType::BOTTOM;
-         break;
-      }
-      case TypeAttacke::LEFT_TO_RIGHT:{
-         type = PartCreatureType::MIDDLE;
-         break;
-      }
-      case TypeAttacke::RIGHT_TO_LEFT:{
-         type = PartCreatureType::MIDDLE;
-         break;
-      }
-      
-   }
-   int newIntegrality = target->getPartCreature()->find(type)->second->integrality - weapon_caracteristics.weapon_power;
-   if (newIntegrality < 0) 
-      newIntegrality = 0;
-   if (newIntegrality <= target->getPartCreature()->find(type)->second->maxIntegrality/2)
-      target->getPartCreature()->find(type)->second->status = PartCreatureStatus::WONDED;
-   target->getPartCreature()->find(type)->second->integrality = newIntegrality;
+   setIntergralityTo(target, defineTargetingPart());
 }
 void Weapon::takeEffect(){
    weapon_owner->getCreatureInfo()->characteristic.stamina = weapon_owner->getCreatureInfo()->characteristic.stamina;
@@ -205,7 +164,79 @@ void Weapon::takeEffect(){
    else
       weapon_owner->getCreatureInfo()->characteristic.stamina = 0;
 }
+PartCreatureType Weapon::defineTargetingPart(){
+   PartCreatureType part_type;
+   switch (weapon_owner->getCreatureInfo()->dattack){
+   case TypeAttacke::PLAYER_TOP_TO_DOWN:{
+      part_type = PartCreatureType::TOP;
+      target_part = "TopPart";
+      break;
+   }
+   case TypeAttacke::PLAYER_DOWN_TO_TOP:{
+      part_type = PartCreatureType::BOTTOM;
+      target_part = "BottomPart";
+      break;
+   }
+   case TypeAttacke::PLAYER_LEFT_TO_RIGHT:{
+      part_type = PartCreatureType::MIDDLE;
+      target_part = "MiddlePart";
+      break;
+   }
+   case TypeAttacke::PLAYER_RIGHT_TO_LEFT:{
+      part_type = PartCreatureType::MIDDLE;
+      target_part = "MiddlePart";
+      break;
+   }
+   case TypeAttacke::TOP_TO_DOWN:{
+      part_type = PartCreatureType::TOP;
+      target_part = "TopPart";
+      break;
+   }
+   case TypeAttacke::DOWN_TO_TOP:{
+      part_type = PartCreatureType::BOTTOM;
+      target_part = "BottomPart";
+      break;
+   }
+   case TypeAttacke::LEFT_TO_RIGHT:{
+      part_type = PartCreatureType::MIDDLE;
+      target_part = "MiddlePart";
+      break;
+   }
+   case TypeAttacke::RIGHT_TO_LEFT:{
+      part_type = PartCreatureType::MIDDLE;
+      target_part = "MiddlePart";
+      break;
+   }
+   }
+   return part_type;
+}
+void Weapon::setIntergralityTo(Creature* target, const PartCreatureType& part_type){
+   int newIntegrality = target->getPartCreature()->find(part_type)->second->integrality - weapon_caracteristics.weapon_power;
+   if (newIntegrality <= 0) {
+      newIntegrality = 0;
+      target_status = "Dead";
+      target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::DEAD;
+   }
+   else if (newIntegrality <= target->getPartCreature()->find(part_type)->second->maxIntegrality/2){
+      target_status = "HardWonded"; 
+      target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::HARD_WONDED;
+   }
+   else{
+      target_status = "Wonded";
+      target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::WONDED;
+   }
 
+   if (part_type == PartCreatureType::TOP)
+      target->getCreatureInfo()->frameNameForTopPart = target_part + target_status + ".png";
+   else if (part_type == PartCreatureType::MIDDLE)
+      target->getCreatureInfo()->frameNameForMiddlePart = target_part + target_status + ".png";
+   else 
+      target->getCreatureInfo()->frameNameForBottomPart = target_part + target_status + ".png";
+
+   if (target->getCreatureInfo()->isStatisticsShowing)//For avoiding mem corruption when statistics obj not created
+      static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByTag((int)part_type))->setSpriteFrame(target_part + target_status + ".png");
+   target->getPartCreature()->find(part_type)->second->integrality = newIntegrality;
+}
 
 Sword::Sword(std::string weapon_sprite_path,Creature* weapon_owner):
    Weapon(weapon_sprite_path,weapon_owner){

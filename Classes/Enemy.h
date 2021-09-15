@@ -8,7 +8,6 @@ public:
    Enemy(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
    virtual void update(float dt) override;
    virtual void remove() override;
-   virtual void initStatistics(cocos2d::Node* layer) override;//Display information about creature node
    virtual void showStatistics(DebugStatistics type) override;
    /* Define init vison pattern and set upd looking obj for Image recognition*/
    virtual void updateVision();

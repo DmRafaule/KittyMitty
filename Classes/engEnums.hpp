@@ -19,9 +19,9 @@ enum PartCreatureType : uint{
 };
 enum PartCreatureStatus : uint{
     NORMAL,
-    CUTTED,
     WONDED,
-    KILLED,
+    HARD_WONDED,
+    DEAD,
 };
 enum PartCreatureField : uint{
     STATUS,
@@ -118,6 +118,10 @@ struct CreatureInfo{
     DMove dmove;
     TypeAttacke dattack;
     InteractedSurface surface;
+    std::string frameNameForTopPart;
+    std::string frameNameForMiddlePart;
+    std::string frameNameForBottomPart;
+    bool isStatisticsShowing;
 };
 
 

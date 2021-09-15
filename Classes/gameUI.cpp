@@ -111,6 +111,20 @@ ControlKeys::ControlKeys(Creature* target, cocos2d::Vec2 offset, cocos2d::Node* 
     button_jump->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_jump->getBoundingBox().size.width,
                                            cocos2d::Director::getInstance()->getVisibleSize().height*offset.y));
     currentLayer->addChild(button_jump);
+
+    button_jump = cocos2d::Sprite::createWithSpriteFrameName("controlBJump.png");
+    button_jump->getTexture()->setTexParameters(tpar);
+    button_jump->setScale(3);
+    button_jump->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width - button_jump->getBoundingBox().size.width,
+                                           cocos2d::Director::getInstance()->getVisibleSize().height*offset.y));
+    currentLayer->addChild(button_jump);
+
+    button_menu = cocos2d::Sprite::createWithSpriteFrameName("controlBMenu.png");
+    button_menu->getTexture()->setTexParameters(tpar);
+    button_menu->setScale(3);
+    button_menu->setPosition(cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize().width  - button_menu->getBoundingBox().size.width,
+                                           cocos2d::Director::getInstance()->getVisibleSize().height - button_menu->getBoundingBox().size.height));
+    currentLayer->addChild(button_menu);
 }
 ControlKeys::~ControlKeys(){}
 

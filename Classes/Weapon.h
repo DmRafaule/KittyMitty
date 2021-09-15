@@ -39,10 +39,15 @@ public:
    */
    inline const WeaponCaracteristics getCaracteristics(){ return weapon_caracteristics; };
    inline bool& getAttackStatus(){ return isAttack; };
+private:
+   void setIntergralityTo(Creature* target, const PartCreatureType& type);
+   PartCreatureType defineTargetingPart();
 protected:
    cocos2d::Sprite*        weapon_sprite;              //What player can see
    cocos2d::PhysicsBody*   weapon_physic_body;
    CreatureInfo::DMove*    weapon_owner_dirmove;       //This var was implemented because using weapon_owner will overcomplicated code
+   std::string             target_part;
+   std::string             target_status;
    Creature*               weapon_owner;               //Who hold this weapon
    WeaponCaracteristics    weapon_caracteristics;  //Weapon characteristics, look at structure
    bool                    isAttack;      //This one was implemneted because I need attack once on detecting event by AI 

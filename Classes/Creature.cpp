@@ -28,7 +28,10 @@ Creature::Creature(){
 }
 Creature::Creature(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
     this->currentLayer = gameLayer;
-    this->isStatisticsShowing = false;
+    this->creature_info.isStatisticsShowing = false;
+    this->creature_info.frameNameForTopPart     = "TopPart.png";
+    this->creature_info.frameNameForMiddlePart  = "MiddlePart.png";
+    this->creature_info.frameNameForBottomPart  = "BottomPart.png";    
     this->isNewState  = false;
     this->isWeaponSet = false;
     this->indentificator = id;
@@ -183,9 +186,101 @@ float Creature::getDistanceTo(cocos2d::Vec2 target){
     float cat2 = std::fabs(creature_sprite->getPositionY() - target.y);
     return std::sqrt((std::pow(cat1,2)+std::pow(cat2,2)));
 }
+void Creature::initStatistics(cocos2d::Node* layer){
+    if (!creature_info.isStatisticsShowing){
+        creature_info.isStatisticsShowing = true;
+        //Create sprite obj
+        creature_statistics = cocos2d::Node::create(); 
+        auto lable = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
+        auto top_part_icon = cocos2d::Sprite::createWithSpriteFrameName(creature_info.frameNameForTopPart);
+        auto midle_part_icon = cocos2d::Sprite::createWithSpriteFrameName(creature_info.frameNameForMiddlePart);
+        auto bottom_part_icon = cocos2d::Sprite::createWithSpriteFrameName(creature_info.frameNameForBottomPart);
+        auto blood_icon = cocos2d::Sprite::createWithSpriteFrameName("BloodEmptyIcon.png");
+        auto stamina_icon = cocos2d::Sprite::createWithSpriteFrameName("StaminaIcon.png");
+        auto bar_icon_for_blood = cocos2d::Sprite::createWithSpriteFrameName("BarIcon.png");
+        auto bar_icon_for_stamina = cocos2d::Sprite::createWithSpriteFrameName("BarIcon.png");
+        auto border = cocos2d::Sprite::createWithSpriteFrameName("TabelIcon.png");
+        cocos2d::Texture2D::TexParams tpar = {
+            cocos2d::backend::SamplerFilter::NEAREST,
+            cocos2d::backend::SamplerFilter::NEAREST,
+            cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE,
+            cocos2d::backend::SamplerAddressMode::CLAMP_TO_EDGE
+        };
+        //Set up parameters sprite obj
+        top_part_icon->getTexture()->setTexParameters(tpar);
+        top_part_icon->setScale(5);
+        top_part_icon->setPosition(-50,50);
+
+        midle_part_icon->getTexture()->setTexParameters(tpar);
+        midle_part_icon->setScale(5);
+        midle_part_icon->setPosition(-50,20);
+
+        bottom_part_icon->getTexture()->setTexParameters(tpar);
+        bottom_part_icon->setScale(5);
+        bottom_part_icon->setPosition(-50,-10);
+
+        blood_icon->getTexture()->setTexParameters(tpar);
+        blood_icon->setScale(5);
+        blood_icon->setPosition(-50,-40);
+
+        stamina_icon->getTexture()->setTexParameters(tpar);
+        stamina_icon->setScale(5);
+        stamina_icon->setPosition(-50,-70);
+
+        bar_icon_for_blood->getTexture()->setTexParameters(tpar);
+        bar_icon_for_blood->setScale(5);
+        bar_icon_for_blood->setPosition(20,-40);
+
+        bar_icon_for_stamina->getTexture()->setTexParameters(tpar);
+        bar_icon_for_stamina->setScale(5);
+        bar_icon_for_stamina->setPosition(20,-70);
+
+        border->getTexture()->setTexParameters(tpar);
+        border->setScale(5);
+
+        for (auto & part : creature_part){
+            if (part.second->armor > 0){
+                auto armor_icon = cocos2d::Sprite::createWithSpriteFrameName("ArmorIcon.png");
+                armor_icon->getTexture()->setTexParameters(tpar);
+                armor_icon->setScale(5);
+                if (part.first == PartCreatureType::TOP){
+                    armor_icon->setPosition(OFFSET_ARMOR_POS_FOR_TOP);
+                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"top_part_armor_icon");
+                }
+                else if (part.first == PartCreatureType::MIDDLE){
+                    armor_icon->setPosition(OFFSET_ARMOR_POS_FOR_MIDLE);
+                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"middle_part_armor_icon");
+                }
+                else {
+                    armor_icon->setPosition(OFFSET_ARMOR_POS_FOR_BOTTOM);
+                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"bottom_part_armor_icon");
+                }
+            }
+        }
+
+        //Adding sprite objects to main 'creature_statistics node'
+        creature_statistics->addChild(lable,SceneZOrder::USER_INTERFACE,"lable");
+        creature_statistics->addChild(top_part_icon,SceneZOrder::USER_INTERFACE,(int)PartCreatureType::TOP);
+        creature_statistics->addChild(midle_part_icon,SceneZOrder::USER_INTERFACE,(int)PartCreatureType::MIDDLE);
+        creature_statistics->addChild(bottom_part_icon,SceneZOrder::USER_INTERFACE,(int)PartCreatureType::BOTTOM);
+        creature_statistics->addChild(blood_icon,SceneZOrder::USER_INTERFACE,"blood_icon");
+        creature_statistics->addChild(stamina_icon,SceneZOrder::USER_INTERFACE,"stamina_icon");
+        creature_statistics->addChild(bar_icon_for_blood,SceneZOrder::USER_INTERFACE,"bar_icon_for_blood");
+        creature_statistics->addChild(bar_icon_for_stamina,SceneZOrder::USER_INTERFACE,"bar_icon_for_stamina");
+        creature_statistics->addChild(border,SceneZOrder::USER_INTERFACE,"border");
+        //Set node defauld position
+        creature_statistics->setPosition(WorldProperties::screenSize.width * 0.1,WorldProperties::screenSize.height * 0.75);
+        //Add creature_statistics node to layer
+        layer->addChild(creature_statistics,SceneZOrder::USER_INTERFACE);
+    }
+    else{
+        creature_info.isStatisticsShowing = false;
+        layer->removeChild(creature_statistics);
+    }
+}
 void Creature::removeStatistics(cocos2d::Node* layer){
-    if (isStatisticsShowing){
-        isStatisticsShowing = false;
+    if (creature_info.isStatisticsShowing){
+        creature_info.isStatisticsShowing = false;
         layer->removeChild(creature_statistics);
     }
 }
@@ -194,6 +289,9 @@ void Creature::setStatistics(DebugStatistics mode){
     /*Set strings about part of body*/
     partStatus.append("Status:\n");
     if (mode == DebugStatistics::GAME_STATS){
+        creature_statistics->removeAllChildren();
+        auto lable = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
+        creature_statistics->addChild(lable,SceneZOrder::USER_INTERFACE,"lable");
         for (auto &part : creature_part){
             switch(part.second->type){
                 case PartCreatureType::TOP:{
@@ -211,8 +309,8 @@ void Creature::setStatistics(DebugStatistics mode){
             }
             partStatus.append(part.second->status == PartCreatureStatus::NORMAL ? "norm-" :
                               part.second->status == PartCreatureStatus::WONDED ? "wonded-" :
-                              part.second->status == PartCreatureStatus::CUTTED ? "cutted-" :
-                              "killed");
+                              part.second->status == PartCreatureStatus::HARD_WONDED ? "hard wonded" :
+                              "dead");
             partStatus.append(std::to_string(part.second->integrality) + "\n");
 
         }
@@ -221,6 +319,9 @@ void Creature::setStatistics(DebugStatistics mode){
         partStatus.append("stamina:" + std::to_string(creature_info.characteristic.stamina) + "\n");
     }
     else if (mode == DebugStatistics::PHYSICS){
+        creature_statistics->removeAllChildren();
+        auto lable = cocos2d::Label::createWithTTF("","fonts/arial.ttf",18,cocos2d::Size::ZERO);
+        creature_statistics->addChild(lable,SceneZOrder::USER_INTERFACE,"lable");
         partStatus.append("Position x = ");
         partStatus.append(std::to_string(creature_sprite->getPosition().x) + "\ty= " + std::to_string(creature_sprite->getPosition().y) + "\n");
         partStatus.append("Velocity x = ");
@@ -251,11 +352,8 @@ void Creature::setStatistics(DebugStatistics mode){
                           "UNDEFIND\n");    
     }
     else {
-        for (auto &part : creature_part){
-            partStatus.append("\t\t" + std::to_string(part.second->armor) + "\n");
-        }
-        partStatus.append("\t\t" + std::to_string(creature_info.characteristic.blood) + "\n");    
-        partStatus.append("\t\t" + std::to_string(creature_info.characteristic.stamina) + "\n");
+        partStatus = "";
+        
     }
     static_cast<cocos2d::Label*>(creature_statistics->getChildByName("lable"))->setString(partStatus);//here
 }

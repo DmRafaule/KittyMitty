@@ -82,6 +82,7 @@ private:
     cocos2d::Sprite* button_right;
     cocos2d::Sprite* button_jump;
     cocos2d::Sprite* button_interact;
+    cocos2d::Sprite* button_menu;
     cocos2d::Vec2 offset;
 };
 /**
