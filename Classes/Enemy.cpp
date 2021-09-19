@@ -101,24 +101,16 @@ Enemy::Enemy(CreatureInfo::Type type,cocos2d::Vec2 pos,cocos2d::Node* gameLayer,
         //BC function defineBattleAI call twice we push Type attack twice(stupid solution),
         //first for animation, second for stats changing
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
-        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
-        creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
         creature_attackPattern.push_back(TypeAttacke::DOWN_TO_TOP);
         creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
-        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
-        creature_attackPattern.push_back(TypeAttacke::RIGHT_TO_LEFT);
         creature_attackPattern.push_back(TypeAttacke::RIGHT_TO_LEFT);
     }
     else if (type == CreatureInfo::Type::ERENU_DOO){
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
-        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
-        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
         creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
     }
     else if (type == CreatureInfo::Type::GOO_ZOO){
         creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
-        creature_attackPattern.push_back(TypeAttacke::TOP_TO_DOWN);
-        creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
         creature_attackPattern.push_back(TypeAttacke::LEFT_TO_RIGHT);
 
     }
@@ -356,7 +348,6 @@ void Enemy::defineBattleAI(){
             }
             creature_info.dattack = creature_attackPattern.at(creature_currentAttackPattern);
             creature_behaviorStates.push(BehaviorState(CreatureInfo::ATTACK,creature_info.dmove,2));
-            creature_currentAttackPattern++;
         }
         else if (getDistanceTo(player->getPosition()) > creature_weapon->getCaracteristics().weapon_range && 
                 creature_info.state == CreatureInfo::IN_BATTLE){

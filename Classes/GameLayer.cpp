@@ -204,11 +204,13 @@ bool GameLayer::contactBegan(cocos2d::PhysicsContact &contact){
                     // Give effect to player
                     e->getWeapon()->giveEffect(player);
                     e->getWeapon()->takeEffect();
+                    e->getCurrentAttackPattern()++;
                     player->setCreatureState(CreatureInfo::GET_DAMMAGE);
                 }
                 else {
                     // Stop attacking method
                     e->getWeapon()->getAttackStatus() = false;
+                    e->getCurrentAttackPattern()++;
                 }
             }
 

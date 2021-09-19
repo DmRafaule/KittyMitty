@@ -170,45 +170,62 @@ PartCreatureType Weapon::defineTargetingPart(){
    switch (weapon_owner->getCreatureInfo()->dattack){
    case TypeAttacke::PLAYER_TOP_TO_DOWN:{
       part_type = PartCreatureType::TOP;
+      direction_modificator.x = 0;
+      direction_modificator.y = -1;
       target_part = "TopPart";
       break;
    }
    case TypeAttacke::PLAYER_DOWN_TO_TOP:{
       part_type = PartCreatureType::BOTTOM;
+      direction_modificator.x = 0;
+      direction_modificator.y = 1;
       target_part = "BottomPart";
       break;
    }
    case TypeAttacke::PLAYER_LEFT_TO_RIGHT:{
       part_type = PartCreatureType::MIDDLE;
+      direction_modificator.x = 1;
+      direction_modificator.y = 0;
       target_part = "MiddlePart";
       break;
    }
    case TypeAttacke::PLAYER_RIGHT_TO_LEFT:{
       part_type = PartCreatureType::MIDDLE;
+      direction_modificator.x = -1;
+      direction_modificator.y = 0;
       target_part = "MiddlePart";
       break;
    }
    case TypeAttacke::TOP_TO_DOWN:{
       part_type = PartCreatureType::TOP;
+      direction_modificator.x = 0;
+      direction_modificator.y = -1;
       target_part = "TopPart";
       break;
    }
    case TypeAttacke::DOWN_TO_TOP:{
       part_type = PartCreatureType::BOTTOM;
+      direction_modificator.x = 0;
+      direction_modificator.y = 1;
       target_part = "BottomPart";
       break;
    }
    case TypeAttacke::LEFT_TO_RIGHT:{
       part_type = PartCreatureType::MIDDLE;
+      direction_modificator.x = 1;
+      direction_modificator.y = 0;
       target_part = "MiddlePart";
       break;
    }
    case TypeAttacke::RIGHT_TO_LEFT:{
       part_type = PartCreatureType::MIDDLE;
+      direction_modificator.x = -1;
+      direction_modificator.y = 0;
       target_part = "MiddlePart";
       break;
    }
    }
+
    return part_type;
 }
 void Weapon::setIntergralityTo(Creature* target, const PartCreatureType& part_type){
@@ -227,16 +244,20 @@ void Weapon::setIntergralityTo(Creature* target, const PartCreatureType& part_ty
       target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::WONDED;
    }
 
-   if (part_type == PartCreatureType::TOP)
+   if (part_type == PartCreatureType::TOP){
       target->getCreatureInfo()->frameNameForTopPart = target_part + target_status + ".png";
-   else if (part_type == PartCreatureType::MIDDLE)
+   }
+   else if (part_type == PartCreatureType::MIDDLE){
       target->getCreatureInfo()->frameNameForMiddlePart = target_part + target_status + ".png";
-   else 
+   }
+   else{ 
       target->getCreatureInfo()->frameNameForBottomPart = target_part + target_status + ".png";
+   }
 
    if (target->getCreatureInfo()->isStatisticsShowing && target->mode == DebugStatistics::ACTUAL_GAME)//For avoiding mem corruption when statistics obj not created
       static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByTag((int)part_type))->setSpriteFrame(target_part + target_status + ".png");
    target->getPartCreature()->find(part_type)->second->integrality = newIntegrality;
+   target->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(50 * direction_modificator.x,50 * direction_modificator.y));
 }
 
 Sword::Sword(std::string weapon_sprite_path,Creature* weapon_owner):

@@ -51,6 +51,10 @@ protected:
    std::string             target_status;
    Creature*               weapon_owner;               //Who hold this weapon
    WeaponCaracteristics    weapon_caracteristics;  //Weapon characteristics, look at structure
+   struct AttMod{
+      float x = 0;
+      float y = 0;
+   } direction_modificator;  //For math in logic related to direction of obj
    bool                    isAttack;      //This one was implemneted because I need attack once on detecting event by AI 
 };
 
