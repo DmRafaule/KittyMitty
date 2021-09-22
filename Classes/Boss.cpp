@@ -28,7 +28,8 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
       creature_info.characteristic.acceleration_power = 55;
       creature_info.characteristic.stamina = 80;
       creature_info.characteristic.stamina_limit = 80;
-      creature_info.characteristic.blood   = 20;
+      creature_info.characteristic.blood   = 100;
+      creature_info.characteristic.blood_max   = 100;
       creature_info.characteristic.jump_ability = 1;
       creature_info.characteristic.current_jump_ability_num = 0;
       creature_info.characteristic.mass = 15;
@@ -47,7 +48,8 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
       creature_info.characteristic.acceleration_power = 15;
       creature_info.characteristic.stamina = 300;
       creature_info.characteristic.stamina_limit = 300;
-      creature_info.characteristic.blood   = 10;
+      creature_info.characteristic.blood   = 50;
+      creature_info.characteristic.blood_max   = 50;
       creature_info.characteristic.jump_ability = 0;
       creature_info.characteristic.current_jump_ability_num = 0;
       creature_info.characteristic.mass = 25;
@@ -66,7 +68,8 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
       creature_info.characteristic.acceleration_power = 15;
       creature_info.characteristic.stamina = 200;
       creature_info.characteristic.stamina_limit = 200;
-      creature_info.characteristic.blood   = 60;
+      creature_info.characteristic.blood   = 300;
+      creature_info.characteristic.blood_max   = 300;
       creature_info.characteristic.jump_ability = 0;
       creature_info.characteristic.current_jump_ability_num = 0;
       creature_info.characteristic.mass = 50;
@@ -86,6 +89,7 @@ Boss::Boss(CreatureInfo::Type type,std::string for_who,cocos2d::Vec2 pos,cocos2d
       creature_info.characteristic.stamina = 500;
       creature_info.characteristic.stamina_limit = 500;
       creature_info.characteristic.blood   = 30;
+      creature_info.characteristic.blood_max   = 30;
       creature_info.characteristic.jump_ability = 2;
       creature_info.characteristic.current_jump_ability_num = 0;
       creature_info.characteristic.mass = 10;

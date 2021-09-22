@@ -122,8 +122,12 @@ void GameLayer::initListeners(){
 }
 void GameLayer::updateSlow(float dt){
     player->update(dt);
-    for (auto &i : enemy){
-        i->update(dt);
+    for (int i = 0; i < enemy.size(); ++i){
+        enemy[i]->update(dt);
+        if (enemy[i]->getCreatureInfo()->state == CreatureInfo::DEATH){//Here removing logic for enemies
+            enemy[i]->death();
+            enemy.erase(enemy.begin()+i);
+        }
     }
     world->update(dt);
 }

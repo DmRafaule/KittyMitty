@@ -276,6 +276,9 @@ void Weapon::setIntergralityTo(Creature* target, const PartCreatureType& part_ty
       else{
          target_status = "Wonded";
          target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::WONDED;
+         target->getCreatureInfo()->isBleeding = true;
+         if (target->getCreatureInfo()->isStatisticsShowing)
+            static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByName("blood_icon"))->setSpriteFrame("BloodFullIcon.png");
       }
       //Choose which sprite we will use for new status body
       if (part_type == PartCreatureType::TOP){
@@ -289,7 +292,7 @@ void Weapon::setIntergralityTo(Creature* target, const PartCreatureType& part_ty
       }
       //Change icon for targeting part of creature
       if (target->getCreatureInfo()->isStatisticsShowing && target->mode == DebugStatistics::ACTUAL_GAME)//For avoiding mem corruption when statistics obj not created
-         static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByTag((int)part_type))->setSpriteFrame(target_part + target_status + ".png");
+         static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByTag((int)part_type))->setSpriteFrame(target_part + target_status + ".png");         
       //Change to new integrality
       target->getPartCreature()->find(part_type)->second->integrality = newIntegrality;
    }

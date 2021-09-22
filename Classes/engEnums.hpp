@@ -38,6 +38,7 @@ struct CreatureInfo{
     };
     struct Characteristic{
         uint                      blood;//How many blood liquid in creature
+        uint                      blood_max;//Max capability of blood
         float                     mass;
         float                     velocity_limit;//How fast player can run
         float                     jump_power;//How hard(heighst) creature can jump
@@ -126,6 +127,7 @@ struct CreatureInfo{
     std::string frameNameForMiddleArmor;
     std::string frameNameForBottomArmor;
     bool isStatisticsShowing;
+    bool isBleeding = false;
 };
 
 

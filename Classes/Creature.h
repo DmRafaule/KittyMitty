@@ -30,7 +30,6 @@ public:
     void setCreatureState(CreatureInfo::State creature_state);
     void setStatistics(DebugStatistics mode);//Init information about creature node 
     void setWeapon(WeaponType wMap );//Set creature_weapon to creature and current layer
-    void setArmor(ArmorType aType);//Set armor for creature
     float getDistanceTo(cocos2d::Vec2 target);// Define distance to target
     DebugStatistics mode;//Remove this after debugin showStatistics
 protected:
@@ -43,6 +42,7 @@ protected:
     void updateCurrentState();//Make some actions depens on which state creature have
     
     void losingStamina();
+    void bleeding();
     void updateRegeneration(float dt);
     void addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr);
 protected:

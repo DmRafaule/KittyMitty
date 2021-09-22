@@ -15,6 +15,7 @@ public:
    /* Pack states into queue and then extract them from it*/
    virtual void updateBehavior(float dt);
    /* Init fields which related to player and cant be assigned in constructor*/
+   void death();
    void initPlayerDependenceFields();
    void setAI(std::string typeBehaviorPattern);
    inline const cocos2d::Node* getCreatureVisions() { return creature_vision; };

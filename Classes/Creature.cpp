@@ -5,6 +5,7 @@
 CreatureInfo::CreatureInfo(){}
 CreatureInfo::CreatureInfo(Type type,CreatureInfo::Animation animation){
     this->type = type;
+    isBleeding = false;
     this->animation.animationForWho = animation.animationForWho;
     for (uint i = 0; i < animation.framesIdleNum.size(); ++i)
         this->animation.framesIdleNum.push_back(animation.framesIdleNum[i]);
@@ -39,6 +40,7 @@ Creature::Creature(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gam
     this->indentificator = id;
     this->creature_info.type = type;
     this->creature_info.state = CreatureInfo::State::IN_FALL;
+    this->creature_info.dmove = CreatureInfo::DMove::RIGHT;
 
 
     initStats();
@@ -59,6 +61,7 @@ void Creature::initStats(){
             creature_info.characteristic.stamina = 100;
             creature_info.characteristic.stamina_limit = 100;
             creature_info.characteristic.blood   = 20;
+            creature_info.characteristic.blood_max   = 20;
             creature_info.characteristic.jump_ability = 1;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 10;
@@ -77,6 +80,7 @@ void Creature::initStats(){
             creature_info.characteristic.stamina = 80;
             creature_info.characteristic.stamina_limit = 80;
             creature_info.characteristic.blood   = 20;
+            creature_info.characteristic.blood_max   = 20;
             creature_info.characteristic.jump_ability = 1;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 15;
@@ -95,6 +99,7 @@ void Creature::initStats(){
             creature_info.characteristic.stamina = 300;
             creature_info.characteristic.stamina_limit = 300;
             creature_info.characteristic.blood   = 10;
+            creature_info.characteristic.blood_max   = 10;
             creature_info.characteristic.jump_ability = 0;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 25;
@@ -113,6 +118,7 @@ void Creature::initStats(){
             creature_info.characteristic.stamina = 200;
             creature_info.characteristic.stamina_limit = 200;
             creature_info.characteristic.blood   = 60;
+            creature_info.characteristic.blood_max   = 60;
             creature_info.characteristic.jump_ability = 0;
             creature_info.characteristic.current_jump_ability_num = 0;
             creature_info.characteristic.mass = 50;
@@ -199,8 +205,17 @@ void Creature::initStatistics(cocos2d::Node* layer){
         auto bottom_part_icon = cocos2d::Sprite::createWithSpriteFrameName(creature_info.frameNameForBottomPart);
         auto blood_icon = cocos2d::Sprite::createWithSpriteFrameName("BloodEmptyIcon.png");
         auto stamina_icon = cocos2d::Sprite::createWithSpriteFrameName("StaminaIcon.png");
-        auto bar_icon_for_blood = cocos2d::Sprite::createWithSpriteFrameName("BarIcon.png");
-        auto bar_icon_for_stamina = cocos2d::Sprite::createWithSpriteFrameName("BarIcon.png");
+        //auto bar_icon_for_blood = cocos2d::Sprite::createWithSpriteFrameName("BarIcon.png");
+        auto bar_icon_for_blood = cocos2d::ui::Slider::create();
+        bar_icon_for_blood->loadProgressBarTexture("BarIconProgressBlood.png",cocos2d::ui::Widget::TextureResType::PLIST);
+        bar_icon_for_blood->loadBarTexture("BarIcon.png",cocos2d::ui::Widget::TextureResType::PLIST);
+        bar_icon_for_blood->setTouchEnabled(false);
+        bar_icon_for_blood->setPercent((creature_info.characteristic.blood / creature_info.characteristic.blood_max)*100);
+        auto bar_icon_for_stamina = cocos2d::ui::Slider::create();
+        bar_icon_for_stamina->loadProgressBarTexture("BarIconProgressStamina.png",cocos2d::ui::Widget::TextureResType::PLIST);
+        bar_icon_for_stamina->loadBarTexture("BarIcon.png",cocos2d::ui::Widget::TextureResType::PLIST);
+        bar_icon_for_stamina->setTouchEnabled(false);
+        bar_icon_for_stamina->setPercent((creature_info.characteristic.stamina / (float)creature_info.characteristic.stamina_limit)*100);
         auto border = cocos2d::Sprite::createWithSpriteFrameName("TabelIcon.png");
         cocos2d::Texture2D::TexParams tpar = {
             cocos2d::backend::SamplerFilter::NEAREST,
@@ -229,13 +244,13 @@ void Creature::initStatistics(cocos2d::Node* layer){
         stamina_icon->setScale(5);
         stamina_icon->setPosition(-50,-70);
 
-        bar_icon_for_blood->getTexture()->setTexParameters(tpar);
+        //bar_icon_for_blood->getTexture()->setTexParameters(tpar);
         bar_icon_for_blood->setScale(5);
-        bar_icon_for_blood->setPosition(20,-40);
+        bar_icon_for_blood->setPosition(cocos2d::Vec2(20,-40));
 
-        bar_icon_for_stamina->getTexture()->setTexParameters(tpar);
+        //bar_icon_for_stamina->getTexture()->setTexParameters(tpar);
         bar_icon_for_stamina->setScale(5);
-        bar_icon_for_stamina->setPosition(20,-70);
+        bar_icon_for_stamina->setPosition(cocos2d::Vec2(20,-70));
 
         border->getTexture()->setTexParameters(tpar);
         border->setScale(5);
@@ -286,6 +301,10 @@ void Creature::initStatistics(cocos2d::Node* layer){
         creature_statistics->addChild(border,SceneZOrder::USER_INTERFACE,"border");
         //Set node defauld position
         creature_statistics->setPosition(WorldProperties::screenSize.width * 0.1,WorldProperties::screenSize.height * 0.75);
+        creature_statistics->setScale(0.001);
+        creature_statistics->runAction(cocos2d::ScaleTo::create(1,1));
+        if (creature_info.type != CreatureInfo::Type::KITTYMITTY)
+            creature_statistics->setPosition(creature_sprite->getPosition());
         //Add creature_statistics node to layer
         layer->addChild(creature_statistics,SceneZOrder::USER_INTERFACE);
     }
@@ -369,9 +388,10 @@ void Creature::setStatistics(DebugStatistics mode){
     }
     else {
         partStatus = "";
-        
+        static_cast<cocos2d::ui::Slider*>(creature_statistics->getChildByName("bar_icon_for_blood"))->setPercent((creature_info.characteristic.blood / (float)creature_info.characteristic.blood_max)*100);
+        static_cast<cocos2d::ui::Slider*>(creature_statistics->getChildByName("bar_icon_for_stamina"))->setPercent((creature_info.characteristic.stamina / (float)creature_info.characteristic.stamina_limit)*100);
     }
-    static_cast<cocos2d::Label*>(creature_statistics->getChildByName("lable"))->setString(partStatus);//here
+    static_cast<cocos2d::Label*>(creature_statistics->getChildByName("lable"))->setString(partStatus);
 }
 
 void Creature::setCreatureState(CreatureInfo::State creature_state){
@@ -404,13 +424,17 @@ void Creature::setWeapon(WeaponType wMap ){
     creature_weapon->getSprite()->setPosition(creature_sprite->getPosition());
     currentLayer->addChild(creature_weapon->getSprite(),SceneZOrder::MIDLEGROUND);
 }
-void Creature::setArmor(ArmorType aType){
-    
-}
 void Creature::losingStamina(){
     if ((creature_physic_body->getVelocity().x > 100 || creature_physic_body->getVelocity().x < -100) &&
         creature_physic_body->getVelocity().y == 0){
         //creature_info.characteristic.stamina--;
+    }
+}
+void Creature::bleeding(){
+    creature_info.characteristic.blood -= 1;
+    if (creature_info.characteristic.blood == 0){
+        creature_info.isBleeding = false;
+        setCreatureState(CreatureInfo::DEATH);
     }
 }
 void Creature::updateRegeneration(float dt){
@@ -440,6 +464,8 @@ void Creature::updatePermament(){
         else if (creature_physic_body->getVelocity().x < 0)
             creature_info.dmove = CreatureInfo::DMove::LEFT;
     }
+    if (creature_info.isBleeding)
+        bleeding();
 }
 void Creature::updateCurrentState(){
     switch (creature_info.state){

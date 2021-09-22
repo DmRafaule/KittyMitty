@@ -122,6 +122,7 @@ void Enemy::remove(){
     currentLayer->removeChild(creature_sprite);
     if (isWeaponSet)
         currentLayer->removeChild(creature_weapon->getSprite());
+    isWeaponSet = false;
     currentLayer->removeChild(creature_vision);
     while (!creature_behaviorStates.empty()){
         creature_behaviorStates.pop();
@@ -133,6 +134,27 @@ void Enemy::remove(){
     if (creature_info.isStatisticsShowing)
         currentLayer->removeChild(creature_statistics);
     creature_info.isStatisticsShowing = false;
+}
+void Enemy::death(){
+    creature_part.clear();
+    isNewState = false;
+    creature_sprite->stopAllActions();
+    creature_sprite->runAction(animations.find("_animation_death")->second);
+    if (isWeaponSet)
+        currentLayer->removeChild(creature_weapon->getSprite());
+    isWeaponSet = false;
+    currentLayer->removeChild(creature_vision);
+    while (!creature_behaviorStates.empty()){
+        creature_behaviorStates.pop();
+    }
+    while (!creature_visionPattern.empty()){
+        creature_visionPattern.pop();
+    }
+
+    if (creature_info.isStatisticsShowing)
+        currentLayer->removeChild(creature_statistics);
+    creature_info.isStatisticsShowing = false;
+    creature_sprite->getPhysicsBody()->removeFromWorld();
 }
 void Enemy::initPlayerDependenceFields(){
     player = currentLayer->getChildByTag(2);
@@ -152,8 +174,8 @@ void Enemy::showStatistics(DebugStatistics type){
     /*For statistics*/
     if (creature_info.isStatisticsShowing){
         setStatistics(type);
-        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x + creature_statistics->getBoundingBox().size.width/2,
-                                                                                 creature_sprite->getPosition().y + creature_statistics->getBoundingBox().size.height/2)));
+        creature_statistics->runAction(cocos2d::MoveTo::create(0.2,cocos2d::Vec2(creature_sprite->getPosition().x - creature_sprite->getBoundingBox().size.width*2 * creature_info.dmove,
+                                                                                 creature_sprite->getPosition().y + creature_sprite->getBoundingBox().size.height)));
     }
 }
 void Enemy::removeStatistics(cocos2d::Node* layer){
