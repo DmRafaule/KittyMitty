@@ -17,8 +17,8 @@ cocos2d::Scene* GameLayer::createScene(){
     cocos2d::Node* la = GameLayer::create();
     scene->addChild(la);
     /*Physics debug*/
-    cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
-    ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
+    //cocos2d::PhysicsWorld* ph = scene->getPhysicsWorld();
+    //ph->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);    
     return scene;
 }
 void GameLayer::menuCloseCallback(cocos2d::Ref* pSender){

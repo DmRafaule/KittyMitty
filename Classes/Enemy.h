@@ -7,6 +7,7 @@ public:
    Enemy();
    Enemy(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id);
    virtual void update(float dt) override;
+   //Using when need to be reload
    virtual void remove() override;
    virtual void showStatistics(DebugStatistics type) override;
    virtual void removeStatistics(cocos2d::Node* layer) override;
@@ -14,8 +15,9 @@ public:
    virtual void updateVision();
    /* Pack states into queue and then extract them from it*/
    virtual void updateBehavior(float dt);
-   /* Init fields which related to player and cant be assigned in constructor*/
+   /* Using when creature died for some reason*/
    void death();
+   /* Init fields which related to player and cant be assigned in constructor*/
    void initPlayerDependenceFields();
    void setAI(std::string typeBehaviorPattern);
    inline const cocos2d::Node* getCreatureVisions() { return creature_vision; };
