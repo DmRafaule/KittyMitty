@@ -17,9 +17,8 @@ CreatureInfo::Animation::Animation(std::vector<uint> framesIdleNum,std::string a
     this->animationForWho = animationForWho;
 }
 CreatureInfo::Part::Part(){}
-CreatureInfo::Part::Part(PartCreatureType type, PartCreatureStatus status, uint integrality) : 
-    type(type), status(status), integrality(integrality), maxIntegrality(integrality){
-    armor = 0;
+CreatureInfo::Part::Part(PartCreatureType type, PartCreatureStatus status, uint integrality, int armor) : 
+    type(type), status(status), integrality(integrality), maxIntegrality(integrality), armor(armor), maxArmor(armor){
 }
 
 ///////////////////////////////////////////////////////*Creature class*///////////////////////////////////////////////////////
@@ -29,9 +28,12 @@ Creature::Creature(){
 Creature::Creature(CreatureInfo::Type type, cocos2d::Vec2 pos,cocos2d::Node* gameLayer,int id){
     this->currentLayer = gameLayer;
     this->creature_info.isStatisticsShowing = false;
-    this->creature_info.frameNameForTopPart     = "TopPart.png";
-    this->creature_info.frameNameForMiddlePart  = "MiddlePart.png";
-    this->creature_info.frameNameForBottomPart  = "BottomPart.png";    
+    this->creature_info.frameNameForTopPart      = "TopPart.png";
+    this->creature_info.frameNameForMiddlePart   = "MiddlePart.png";
+    this->creature_info.frameNameForBottomPart   = "BottomPart.png";    
+    this->creature_info.frameNameForTopArmor     = "ArmorIcon.png";
+    this->creature_info.frameNameForMiddleArmor  = "ArmorIcon.png";
+    this->creature_info.frameNameForBottomArmor  = "ArmorIcon.png"; 
     this->isNewState  = false;
     this->isWeaponSet = false;
     this->indentificator = id;
@@ -48,9 +50,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::KITTYMITTY:{
             this->creature_info.animation.animationForWho = "hero";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({15,4,7,4,2,7,2,5,5,2,4,4,5,5,4,8});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,2)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,3)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,2)));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,2,0)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,3,0)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,2,0)));
             creature_info.characteristic.velocity_limit  = 200;
             creature_info.characteristic.jump_power = 120;
             creature_info.characteristic.acceleration_power = 45;
@@ -66,9 +68,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::KOOL_HASH:{
             this->creature_info.animation.animationForWho = "kool-hash";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({8,3,5,3,4,9,4,6,5,4,4,4,8,5,4,7});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,2)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,3)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,2)));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,2,0)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,3,2)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,2,1)));
             creature_info.characteristic.velocity_limit  = 180;
             creature_info.characteristic.jump_power = 120;
             creature_info.characteristic.acceleration_power = 55;
@@ -84,9 +86,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::ERENU_DOO:{
             this->creature_info.animation.animationForWho = "erenu-doo";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({9,4,5,4,8,0,4,10,0,4,3,0,5,5,0,10});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,5)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,5)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,4)));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,5,4)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,5,0)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,4,1)));
             creature_info.characteristic.velocity_limit  = 50;
             creature_info.characteristic.jump_power = 0;
             creature_info.characteristic.acceleration_power = 15;
@@ -102,9 +104,9 @@ void Creature::initStats(){
         case CreatureInfo::Type::GOO_ZOO:{
             this->creature_info.animation.animationForWho = "goo-zoo";
             this->creature_info.animation.framesIdleNum   = std::vector<uint>({7,5,4,5,4,7,3,7,0,2,4,0,6,5,0,11});
-            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,4)));
-            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,6)));
-            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,3)));
+            creature_part.emplace(PartCreatureType::TOP,(new CreatureInfo::Part(PartCreatureType::TOP,PartCreatureStatus::NORMAL,4,0)));
+            creature_part.emplace(PartCreatureType::MIDDLE,(new CreatureInfo::Part(PartCreatureType::MIDDLE,PartCreatureStatus::NORMAL,6,5)));
+            creature_part.emplace(PartCreatureType::BOTTOM,(new CreatureInfo::Part(PartCreatureType::BOTTOM,PartCreatureStatus::NORMAL,3,2)));
             creature_info.characteristic.velocity_limit  = 120;
             creature_info.characteristic.jump_power = 80;
             creature_info.characteristic.acceleration_power = 15;
@@ -240,20 +242,34 @@ void Creature::initStatistics(cocos2d::Node* layer){
 
         for (auto & part : creature_part){
             if (part.second->armor > 0){
-                auto armor_icon = cocos2d::Sprite::createWithSpriteFrameName("ArmorIcon.png");
+                cocos2d::Sprite* armor_icon;
+                switch(part.first){
+                case PartCreatureType::TOP:{
+                    armor_icon = cocos2d::Sprite::createWithSpriteFrameName(creature_info.frameNameForTopArmor);
+                    break;
+                }
+                case PartCreatureType::MIDDLE:{
+                    armor_icon = cocos2d::Sprite::createWithSpriteFrameName(creature_info.frameNameForMiddleArmor);
+                    break;
+                }
+                case PartCreatureType::BOTTOM:{
+                    armor_icon = cocos2d::Sprite::createWithSpriteFrameName(creature_info.frameNameForBottomArmor);
+                    break;
+                }
+                }
                 armor_icon->getTexture()->setTexParameters(tpar);
                 armor_icon->setScale(5);
                 if (part.first == PartCreatureType::TOP){
                     armor_icon->setPosition(OFFSET_ARMOR_POS_FOR_TOP);
-                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"top_part_armor_icon");
+                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"TopPart_armor_icon");
                 }
                 else if (part.first == PartCreatureType::MIDDLE){
                     armor_icon->setPosition(OFFSET_ARMOR_POS_FOR_MIDLE);
-                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"middle_part_armor_icon");
+                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"MiddlePart_armor_icon");
                 }
                 else {
                     armor_icon->setPosition(OFFSET_ARMOR_POS_FOR_BOTTOM);
-                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"bottom_part_armor_icon");
+                    creature_statistics->addChild(armor_icon,SceneZOrder::USER_INTERFACE,"BottomPart_armor_icon");
                 }
             }
         }
@@ -397,17 +413,19 @@ void Creature::losingStamina(){
         //creature_info.characteristic.stamina--;
     }
 }
-void Creature::regeneratingStamina(float dt){
+void Creature::updateRegeneration(float dt){
     //For regeneration of stamina
     creature_info.characteristic.stamina_regeneration_counter += dt;
     //How fast regeneration will be applied
     if (creature_info.characteristic.stamina < creature_info.characteristic.stamina_limit && creature_info.characteristic.stamina_regeneration_counter >= 1){
-        creature_info.characteristic.stamina++;
+        creature_info.characteristic.stamina+=2;
         creature_info.characteristic.stamina_regeneration_counter = 0;
     }
     //Just be sure if stamina will below 0 will not negative
-    if (creature_info.characteristic.stamina <= 0)
+    if (creature_info.characteristic.stamina < 0)
         creature_info.characteristic.stamina = 0;
+    else if (creature_info.characteristic.stamina >= creature_info.characteristic.stamina_limit)
+        creature_info.characteristic.stamina = creature_info.characteristic.stamina_limit;
 }
 void Creature::updatePermament(){
     if (isWeaponSet)
@@ -496,7 +514,7 @@ void Creature::updateCurrentState(){
         creature_sprite->runAction(animations.find("_animation_injump")->second);
         creature_info.characteristic.current_jump_ability_num++;
         //Lose some stamina
-        creature_info.characteristic.stamina = creature_info.characteristic.stamina - 2;
+        creature_info.characteristic.stamina = creature_info.characteristic.stamina - 5;
         cocos2d::Vec2 newVelocity = cocos2d::Vec2(0,creature_info.characteristic.jump_power);
         /*Set vertical velocity once for the body*/
         creature_physic_body->setVelocity(cocos2d::Vec2(creature_physic_body->getVelocity().x,

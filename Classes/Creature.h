@@ -43,7 +43,7 @@ protected:
     void updateCurrentState();//Make some actions depens on which state creature have
     
     void losingStamina();
-    void regeneratingStamina(float dt);
+    void updateRegeneration(float dt);
     void addAnimation(std::string anim_name,uint frame_number,float delay,bool restoreOrigFr);
 protected:
     /*Properties related to whole creature*/

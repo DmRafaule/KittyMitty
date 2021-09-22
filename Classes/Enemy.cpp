@@ -169,7 +169,7 @@ void Enemy::update(float dt){
         updateCurrentState();
     }
     updatePermament();
-
+    updateRegeneration(dt);
 }
 void Enemy::updateVision(){
     //If player in vision radius

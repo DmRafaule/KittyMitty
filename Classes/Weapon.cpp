@@ -161,7 +161,7 @@ void Weapon::giveEffect(Creature* target){
 void Weapon::takeEffect(){
    weapon_owner->getCreatureInfo()->characteristic.stamina = weapon_owner->getCreatureInfo()->characteristic.stamina;
    if (weapon_owner->getCreatureInfo()->characteristic.stamina > 0)
-      weapon_owner->getCreatureInfo()->characteristic.stamina -= 10;
+      weapon_owner->getCreatureInfo()->characteristic.stamina -= 5;
    else
       weapon_owner->getCreatureInfo()->characteristic.stamina = 0;
 }
@@ -229,34 +229,70 @@ PartCreatureType Weapon::defineTargetingPart(){
    return part_type;
 }
 void Weapon::setIntergralityTo(Creature* target, const PartCreatureType& part_type){
-   int newIntegrality = target->getPartCreature()->find(part_type)->second->integrality - weapon_caracteristics.weapon_power;
-   if (newIntegrality <= 0) {
-      newIntegrality = 0;
-      target_status = "Dead";
-      target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::DEAD;
-   }
-   else if (newIntegrality <= target->getPartCreature()->find(part_type)->second->maxIntegrality/2){
-      target_status = "HardWonded"; 
-      target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::HARD_WONDED;
+   if (target->getPartCreature()->find(part_type)->second->armor > 0){
+      int new_armor = target->getPartCreature()->find(part_type)->second->armor - weapon_caracteristics.weapon_power;
+      bool willRemove = false;
+      if (new_armor <= 0){
+         new_armor = 0;
+         willRemove = true;
+      }
+      else if (new_armor <= target->getPartCreature()->find(part_type)->second->maxArmor/2){
+         target_status = "HardDamaged";
+      }
+      else{
+         target_status = "Damaged";
+      }
+      //Choose which sprite we will use for new armor
+      if (part_type == PartCreatureType::TOP){
+         target->getCreatureInfo()->frameNameForTopArmor = "ArmorIcon" + target_status + ".png";
+      }
+      else if (part_type == PartCreatureType::MIDDLE){
+         target->getCreatureInfo()->frameNameForMiddleArmor = "ArmorIcon" + target_status + ".png";
+      }
+      else{ 
+         target->getCreatureInfo()->frameNameForBottomArmor = "ArmorIcon" + target_status + ".png";
+      }
+      //Change icon for targeting armor of creature
+      if (target->getCreatureInfo()->isStatisticsShowing && target->mode == DebugStatistics::ACTUAL_GAME)//For avoiding mem corruption when statistics obj not created
+         if (!willRemove)
+            static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByName(target_part + "_armor_icon"))->setSpriteFrame("ArmorIcon" + target_status + ".png");
+         else 
+            target->getCreatureStatistics()->removeChildByName(target_part + "_armor_icon");
+      //Change to new integrality
+      target->getPartCreature()->find(part_type)->second->armor = new_armor;
    }
    else{
-      target_status = "Wonded";
-      target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::WONDED;
+      int newIntegrality = target->getPartCreature()->find(part_type)->second->integrality - weapon_caracteristics.weapon_power;
+      // Set up new status for part
+      if (newIntegrality <= 0) {
+         newIntegrality = 0;
+         target_status = "Dead";
+         target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::DEAD;
+      }
+      else if (newIntegrality <= target->getPartCreature()->find(part_type)->second->maxIntegrality/2){
+         target_status = "HardWonded"; 
+         target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::HARD_WONDED;
+      }
+      else{
+         target_status = "Wonded";
+         target->getPartCreature()->find(part_type)->second->status = PartCreatureStatus::WONDED;
+      }
+      //Choose which sprite we will use for new status body
+      if (part_type == PartCreatureType::TOP){
+         target->getCreatureInfo()->frameNameForTopPart = target_part + target_status + ".png";
+      }
+      else if (part_type == PartCreatureType::MIDDLE){
+         target->getCreatureInfo()->frameNameForMiddlePart = target_part + target_status + ".png";
+      }
+      else{ 
+         target->getCreatureInfo()->frameNameForBottomPart = target_part + target_status + ".png";
+      }
+      //Change icon for targeting part of creature
+      if (target->getCreatureInfo()->isStatisticsShowing && target->mode == DebugStatistics::ACTUAL_GAME)//For avoiding mem corruption when statistics obj not created
+         static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByTag((int)part_type))->setSpriteFrame(target_part + target_status + ".png");
+      //Change to new integrality
+      target->getPartCreature()->find(part_type)->second->integrality = newIntegrality;
    }
-
-   if (part_type == PartCreatureType::TOP){
-      target->getCreatureInfo()->frameNameForTopPart = target_part + target_status + ".png";
-   }
-   else if (part_type == PartCreatureType::MIDDLE){
-      target->getCreatureInfo()->frameNameForMiddlePart = target_part + target_status + ".png";
-   }
-   else{ 
-      target->getCreatureInfo()->frameNameForBottomPart = target_part + target_status + ".png";
-   }
-
-   if (target->getCreatureInfo()->isStatisticsShowing && target->mode == DebugStatistics::ACTUAL_GAME)//For avoiding mem corruption when statistics obj not created
-      static_cast<cocos2d::Sprite*>(target->getCreatureStatistics()->getChildByTag((int)part_type))->setSpriteFrame(target_part + target_status + ".png");
-   target->getPartCreature()->find(part_type)->second->integrality = newIntegrality;
    target->getCreatureSprite()->getPhysicsBody()->setVelocity(cocos2d::Vec2(50 * direction_modificator.x,50 * direction_modificator.y));
 }
 

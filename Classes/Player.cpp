@@ -16,11 +16,12 @@ void Player::setPlayerPosition(float x, float y){
         creature_statistics->setPosition(x,y);
 }
 void Player::update(float dt){
-    showStatistics(DebugStatistics::ACTUAL_GAME);
+    showStatistics(DebugStatistics::GAME_STATS);
     if (isNewState){
         updateCurrentState();
     }
     updatePermament();
+    updateRegeneration(dt);
 }
 void Player::remove(){
     

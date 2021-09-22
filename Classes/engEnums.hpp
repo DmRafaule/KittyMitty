@@ -52,13 +52,14 @@ struct CreatureInfo{
     };
     struct Part{
         Part();
-        Part(PartCreatureType type, PartCreatureStatus status, uint integrality);
+        Part(PartCreatureType type, PartCreatureStatus status, uint integrality, int armor);
         /*Property related to part of creature*/
         PartCreatureStatus              status;
         PartCreatureType                type;
-        uint                            integrality;
-        uint                            armor;
-        uint                            maxIntegrality;
+        int                            armor;
+        int                            maxArmor;
+        int                            integrality;
+        int                            maxIntegrality;
     };
     enum Type : uint{
         KITTYMITTY,
@@ -121,6 +122,9 @@ struct CreatureInfo{
     std::string frameNameForTopPart;
     std::string frameNameForMiddlePart;
     std::string frameNameForBottomPart;
+    std::string frameNameForTopArmor;
+    std::string frameNameForMiddleArmor;
+    std::string frameNameForBottomArmor;
     bool isStatisticsShowing;
 };
 
